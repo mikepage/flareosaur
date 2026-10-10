@@ -12,7 +12,8 @@
       "dom.asynciterable"
     ],
     "types": [
-      "./types/web.d.ts"
+      "./types/web.d.ts",
+      "./types/wasm.d.ts"
     ]
   },
   "exclude": [
