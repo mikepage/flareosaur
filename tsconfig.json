@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext"],
+    "types": ["@cloudflare/workers-types"],
+    "allowImportingTsExtensions": true,
+    "allowJs": false,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["*/**/*.ts", "types/*.d.ts"],
+  "exclude": ["node_modules", "scripts", "**/*_test.ts", "**/testdata/**", "**/test.ts"]
+}

@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "lib": [
+      "ESNext"
+    ],
+    "types": [
+      "npm:@cloudflare/workers-types"
+    ]
+  },
+  "exclude": [
+    ".git",
+    "node_modules",
+    "scripts"
+  ],
+  "workspace": [
+    "./assert",
+    "./async",
+    "./bytes",
+    "./cache",
+    "./collections",
+    "./crypto",
+    "./csv",
+    "./data_structures",
+    "./datetime",
+    "./dotenv",
+    "./encoding",
+    "./fmt",
+    "./front_matter",
+    "./html",
+    "./http",
+    "./internal",
+    "./json",
+    "./jsonc",
+    "./media_types",
+    "./path",
+    "./regexp",
+    "./semver",
+    "./streams",
+    "./testing",
+    "./text",
+    "./toml",
+    "./ulid",
+    "./uuid",
+    "./yaml"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "@flareosaur/testing",
+  "version": "1.0.21",
+  "exports": {
+    "./mock": "./mock.ts",
+    "./time": "./time.ts",
+    "./types": "./types.ts",
+    "./unstable-stub": "./unstable_stub.ts",
+    "./unstable-stub-property": "./unstable_stub_property.ts",
+    "./unstable-types": "./unstable_types.ts"
+  }
+}
