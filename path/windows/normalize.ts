@@ -14,8 +14,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { normalize } from "@flareosaur/path/windows/normalize";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { normalize } from "@mikepage/flareosaur/path/windows/normalize";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(normalize("C:\\foo\\..\\bar"), "C:\\bar");
  * assertEquals(normalize(new URL("file:///C:/foo/../bar")), "C:\\bar");

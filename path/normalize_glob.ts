@@ -2,7 +2,7 @@
 // This module is browser compatible.
 
 import type { GlobOptions } from "./_common/glob_to_reg_exp.ts";
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { normalizeGlob as posixNormalizeGlob } from "./posix/normalize_glob.ts";
 import {
   normalizeGlob as windowsNormalizeGlob,
@@ -19,8 +19,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { normalizeGlob } from "@flareosaur/path/normalize-glob";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { normalizeGlob } from "@mikepage/flareosaur/path/normalize-glob";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(normalizeGlob("foo\\bar\\..\\baz"), "foo\\baz");

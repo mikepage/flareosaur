@@ -10,8 +10,8 @@ import { compare } from "./compare.ts";
  *
  * @example Usage
  * ```ts
- * import { parse, lessOrEqual } from "@flareosaur/semver";
- * import { assert } from "@flareosaur/assert";
+ * import { parse, lessOrEqual } from "@mikepage/flareosaur/semver";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const version1 = parse("1.2.3");
  * const version2 = parse("1.2.4");

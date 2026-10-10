@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { delay } from "@flareosaur/async/delay";
+import { delay } from "../async/delay.ts";
 import {
   assertEquals,
   AssertionError,
   assertNotEquals,
   assertRejects,
   assertThrows,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import {
   assertSpyCall,
   assertSpyCallArg,

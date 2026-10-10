@@ -11,8 +11,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { extname } from "@flareosaur/path/windows/extname";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extname } from "@mikepage/flareosaur/path/windows/extname";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(extname("file.ts"), ".ts");
  * assertEquals(extname(new URL("file:///C:/foo/bar/baz.ext")), ".ext");

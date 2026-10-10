@@ -19,8 +19,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { maxWith } from "@flareosaur/collections/max-with";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { maxWith } from "@mikepage/flareosaur/collections/max-with";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = ["Kim", "Anna", "John", "Arthur"];
  * const largestName = maxWith(people, (a, b) => a.length - b.length);

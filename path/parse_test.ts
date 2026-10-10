@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import * as windows from "./windows/mod.ts";
 
 Deno.test("windows.parse() parses UNC root only path", () => {

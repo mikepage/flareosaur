@@ -71,8 +71,8 @@ function comparatorsSatisfiable(comparators: Comparator[]): boolean {
  *
  * @example Usage
  * ```ts
- * import { parseRange, rangeIntersects } from "@flareosaur/semver";
- * import { assert } from "@flareosaur/assert";
+ * import { parseRange, rangeIntersects } from "@mikepage/flareosaur/semver";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const range1 = parseRange(">=1.0.0 <2.0.0");
  * const range2 = parseRange(">=1.0.0 <1.2.3");

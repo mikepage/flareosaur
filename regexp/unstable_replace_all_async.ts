@@ -13,8 +13,8 @@
  *
  * @example Usage
  * ```ts ignore
- * import { replaceAllAsync } from "@flareosaur/regexp/unstable-replace-all-async";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { replaceAllAsync } from "@mikepage/flareosaur/regexp/unstable-replace-all-async";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const result = await replaceAllAsync(
  *   "https://example.com/ and https://example.com/not-found!",

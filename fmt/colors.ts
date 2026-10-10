@@ -24,7 +24,7 @@
  *   red,
  *   rgb24,
  *   rgb8,
- * } from "@flareosaur/fmt/colors";
+ * } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBlue(italic(red(bold("Hello, World!")))));
  *
@@ -79,13 +79,13 @@ let enabled = !noColor;
 /**
  * Enable or disable text color when styling.
  *
- * `@flareosaur/fmt/colors` automatically detects NO_COLOR environmental variable
+ * `@mikepage/flareosaur/fmt/colors` automatically detects NO_COLOR environmental variable
  * and disables text color. Use this API only when the automatic detection
  * doesn't work.
  *
  * @example Usage
  * ```ts no-assert
- * import { setColorEnabled } from "@flareosaur/fmt/colors";
+ * import { setColorEnabled } from "@mikepage/flareosaur/fmt/colors";
  *
  * // Disable text color
  * setColorEnabled(false);
@@ -109,7 +109,7 @@ export function setColorEnabled(value: boolean) {
  *
  * @example Usage
  * ```ts no-assert
- * import { getColorEnabled } from "@flareosaur/fmt/colors";
+ * import { getColorEnabled } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(getColorEnabled()); // true if enabled, false if disabled
  * ```
@@ -148,7 +148,7 @@ function run(str: string, code: Code): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { reset } from "@flareosaur/fmt/colors";
+ * import { reset } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(reset("Hello, world!"));
  * ```
@@ -165,7 +165,7 @@ export function reset(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bold } from "@flareosaur/fmt/colors";
+ * import { bold } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bold("Hello, world!"));
  * ```
@@ -185,7 +185,7 @@ export function bold(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { dim } from "@flareosaur/fmt/colors";
+ * import { dim } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(dim("Hello, world!"));
  * ```
@@ -202,7 +202,7 @@ export function dim(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { italic } from "@flareosaur/fmt/colors";
+ * import { italic } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(italic("Hello, world!"));
  * ```
@@ -219,7 +219,7 @@ export function italic(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { underline } from "@flareosaur/fmt/colors";
+ * import { underline } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(underline("Hello, world!"));
  * ```
@@ -236,7 +236,7 @@ export function underline(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { inverse } from "@flareosaur/fmt/colors";
+ * import { inverse } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(inverse("Hello, world!"));
  * ```
@@ -253,7 +253,7 @@ export function inverse(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { hidden } from "@flareosaur/fmt/colors";
+ * import { hidden } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(hidden("Hello, world!"));
  * ```
@@ -270,7 +270,7 @@ export function hidden(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { strikethrough } from "@flareosaur/fmt/colors";
+ * import { strikethrough } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(strikethrough("Hello, world!"));
  * ```
@@ -287,7 +287,7 @@ export function strikethrough(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { black } from "@flareosaur/fmt/colors";
+ * import { black } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(black("Hello, world!"));
  * ```
@@ -304,7 +304,7 @@ export function black(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { red } from "@flareosaur/fmt/colors";
+ * import { red } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(red("Hello, world!"));
  * ```
@@ -321,7 +321,7 @@ export function red(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { green } from "@flareosaur/fmt/colors";
+ * import { green } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(green("Hello, world!"));
  * ```
@@ -338,7 +338,7 @@ export function green(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { yellow } from "@flareosaur/fmt/colors";
+ * import { yellow } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(yellow("Hello, world!"));
  * ```
@@ -355,7 +355,7 @@ export function yellow(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { blue } from "@flareosaur/fmt/colors";
+ * import { blue } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(blue("Hello, world!"));
  * ```
@@ -372,7 +372,7 @@ export function blue(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { magenta } from "@flareosaur/fmt/colors";
+ * import { magenta } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(magenta("Hello, world!"));
  * ```
@@ -389,7 +389,7 @@ export function magenta(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { cyan } from "@flareosaur/fmt/colors";
+ * import { cyan } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(cyan("Hello, world!"));
  * ```
@@ -406,7 +406,7 @@ export function cyan(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { white } from "@flareosaur/fmt/colors";
+ * import { white } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(white("Hello, world!"));
  * ```
@@ -423,7 +423,7 @@ export function white(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { gray } from "@flareosaur/fmt/colors";
+ * import { gray } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(gray("Hello, world!"));
  * ```
@@ -440,7 +440,7 @@ export function gray(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightBlack } from "@flareosaur/fmt/colors";
+ * import { brightBlack } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightBlack("Hello, world!"));
  * ```
@@ -457,7 +457,7 @@ export function brightBlack(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightRed } from "@flareosaur/fmt/colors";
+ * import { brightRed } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightRed("Hello, world!"));
  * ```
@@ -474,7 +474,7 @@ export function brightRed(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightGreen } from "@flareosaur/fmt/colors";
+ * import { brightGreen } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightGreen("Hello, world!"));
  * ```
@@ -491,7 +491,7 @@ export function brightGreen(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightYellow } from "@flareosaur/fmt/colors";
+ * import { brightYellow } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightYellow("Hello, world!"));
  * ```
@@ -508,7 +508,7 @@ export function brightYellow(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightBlue } from "@flareosaur/fmt/colors";
+ * import { brightBlue } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightBlue("Hello, world!"));
  * ```
@@ -525,7 +525,7 @@ export function brightBlue(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightMagenta } from "@flareosaur/fmt/colors";
+ * import { brightMagenta } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightMagenta("Hello, world!"));
  * ```
@@ -542,7 +542,7 @@ export function brightMagenta(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightCyan } from "@flareosaur/fmt/colors";
+ * import { brightCyan } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightCyan("Hello, world!"));
  * ```
@@ -559,7 +559,7 @@ export function brightCyan(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightWhite } from "@flareosaur/fmt/colors";
+ * import { brightWhite } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(brightWhite("Hello, world!"));
  * ```
@@ -576,7 +576,7 @@ export function brightWhite(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBlack } from "@flareosaur/fmt/colors";
+ * import { bgBlack } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBlack("Hello, world!"));
  * ```
@@ -593,7 +593,7 @@ export function bgBlack(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgRed } from "@flareosaur/fmt/colors";
+ * import { bgRed } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgRed("Hello, world!"));
  * ```
@@ -610,7 +610,7 @@ export function bgRed(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgGreen } from "@flareosaur/fmt/colors";
+ * import { bgGreen } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgGreen("Hello, world!"));
  * ```
@@ -627,7 +627,7 @@ export function bgGreen(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgYellow } from "@flareosaur/fmt/colors";
+ * import { bgYellow } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgYellow("Hello, world!"));
  * ```
@@ -644,7 +644,7 @@ export function bgYellow(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBlue } from "@flareosaur/fmt/colors";
+ * import { bgBlue } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBlue("Hello, world!"));
  * ```
@@ -661,7 +661,7 @@ export function bgBlue(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgMagenta } from "@flareosaur/fmt/colors";
+ * import { bgMagenta } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgMagenta("Hello, world!"));
  * ```
@@ -678,7 +678,7 @@ export function bgMagenta(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgCyan } from "@flareosaur/fmt/colors";
+ * import { bgCyan } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgCyan("Hello, world!"));
  * ```
@@ -695,7 +695,7 @@ export function bgCyan(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgWhite } from "@flareosaur/fmt/colors";
+ * import { bgWhite } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgWhite("Hello, world!"));
  * ```
@@ -712,7 +712,7 @@ export function bgWhite(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightBlack } from "@flareosaur/fmt/colors";
+ * import { bgBrightBlack } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightBlack("Hello, world!"));
  * ```
@@ -729,7 +729,7 @@ export function bgBrightBlack(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightRed } from "@flareosaur/fmt/colors";
+ * import { bgBrightRed } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightRed("Hello, world!"));
  * ```
@@ -746,7 +746,7 @@ export function bgBrightRed(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightGreen } from "@flareosaur/fmt/colors";
+ * import { bgBrightGreen } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightGreen("Hello, world!"));
  * ```
@@ -763,7 +763,7 @@ export function bgBrightGreen(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightYellow } from "@flareosaur/fmt/colors";
+ * import { bgBrightYellow } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightYellow("Hello, world!"));
  * ```
@@ -780,7 +780,7 @@ export function bgBrightYellow(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightBlue } from "@flareosaur/fmt/colors";
+ * import { bgBrightBlue } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightBlue("Hello, world!"));
  * ```
@@ -797,7 +797,7 @@ export function bgBrightBlue(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightMagenta } from "@flareosaur/fmt/colors";
+ * import { bgBrightMagenta } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightMagenta("Hello, world!"));
  * ```
@@ -814,7 +814,7 @@ export function bgBrightMagenta(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightCyan } from "@flareosaur/fmt/colors";
+ * import { bgBrightCyan } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightCyan("Hello, world!"));
  * ```
@@ -831,7 +831,7 @@ export function bgBrightCyan(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgBrightWhite } from "@flareosaur/fmt/colors";
+ * import { bgBrightWhite } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgBrightWhite("Hello, world!"));
  * ```
@@ -861,7 +861,7 @@ function clampAndTruncate(n: number, max = 255, min = 0): number {
  *
  * @example Usage
  * ```ts no-assert
- * import { rgb8 } from "@flareosaur/fmt/colors";
+ * import { rgb8 } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(rgb8("Hello, world!", 42));
  * ```
@@ -880,7 +880,7 @@ export function rgb8(str: string, color: number): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgRgb8 } from "@flareosaur/fmt/colors";
+ * import { bgRgb8 } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(bgRgb8("Hello, world!", 42));
  * ```
@@ -900,7 +900,7 @@ export function bgRgb8(str: string, color: number): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { rgb24 } from "@flareosaur/fmt/colors";
+ * import { rgb24 } from "@mikepage/flareosaur/fmt/colors";
  *
  * rgb24("foo", 0xff00ff);
  * rgb24("foo", {r: 255, g: 0, b: 255});
@@ -941,7 +941,7 @@ export function rgb24(str: string, color: number | Rgb): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgRgb24 } from "@flareosaur/fmt/colors";
+ * import { bgRgb24 } from "@mikepage/flareosaur/fmt/colors";
  *
  * bgRgb24("foo", 0xff00ff);
  * bgRgb24("foo", {r: 255, g: 0, b: 255});
@@ -989,7 +989,7 @@ const ANSI_REGEXP = new RegExp(
  *
  * @example Usage
  * ```ts no-assert
- * import { stripAnsiCode, red } from "@flareosaur/fmt/colors";
+ * import { stripAnsiCode, red } from "@mikepage/flareosaur/fmt/colors";
  *
  * console.log(stripAnsiCode(red("Hello, world!")));
  * ```

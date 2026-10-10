@@ -1,9 +1,9 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { parse } from "./parse.ts";
-import * as path from "@flareosaur/path";
-import { assertSpyCall, spy } from "@flareosaur/testing/mock";
+import * as path from "../path/mod.ts";
+import { assertSpyCall, spy } from "../testing/mock.ts";
 
 const moduleDir = path.dirname(path.fromFileUrl(import.meta.url));
 const testdataDir = path.resolve(moduleDir, "testdata");

@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
 import { descend } from "./comparators.ts";
 import {
   type HeapEntry,

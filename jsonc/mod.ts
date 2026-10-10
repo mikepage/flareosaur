@@ -10,8 +10,8 @@
  * serialization is not yet supported.
  *
  * ```ts
- * import { parse } from "@flareosaur/jsonc";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/jsonc";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(parse('{"foo": "bar", } // comment'), { foo: "bar" });
  * assertEquals(parse('{"foo": "bar", } /* comment *\/'), { foo: "bar" });

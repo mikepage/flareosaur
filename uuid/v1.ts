@@ -16,8 +16,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "@flareosaur/uuid/v1";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { validate } from "@mikepage/flareosaur/uuid/v1";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(validate("ea71fc60-a713-11ee-af61-8349da24f689"));
  * assertFalse(validate("fac8c1e0-ad1a-4204-a0d0-8126ae84495d"));
@@ -80,8 +80,8 @@ export interface GenerateOptions {
  *
  * @example Usage
  * ```ts
- * import { generate, validate } from "@flareosaur/uuid/v1";
- * import { assert } from "@flareosaur/assert";
+ * import { generate, validate } from "@mikepage/flareosaur/uuid/v1";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const options = {
  *   node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],

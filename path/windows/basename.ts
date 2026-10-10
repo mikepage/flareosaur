@@ -17,8 +17,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { basename } from "@flareosaur/path/windows/basename";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { basename } from "@mikepage/flareosaur/path/windows/basename";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(basename("C:\\user\\Documents\\"), "Documents");
  * assertEquals(basename("C:\\user\\Documents\\image.png"), "image.png");

@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { mapNotNullish } from "./map_not_nullish.ts";
 
 function mapNotNullishTest<T, O>(

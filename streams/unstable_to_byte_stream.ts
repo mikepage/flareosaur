@@ -11,8 +11,8 @@ import type { Uint8Array_ } from "./_types.ts";
  *
  * @example Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { toByteStream } from "@flareosaur/streams/unstable-to-byte-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { toByteStream } from "@mikepage/flareosaur/streams/unstable-to-byte-stream";
  *
  * const reader = toByteStream(ReadableStream.from([new Uint8Array(100)]))
  *   .getReader({ mode: "byob" });

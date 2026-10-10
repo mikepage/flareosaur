@@ -5,8 +5,8 @@
  * Utility functions for working with text.
  *
  * ```ts
- * import { toCamelCase, compareSimilarity } from "@flareosaur/text";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toCamelCase, compareSimilarity } from "@mikepage/flareosaur/text";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(toCamelCase("snake_case"), "snakeCase");
  *

@@ -33,7 +33,7 @@ export type Operator =
  *
  * @example Usage
  * ```ts
- * import type { Comparator } from "@flareosaur/semver/types";
+ * import type { Comparator } from "@mikepage/flareosaur/semver/types";
  *
  * const comparator: Comparator = {
  *   operator: ">",

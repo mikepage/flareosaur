@@ -363,8 +363,8 @@ function parseOperatorRanges(string: string): (Comparator | null)[] {
  *
  * @example Usage
  * ```ts
- * import { parseRange } from "@flareosaur/semver/parse-range";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parseRange } from "@mikepage/flareosaur/semver/parse-range";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const range = parseRange(">=1.0.0 <2.0.0 || >=3.0.0");
  * assertEquals(range, [

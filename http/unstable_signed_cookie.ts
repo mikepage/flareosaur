@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { decodeHex, encodeHex } from "@flareosaur/encoding/hex";
+import { decodeHex, encodeHex } from "../encoding/hex.ts";
 
 const encoder = new TextEncoder();
 
@@ -19,8 +19,8 @@ function splitByLast(value: string, separator: string): [string, string] {
  *
  * @example Usage
  * ```ts no-assert
- * import { signCookie } from "@flareosaur/http/unstable-signed-cookie";
- * import { setCookie } from "@flareosaur/http/cookie";
+ * import { signCookie } from "@mikepage/flareosaur/http/unstable-signed-cookie";
+ * import { setCookie } from "@mikepage/flareosaur/http/cookie";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "HMAC", hash: "SHA-256" },
@@ -59,8 +59,8 @@ export async function signCookie(
  *
  * @example Usage
  * ```ts no-assert
- * import { verifySignedCookie } from "@flareosaur/http/unstable-signed-cookie";
- * import { getCookies } from "@flareosaur/http/cookie";
+ * import { verifySignedCookie } from "@mikepage/flareosaur/http/unstable-signed-cookie";
+ * import { getCookies } from "@mikepage/flareosaur/http/cookie";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "HMAC", hash: "SHA-256" },
@@ -102,8 +102,8 @@ export async function verifySignedCookie(
  *
  * @example Usage
  * ```ts no-assert
- * import { verifySignedCookie, parseSignedCookie } from "@flareosaur/http/unstable-signed-cookie";
- * import { getCookies } from "@flareosaur/http/cookie";
+ * import { verifySignedCookie, parseSignedCookie } from "@mikepage/flareosaur/http/unstable-signed-cookie";
+ * import { getCookies } from "@mikepage/flareosaur/http/cookie";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "HMAC", hash: "SHA-256" },

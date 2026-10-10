@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { normalize as posixNormalize } from "./posix/normalize.ts";
 import { normalize as windowsNormalize } from "./windows/normalize.ts";
 /**
@@ -13,8 +13,8 @@ import { normalize as windowsNormalize } from "./windows/normalize.ts";
  *
  * @example Usage
  * ```ts
- * import { normalize } from "@flareosaur/path/normalize";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { normalize } from "@mikepage/flareosaur/path/normalize";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(normalize("C:\\foo\\bar\\..\\baz\\quux"), "C:\\foo\\baz\\quux");

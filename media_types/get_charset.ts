@@ -16,8 +16,8 @@ import { db, type KeyOfDb } from "./_db.ts";
  *
  * @example Usage
  * ```ts
- * import { getCharset } from "@flareosaur/media-types/get-charset";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { getCharset } from "@mikepage/flareosaur/media-types/get-charset";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(getCharset("text/plain"), "UTF-8");
  * assertEquals(getCharset("application/foo"), undefined);

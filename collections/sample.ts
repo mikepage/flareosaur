@@ -12,8 +12,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { sample } from "@flareosaur/collections/sample";
- * import { assertArrayIncludes } from "@flareosaur/assert";
+ * import { sample } from "@mikepage/flareosaur/collections/sample";
+ * import { assertArrayIncludes } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [1, 2, 3, 4];
  * const random = sample(numbers);

@@ -5,8 +5,8 @@
  * Data structures for use in algorithms and other data manipulation.
  *
  * ```ts
- * import { BinarySearchTree } from "@flareosaur/data-structures";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const values = [3, 10, 13, 4, 6, 7, 1, 14];
  * const tree = new BinarySearchTree<number>();

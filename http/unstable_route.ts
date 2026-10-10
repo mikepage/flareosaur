@@ -78,7 +78,7 @@ function methodMatches(
  *
  * @example Usage
  * ```ts ignore
- * import { routeLinear, type Route } from "@flareosaur/http/unstable-route";
+ * import { routeLinear, type Route } from "@mikepage/flareosaur/http/unstable-route";
  *
  * const routes: Route[] = [
  *   {
@@ -242,8 +242,8 @@ function createNode(): RouteNode {
  *
  * @example Usage
  * ```ts ignore
- * import { route, type Route } from "@flareosaur/http/unstable-route";
- * import { serveDir } from "@flareosaur/http/file-server";
+ * import { route, type Route } from "@mikepage/flareosaur/http/unstable-route";
+ * import { serveDir } from "@mikepage/flareosaur/http/file-server";
  *
  * const routes: Route[] = [
  *   {

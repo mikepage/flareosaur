@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
 import { normalizeGlob } from "./normalize_glob.ts";
 import * as posix from "./posix/mod.ts";
 import * as windows from "./windows/mod.ts";

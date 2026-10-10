@@ -19,9 +19,9 @@ export interface TextLineStreamOptions {
  *
  * @example JSON Lines
  * ```ts
- * import { TextLineStream } from "@flareosaur/streams/text-line-stream";
- * import { toTransformStream } from "@flareosaur/streams/to-transform-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { TextLineStream } from "@mikepage/flareosaur/streams/text-line-stream";
+ * import { toTransformStream } from "@mikepage/flareosaur/streams/to-transform-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   '{"name": "Alice", "age": ',
@@ -51,8 +51,8 @@ export interface TextLineStreamOptions {
  * @example Allow splitting by `\r`
  *
  * ```ts
- * import { TextLineStream } from "@flareosaur/streams/text-line-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { TextLineStream } from "@mikepage/flareosaur/streams/text-line-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *  "CR\rLF",

@@ -11,8 +11,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { extname } from "@flareosaur/path/posix/extname";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extname } from "@mikepage/flareosaur/path/posix/extname";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(extname("/home/user/Documents/file.ts"), ".ts");
  * assertEquals(extname("/home/user/Documents/"), "");
@@ -33,8 +33,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  * and setting the `hash` and `search` properties to empty strings.
  *
  * ```ts
- * import { extname } from "@flareosaur/path/posix/extname";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extname } from "@mikepage/flareosaur/path/posix/extname";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(extname("https://deno.land/std/path/mod.ts"), ".ts");
  * assertEquals(extname("https://deno.land/std/path/mod.ts?a=b"), ".ts?a=b");

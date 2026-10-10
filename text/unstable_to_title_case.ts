@@ -55,8 +55,8 @@ export interface TitleCaseOptions extends BaseTitleCaseOptions {
  *
  * @example Usage
  * ```ts
- * import { toTitleCase } from "@flareosaur/text/unstable-to-title-case";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { toTitleCase } from "@mikepage/flareosaur/text/unstable-to-title-case";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * assertEquals(toTitleCase("deno is awesome"), "Deno Is Awesome");
  * ```

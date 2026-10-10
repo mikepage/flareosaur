@@ -38,13 +38,13 @@ export interface PooledMapOptions {
  * yielded on success. After that, the rejections among them are gathered and
  * thrown by the iterator in an `AggregateError`.
  *
- * Unlike the stable `pooledMap` from `@flareosaur/async/pool`, the pool limit is
+ * Unlike the stable `pooledMap` from `@mikepage/flareosaur/async/pool`, the pool limit is
  * passed last, consistent with `pooledMapSettled`.
  *
  * @example Usage
  * ```ts
- * import { pooledMap } from "@flareosaur/async/unstable-pool";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { pooledMap } from "@mikepage/flareosaur/async/unstable-pool";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const results = pooledMap(
  *   [1, 2, 3],
@@ -83,8 +83,8 @@ export function pooledMap<T, R>(
  *
  * @example Usage with options
  * ```ts
- * import { pooledMap } from "@flareosaur/async/unstable-pool";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { pooledMap } from "@mikepage/flareosaur/async/unstable-pool";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const results = pooledMap(
  *   [1, 2, 3],
@@ -97,8 +97,8 @@ export function pooledMap<T, R>(
  *
  * @example Cancellation with AbortSignal
  * ```ts
- * import { pooledMap } from "@flareosaur/async/unstable-pool";
- * import { assertRejects } from "@flareosaur/assert";
+ * import { pooledMap } from "@mikepage/flareosaur/async/unstable-pool";
+ * import { assertRejects } from "@mikepage/flareosaur/assert";
  *
  * const controller = new AbortController();
  * const results = pooledMap(

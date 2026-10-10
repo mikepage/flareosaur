@@ -31,8 +31,8 @@ export interface YamlPosition {
  *
  * @example Usage
  * ```ts
- * import { parse, YamlSyntaxError } from "@flareosaur/yaml";
- * import { assertInstanceOf } from "@flareosaur/assert";
+ * import { parse, YamlSyntaxError } from "@mikepage/flareosaur/yaml";
+ * import { assertInstanceOf } from "@mikepage/flareosaur/assert";
  *
  * try {
  *   parse(`"`);
@@ -48,8 +48,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "@flareosaur/yaml";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { YamlSyntaxError } from "@mikepage/flareosaur/yaml";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.line, 5);
@@ -61,8 +61,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "@flareosaur/yaml";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { YamlSyntaxError } from "@mikepage/flareosaur/yaml";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.column, 10);
@@ -74,8 +74,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "@flareosaur/yaml";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { YamlSyntaxError } from "@mikepage/flareosaur/yaml";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.offset, 50);
@@ -88,8 +88,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "@flareosaur/yaml";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { YamlSyntaxError } from "@mikepage/flareosaur/yaml";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const snippet = "    foo: bar\n         ^";
    * const error = new YamlSyntaxError(

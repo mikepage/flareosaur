@@ -30,13 +30,16 @@ const COMPAT_DATE = "2026-07-30";
 const args = process.argv.slice(2);
 const verbose = args.includes("--verbose");
 const trace = args.includes("--trace");
-const workspace = JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8"))
-  .workspace.map((p) => p.slice(2));
+// The package directories, from the targets of the root deno.json exports.
+const exportTargets = Object.values(
+  JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8")).exports,
+);
+const packages = [...new Set(exportTargets.map((t) => t.split("/")[1]))];
 // "pkg" runs a package, "pkg/file_test.ts" a single file of it.
 const targets = args.filter((a) => !a.startsWith("--"));
 const selected = targets.length
   ? [...new Set(targets.map((t) => t.split("/")[0]))]
-  : workspace;
+  : packages;
 const fileFilter = (pkg, file) =>
   !targets.some((t) => t.startsWith(`${pkg}/`)) ||
   targets.includes(`${pkg}/${file}`);
@@ -71,27 +74,6 @@ function isSkipped(pkg, file, name) {
   const list = skips[`${pkg}/${file}`];
   return list === "*" || (Array.isArray(list) && list.includes(name));
 }
-
-// Resolves @flareosaur/<pkg>[/<export>] through each package's deno.json.
-const exportsMap = new Map();
-for (const pkg of workspace) {
-  const { name, exports } = JSON.parse(
-    readFileSync(join(ROOT, pkg, "deno.json"), "utf8"),
-  );
-  const entries = typeof exports === "string" ? { ".": exports } : exports;
-  for (const [sub, file] of Object.entries(entries)) {
-    exportsMap.set(sub === "." ? name : `${name}/${sub.slice(2)}`, join(ROOT, pkg, file));
-  }
-}
-const workspaceResolver = {
-  name: "workspace",
-  setup(b) {
-    b.onResolve({ filter: /^@flareosaur\// }, (a) => {
-      const path = exportsMap.get(a.path);
-      return path ? { path } : { errors: [{ text: `Unknown export ${a.path}` }] };
-    });
-  },
-};
 
 // A few tests import node: built-ins to compare against Node. workerd has none
 // without nodejs_compat, so they resolve to stubs that throw when used.
@@ -140,17 +122,14 @@ async function bundle(pkg) {
     .filter((f) => /(^|[_/])test\.ts$/.test(posix(relative(dir, f))))
     .filter((f) => fileFilter(pkg, posix(relative(dir, f))))
     .sort();
-  const { exports } = JSON.parse(readFileSync(join(dir, "deno.json"), "utf8"));
-  const entries = Object.values(
-    typeof exports === "string" ? { ".": exports } : exports,
-  );
+  const entries = exportTargets.filter((t) => t.startsWith(`./${pkg}/`));
   const rel = (f) => JSON.stringify(posix(relative(out, f)));
   const entry = [
     `import { run, setFixtures } from ${rel(join(ROOT, "scripts/test_shim.js"))};`,
     `import fixtures from "./fixtures.json";`,
     `setFixtures(fixtures);`,
     ...entries.map((e, i) =>
-      `import * as _export${i} from ${rel(join(dir, e))};`
+      `import * as _export${i} from ${rel(join(ROOT, e))};`
     ),
     `const files = {`,
     ...tests.map((f) =>
@@ -195,7 +174,7 @@ async function bundle(pkg) {
       "Deno.readTextFileSync": "__denoReadTextFileSync",
     },
     inject: [join(ROOT, "scripts/test_shim.js")],
-    plugins: [workspaceResolver, nodeStubs, importMeta],
+    plugins: [nodeStubs, importMeta],
     keepNames: true,
     logLevel: "silent",
   });

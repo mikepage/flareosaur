@@ -17,8 +17,8 @@ import {
  *
  * @example Usage
  * ```ts
- * import { parse, compare } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, compare } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const version1 = parse("1.2.3");
  * const version2 = parse("1.2.4");

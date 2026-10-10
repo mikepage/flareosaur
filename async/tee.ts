@@ -61,8 +61,8 @@ class Queue<T> {
  *
  * @example Usage
  * ```ts
- * import { tee } from "@flareosaur/async/tee";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { tee } from "@mikepage/flareosaur/async/tee";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const gen = async function* gen() {
  *   yield 1;

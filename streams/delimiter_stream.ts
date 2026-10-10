@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { concat } from "@flareosaur/bytes/concat";
+import { concat } from "../bytes/concat.ts";
 import { createLPS } from "./_common.ts";
 
 /** Disposition of the delimiter for {@linkcode DelimiterStreamOptions}. */
@@ -32,8 +32,8 @@ export interface DelimiterStreamOptions {
  * @example
  * Divide a CSV stream by commas, discarding the commas:
  * ```ts
- * import { DelimiterStream } from "@flareosaur/streams/delimiter-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { DelimiterStream } from "@mikepage/flareosaur/streams/delimiter-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const inputStream = ReadableStream.from(["foo,bar", ",baz"]);
  *
@@ -47,8 +47,8 @@ export interface DelimiterStreamOptions {
  * @example
  * Divide a stream after semi-colons, keeping the semicolons in the output:
  * ```ts
- * import { DelimiterStream } from "@flareosaur/streams/delimiter-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { DelimiterStream } from "@mikepage/flareosaur/streams/delimiter-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const inputStream = ReadableStream.from(["foo;", "bar;baz", ";"]);
  *

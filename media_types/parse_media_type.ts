@@ -26,8 +26,8 @@ const SEMICOLON_REGEXP = /^\s*;\s*$/;
  *
  * @example Usage
  * ```ts
- * import { parseMediaType } from "@flareosaur/media-types/parse-media-type";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parseMediaType } from "@mikepage/flareosaur/media-types/parse-media-type";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(parseMediaType("application/JSON"), ["application/json", undefined]);
  * assertEquals(parseMediaType("text/html; charset=UTF-8"), ["text/html", { charset: "UTF-8" }]);

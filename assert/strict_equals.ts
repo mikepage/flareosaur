@@ -1,10 +1,10 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { buildMessage } from "@flareosaur/internal/build-message";
-import { diff } from "@flareosaur/internal/diff";
-import { diffStr } from "@flareosaur/internal/diff-str";
-import { format } from "@flareosaur/internal/format";
-import { red } from "@flareosaur/internal/styles";
+import { buildMessage } from "../internal/build_message.ts";
+import { diff } from "../internal/diff.ts";
+import { diffStr } from "../internal/diff_str.ts";
+import { format } from "../internal/format.ts";
+import { red } from "../internal/styles.ts";
 import { AssertionError } from "./assertion_error.ts";
 
 /**
@@ -13,7 +13,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { assertStrictEquals } from "@flareosaur/assert";
+ * import { assertStrictEquals } from "@mikepage/flareosaur/assert";
  *
  * const a = {};
  * const b = a;

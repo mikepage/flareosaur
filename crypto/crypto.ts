@@ -63,7 +63,7 @@
  *
  * @example
  * ```ts
- * import { crypto } from "@flareosaur/crypto";
+ * import { crypto } from "@mikepage/flareosaur/crypto";
  *
  * // This will delegate to the runtime's WebCrypto implementation.
  * console.log(
@@ -91,9 +91,9 @@
  * ```ts
  * import {
  *   crypto,
- * } from "@flareosaur/crypto";
- * import { encodeHex } from "@flareosaur/encoding/hex"
- * import { encodeBase64 } from "@flareosaur/encoding/base64"
+ * } from "@mikepage/flareosaur/crypto";
+ * import { encodeHex } from "@mikepage/flareosaur/encoding/hex"
+ * import { encodeBase64 } from "@mikepage/flareosaur/encoding/base64"
  *
  * const hash = await crypto.subtle.digest(
  *   "SHA-384",

@@ -60,8 +60,8 @@ export type MemoizeOptions<
    *
    * @example
    * ```ts
-   * import { memoize } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { memoize } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fn = memoize(({ value }: { cacheKey: number; value: number }) => {
    *   return value;
@@ -100,8 +100,8 @@ export type MemoizeOptions<
  *
  * @example Basic usage
  * ```ts
- * import { memoize } from "@flareosaur/cache";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { memoize } from "@mikepage/flareosaur/cache";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // fibonacci function, which is very slow for n > ~30 if not memoized
  * const fib = memoize((n: bigint): bigint => {

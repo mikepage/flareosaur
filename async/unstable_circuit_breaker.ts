@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { RollingCounter } from "@flareosaur/data-structures/unstable-rolling-counter";
+import { RollingCounter } from "../data_structures/unstable_rolling_counter.ts";
 
 /**
  * Circuit breaker states following the standard pattern.
@@ -174,8 +174,8 @@ export interface CircuitBreakerExecuteOptions {
  *
  * @example Usage
  * ```ts
- * import { CircuitBreaker, CircuitBreakerOpenError } from "@flareosaur/async/unstable-circuit-breaker";
- * import { assert } from "@flareosaur/assert";
+ * import { CircuitBreaker, CircuitBreakerOpenError } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const breaker = new CircuitBreaker({
  *   failureRateThreshold: 1,
@@ -206,8 +206,8 @@ export class CircuitBreakerOpenError extends Error {
    *
    * @example Usage
    * ```ts
-   * import { CircuitBreakerOpenError } from "@flareosaur/async/unstable-circuit-breaker";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { CircuitBreakerOpenError } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const error = new CircuitBreakerOpenError(5000);
    * assertEquals(error.remainingCooldownMs, 5000);
@@ -346,8 +346,8 @@ function tryCall<A, R>(fn: (arg: A) => R, arg: A): R | undefined {
  *
  * @example Usage
  * ```ts
- * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const breaker = new CircuitBreaker({
  *   failureRateThreshold: 0.5,
@@ -363,7 +363,7 @@ function tryCall<A, R>(fn: (arg: A) => R, arg: A): R | undefined {
  *
  * @example Handling open circuit
  * ```ts ignore
- * import { CircuitBreaker, CircuitBreakerOpenError } from "@flareosaur/async/unstable-circuit-breaker";
+ * import { CircuitBreaker, CircuitBreakerOpenError } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
  *
  * const breaker = new CircuitBreaker();
  *
@@ -378,7 +378,7 @@ function tryCall<A, R>(fn: (arg: A) => R, arg: A): R | undefined {
  *
  * @example With custom failure detection
  * ```ts no-assert
- * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
+ * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
  *
  * const breaker = new CircuitBreaker<Response>({
  *   failureRateThreshold: 0.1,
@@ -389,8 +389,8 @@ function tryCall<A, R>(fn: (arg: A) => R, arg: A): R | undefined {
  *
  * @example Composing with retry and AbortSignal
  * ```ts ignore
- * import { retry } from "@flareosaur/async/retry";
- * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
+ * import { retry } from "@mikepage/flareosaur/async/retry";
+ * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
  *
  * const breaker = new CircuitBreaker();
  *
@@ -405,8 +405,8 @@ function tryCall<A, R>(fn: (arg: A) => R, arg: A): R | undefined {
  *
  * @example Waiting out the cooldown with delay
  * ```ts ignore
- * import { delay } from "@flareosaur/async/delay";
- * import { CircuitBreaker, CircuitBreakerOpenError } from "@flareosaur/async/unstable-circuit-breaker";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
+ * import { CircuitBreaker, CircuitBreakerOpenError } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
  *
  * const breaker = new CircuitBreaker();
  *
@@ -511,8 +511,8 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example Usage
    * ```ts
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const breaker = new CircuitBreaker();
    * assertEquals(breaker.state, "closed");
@@ -534,7 +534,7 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example Usage with async function
    * ```ts ignore
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
    *
    * const breaker = new CircuitBreaker();
    * const response = await breaker.execute(() => fetch("https://api.example.com"));
@@ -542,7 +542,7 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example With timeout
    * ```ts ignore
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
    *
    * const breaker = new CircuitBreaker();
    *
@@ -625,8 +625,8 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example Usage
    * ```ts
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const breaker = new CircuitBreaker();
    * breaker.forceOpen();
@@ -665,8 +665,8 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example Usage
    * ```ts
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const breaker = new CircuitBreaker();
    * breaker.forceOpen();
@@ -696,8 +696,8 @@ export class CircuitBreaker<T = unknown> {
    *
    * @example Usage
    * ```ts
-   * import { CircuitBreaker } from "@flareosaur/async/unstable-circuit-breaker";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { CircuitBreaker } from "@mikepage/flareosaur/async/unstable-circuit-breaker";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const breaker = new CircuitBreaker();
    * breaker.reset();

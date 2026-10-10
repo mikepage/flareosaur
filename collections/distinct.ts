@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { distinct } from "@flareosaur/collections/distinct";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { distinct } from "@mikepage/flareosaur/collections/distinct";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [3, 2, 5, 2, 5];
  * const distinctNumbers = distinct(numbers);

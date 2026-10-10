@@ -25,8 +25,8 @@
  * - Sexagesimal numbers (e.g. `3:25:45`)
  *
  * ```ts
- * import { parse, stringify } from "@flareosaur/yaml";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, stringify } from "@mikepage/flareosaur/yaml";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const data = parse(`
  * foo: bar

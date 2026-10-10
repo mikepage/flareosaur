@@ -8,7 +8,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { assertExists } from "@flareosaur/assert";
+ * import { assertExists } from "@mikepage/flareosaur/assert";
  *
  * assertExists("something"); // Doesn't throw
  * assertExists(undefined); // Throws

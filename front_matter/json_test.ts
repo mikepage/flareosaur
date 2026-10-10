@@ -3,7 +3,7 @@
 import { assertThrows } from "../assert/throws.ts";
 import { extract } from "./json.ts";
 
-import { assertEquals } from "@flareosaur/assert/equals";
+import { assertEquals } from "../assert/equals.ts";
 
 Deno.test("json() extracts type error on invalid input", () => {
   assertThrows(() => extract(""));

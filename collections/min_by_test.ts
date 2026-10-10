@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertStrictEquals } from "@flareosaur/assert";
+import { assertEquals, assertStrictEquals } from "../assert/mod.ts";
 import { minBy } from "./min_by.ts";
 
 Deno.test("minBy() handles array input", () => {

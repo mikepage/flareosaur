@@ -24,8 +24,8 @@
  *
  * @example Usage with trusted content
  * ```ts
- * import { html } from "@flareosaur/html/unstable-html";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { html } from "@mikepage/flareosaur/html/unstable-html";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const name = "Alice";
  * const color = "blue";
@@ -46,9 +46,9 @@
  *
  * @example Usage with untrusted content that needs to be escaped
  * ```ts
- * import { html } from "@flareosaur/html/unstable-html";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { escape } from "@flareosaur/html/entities";
+ * import { html } from "@mikepage/flareosaur/html/unstable-html";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { escape } from "@mikepage/flareosaur/html/entities";
  *
  * // WARNING: This is vulnerable to XSS attacks!
  * const userInput = '<script>alert("XSS")</script>';

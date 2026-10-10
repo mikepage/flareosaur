@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // These tests were copied from `semver/parse_test.ts` and modified to use
 // `tryParse` instead of `parse`.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { tryParse } from "./try_parse.ts";
 
 Deno.test("tryParse() handles major", async (t) => {

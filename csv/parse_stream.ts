@@ -7,7 +7,7 @@ import {
   parseRecord,
   type ParseResult,
 } from "./_io.ts";
-import { TextDelimiterStream } from "@flareosaur/streams/text-delimiter-stream";
+import { TextDelimiterStream } from "../streams/text_delimiter_stream.ts";
 
 /** Options for {@linkcode CsvParseStream}. */
 export interface CsvParseStreamOptions {
@@ -109,9 +109,9 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Usage with default options
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertType, IsExact } from "@flareosaur/testing/types"
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertType, IsExact } from "@mikepage/flareosaur/testing/types"
  *
  * const source = ReadableStream.from([
  *   "name,age\n",
@@ -131,9 +131,9 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Skip first row with `skipFirstRow: true`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertType, IsExact } from "@flareosaur/testing/types"
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertType, IsExact } from "@mikepage/flareosaur/testing/types"
  *
  * const source = ReadableStream.from([
  *   "name,age\n",
@@ -152,9 +152,9 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Specify columns with `columns` option
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertType, IsExact } from "@flareosaur/testing/types"
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertType, IsExact } from "@mikepage/flareosaur/testing/types"
  *
  * const source = ReadableStream.from([
  *   "Alice,34\n",
@@ -175,9 +175,9 @@ export type RowType<T> = T extends undefined ? string[]
  * @example Specify columns with `columns` option and skip first row with
  * `skipFirstRow: true`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertType, IsExact } from "@flareosaur/testing/types"
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertType, IsExact } from "@mikepage/flareosaur/testing/types"
  *
  * const source = ReadableStream.from([
  *   "Alice,34\n",
@@ -195,8 +195,8 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example TSV (tab-separated values) with `separator: "\t"`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const source = ReadableStream.from([
  *   "Alice\t34\n",
@@ -215,8 +215,8 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Trim leading space with `trimLeadingSpace: true`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const source = ReadableStream.from([
  *   "      Alice,34\n          ",
@@ -235,8 +235,8 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Quoted fields
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const source = ReadableStream.from([
  *   `"a ""word""","com`,
@@ -255,8 +255,8 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Allow lazy quotes with `lazyQuotes: true`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const source = ReadableStream.from([
  *   `a "word","1"`,
@@ -272,8 +272,8 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Define comment prefix with `comment` option
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const source = ReadableStream.from([
  *   "Alice,34\n",
@@ -294,9 +294,9 @@ export type RowType<T> = T extends undefined ? string[]
  * @example Infer the number of fields from the first row with
  * `fieldsPerRecord: 0`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertRejects } from "@flareosaur/assert/rejects";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertRejects } from "@mikepage/flareosaur/assert/rejects";
  *
  * const source = ReadableStream.from([
  *   "Alice,34\n",
@@ -316,9 +316,9 @@ export type RowType<T> = T extends undefined ? string[]
  *
  * @example Enforce the number of field for each row with `fieldsPerRecord: 2`
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { assertRejects } from "@flareosaur/assert/rejects";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { assertRejects } from "@mikepage/flareosaur/assert/rejects";
  *
  * const source = ReadableStream.from([
  *   "Alice,34\n",
@@ -475,8 +475,8 @@ export class CsvParseStream<
    *
    * @example Usage
    * ```ts
-   * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const source = ReadableStream.from([
    *   "name,age\n",
@@ -502,8 +502,8 @@ export class CsvParseStream<
    *
    * @example Usage
    * ```ts
-   * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const source = ReadableStream.from([
    *   "name,age\n",

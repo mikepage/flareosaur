@@ -2,7 +2,7 @@
 
 import { extract } from "./yaml.ts";
 import { extract as unstableExtract } from "./unstable_yaml.ts";
-import { assertEquals } from "@flareosaur/assert/equals";
+import { assertEquals } from "../assert/equals.ts";
 import { assertThrows } from "../assert/throws.ts";
 
 Deno.test("yaml() extracts type error on invalid input", () => {

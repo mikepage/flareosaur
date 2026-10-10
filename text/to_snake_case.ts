@@ -8,8 +8,8 @@ import { splitToWords } from "./_util.ts";
  *
  * @example Usage
  * ```ts
- * import { toSnakeCase } from "@flareosaur/text/to-snake-case";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toSnakeCase } from "@mikepage/flareosaur/text/to-snake-case";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(toSnakeCase("deno is awesome"), "deno_is_awesome");
  * ```

@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { omit } from "@flareosaur/collections/omit";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { omit } from "@mikepage/flareosaur/collections/omit";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = { a: 5, b: 6, c: 7, d: 8 };
  * const omitted = omit(obj, ["a", "c"]);

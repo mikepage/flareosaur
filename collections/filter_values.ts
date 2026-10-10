@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { filterValues } from "@flareosaur/collections/filter-values";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { filterValues } from "@mikepage/flareosaur/collections/filter-values";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = {
  *   Arnold: 37,

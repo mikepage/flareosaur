@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertStrictEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertStrictEquals, assertThrows } from "../assert/mod.ts";
 import { RedBlackTree } from "./red_black_tree.ts";
 import { ascend, descend } from "./comparators.ts";
 import { type Container, MyMath } from "./_test_utils.ts";

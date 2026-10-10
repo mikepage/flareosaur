@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertNotStrictEquals } from "@flareosaur/assert";
+import { assertEquals, assertNotStrictEquals } from "../assert/mod.ts";
 import { omit } from "./omit.ts";
 
 Deno.test({

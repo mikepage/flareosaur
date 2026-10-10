@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertThrows } from "@flareosaur/assert";
-import { FakeTime } from "@flareosaur/testing/time";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
+import { FakeTime } from "../testing/time.ts";
 import { parse } from "./parse.ts";
 
 Deno.test({

@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { compareSimilarity } from "./compare_similarity.ts";
 
 Deno.test("compareSimilarity() handles basic example 1", function () {

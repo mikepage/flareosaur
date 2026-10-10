@@ -7,7 +7,7 @@ import {
   assertInstanceOf,
   assertRejects,
   assertThrows,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import { Channel, ChannelClosedError } from "./channel.ts";
 
 // -- Constructor --

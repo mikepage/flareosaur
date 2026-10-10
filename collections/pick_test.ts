@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertNotStrictEquals } from "@flareosaur/assert";
+import { assertEquals, assertNotStrictEquals } from "../assert/mod.ts";
 import { pick } from "./pick.ts";
-import { assertType, type IsExact } from "@flareosaur/testing/types";
+import { assertType, type IsExact } from "../testing/types.ts";
 
 Deno.test({
   name: "pick() returns a new empty object when no keys are provided",

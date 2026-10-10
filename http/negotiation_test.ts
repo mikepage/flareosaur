@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { accepts, acceptsEncodings, acceptsLanguages } from "./negotiation.ts";
-import { stub } from "@flareosaur/testing/mock";
+import { stub } from "../testing/mock.ts";
 
 Deno.test({
   name: "accepts() handles no args",

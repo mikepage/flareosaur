@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertInstanceOf } from "@flareosaur/assert";
+import { assertEquals, assertInstanceOf } from "../assert/mod.ts";
 import { HttpError } from "./unstable_error.ts";
 
 Deno.test("new HttpError() defaults message to STATUS_TEXT[status]", () => {

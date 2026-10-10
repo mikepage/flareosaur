@@ -17,8 +17,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { mapKeys } from "@flareosaur/collections/map-keys";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapKeys } from "@mikepage/flareosaur/collections/map-keys";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const counts = { a: 5, b: 3, c: 8 };
  *

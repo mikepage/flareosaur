@@ -18,8 +18,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { associateWith } from "@flareosaur/collections/associate-with";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { associateWith } from "@mikepage/flareosaur/collections/associate-with";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const names = ["Kim", "Lara", "Jonathan"];
  *

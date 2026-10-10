@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertStrictEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertStrictEquals, assertThrows } from "../assert/mod.ts";
 import { debounce, type DebouncedFunction } from "./debounce.ts";
 
 Deno.test("debounce() handles called", () => {

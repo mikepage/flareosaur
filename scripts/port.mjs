@@ -4,8 +4,13 @@
 //   node scripts/port.mjs [path/to/std] [--no-patches] [--out <dir>]
 //
 // Steps: copy the selected packages, drop files that need Deno or Node APIs,
-// rename @std/* to @flareosaur/*, turn crypto's inline wasm into a .wasm
-// module import, then apply patches/*.patch for the hand-made edge fixes.
+// turn crypto's inline wasm into a .wasm module import, and apply
+// patches/*.patch for the hand-made edge fixes.
+//
+// Everything is published as one JSR package. Each std package becomes a
+// subpath (`@std/http/cookie` -> `@mikepage/flareosaur/http/cookie`), listed in
+// the root deno.json `exports`. Imports between packages become relative
+// paths, so the code needs no import map. Doc comments get the new specifiers.
 //
 // To change the edge fixes, edit the ported files and run
 // scripts/make_patch.mjs, which diffs them against a fresh unpatched port.
@@ -21,7 +26,7 @@ import {
   statSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -32,10 +37,11 @@ const positional = args.filter((a, i) =>
   !a.startsWith("--") && (outIndex === -1 || i !== outIndex + 1)
 );
 const STD = resolve(positional[0] ?? join(ROOT, "../std"));
-const SCOPE = "@flareosaur";
+const NAME = "@mikepage/flareosaur";
 
-// Package name -> files to leave out (paths relative to the package, a
-// trailing slash means a directory) or `only` to copy just those files.
+// Directory -> files to leave out (paths relative to the package, a trailing
+// slash means a directory) or `only` to copy just those files. `dropExports`
+// and `addExports` adjust the exports taken from the package's deno.json.
 const PACKAGES = {
   assert: {},
   async: {},
@@ -45,6 +51,8 @@ const PACKAGES = {
   crypto: {
     exclude: [
       "_wasm/src/",
+      "_wasm/.cargo/",
+      "_wasm/.rustfmt.toml",
       "_wasm/Cargo.toml",
       "_wasm/Cargo.lock",
       "_wasm/rust-toolchain.toml",
@@ -91,7 +99,8 @@ const PACKAGES = {
     ],
     dropExports: ["./file-server", "./unstable-file-server"],
   },
-  internal: {},
+  // inspect.ts is added by patches/edge.patch.
+  internal: { addExports: { "./inspect": "./inspect.ts" } },
   json: {},
   // The conformance suites read their fixtures from disk and eval them.
   jsonc: { exclude: ["testdata/"] },
@@ -136,9 +145,10 @@ const PACKAGES = {
   yaml: {},
 };
 
-const TEXT = /\.(ts|mts|mjs|js|json|jsonc|md)$/;
+const TEXT = /\.(ts|mts|mjs|js|md)$/;
 
 function skip(rel, opts) {
+  if (rel === "deno.json") return true;
   if (opts.only) return !opts.only.includes(rel);
   if (/(^|\/)(_benches?|_tools)\//.test(rel) || /_bench\.ts$/.test(rel)) {
     return true;
@@ -155,35 +165,72 @@ function walk(dir) {
   });
 }
 
-function rename(src) {
-  return src
-    .replaceAll("jsr:@std/", `jsr:${SCOPE}/`)
-    .replaceAll('"@std/', `"${SCOPE}/`)
-    .replaceAll("'@std/", `'${SCOPE}/`)
-    .replaceAll("`@std/", `\`${SCOPE}/`)
-    .replaceAll(" @std/", ` ${SCOPE}/`)
-    .replaceAll("(@std/", `(${SCOPE}/`);
+const posix = (p) => p.split(sep).join("/");
+
+// `@std/<name>[/<sub>]` -> { subpath in the new package, file in OUT }.
+function collectExports() {
+  const specifiers = new Map();
+  const exports = {};
+  for (const [dir, opts] of Object.entries(PACKAGES)) {
+    const config = JSON.parse(
+      readFileSync(join(STD, dir, "deno.json"), "utf8"),
+    );
+    const name = config.name.replace(/^@std\//, "");
+    const entries = typeof config.exports === "string"
+      ? { ".": config.exports }
+      : { ...config.exports };
+    for (const key of opts.dropExports ?? []) delete entries[key];
+    Object.assign(entries, opts.addExports);
+    for (const [sub, file] of Object.entries(entries)) {
+      const subpath = sub === "." ? name : `${name}/${sub.slice(2)}`;
+      const target = `./${dir}/${file.slice(2)}`;
+      exports[`./${subpath}`] = target;
+      specifiers.set(`@std/${subpath}`, join(OUT, target));
+    }
+  }
+  return { specifiers, exports };
 }
 
-function portPackage(name, opts) {
-  const from = join(STD, name);
-  const to = join(OUT, name);
+// Code imports of @std/* become relative paths. Everything else (doc
+// comments, markdown, strings in tests) gets the new package name.
+function rewrite(src, dest, specifiers, isCode) {
+  return src.split("\n").map((line) => {
+    const trimmed = line.trimStart();
+    const comment = trimmed.startsWith("*") || trimmed.startsWith("//") ||
+      trimmed.startsWith("/*");
+    if (isCode && !comment) {
+      line = line.replace(/(["'])(@std\/[a-z0-9_-]+(?:\/[a-z0-9_-]+)?)\1/g, (m, q, spec) => {
+        const target = specifiers.get(spec);
+        if (!target) return m;
+        let rel = posix(relative(dirname(dest), target));
+        if (!rel.startsWith(".")) rel = `./${rel}`;
+        return `${q}${rel}${q}`;
+      });
+    }
+    return line.replaceAll("jsr:@std/", `jsr:${NAME}/`)
+      .replace(/(^|[\s"'`(])@std\/(?=[a-z])/g, `$1${NAME}/`);
+  }).join("\n");
+}
+
+function portPackage(dir, opts, specifiers) {
+  const from = join(STD, dir);
+  const to = join(OUT, dir);
   rmSync(to, { recursive: true, force: true });
   for (const file of walk(from)) {
     const rel = relative(from, file);
-    if (skip(rel, opts)) continue;
+    if (skip(posix(rel), opts)) continue;
     const dest = join(to, rel);
     mkdirSync(dirname(dest), { recursive: true });
     if (TEXT.test(file)) {
-      writeFileSync(dest, rename(readFileSync(file, "utf8")));
+      const isCode = !file.endsWith(".md");
+      writeFileSync(
+        dest,
+        rewrite(readFileSync(file, "utf8"), dest, specifiers, isCode),
+      );
     } else {
       cpSync(file, dest);
     }
   }
-  const denoJson = join(to, "deno.json");
-  const config = JSON.parse(readFileSync(denoJson, "utf8"));
-  for (const key of opts.dropExports ?? []) delete config.exports[key];
-  writeFileSync(denoJson, JSON.stringify(config, null, 2) + "\n");
 }
 
 // workerd refuses to compile wasm from bytes at runtime, so the inline base64
@@ -218,11 +265,11 @@ wasm.exports.__wbindgen_start();
   );
 }
 
-function writeWorkspace() {
+function writeExports(exports) {
   const path = join(OUT, "deno.json");
   if (!existsSync(path)) return;
   const config = JSON.parse(readFileSync(path, "utf8"));
-  config.workspace = Object.keys(PACKAGES).map((n) => `./${n}`);
+  config.exports = exports;
   writeFileSync(path, JSON.stringify(config, null, 2) + "\n");
 }
 
@@ -230,13 +277,17 @@ if (!existsSync(join(STD, "deno.json"))) {
   console.error(`No std checkout at ${STD}`);
   process.exit(1);
 }
-for (const [name, opts] of Object.entries(PACKAGES)) portPackage(name, opts);
+const { specifiers, exports } = collectExports();
+for (const [dir, opts] of Object.entries(PACKAGES)) {
+  portPackage(dir, opts, specifiers);
+}
 externalizeWasm();
-writeWorkspace();
+writeExports(exports);
 
 const patches = join(ROOT, "patches");
 if (existsSync(patches) && !args.includes("--no-patches")) {
-  for (const p of readdirSync(patches).filter((f) => f.endsWith(".patch")).sort()) {
+  const files = readdirSync(patches).filter((f) => f.endsWith(".patch"));
+  for (const p of files.sort()) {
     execFileSync("git", ["apply", "--whitespace=nowarn", join(patches, p)], {
       cwd: OUT,
       stdio: "inherit",

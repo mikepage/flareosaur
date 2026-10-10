@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 import { replaceAllAsync } from "./unstable_replace_all_async.ts";
-import { assertEquals } from "@flareosaur/assert";
-import { stub } from "@flareosaur/testing/mock";
+import { assertEquals } from "../assert/mod.ts";
+import { stub } from "../testing/mock.ts";
 
 Deno.test("replaceAllAsync() replaces all occurrences of a pattern asynchronously", async () => {
   using _ = stub(

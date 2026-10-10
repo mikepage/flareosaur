@@ -14,8 +14,8 @@
  *   greaterThan,
  *   lessThan,
  *   format
- * } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const semver = parse("1.2.3");
  * assertEquals(semver, {
@@ -127,8 +127,8 @@
  * argument that will append the value of the string as a prerelease identifier:
  *
  * ```ts
- * import { increment, parse } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { increment, parse } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(increment(parse("1.2.3"), "prerelease", { prerelease: "alpha" }), parse("1.2.4-alpha.0"));
  * ```

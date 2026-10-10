@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { cycle } from "@flareosaur/collections/unstable-cycle";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { cycle } from "@mikepage/flareosaur/collections/unstable-cycle";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const cyclic = cycle([1, 2, 3]);
  * const result: number[] = [];

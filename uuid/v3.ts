@@ -2,8 +2,8 @@
 // This module is browser compatible.
 
 import { bytesToUuid, uuidToBytes } from "./_common.ts";
-import { concat } from "@flareosaur/bytes/concat";
-import { crypto } from "@flareosaur/crypto/crypto";
+import { concat } from "../bytes/concat.ts";
+import { crypto } from "../crypto/crypto.ts";
 import { validate as validateCommon } from "./common.ts";
 
 const UUID_REGEXP =
@@ -19,8 +19,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "@flareosaur/uuid/v3";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { validate } from "@mikepage/flareosaur/uuid/v3";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(validate("22fe6191-c161-3d86-a432-a81f343eda08"));
  * assertFalse(validate("this-is-not-a-uuid"));
@@ -43,9 +43,9 @@ export function validate(id: string): boolean {
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_URL } from "@flareosaur/uuid/constants";
- * import { generate, validate } from "@flareosaur/uuid/v3";
- * import { assert } from "@flareosaur/assert";
+ * import { NAMESPACE_URL } from "@mikepage/flareosaur/uuid/constants";
+ * import { generate, validate } from "@mikepage/flareosaur/uuid/v3";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const data = new TextEncoder().encode("python.org");
  * const uuid = await generate(NAMESPACE_URL, data);

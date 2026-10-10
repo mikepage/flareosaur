@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert } from "@flareosaur/assert";
+import { assert } from "../assert/mod.ts";
 import { isLeap, isUtcLeap } from "./is_leap.ts";
 
 Deno.test({

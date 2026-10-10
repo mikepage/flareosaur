@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assert, assertThrows } from "@flareosaur/assert";
+import { assert, assertThrows } from "../assert/mod.ts";
 import { timingSafeEqual } from "./timing_safe_equal.ts";
 
 Deno.test({

@@ -15,8 +15,8 @@ import { resolve } from "./resolve.ts";
  *
  * @example Usage
  * ```ts
- * import { toNamespacedPath } from "@flareosaur/path/windows/to-namespaced-path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toNamespacedPath } from "@mikepage/flareosaur/path/windows/to-namespaced-path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const namespaced = toNamespacedPath("C:\\foo\\bar");
  * assertEquals(namespaced, "\\\\?\\C:\\foo\\bar");

@@ -13,8 +13,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { joinGlobs } from "@flareosaur/path/posix/join-globs";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { joinGlobs } from "@mikepage/flareosaur/path/posix/join-globs";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const path = joinGlobs(["foo", "bar", "**"], { globstar: true });
  * assertEquals(path, "foo/bar/**");

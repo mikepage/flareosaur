@@ -15,8 +15,8 @@ import { diff } from "./diff.ts";
  *
  * @example Usage
  * ```ts
- * import { unescape } from "@flareosaur/internal/diff-str";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { unescape } from "@mikepage/flareosaur/internal/diff-str";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(unescape("Hello\nWorld"), "Hello\\n\nWorld");
  * ```
@@ -48,8 +48,8 @@ const WHITESPACE_SYMBOLS_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { tokenize } from "@flareosaur/internal/diff-str";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { tokenize } from "@mikepage/flareosaur/internal/diff-str";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(tokenize("Hello\nWorld"), ["Hello\n", "World"]);
  * ```
@@ -84,8 +84,8 @@ export function tokenize(string: string, wordDiff = false): string[] {
  *
  * @example Usage
  * ```ts
- * import { createDetails } from "@flareosaur/internal/diff-str";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { createDetails } from "@mikepage/flareosaur/internal/diff-str";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const tokens = [
  *   { type: "added", value: "a" },
@@ -131,8 +131,8 @@ const NON_WHITESPACE_REGEXP = /\S/;
  *
  * @example Usage
  * ```ts
- * import { diffStr } from "@flareosaur/internal/diff-str";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { diffStr } from "@mikepage/flareosaur/internal/diff-str";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(diffStr("Hello!", "Hello"), [
  *   {

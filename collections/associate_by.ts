@@ -18,8 +18,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { associateBy } from "@flareosaur/collections/associate-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { associateBy } from "@mikepage/flareosaur/collections/associate-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const users = [
  *   { id: "a2e", userName: "Anna" },

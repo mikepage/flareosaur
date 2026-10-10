@@ -8,8 +8,8 @@ import { assertArg } from "../_common/from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { fromFileUrl } from "@flareosaur/path/posix/from-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { fromFileUrl } from "@mikepage/flareosaur/path/posix/from-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(fromFileUrl(new URL("file:///home/foo")), "/home/foo");
  * ```

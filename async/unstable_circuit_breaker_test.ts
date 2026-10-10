@@ -6,8 +6,8 @@ import {
   assertInstanceOf,
   assertRejects,
   assertThrows,
-} from "@flareosaur/assert";
-import { FakeTime } from "@flareosaur/testing/time";
+} from "../assert/mod.ts";
+import { FakeTime } from "../testing/time.ts";
 import {
   CircuitBreaker,
   CircuitBreakerOpenError,

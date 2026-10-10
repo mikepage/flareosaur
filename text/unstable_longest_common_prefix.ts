@@ -11,8 +11,8 @@
  *
  * @example Usage
  * ```ts
- * import { longestCommonPrefix } from "@flareosaur/text/unstable-longest-common-prefix";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { longestCommonPrefix } from "@mikepage/flareosaur/text/unstable-longest-common-prefix";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(longestCommonPrefix(["flower", "flow", "flight"]), "fl");
  * ```

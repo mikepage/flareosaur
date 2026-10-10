@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { format as posixFormat } from "./posix/format.ts";
 import { format as windowsFormat } from "./windows/format.ts";
 import type { ParsedPath } from "./types.ts";
@@ -12,8 +12,8 @@ import type { ParsedPath } from "./types.ts";
  *
  * @example Usage
  * ```ts
- * import { format } from "@flareosaur/path/format";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/path/format";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(format({ dir: "C:\\path\\to", base: "script.ts" }), "C:\\path\\to\\script.ts");

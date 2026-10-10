@@ -14,8 +14,8 @@ export type { GlobOptions };
  * @example Usage
  *
  * ```ts
- * import { joinGlobs } from "@flareosaur/path/windows/join-globs";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { joinGlobs } from "@mikepage/flareosaur/path/windows/join-globs";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const joined = joinGlobs(["foo", "**", "bar"], { globstar: true });
  * assertEquals(joined, "foo\\**\\bar");

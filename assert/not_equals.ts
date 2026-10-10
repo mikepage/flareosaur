@@ -3,7 +3,7 @@
 
 import { equal } from "./equal.ts";
 import { AssertionError } from "./assertion_error.ts";
-import { format } from "@flareosaur/internal/format";
+import { format } from "../internal/format.ts";
 
 /**
  * Make an assertion that `actual` and `expected` are not equal, deeply.
@@ -19,7 +19,7 @@ import { format } from "@flareosaur/internal/format";
  *
  * @example Usage
  * ```ts ignore
- * import { assertNotEquals } from "@flareosaur/assert";
+ * import { assertNotEquals } from "@mikepage/flareosaur/assert";
  *
  * assertNotEquals(1, 2); // Doesn't throw
  * assertNotEquals(1, 1); // Throws

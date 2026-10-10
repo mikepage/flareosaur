@@ -14,7 +14,7 @@
  * @module
  */
 
-import { encodeBase64 as base64Encode } from "@flareosaur/encoding/base64";
+import { encodeBase64 as base64Encode } from "../encoding/base64.ts";
 
 /**
  * Just the part of {@linkcode Deno.FileInfo} that is required to calculate an `ETag`,
@@ -100,8 +100,8 @@ async function calcFileInfo(
  *
  * @example Usage
  * ```ts
- * import { eTag } from "@flareosaur/http/etag";
- * import { assert } from "@flareosaur/assert";
+ * import { eTag } from "@mikepage/flareosaur/http/etag";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const body = "hello deno!";
  *
@@ -127,8 +127,8 @@ export async function eTag(
  *
  * @example Usage
  * ```ts
- * import { eTag } from "@flareosaur/http/etag";
- * import { assert } from "@flareosaur/assert";
+ * import { eTag } from "@mikepage/flareosaur/http/etag";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const fileInfo = await Deno.stat("README.md");
  *
@@ -180,8 +180,8 @@ const COMMA_REGEXP = /\s*,\s*/;
  * import {
  *   eTag,
  *   ifMatch,
- * } from "@flareosaur/http/etag";
- * import { assert } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/http/etag";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const body = "hello deno!";
  *
@@ -228,8 +228,8 @@ export function ifMatch(
  * import {
  *   eTag,
  *   ifNoneMatch,
- * } from "@flareosaur/http/etag";
- * import { assert } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/http/etag";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const body = "hello deno!";
  *

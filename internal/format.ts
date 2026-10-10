@@ -27,8 +27,8 @@ export type InspectFn = (
  *
  * @example Usage
  * ```ts
- * import { format } from "@flareosaur/internal/format";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/internal/format";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format({ a: 1, b: 2 }), "{\n  a: 1,\n  b: 2,\n}");
  * assertEquals(format(new Set([1, 2])), "Set(2) {\n  1,\n  2,\n}");

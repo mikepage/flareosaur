@@ -10,8 +10,8 @@
  * package and {@link https://lodash.com/ | Lodash}.
  *
  * ```ts
- * import { intersect, sample, pick } from "@flareosaur/collections";
- * import { assertEquals, assertArrayIncludes } from "@flareosaur/assert";
+ * import { intersect, sample, pick } from "@mikepage/flareosaur/collections";
+ * import { assertEquals, assertArrayIncludes } from "@mikepage/flareosaur/assert";
  *
  * const lisaInterests = ["Cooking", "Music", "Hiking"];
  * const kimInterests = ["Music", "Tennis", "Cooking"];

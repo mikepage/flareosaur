@@ -6,7 +6,7 @@ import {
   assertExists,
   assertFalse,
   assertThrows,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import { Semaphore } from "./unstable_semaphore.ts";
 
 /** Helper to assert that a promise is blocked until released */

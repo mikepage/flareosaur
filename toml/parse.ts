@@ -8,8 +8,8 @@ import { parserFactory, toml } from "./_parser.ts";
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/toml/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/toml/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const tomlString = `title = "TOML Example"
  * [owner]

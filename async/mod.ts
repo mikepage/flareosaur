@@ -7,7 +7,7 @@
  * {@linkcode pooledMap}.
  *
  * ```ts no-assert
- * import { delay } from "@flareosaur/async/delay";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
  *
  * await delay(100); // waits for 100 milliseconds
  * ```

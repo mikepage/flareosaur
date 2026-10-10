@@ -100,8 +100,8 @@ export type StringifyOptions = {
  *
  * @example Usage
  * ```ts
- * import { stringify } from "@flareosaur/yaml/stringify";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { stringify } from "@mikepage/flareosaur/yaml/stringify";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const data = { id: 1, name: "Alice" };
  * const yaml = stringify(data);

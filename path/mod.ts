@@ -16,8 +16,8 @@
  * ## Basic Path Operations
  *
  * ```ts
- * import * as path from "@flareosaur/path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import * as path from "@mikepage/flareosaur/path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Get components of a path
  * if (Deno.build.os === "windows") {
@@ -68,8 +68,8 @@
  * ## Path Parsing and Formatting
  *
  * ```ts
- * import * as path from "@flareosaur/path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import * as path from "@mikepage/flareosaur/path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   const parsedWindows = path.parse("C:\\Users\\user\\file.txt");
@@ -103,8 +103,8 @@
  * ## URL Conversion
  *
  * ```ts
- * import * as path from "@flareosaur/path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import * as path from "@mikepage/flareosaur/path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Convert between file URLs and paths
  * if (Deno.build.os === "windows") {
@@ -119,8 +119,8 @@
  * ## Path Properties
  *
  * ```ts
- * import * as path from "@flareosaur/path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import * as path from "@mikepage/flareosaur/path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Check if path is absolute
  * if (Deno.build.os === "windows") {
@@ -147,8 +147,8 @@
  * ## Glob Pattern Utilities
  *
  * ```ts
- * import * as path from "@flareosaur/path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import * as path from "@mikepage/flareosaur/path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Check if a string is a glob pattern
  * assertEquals(path.isGlob("*.txt"), true);
@@ -175,8 +175,8 @@
  * For POSIX-specific functions:
  *
  * ```ts
- * import { fromFileUrl } from "@flareosaur/path/posix/from-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { fromFileUrl } from "@mikepage/flareosaur/path/posix/from-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(fromFileUrl("file:///home/foo"), "/home/foo");
  * ```
@@ -184,14 +184,14 @@
  * For Windows-specific functions:
  *
  * ```ts
- * import { fromFileUrl } from "@flareosaur/path/windows/from-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { fromFileUrl } from "@mikepage/flareosaur/path/windows/from-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(fromFileUrl("file:///home/foo"), "\\home\\foo");
  * ```
  *
  * Functions for working with URLs can be found in
- * {@link ./doc/posix/~ | @flareosaur/path/posix}.
+ * {@link ./doc/posix/~ | @mikepage/flareosaur/path/posix}.
  *
  * @module
  */

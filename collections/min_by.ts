@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { minBy } from "@flareosaur/collections/min-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minBy } from "@mikepage/flareosaur/collections/min-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", age: 34 },
@@ -32,8 +32,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { minBy } from "@flareosaur/collections/min-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minBy } from "@mikepage/flareosaur/collections/min-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [4, 3, 2, 1];
  * const result = minBy(array, (_, index) => index);
@@ -60,8 +60,8 @@ export function minBy<T>(
  *
  * @example Basic usage
  * ```ts
- * import { minBy } from "@flareosaur/collections/min-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minBy } from "@mikepage/flareosaur/collections/min-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna" },
@@ -93,8 +93,8 @@ export function minBy<T>(
  *
  * @example Basic usage
  * ```ts
- * import { minBy } from "@flareosaur/collections/min-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minBy } from "@mikepage/flareosaur/collections/min-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", age: 34n },
@@ -126,8 +126,8 @@ export function minBy<T>(
  *
  * @example Basic usage
  * ```ts
- * import { minBy } from "@flareosaur/collections/min-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minBy } from "@mikepage/flareosaur/collections/min-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", startedAt: new Date("2020-01-01") },

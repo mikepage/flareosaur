@@ -20,8 +20,8 @@ function isBlankSpace(str: string) {
  * @example Basic usage
  *
  * ```ts
- * import { JsonParseStream } from "@flareosaur/json/parse-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { JsonParseStream } from "@mikepage/flareosaur/json/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   `{"foo":"bar"}\n`,
@@ -36,9 +36,9 @@ function isBlankSpace(str: string) {
  *
  * @example parse JSON lines or NDJSON from a file
  * ```ts
- * import { TextLineStream } from "@flareosaur/streams/text-line-stream";
- * import { JsonParseStream } from "@flareosaur/json/parse-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { TextLineStream } from "@mikepage/flareosaur/streams/text-line-stream";
+ * import { JsonParseStream } from "@mikepage/flareosaur/json/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const file = await Deno.open("json/testdata/test.jsonl");
  *

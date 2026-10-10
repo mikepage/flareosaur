@@ -7,7 +7,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { unimplemented } from "@flareosaur/assert";
+ * import { unimplemented } from "@mikepage/flareosaur/assert";
  *
  * unimplemented(); // Throws
  * ```

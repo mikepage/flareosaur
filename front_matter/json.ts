@@ -13,8 +13,8 @@ export type { Extract };
  *
  * @example Extract JSON front matter
  * ```ts
- * import { extract } from "@flareosaur/front-matter/json";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extract } from "@mikepage/flareosaur/front-matter/json";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const output = `---json
  * { "title": "Three dashes marks the spot" }

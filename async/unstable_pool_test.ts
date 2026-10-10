@@ -7,9 +7,9 @@ import {
   assertRejects,
   assertStringIncludes,
   assertThrows,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import { delay } from "./delay.ts";
-import { FakeTime } from "@flareosaur/testing/time";
+import { FakeTime } from "../testing/time.ts";
 
 Deno.test("pooledMap() throws for invalid poolLimit", () => {
   const noop = (i: number) => Promise.resolve(i);

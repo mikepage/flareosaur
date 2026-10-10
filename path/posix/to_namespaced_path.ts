@@ -6,8 +6,8 @@
  *
  * @example Usage
  * ```ts
- * import { toNamespacedPath } from "@flareosaur/path/posix/to-namespaced-path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toNamespacedPath } from "@mikepage/flareosaur/path/posix/to-namespaced-path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(toNamespacedPath("/home/foo"), "/home/foo");
  * ```

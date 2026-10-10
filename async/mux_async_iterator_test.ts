@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertRejects } from "@flareosaur/assert";
+import { assertEquals, assertRejects } from "../assert/mod.ts";
 import { MuxAsyncIterator } from "./mux_async_iterator.ts";
 
 async function* gen123(): AsyncIterableIterator<number> {

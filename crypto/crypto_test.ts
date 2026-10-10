@@ -7,15 +7,15 @@ import {
   assertRejects,
   assertThrows,
   fail,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import {
   crypto as stdCrypto,
   DIGEST_ALGORITHM_NAMES,
   type DigestAlgorithmName,
 } from "./mod.ts";
-import { repeat } from "@flareosaur/bytes/repeat";
-import { encodeHex } from "@flareosaur/encoding/hex";
-import { partition } from "@flareosaur/collections/partition";
+import { repeat } from "../bytes/repeat.ts";
+import { encodeHex } from "../encoding/hex.ts";
+import { partition } from "../collections/partition.ts";
 
 const webCrypto = globalThis.crypto;
 

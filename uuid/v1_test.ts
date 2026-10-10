@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert, assertEquals, assertThrows } from "@flareosaur/assert";
+import { assert, assertEquals, assertThrows } from "../assert/mod.ts";
 import { generate, validate } from "./v1.ts";
 
 Deno.test("validate() checks if a string is a valid v1 UUID", () => {

@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertStringIncludes } from "@flareosaur/assert";
+import { assertEquals, assertStringIncludes } from "../assert/mod.ts";
 import { AssertionState } from "./assertion_state.ts";
 import { stripAnsiCode } from "./styles.ts";
 
@@ -46,7 +46,7 @@ Deno.test({
       args: [
         "eval",
         `
-          import { AssertionState } from "@flareosaur/internal/assertion-state";
+          import { AssertionState } from "./assertion_state.ts";
           const assertionState = new AssertionState();
           assertionState.setAssertionCount(0);
         `,

@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { toNamespacedPath as posixToNamespacedPath } from "./posix/to_namespaced_path.ts";
 import { toNamespacedPath as windowsToNamespacedPath } from "./windows/to_namespaced_path.ts";
 
@@ -11,8 +11,8 @@ import { toNamespacedPath as windowsToNamespacedPath } from "./windows/to_namesp
  *
  * @example Usage
  * ```ts
- * import { toNamespacedPath } from "@flareosaur/path/to-namespaced-path";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toNamespacedPath } from "@mikepage/flareosaur/path/to-namespaced-path";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(toNamespacedPath("C:\\foo\\bar"), "\\\\?\\C:\\foo\\bar");

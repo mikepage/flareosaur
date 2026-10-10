@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { minWith } from "@flareosaur/collections/min-with";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { minWith } from "@mikepage/flareosaur/collections/min-with";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = ["Kim", "Anna", "John"];
  * const smallestName = minWith(people, (a, b) => a.length - b.length);

@@ -12,8 +12,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { union } from "@flareosaur/collections/union";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { union } from "@mikepage/flareosaur/collections/union";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const soupIngredients = ["Pepper", "Carrots", "Leek"];
  * const saladIngredients = ["Carrots", "Radicchio", "Pepper"];

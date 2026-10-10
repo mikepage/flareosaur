@@ -10,8 +10,8 @@ import { normalize } from "./normalize.ts";
  *
  * @example Usage
  * ```ts
- * import { join } from "@flareosaur/path/posix/join";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { join } from "@mikepage/flareosaur/path/posix/join";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(join("/foo", "bar", "baz/asdf", "quux", ".."), "/foo/bar/baz/asdf");
  * assertEquals(join(new URL("file:///foo"), "bar", "baz/asdf", "quux", ".."), "/foo/bar/baz/asdf");
@@ -19,8 +19,8 @@ import { normalize } from "./normalize.ts";
  *
  * @example Working with URLs
  * ```ts
- * import { join } from "@flareosaur/path/posix/join";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { join } from "@mikepage/flareosaur/path/posix/join";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const url = new URL("https://deno.land");
  * url.pathname = join("std", "path", "mod.ts");

@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertRejects } from "@flareosaur/assert";
+import { assertEquals, assertRejects } from "../assert/mod.ts";
 import { zipReadableStreams } from "./zip_readable_streams.ts";
 
 Deno.test("zipReadableStreams()", async () => {

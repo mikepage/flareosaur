@@ -13,8 +13,8 @@
  * ### JSON
  *
  * ```ts
- * import { test, extractJson } from "@flareosaur/front-matter";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { test, extractJson } from "@mikepage/flareosaur/front-matter";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const str = "---json\n{\"and\": \"this\"}\n---\ndeno is awesome";
  *
@@ -46,8 +46,8 @@
  * ### TOML
  *
  * ```ts
- * import { test, extractToml } from "@flareosaur/front-matter";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { test, extractToml } from "@mikepage/flareosaur/front-matter";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const str = "---toml\nmodule = 'front_matter'\n---\ndeno is awesome";
  *
@@ -85,8 +85,8 @@
  * ### YAML
  *
  * ```ts
- * import { test, extractYaml } from "@flareosaur/front-matter";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { test, extractYaml } from "@mikepage/flareosaur/front-matter";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const str = "---yaml\nmodule: front_matter\n---\ndeno is awesome";
  *

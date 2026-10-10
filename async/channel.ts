@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { Deque } from "@flareosaur/data-structures/deque";
+import { Deque } from "../data_structures/deque.ts";
 
 const RESOLVED: Promise<void> = Promise.resolve();
 
@@ -32,8 +32,8 @@ interface ReceiverNode<T> {
  *
  * @example Usage
  * ```ts
- * import { Channel, ChannelClosedError } from "@flareosaur/async/channel";
- * import { assertInstanceOf } from "@flareosaur/assert";
+ * import { Channel, ChannelClosedError } from "@mikepage/flareosaur/async/channel";
+ * import { assertInstanceOf } from "@mikepage/flareosaur/assert";
  *
  * const ch = new Channel<number>();
  * ch.close();
@@ -51,8 +51,8 @@ export class ChannelClosedError extends Error {
    *
    * @example Usage
    * ```ts
-   * import { Channel, ChannelClosedError } from "@flareosaur/async/channel";
-   * import { assertEquals, assertInstanceOf } from "@flareosaur/assert";
+   * import { Channel, ChannelClosedError } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals, assertInstanceOf } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * ch.close();
@@ -167,8 +167,8 @@ export interface ChannelReceiveOptions {
  *
  * @example Basic producer/consumer
  * ```ts
- * import { Channel } from "@flareosaur/async/channel";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { Channel } from "@mikepage/flareosaur/async/channel";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const ch = new Channel<number>({ capacity: 4 });
  *
@@ -185,8 +185,8 @@ export interface ChannelReceiveOptions {
  *
  * @example Using `await using` for automatic cleanup
  * ```ts
- * import { Channel } from "@flareosaur/async/channel";
- * import { assert } from "@flareosaur/assert";
+ * import { Channel } from "@mikepage/flareosaur/async/channel";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * let ref: Channel<string>;
  * {
@@ -239,8 +239,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -250,8 +250,8 @@ export class Channel<T>
    *
    * @example Cancelling with an AbortSignal
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertRejects } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertRejects } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * const controller = new AbortController();
@@ -317,8 +317,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -328,8 +328,8 @@ export class Channel<T>
    *
    * @example Cancelling with an AbortSignal
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertRejects } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertRejects } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * const controller = new AbortController();
@@ -395,8 +395,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assert, assertFalse } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * assert(ch.trySend(1));
@@ -423,8 +423,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -455,8 +455,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assert } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assert } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * ch.close();
@@ -473,8 +473,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertRejects } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertRejects } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * ch.close(new Error("upstream failure"));
@@ -513,8 +513,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assert, assertFalse } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * assertFalse(ch.closed);
@@ -534,8 +534,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -555,8 +555,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 8 });
    * assertEquals(ch.capacity, 8);
@@ -574,8 +574,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -619,8 +619,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -658,8 +658,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assert } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assert } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * ch[Symbol.dispose]();
@@ -676,8 +676,8 @@ export class Channel<T>
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "@flareosaur/async/channel";
-   * import { assert } from "@flareosaur/assert";
+   * import { Channel } from "@mikepage/flareosaur/async/channel";
+   * import { assert } from "@mikepage/flareosaur/assert";
    *
    * const ch = new Channel<number>();
    * await ch[Symbol.asyncDispose]();

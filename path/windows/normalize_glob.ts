@@ -12,8 +12,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { normalizeGlob } from "@flareosaur/path/windows/normalize-glob";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { normalizeGlob } from "@mikepage/flareosaur/path/windows/normalize-glob";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const normalized = normalizeGlob("**\\foo\\..\\bar", { globstar: true });
  * assertEquals(normalized, "**\\bar");

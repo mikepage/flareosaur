@@ -11,8 +11,8 @@
  * A utility for displaying file sizes for humans.
  *
  * ```ts
- * import { format } from "@flareosaur/fmt/bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(1337), "1.34 kB");
  * assertEquals(format(100), "100 B");
@@ -75,8 +75,8 @@ export interface FormatOptions {
  *
  * @example Basic usage
  * ```ts
- * import { format } from "@flareosaur/fmt/bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(1337), "1.34 kB");
  * assertEquals(format(100), "100 B");
@@ -85,8 +85,8 @@ export interface FormatOptions {
  * @example Include bits representation
  *
  * ```ts
- * import { format } from "@flareosaur/fmt/bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(1337, { bits: true }), "1.34 kbit");
  * ```
@@ -94,8 +94,8 @@ export interface FormatOptions {
  * @example Include sign
  *
  * ```ts
- * import { format } from "@flareosaur/fmt/bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(42, { signed: true }), "+42 B");
  * assertEquals(format(-42, { signed: true }), "-42 B");
@@ -104,8 +104,8 @@ export interface FormatOptions {
  * @example Change locale
  *
  * ```ts
- * import { format } from "@flareosaur/fmt/bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(1337, { locale: "de" }), "1,34 kB");
  * ```

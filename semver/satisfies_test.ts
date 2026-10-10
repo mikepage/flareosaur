@@ -1,6 +1,6 @@
 // Copyright Isaac Z. Schlueter and Contributors. All rights reserved. ISC license.
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert } from "@flareosaur/assert";
+import { assert } from "../assert/mod.ts";
 import { parse } from "./parse.ts";
 import { parseRange } from "./parse_range.ts";
 import { satisfies } from "./satisfies.ts";

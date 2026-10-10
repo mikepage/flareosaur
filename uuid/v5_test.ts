@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert, assertEquals, assertRejects } from "@flareosaur/assert";
+import { assert, assertEquals, assertRejects } from "../assert/mod.ts";
 import { generate, validate } from "./v5.ts";
 
 const NAMESPACE = "1b671a64-40d5-491e-99b0-da01ff1f3341";

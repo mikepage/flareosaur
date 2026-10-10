@@ -7,8 +7,8 @@
  * smaller values requiring fewer bytes.
  *
  * ```ts
- * import { encodeVarint, decodeVarint } from "@flareosaur/encoding/varint";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeVarint, decodeVarint } from "@mikepage/flareosaur/encoding/varint";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const buf = new Uint8Array(10);
  * assertEquals(
@@ -76,8 +76,8 @@ const U64_VIEW = new BigUint64Array(AB);
  *
  * @example Usage
  * ```ts
- * import { decodeVarint } from "@flareosaur/encoding/varint";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeVarint } from "@mikepage/flareosaur/encoding/varint";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const buf = new Uint8Array([0x8E, 0x02]);
  * assertEquals(decodeVarint(buf), [270n, 2]);
@@ -164,8 +164,8 @@ export function decodeVarint(buf: Uint8Array, offset = 0): [bigint, number] {
  *
  * @example Usage
  * ```ts
- * import { decodeVarint32 } from "@flareosaur/encoding/varint";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeVarint32 } from "@mikepage/flareosaur/encoding/varint";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const buf = new Uint8Array([0x8E, 0x02]);
  * assertEquals(decodeVarint32(buf), [270, 2]);
@@ -208,8 +208,8 @@ export function decodeVarint32(buf: Uint8Array, offset = 0): [number, number] {
  *
  * @example Usage
  * ```ts
- * import { encodeVarint } from "@flareosaur/encoding/varint";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeVarint } from "@mikepage/flareosaur/encoding/varint";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const buf = new Uint8Array(10);
  * assertEquals(encodeVarint(42n, buf), [new Uint8Array([42]), 1]);

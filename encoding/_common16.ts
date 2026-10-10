@@ -19,8 +19,8 @@ new TextEncoder()
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { calcSizeHex } from "@flareosaur/encoding/unstable-hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { calcSizeHex } from "@mikepage/flareosaur/encoding/unstable-hex";
  *
  * assertEquals(calcSizeHex(1), 2);
  * ```

@@ -2,8 +2,8 @@
 // Copyright 2023 Yoshiya Hinosawa. All rights reserved. MIT license.
 // Copyright 2017 Alizain Feerasta. All rights reserved. MIT license.
 
-import { FakeTime } from "@flareosaur/testing/time";
-import { assertEquals, assertStrictEquals, assertThrows } from "@flareosaur/assert";
+import { FakeTime } from "../testing/time.ts";
+import { assertEquals, assertStrictEquals, assertThrows } from "../assert/mod.ts";
 
 import { decodeTime, monotonicUlid, ulid } from "./mod.ts";
 import {

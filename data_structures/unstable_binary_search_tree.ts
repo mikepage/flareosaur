@@ -35,8 +35,8 @@ const {
  *   BinarySearchTree,
  *   ascend,
  *   descend,
- * } from "@flareosaur/data-structures";
- * import { assertEquals } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/data-structures";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const values = [3, 10, 13, 4, 6, 7, 1, 14];
  * const tree = new BinarySearchTree<number>();
@@ -120,14 +120,14 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Creating a binary search tree from an array like
    * ```ts no-assert
-   * import { BinarySearchTree } from "@flareosaur/data-structures";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
    *
    * const tree = BinarySearchTree.from<number>([42, 43, 41]);
    * ```
    *
    * @example Creating a binary search tree from an iterable object
    * ```ts no-assert
-   * import { BinarySearchTree } from "@flareosaur/data-structures";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
    *
    * const tree = BinarySearchTree.from<number>((function*() {
    *   yield 42;
@@ -138,7 +138,7 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Creating a binary search tree from an existing binary search tree
    * ```ts no-assert
-   * import { BinarySearchTree } from "@flareosaur/data-structures";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
    *
    * const tree = BinarySearchTree.from<number>([42, 43, 41]);
    * const copy = BinarySearchTree.from(tree);
@@ -146,7 +146,7 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Creating a binary search tree from an array like with a custom comparison function
    * ```ts no-assert
-   * import { BinarySearchTree, descend } from "@flareosaur/data-structures";
+   * import { BinarySearchTree, descend } from "@mikepage/flareosaur/data-structures";
    *
    * const tree = BinarySearchTree.from<number>(
    *   [42, 43, 41],
@@ -182,7 +182,7 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Creating a binary search tree from an array like with a custom mapping function
    * ```ts no-assert
-   * import { BinarySearchTree } from "@flareosaur/data-structures";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
    *
    * const tree = BinarySearchTree.from<number, string>(
    *   [42, 43, 41],
@@ -282,8 +282,8 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Finding values in the tree
    * ```ts
-   * import { BinarySearchTree } from "@flareosaur/data-structures/unstable-binary-search-tree";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures/unstable-binary-search-tree";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const tree = BinarySearchTree.from<number>([42]);
    *
@@ -309,8 +309,8 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Finding values in the tree
    * ```ts
-   * import { BinarySearchTree } from "@flareosaur/data-structures/unstable-binary-search-tree";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures/unstable-binary-search-tree";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const tree = BinarySearchTree.from<number>([42]);
    *
@@ -336,8 +336,8 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Finding values in the tree
    * ```ts
-   * import { BinarySearchTree } from "@flareosaur/data-structures/unstable-binary-search-tree";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures/unstable-binary-search-tree";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const tree = BinarySearchTree.from<number>([42]);
    *
@@ -363,8 +363,8 @@ export class BinarySearchTree<T> extends StableBinarySearchTree<T> {
    *
    * @example Finding values in the tree
    * ```ts
-   * import { BinarySearchTree } from "@flareosaur/data-structures/unstable-binary-search-tree";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures/unstable-binary-search-tree";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const tree = BinarySearchTree.from<number>([42]);
    *

@@ -140,7 +140,7 @@ export const DEFAULT_SCHEMA = createSchema({
  *
  * @example
  * ```ts
- * import { parse } from "@flareosaur/yaml";
+ * import { parse } from "@mikepage/flareosaur/yaml";
  *
  * const data = parse(
  *   `

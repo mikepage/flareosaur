@@ -23,8 +23,8 @@ const Day = {
  *
  * @example Basic usage
  * ```ts
- * import { weekOfYear } from "@flareosaur/datetime/week-of-year";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { weekOfYear } from "@mikepage/flareosaur/datetime/week-of-year";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(weekOfYear(new Date("2020-12-28T03:24:00")), 53);
  *

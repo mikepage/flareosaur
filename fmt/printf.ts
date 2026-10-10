@@ -5,8 +5,8 @@
  * stdout.
  *
  * ```ts
- * import { sprintf } from "@flareosaur/fmt/printf";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sprintf } from "@mikepage/flareosaur/fmt/printf";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(sprintf("%d", 9), "9");
  * assertEquals(sprintf("%o", 9), "11");
@@ -162,7 +162,7 @@
  */
 
 import { stripAnsiCode } from "./colors.ts";
-import { inspect as fallbackInspect } from "@flareosaur/internal/inspect";
+import { inspect as fallbackInspect } from "../internal/inspect.ts";
 
 // deno-lint-ignore no-explicit-any
 const { Deno } = globalThis as any;
@@ -975,8 +975,8 @@ class Printf {
  *
  * @example Usage
  * ```ts
- * import { sprintf } from "@flareosaur/fmt/printf";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sprintf } from "@mikepage/flareosaur/fmt/printf";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(sprintf("%d", 9), "9");
  *
@@ -1007,7 +1007,7 @@ export function sprintf(format: string, ...args: unknown[]): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { printf } from "@flareosaur/fmt/printf";
+ * import { printf } from "@mikepage/flareosaur/fmt/printf";
  *
  * printf("%d", 9); // Prints "9"
  *

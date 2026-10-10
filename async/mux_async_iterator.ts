@@ -14,8 +14,8 @@ interface TaggedYieldedValue<T> {
  *
  * @example Usage
  * ```ts
- * import { MuxAsyncIterator } from "@flareosaur/async/mux-async-iterator";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { MuxAsyncIterator } from "@mikepage/flareosaur/async/mux-async-iterator";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * async function* gen123(): AsyncIterableIterator<number> {
  *   yield 1;
@@ -54,8 +54,8 @@ export class MuxAsyncIterator<T> implements AsyncIterable<T> {
    *
    * @example Usage
    * ```ts
-   * import { MuxAsyncIterator } from "@flareosaur/async/mux-async-iterator";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { MuxAsyncIterator } from "@mikepage/flareosaur/async/mux-async-iterator";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * async function* gen123(): AsyncIterableIterator<number> {
    *   yield 1;
@@ -98,8 +98,8 @@ export class MuxAsyncIterator<T> implements AsyncIterable<T> {
    *
    * @example Usage
    * ```ts
-   * import { MuxAsyncIterator } from "@flareosaur/async/mux-async-iterator";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { MuxAsyncIterator } from "@mikepage/flareosaur/async/mux-async-iterator";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * async function* gen123(): AsyncIterableIterator<number> {
    *   yield 1;
@@ -143,8 +143,8 @@ export class MuxAsyncIterator<T> implements AsyncIterable<T> {
    *
    * @example Usage
    * ```ts
-   * import { MuxAsyncIterator } from "@flareosaur/async/mux-async-iterator";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { MuxAsyncIterator } from "@mikepage/flareosaur/async/mux-async-iterator";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * async function* gen123(): AsyncIterableIterator<number> {
    *   yield 1;

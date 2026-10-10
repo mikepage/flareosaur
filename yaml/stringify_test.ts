@@ -3,13 +3,13 @@
 // Copyright 2011-2015 by Vitaly Puzrin. All rights reserved. MIT license.
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
 import { stringify } from "./stringify.ts";
 import {
   type ImplicitType,
   stringify as unstableStringify,
 } from "./unstable_stringify.ts";
-import { compare, parse } from "@flareosaur/semver";
+import { compare, parse } from "../semver/mod.ts";
 
 Deno.test({
   name: "stringify()",

@@ -13,8 +13,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { chunk } from "@flareosaur/collections/chunk";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { chunk } from "@mikepage/flareosaur/collections/chunk";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const words = [
  *   "lorem",

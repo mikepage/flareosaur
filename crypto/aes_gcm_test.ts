@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertNotEquals, assertRejects } from "@flareosaur/assert";
+import { assertEquals, assertNotEquals, assertRejects } from "../assert/mod.ts";
 import { decryptAesGcm, encryptAesGcm } from "./aes_gcm.ts";
 
 const encoder = new TextEncoder();

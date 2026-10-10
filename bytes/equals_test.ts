@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { equals } from "./equals.ts";
-import { assert, assertEquals, assertNotEquals } from "@flareosaur/assert";
+import { assert, assertEquals, assertNotEquals } from "../assert/mod.ts";
 
 Deno.test("equals()", async (t) => {
   await t.step("`true` where `a` and `b` are identical", () => {

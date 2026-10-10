@@ -58,9 +58,9 @@ export interface TtlCacheOptions<K, V> {
  * @typeParam V The type of the cache values.
  * @example Usage
  * ```ts
- * import { TtlCache } from "@flareosaur/cache/ttl-cache";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { delay } from "@flareosaur/async/delay";
+ * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
  *
  * const cache = new TtlCache<string, number>(1000);
  *
@@ -72,9 +72,9 @@ export interface TtlCacheOptions<K, V> {
  *
  * @example Sliding expiration
  * ```ts
- * import { TtlCache } from "@flareosaur/cache/ttl-cache";
- * import { assertEquals } from "@flareosaur/assert/equals";
- * import { FakeTime } from "@flareosaur/testing/time";
+ * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+ * import { FakeTime } from "@mikepage/flareosaur/testing/time";
  *
  * using time = new FakeTime(0);
  * const cache = new TtlCache<string, number>(100, {
@@ -140,9 +140,9 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts
-   * import { TtlCache } from "@flareosaur/cache/ttl-cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
-   * import { delay } from "@flareosaur/async/delay";
+   * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+   * import { delay } from "@mikepage/flareosaur/async/delay";
    *
    * const cache = new TtlCache<string, number>(100);
    *
@@ -209,8 +209,8 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts
-   * import { TtlCache } from "@flareosaur/cache/ttl-cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * using cache = new TtlCache<string, number>(1000);
    *
@@ -239,9 +239,9 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Peeking at a value without resetting the sliding TTL
    * ```ts
-   * import { TtlCache } from "@flareosaur/cache/ttl-cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
-   * import { FakeTime } from "@flareosaur/testing/time";
+   * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
    *
    * using time = new FakeTime(0);
    * const cache = new TtlCache<string, number>(100, {
@@ -274,8 +274,8 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts
-   * import { TtlCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { TtlCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const cache = new TtlCache<string, number>(1000);
    *
@@ -305,8 +305,8 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts
-   * import { TtlCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { TtlCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const cache = new TtlCache<string, number>(1000);
    *
@@ -344,8 +344,8 @@ export class TtlCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts no-assert
-   * import { TtlCache } from "@flareosaur/cache/ttl-cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { TtlCache } from "@mikepage/flareosaur/cache/ttl-cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * let c: TtlCache<string, number>;
    * {

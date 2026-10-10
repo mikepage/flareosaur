@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert/equals";
+import { assertEquals } from "../assert/equals.ts";
 import { consolidateCommon, truncateDiff } from "./truncate_build_message.ts";
-import type { CommonDiffResult } from "@flareosaur/internal/types";
+import type { CommonDiffResult } from "./types.ts";
 
 Deno.test("consolidateDiff()", () => {
   assertEquals(

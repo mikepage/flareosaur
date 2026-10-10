@@ -14,9 +14,9 @@ import type { DiffResult, DiffType } from "./types.ts";
  *
  * @example Usage
  * ```ts
- * import { createColor } from "@flareosaur/internal";
- * import { assertEquals } from "@flareosaur/assert";
- * import { bold, green, red, white } from "@flareosaur/fmt/colors";
+ * import { createColor } from "@mikepage/flareosaur/internal";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { bold, green, red, white } from "@mikepage/flareosaur/fmt/colors";
  *
  * assertEquals(createColor("added")("foo"), green(bold("foo")));
  * assertEquals(createColor("removed")("foo"), red(bold("foo")));
@@ -52,8 +52,8 @@ export function createColor(
  *
  * @example Usage
  * ```ts
- * import { createSign } from "@flareosaur/internal";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { createSign } from "@mikepage/flareosaur/internal";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(createSign("added"), "+   ");
  * assertEquals(createSign("removed"), "-   ");
@@ -91,7 +91,7 @@ export interface BuildMessageOptions {
  *
  * @example Usage
  * ```ts no-assert
- * import { diffStr, buildMessage } from "@flareosaur/internal";
+ * import { diffStr, buildMessage } from "@mikepage/flareosaur/internal";
  *
  * diffStr("Hello, world!", "Hello, world");
  * // [

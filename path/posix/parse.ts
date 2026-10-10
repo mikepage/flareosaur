@@ -14,8 +14,8 @@ export type { ParsedPath } from "../types.ts";
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/path/posix/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/path/posix/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const path = parse("/home/user/file.txt");
  * assertEquals(path, {

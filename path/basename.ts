@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { basename as posixBasename } from "./posix/basename.ts";
 import { basename as windowsBasename } from "./windows/basename.ts";
 
@@ -13,8 +13,8 @@ import { basename as windowsBasename } from "./windows/basename.ts";
  *
  * @example Usage
  * ```ts
- * import { basename } from "@flareosaur/path/basename";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { basename } from "@mikepage/flareosaur/path/basename";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(basename("C:\\user\\Documents\\image.png"), "image.png");

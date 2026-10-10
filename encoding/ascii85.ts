@@ -63,8 +63,8 @@ const Z85 =
  *
  * @example Usage
  * ```ts
- * import { encodeAscii85 } from "@flareosaur/encoding/ascii85";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeAscii85 } from "@mikepage/flareosaur/encoding/ascii85";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeAscii85("Hello world!"), "87cURD]j7BEbo80");
  * ```
@@ -147,8 +147,8 @@ export type DecodeAscii85Options = Omit<EncodeAscii85Options, "delimiter">;
  *
  * @example Usage
  * ```ts
- * import { decodeAscii85 } from "@flareosaur/encoding/ascii85";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeAscii85 } from "@mikepage/flareosaur/encoding/ascii85";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   decodeAscii85("87cURD]j7BEbo80"),

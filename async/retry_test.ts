@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { retry, RetryError } from "./retry.ts";
-import { assertEquals, assertRejects } from "@flareosaur/assert";
-import { FakeTime } from "@flareosaur/testing/time";
+import { assertEquals, assertRejects } from "../assert/mod.ts";
+import { FakeTime } from "../testing/time.ts";
 
 function generateErroringFunction(errorsBeforeSucceeds: number) {
   let errorCount = 0;

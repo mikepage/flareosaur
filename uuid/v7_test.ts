@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert, assertEquals, assertThrows } from "@flareosaur/assert";
+import { assert, assertEquals, assertThrows } from "../assert/mod.ts";
 import { extractTimestamp, generate, validate } from "./v7.ts";
 import { stub } from "../testing/mock.ts";
 

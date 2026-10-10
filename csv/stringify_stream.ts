@@ -26,8 +26,8 @@ export interface CsvStringifyStreamOptions {
  *
  * @example Write CSV to a file
  * ```ts
- * import { CsvStringifyStream } from "@flareosaur/csv/stringify-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvStringifyStream } from "@mikepage/flareosaur/csv/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * async function writeCsvToTempFile(): Promise<string> {
  *   const path = await Deno.makeTempFile();
@@ -54,8 +54,8 @@ export interface CsvStringifyStreamOptions {
  *
  * @example Write TSV to a file
  * ```ts
- * import { CsvStringifyStream } from "@flareosaur/csv/stringify-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { CsvStringifyStream } from "@mikepage/flareosaur/csv/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * async function writeTsvToTempFile(): Promise<string> {
  *   const path = await Deno.makeTempFile();

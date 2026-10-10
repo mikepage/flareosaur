@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { dropWhile } from "@flareosaur/collections/drop-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dropWhile } from "@mikepage/flareosaur/collections/drop-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [3, 2, 5, 2, 5];
  * const dropWhileNumbers = dropWhile(numbers, (number) => number !== 2);
@@ -27,8 +27,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { dropWhile } from "@flareosaur/collections/drop-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dropWhile } from "@mikepage/flareosaur/collections/drop-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [20, 30, 20];
  * const result = dropWhile(array, (_, index) => index < 1);

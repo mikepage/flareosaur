@@ -3,7 +3,7 @@
 // Ported from https://github.com/browserify/path-browserify/
 import type { ParsedPath } from "./mod.ts";
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import * as posix from "./posix/mod.ts";
 import * as windows from "./windows/mod.ts";
 

@@ -1,8 +1,0 @@
-{
-  "name": "@flareosaur/jsonc",
-  "version": "1.0.3",
-  "exports": {
-    ".": "./mod.ts",
-    "./parse": "./parse.ts"
-  }
-}

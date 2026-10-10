@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assert, assertEquals, assertThrows } from "@flareosaur/assert";
+import { assert, assertEquals, assertThrows } from "../assert/mod.ts";
 import { Buffer } from "./buffer.ts";
 
 Deno.test("Buffer handles write and read", async () => {

@@ -7,8 +7,8 @@
  * Utilities for working with Windows-specific paths.
  *
  * ```ts
- * import { fromFileUrl } from "@flareosaur/path/windows/from-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { fromFileUrl } from "@mikepage/flareosaur/path/windows/from-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(fromFileUrl("file:///home/foo"), "\\home\\foo");
  * ```

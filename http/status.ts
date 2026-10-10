@@ -11,7 +11,7 @@
  * import {
  *   STATUS_CODE,
  *   STATUS_TEXT,
- * } from "@flareosaur/http/status";
+ * } from "@mikepage/flareosaur/http/status";
  *
  * console.log(STATUS_CODE.NotFound); // Returns 404
  * console.log(STATUS_TEXT[STATUS_CODE.NotFound]); // Returns "Not Found"
@@ -19,7 +19,7 @@
  *
  * @example Checking the status code type
  * ```ts ignore
- * import { isErrorStatus } from "@flareosaur/http/status";
+ * import { isErrorStatus } from "@mikepage/flareosaur/http/status";
  *
  * const res = await fetch("https://example.com/");
  *
@@ -320,8 +320,8 @@ export type ErrorStatus = ClientErrorStatus | ServerErrorStatus;
  *
  * @example Usage
  * ```ts
- * import { isStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isStatus(404));
  * ```
@@ -338,8 +338,8 @@ export function isStatus(status: number): status is StatusCode {
  *
  * @example Usage
  * ```ts
- * import { isInformationalStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isInformationalStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isInformationalStatus(100));
  * ```
@@ -358,8 +358,8 @@ export function isInformationalStatus(
  *
  * @example Usage
  * ```ts
- * import { isSuccessfulStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isSuccessfulStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isSuccessfulStatus(200));
  * ```
@@ -378,8 +378,8 @@ export function isSuccessfulStatus(
  *
  * @example Usage
  * ```ts
- * import { isRedirectStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isRedirectStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isRedirectStatus(302));
  * ```
@@ -396,8 +396,8 @@ export function isRedirectStatus(status: number): status is RedirectStatus {
  *
  * @example Usage
  * ```ts
- * import { isClientErrorStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isClientErrorStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isClientErrorStatus(404));
  * ```
@@ -416,8 +416,8 @@ export function isClientErrorStatus(
  *
  * @example Usage
  * ```ts
- * import { isServerErrorStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isServerErrorStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isServerErrorStatus(502));
  * ```
@@ -436,8 +436,8 @@ export function isServerErrorStatus(
  *
  * @example Usage
  * ```ts
- * import { isErrorStatus } from "@flareosaur/http/status";
- * import { assert } from "@flareosaur/assert";
+ * import { isErrorStatus } from "@mikepage/flareosaur/http/status";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * assert(isErrorStatus(502));
  * ```

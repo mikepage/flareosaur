@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { escapeJs } from "./unstable_escape_js.ts";
-import { dedent } from "@flareosaur/text/unstable-dedent";
+import { dedent } from "../text/unstable_dedent.ts";
 
 Deno.test("escapeJs() escapes strings for <script> context", async (t) => {
   const testCases = [

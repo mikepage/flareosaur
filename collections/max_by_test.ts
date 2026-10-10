@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertStrictEquals } from "@flareosaur/assert";
+import { assertEquals, assertStrictEquals } from "../assert/mod.ts";
 import { maxBy } from "./max_by.ts";
 
 Deno.test("maxBy() handles array input", () => {

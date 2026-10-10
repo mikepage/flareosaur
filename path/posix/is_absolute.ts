@@ -9,8 +9,8 @@ import { isPosixPathSeparator } from "./_util.ts";
  *
  * @example Usage
  * ```ts
- * import { isAbsolute } from "@flareosaur/path/posix/is-absolute";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { isAbsolute } from "@mikepage/flareosaur/path/posix/is-absolute";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(isAbsolute("/home/user/Documents/"));
  * assertFalse(isAbsolute("home/user/Documents/"));

@@ -12,8 +12,8 @@ import { SEPARATOR } from "./constants.ts";
  *
  * @example Usage
  * ```ts
- * import { common } from "@flareosaur/path/common";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { common } from "@mikepage/flareosaur/path/common";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   const path = common([

@@ -45,8 +45,8 @@ export type KnownExtensionOrType =
  *
  * @example Usage
  * ```ts
- * import { contentType } from "@flareosaur/media-types/content-type";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { contentType } from "@mikepage/flareosaur/media-types/content-type";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(contentType(".json"), "application/json; charset=UTF-8");
  * assertEquals(contentType("text/html"), "text/html; charset=UTF-8");

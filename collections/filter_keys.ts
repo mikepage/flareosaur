@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { filterKeys } from "@flareosaur/collections/filter-keys";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { filterKeys } from "@mikepage/flareosaur/collections/filter-keys";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const menu = {
  *   Salad: 11,

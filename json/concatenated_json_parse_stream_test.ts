@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { ConcatenatedJsonParseStream } from "./concatenated_json_parse_stream.ts";
 import { assertInvalidParse, assertValidParse } from "./_test_utils.ts";
 

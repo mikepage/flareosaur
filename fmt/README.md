@@ -6,8 +6,8 @@ Provides utilities for formatting text of different types:
 - [Printing formatted strings to stdout](https://jsr.io/@std/fmt/doc/printf/~)
 
 ```ts
-import { format } from "@flareosaur/fmt/bytes";
-import { red } from "@flareosaur/fmt/colors";
+import { format } from "@mikepage/flareosaur/fmt/bytes";
+import { red } from "@mikepage/flareosaur/fmt/colors";
 
 console.log(red(format(1337))); // Prints "1.34 kB"
 ```

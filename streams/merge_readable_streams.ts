@@ -11,8 +11,8 @@
  *
  * @example Merge 2 streams
  * ```ts
- * import { mergeReadableStreams } from "@flareosaur/streams/merge-readable-streams";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mergeReadableStreams } from "@mikepage/flareosaur/streams/merge-readable-streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream1 = ReadableStream.from([1, 2]);
  * const stream2 = ReadableStream.from([3, 4, 5]);
@@ -24,8 +24,8 @@
  *
  * @example Merge 3 streams
  * ```ts
- * import { mergeReadableStreams } from "@flareosaur/streams/merge-readable-streams";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mergeReadableStreams } from "@mikepage/flareosaur/streams/merge-readable-streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream1 = ReadableStream.from([1, 2]);
  * const stream2 = ReadableStream.from([3, 4, 5]);

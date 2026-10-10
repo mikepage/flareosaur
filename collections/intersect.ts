@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { intersect } from "@flareosaur/collections/intersect";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { intersect } from "@mikepage/flareosaur/collections/intersect";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const lisaInterests = ["Cooking", "Music", "Hiking"];
  * const kimInterests = ["Music", "Tennis", "Cooking"];

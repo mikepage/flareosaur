@@ -19,8 +19,8 @@ import { mapEntries } from "./map_entries.ts";
  *
  * @example Basic usage
  * ```ts
- * import { aggregateGroups } from "@flareosaur/collections/aggregate-groups";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { aggregateGroups } from "@mikepage/flareosaur/collections/aggregate-groups";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const foodProperties = {
  *   Curry: ["spicy", "vegan"],

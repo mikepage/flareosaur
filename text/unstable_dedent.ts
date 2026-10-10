@@ -25,8 +25,8 @@ const WHITE_SPACE_ONLY_LINE_REGEXP = new RegExp(
  *
  * @example Usage
  * ```ts
- * import { dedent } from "@flareosaur/text/unstable-dedent";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dedent } from "@mikepage/flareosaur/text/unstable-dedent";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   dedent(`
@@ -54,8 +54,8 @@ export function dedent(input: string): string;
  *
  * @example Usage
  * ```ts
- * import { dedent } from "@flareosaur/text/unstable-dedent";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dedent } from "@mikepage/flareosaur/text/unstable-dedent";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   dedent`line 1

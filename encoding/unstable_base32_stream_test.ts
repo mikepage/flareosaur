@@ -1,9 +1,9 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
-import { toText } from "@flareosaur/streams";
-import { toBytes } from "@flareosaur/streams/to-bytes";
-import { FixedChunkStream } from "@flareosaur/streams/unstable-fixed-chunk-stream";
+import { assertEquals } from "../assert/mod.ts";
+import { toText } from "../streams/mod.ts";
+import { toBytes } from "../streams/to_bytes.ts";
+import { FixedChunkStream } from "../streams/unstable_fixed_chunk_stream.ts";
 import { encodeBase32 } from "./unstable_base32.ts";
 import {
   Base32DecoderStream,

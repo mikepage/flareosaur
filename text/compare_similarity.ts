@@ -39,8 +39,8 @@ export interface CompareSimilarityOptions {
  * Most-similar words will be at the start of the array.
  *
  * ```ts
- * import { compareSimilarity } from "@flareosaur/text/compare-similarity";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { compareSimilarity } from "@mikepage/flareosaur/text/compare-similarity";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const words = ["hi", "hello", "help"];
  * const sortedWords = words.toSorted(compareSimilarity("hep"));

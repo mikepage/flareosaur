@@ -6,7 +6,7 @@
  *
  * @example Usage
  * ```ts
- * import { AssertionError } from "@flareosaur/assert";
+ * import { AssertionError } from "@mikepage/flareosaur/assert";
  *
  * try {
  *   throw new AssertionError("foo", { cause: "bar" });

@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { mapEntries } from "@flareosaur/collections/map-entries";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapEntries } from "@mikepage/flareosaur/collections/map-entries";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const usersById = {
  *   "a2e": { name: "Kim", age: 22 },

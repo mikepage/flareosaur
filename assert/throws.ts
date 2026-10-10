@@ -12,7 +12,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { assertThrows } from "@flareosaur/assert";
+ * import { assertThrows } from "@mikepage/flareosaur/assert";
  *
  * assertThrows(() => { throw new TypeError("hello world!"); }); // Doesn't throw
  * assertThrows(() => console.log("hello world!")); // Throws
@@ -36,7 +36,7 @@ export function assertThrows(
  *
  * @example Usage
  * ```ts ignore
- * import { assertThrows } from "@flareosaur/assert";
+ * import { assertThrows } from "@mikepage/flareosaur/assert";
  *
  * assertThrows(() => { throw new TypeError("hello world!"); }, TypeError); // Doesn't throw
  * assertThrows(() => { throw new TypeError("hello world!"); }, RangeError); // Throws

@@ -9,8 +9,8 @@ import { FULL_REGEXP, MAX_LENGTH } from "./_shared.ts";
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/semver/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/semver/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const version = parse("1.2.3");
  * assertEquals(version, {

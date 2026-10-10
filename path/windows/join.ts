@@ -11,8 +11,8 @@ import { fromFileUrl } from "./from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { join } from "@flareosaur/path/windows/join";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { join } from "@mikepage/flareosaur/path/windows/join";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(join("C:\\foo", "bar", "baz\\.."), "C:\\foo\\bar");
  * assertEquals(join(new URL("file:///C:/foo"), "bar", "baz\\.."), "C:\\foo\\bar");

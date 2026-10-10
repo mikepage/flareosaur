@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { format } from "@flareosaur/internal/format";
+import { format } from "../internal/format.ts";
 import { AssertionError } from "./assertion_error.ts";
 
 /*!
@@ -34,7 +34,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Exhaustivenss check
  * ```ts
- * import { assertNever } from "@flareosaur/assert/unstable-never";
+ * import { assertNever } from "@mikepage/flareosaur/assert/unstable-never";
  *
  * type Kinds = "A" | "B";
  *
@@ -62,7 +62,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Compile-time error when there is a missing case
  * ```ts expect-error ignore
- * import { assertNever } from "@flareosaur/assert/unstable-never";
+ * import { assertNever } from "@mikepage/flareosaur/assert/unstable-never";
  *
  * type Kinds = "A" | "B" | "C";
  *

@@ -17,8 +17,8 @@ import { types } from "./_db.ts";
  *
  * @example Usage
  * ```ts
- * import { typeByExtension } from "@flareosaur/media-types/type-by-extension";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { typeByExtension } from "@mikepage/flareosaur/media-types/type-by-extension";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(typeByExtension("js"), "text/javascript");
  * assertEquals(typeByExtension(".HTML"), "text/html");

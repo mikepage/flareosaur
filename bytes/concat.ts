@@ -12,8 +12,8 @@ export type { Uint8Array_ };
  *
  * @example Basic usage
  * ```ts
- * import { concat } from "@flareosaur/bytes/concat";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { concat } from "@mikepage/flareosaur/bytes/concat";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const a = new Uint8Array([0, 1, 2]);
  * const b = new Uint8Array([3, 4, 5]);

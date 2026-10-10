@@ -9,8 +9,8 @@
  *
  * @example Usage
  * ```ts
- * import { FixedChunkStream } from "@flareosaur/streams/unstable-fixed-chunk-stream";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { FixedChunkStream } from "@mikepage/flareosaur/streams/unstable-fixed-chunk-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * const readable = ReadableStream.from(function* () {
  *   let count = 0

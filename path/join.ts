@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { join as posixJoin } from "./posix/join.ts";
 import { join as windowsJoin } from "./windows/join.ts";
 
@@ -10,8 +10,8 @@ import { join as windowsJoin } from "./windows/join.ts";
  *
  * @example Usage
  * ```ts
- * import { join } from "@flareosaur/path/join";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { join } from "@mikepage/flareosaur/path/join";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(join("C:\\foo", "bar", "baz\\quux", "garply", ".."), "C:\\foo\\bar\\baz\\quux");

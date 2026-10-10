@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import type { JsonValue } from "@flareosaur/json/types";
+import type { JsonValue } from "../json/types.ts";
 export type { JsonValue };
 
 /**
@@ -9,8 +9,8 @@ export type { JsonValue };
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/jsonc";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/jsonc";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(parse('{"foo": "bar"}'), { foo: "bar" });
  * assertEquals(parse('{"foo": "bar", }'), { foo: "bar" });

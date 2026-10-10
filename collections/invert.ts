@@ -21,8 +21,8 @@ export type InvertResult<T extends Record<PropertyKey, PropertyKey>> = {
  *
  * @example Basic usage
  * ```ts
- * import { invert } from "@flareosaur/collections/invert";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { invert } from "@mikepage/flareosaur/collections/invert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const record = { a: "x", b: "y", c: "z" };
  *

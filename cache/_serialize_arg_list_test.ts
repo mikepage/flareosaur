@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { _serializeArgList } from "./_serialize_arg_list.ts";
-import { delay } from "@flareosaur/async";
+import { delay } from "../async/mod.ts";
 
 Deno.test("_serializeArgList() serializes simple numbers", () => {
   const getKey = _serializeArgList(new Map());

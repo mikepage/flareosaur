@@ -13,8 +13,8 @@
  *
  * @example Error-handling a timeout
  * ```ts
- * import { abortable, delay } from "@flareosaur/async";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable, delay } from "@mikepage/flareosaur/async";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const promise = delay(1_000);
  *
@@ -28,8 +28,8 @@
  *
  * @example Error-handling an abort
  * ```ts
- * import { abortable, delay } from "@flareosaur/async";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable, delay } from "@mikepage/flareosaur/async";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const promise = delay(1_000);
  * const controller = new AbortController();
@@ -56,8 +56,8 @@ export function abortable<T>(p: Promise<T>, signal: AbortSignal): Promise<T>;
  *
  * @example Error-handling a timeout
  * ```ts
- * import { abortable, delay } from "@flareosaur/async";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable, delay } from "@mikepage/flareosaur/async";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const asyncIter = async function* () {
  *   yield "Hello";
@@ -82,8 +82,8 @@ export function abortable<T>(p: Promise<T>, signal: AbortSignal): Promise<T>;
  *
  * @example Error-handling an abort
  * ```ts
- * import { abortable, delay } from "@flareosaur/async";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable, delay } from "@mikepage/flareosaur/async";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const asyncIter = async function* () {
  *   yield "Hello";

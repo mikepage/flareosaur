@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert, assertEquals } from "@flareosaur/assert";
+import { assert, assertEquals } from "../assert/mod.ts";
 import { parse } from "./parse.ts";
 import { equals } from "./equals.ts";
 

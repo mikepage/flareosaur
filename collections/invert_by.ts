@@ -26,8 +26,8 @@ export type InvertByResult<
  *
  * @example Basic usage
  * ```ts
- * import { invertBy } from "@flareosaur/collections/invert-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { invertBy } from "@mikepage/flareosaur/collections/invert-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const record = { a: "x", b: "y", c: "z" };
  *

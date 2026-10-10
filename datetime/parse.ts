@@ -36,8 +36,8 @@ import { DateTimeFormatter } from "./_date_time_formatter.ts";
  *
  * @example Basic usage
  * ```ts
- * import { parse } from "@flareosaur/datetime/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/datetime/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(parse("01-03-2019 16:30", "MM-dd-yyyy HH:mm"), new Date(2019, 0, 3, 16, 30));
  *

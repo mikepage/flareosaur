@@ -44,7 +44,7 @@ function run(str: string, code: Code): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bold } from "@flareosaur/internal/styles";
+ * import { bold } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(bold("Hello, world!")); // Prints "Hello, world!" in bold
  * ```
@@ -64,7 +64,7 @@ export function bold(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { red } from "@flareosaur/internal/styles";
+ * import { red } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(red("Hello, world!")); // Prints "Hello, world!" in red
  * ```
@@ -84,7 +84,7 @@ export function red(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { green } from "@flareosaur/internal/styles";
+ * import { green } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(green("Hello, world!")); // Prints "Hello, world!" in green
  * ```
@@ -104,7 +104,7 @@ export function green(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { yellow } from "@flareosaur/internal/styles";
+ * import { yellow } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(yellow("Hello, world!")); // Prints "Hello, world!" in yellow
  * ```
@@ -122,7 +122,7 @@ export function yellow(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { white } from "@flareosaur/internal/styles";
+ * import { white } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(white("Hello, world!")); // Prints "Hello, world!" in white
  * ```
@@ -140,7 +140,7 @@ export function white(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { gray } from "@flareosaur/internal/styles";
+ * import { gray } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(gray("Hello, world!")); // Prints "Hello, world!" in gray
  * ```
@@ -158,7 +158,7 @@ export function gray(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightBlack } from "@flareosaur/internal/styles";
+ * import { brightBlack } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(brightBlack("Hello, world!")); // Prints "Hello, world!" in bright-black
  * ```
@@ -176,7 +176,7 @@ export function brightBlack(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgRed } from "@flareosaur/internal/styles";
+ * import { bgRed } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(bgRed("Hello, world!")); // Prints "Hello, world!" with red background
  * ```
@@ -194,7 +194,7 @@ export function bgRed(str: string): string {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgGreen } from "@flareosaur/internal/styles";
+ * import { bgGreen } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(bgGreen("Hello, world!")); // Prints "Hello, world!" with green background
  * ```
@@ -221,7 +221,7 @@ const ANSI_REGEXP = new RegExp(
  *
  * @example Usage
  * ```ts no-assert
- * import { red, stripAnsiCode } from "@flareosaur/internal/styles";
+ * import { red, stripAnsiCode } from "@mikepage/flareosaur/internal/styles";
  *
  * console.log(stripAnsiCode(red("Hello, world!"))); // Prints "Hello, world!"
  * ```

@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
-import { concat } from "@flareosaur/bytes";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
+import { concat } from "../bytes/mod.ts";
 import {
   calcSizeBase64,
   decodeBase64,

@@ -12,8 +12,8 @@ export type { Uint8Array_ };
  *
  * @example Usage
  * ```ts
- * import { encryptAesGcm, decryptAesGcm } from "@flareosaur/crypto/aes-gcm";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encryptAesGcm, decryptAesGcm } from "@mikepage/flareosaur/crypto/aes-gcm";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "AES-GCM", length: 256 },
@@ -48,8 +48,8 @@ export interface AesGcmOptions {
  *
  * @example Usage
  * ```ts
- * import { encryptAesGcm } from "@flareosaur/crypto/aes-gcm";
- * import { assertNotEquals } from "@flareosaur/assert";
+ * import { encryptAesGcm } from "@mikepage/flareosaur/crypto/aes-gcm";
+ * import { assertNotEquals } from "@mikepage/flareosaur/assert";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "AES-GCM", length: 256 },
@@ -110,8 +110,8 @@ export async function encryptAesGcm(
  *
  * @example Usage
  * ```ts
- * import { decryptAesGcm, encryptAesGcm } from "@flareosaur/crypto/aes-gcm";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decryptAesGcm, encryptAesGcm } from "@mikepage/flareosaur/crypto/aes-gcm";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const key = await crypto.subtle.generateKey(
  *   { name: "AES-GCM", length: 256 },

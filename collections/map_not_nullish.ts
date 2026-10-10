@@ -18,8 +18,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { mapNotNullish } from "@flareosaur/collections/map-not-nullish";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapNotNullish } from "@mikepage/flareosaur/collections/map-not-nullish";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { middleName: null },
@@ -34,8 +34,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { mapNotNullish } from "@flareosaur/collections/map-not-nullish";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapNotNullish } from "@mikepage/flareosaur/collections/map-not-nullish";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const values = [10, 20, 30, 40];
  * const result = mapNotNullish(values, (value, index) => index % 2 === 0 ? value : null);

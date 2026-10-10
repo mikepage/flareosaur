@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { stub } from "@flareosaur/testing/mock";
-import { stubProperty } from "@flareosaur/testing/unstable-stub-property";
+import { stub } from "../testing/mock.ts";
+import { stubProperty } from "../testing/unstable_stub_property.ts";
 
 export function generateRandomString(min: number, max: number): string {
   return Array.from({ length: Math.floor(Math.random() * (max - min) + min) })

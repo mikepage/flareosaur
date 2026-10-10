@@ -10,8 +10,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { toBytes } from "@flareosaur/streams/to-bytes";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toBytes } from "@mikepage/flareosaur/streams/to-bytes";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   new Uint8Array([1, 2]),

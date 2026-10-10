@@ -8,8 +8,8 @@ import { SEPARATOR } from "./constants.ts";
  *
  * @example Usage
  * ```ts
- * import { common } from "@flareosaur/path/posix/common";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { common } from "@mikepage/flareosaur/path/posix/common";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const path = common([
  *   "./deno/std/path/mod.ts",

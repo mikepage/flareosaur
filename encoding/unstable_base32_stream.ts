@@ -5,10 +5,10 @@
  * TransformStream classes to encode and decode to and from base32 data in a streaming manner.
  *
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeBase32 } from "@flareosaur/encoding/unstable-base32";
- * import { Base32EncoderStream } from "@flareosaur/encoding/unstable-base32-stream";
- * import { toText } from "@flareosaur/streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeBase32 } from "@mikepage/flareosaur/encoding/unstable-base32";
+ * import { Base32EncoderStream } from "@mikepage/flareosaur/encoding/unstable-base32-stream";
+ * import { toText } from "@mikepage/flareosaur/streams";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable
@@ -52,10 +52,10 @@ const decoder = new TextDecoder();
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeBase32 } from "@flareosaur/encoding/unstable-base32";
- * import { Base32EncoderStream } from "@flareosaur/encoding/unstable-base32-stream";
- * import { toText } from "@flareosaur/streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeBase32 } from "@mikepage/flareosaur/encoding/unstable-base32";
+ * import { Base32EncoderStream } from "@mikepage/flareosaur/encoding/unstable-base32-stream";
+ * import { toText } from "@mikepage/flareosaur/streams";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable
@@ -129,12 +129,12 @@ export class Base32EncoderStream<T extends "string" | "bytes">
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  * import {
  *   Base32DecoderStream,
  *   Base32EncoderStream,
- * } from "@flareosaur/encoding/unstable-base32-stream";
- * import { toBytes } from "@flareosaur/streams/to-bytes";
+ * } from "@mikepage/flareosaur/encoding/unstable-base32-stream";
+ * import { toBytes } from "@mikepage/flareosaur/streams/to-bytes";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable

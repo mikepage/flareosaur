@@ -30,8 +30,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase64Url } from "@flareosaur/encoding/base64url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeBase64Url } from "@mikepage/flareosaur/encoding/base64url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeBase64Url("foobar"), "Zm9vYmFy");
  * ```
@@ -65,8 +65,8 @@ export function encodeBase64Url(
  *
  * @example Usage
  * ```ts
- * import { decodeBase64Url } from "@flareosaur/encoding/base64url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeBase64Url } from "@mikepage/flareosaur/encoding/base64url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   decodeBase64Url("Zm9vYmFy"),

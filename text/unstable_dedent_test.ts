@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { dedent } from "./unstable_dedent.ts";
-import { assertEquals } from "@flareosaur/assert";
-import { stub } from "@flareosaur/testing/mock";
+import { assertEquals } from "../assert/mod.ts";
+import { stub } from "../testing/mock.ts";
 
 Deno.test("dedent() handles example 1", () => {
   assertEquals(

@@ -17,8 +17,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { includesValue } from "@flareosaur/collections/includes-value";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { includesValue } from "@mikepage/flareosaur/collections/includes-value";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const input = {
  *   first: 33,

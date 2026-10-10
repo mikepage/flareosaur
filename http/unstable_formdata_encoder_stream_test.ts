@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { FormDataEncoderStream } from "@flareosaur/http/unstable-formdata-encoder-stream";
-import { assert, assertEquals, assertRejects } from "@flareosaur/assert";
+import { FormDataEncoderStream } from "./unstable_formdata_encoder_stream.ts";
+import { assert, assertEquals, assertRejects } from "../assert/mod.ts";
 
 Deno.test("FormDataEncoderStream", async () => {
   const formData = await new FormDataEncoderStream(ReadableStream

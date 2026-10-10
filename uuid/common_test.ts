@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assert, assertEquals, assertThrows } from "@flareosaur/assert";
+import { assert, assertEquals, assertThrows } from "../assert/mod.ts";
 import { isNil, NIL_UUID, validate, version } from "./mod.ts";
 
 Deno.test("isNil() checks if a UUID is the nil UUID", () => {

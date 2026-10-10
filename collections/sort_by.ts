@@ -32,8 +32,8 @@ export type SortByOptions = {
  *
  * @example Usage with numbers
  * ```ts
- * import { sortBy } from "@flareosaur/collections/sort-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sortBy } from "@mikepage/flareosaur/collections/sort-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", age: 34 },
@@ -59,8 +59,8 @@ export type SortByOptions = {
  *
  * @example Usage with strings
  * ```ts
- * import { sortBy } from "@flareosaur/collections/sort-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sortBy } from "@mikepage/flareosaur/collections/sort-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna" },
@@ -78,8 +78,8 @@ export type SortByOptions = {
  *
  * @example Usage with bigints
  * ```ts
- * import { sortBy } from "@flareosaur/collections/sort-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sortBy } from "@mikepage/flareosaur/collections/sort-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", age: 34n },
@@ -98,8 +98,8 @@ export type SortByOptions = {
  *
  * @example Usage with Date objects
  * ```ts
- * import { sortBy } from "@flareosaur/collections/sort-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sortBy } from "@mikepage/flareosaur/collections/sort-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", startedAt: new Date("2020-01-01") },
@@ -118,8 +118,8 @@ export type SortByOptions = {
  *
  * @example Using the index parameter
  * ```ts
- * import { sortBy } from "@flareosaur/collections/sort-by";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sortBy } from "@mikepage/flareosaur/collections/sort-by";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [2, 3, 1];
  * const result = sortBy(array, (_, index) => -index);

@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertLess } from "@flareosaur/assert";
+import { assertEquals, assertLess } from "../assert/mod.ts";
 import {
   CACHE_MAX_SEGMENT_LENGTH,
   resolveOptions,

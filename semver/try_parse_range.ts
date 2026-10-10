@@ -10,8 +10,8 @@ import { parseRange } from "./parse_range.ts";
  *
  * @example Usage
  * ```ts
- * import { tryParseRange } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { tryParseRange } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(tryParseRange(">=1.2.3 <1.2.4"), [
  *  [

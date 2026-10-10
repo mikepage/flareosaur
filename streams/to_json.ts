@@ -15,8 +15,8 @@ import { toText } from "./to_text.ts";
  *
  * @example Usage with a stream of strings
  * ```ts
- * import { toJson } from "@flareosaur/streams/to-json";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toJson } from "@mikepage/flareosaur/streams/to-json";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   "[1, true",
@@ -28,8 +28,8 @@ import { toText } from "./to_text.ts";
  *
  * @example Usage with a stream of `Uint8Array`s
  * ```ts
- * import { toJson } from "@flareosaur/streams/to-json";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toJson } from "@mikepage/flareosaur/streams/to-json";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   "[1, true",

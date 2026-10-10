@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import { parse } from "@flareosaur/path";
+ * import { parse } from "@mikepage/flareosaur/path";
  *
  * const parsedPathObj = parse("c:\\path\\dir\\index.html");
  * parsedPathObj.root; // "c:\\"

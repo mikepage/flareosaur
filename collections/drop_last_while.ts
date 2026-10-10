@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { dropLastWhile } from "@flareosaur/collections/drop-last-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dropLastWhile } from "@mikepage/flareosaur/collections/drop-last-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [11, 42, 55, 20, 33, 44];
  *
@@ -28,8 +28,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { dropLastWhile } from "@flareosaur/collections/drop-last-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dropLastWhile } from "@mikepage/flareosaur/collections/drop-last-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [20, 30, 20];
  * const result = dropLastWhile(array, (_, index) => index > 1);

@@ -30,8 +30,8 @@ export interface StringifyStreamOptions {
  * @example Basic usage
  *
  * ```ts
- * import { JsonStringifyStream } from "@flareosaur/json/stringify-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { JsonStringifyStream } from "@mikepage/flareosaur/json/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([{ foo: "bar" }, { baz: 100 }])
  *   .pipeThrough(new JsonStringifyStream());
@@ -48,8 +48,8 @@ export interface StringifyStreamOptions {
  * {@linkcode https://www.rfc-editor.org/rfc/rfc7464.html | JSON Text Sequences}.
  *
  * ```ts
- * import { JsonStringifyStream } from "@flareosaur/json/stringify-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { JsonStringifyStream } from "@mikepage/flareosaur/json/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([{ foo: "bar" }, { baz: 100 }])
  *   .pipeThrough(new JsonStringifyStream({ prefix: "\x1E", suffix: "\n" }));
@@ -63,7 +63,7 @@ export interface StringifyStreamOptions {
  * @example Stringify JSON lines from a server
  *
  * ```ts ignore no-assert
- * import { JsonStringifyStream } from "@flareosaur/json/stringify-stream";
+ * import { JsonStringifyStream } from "@mikepage/flareosaur/json/stringify-stream";
  *
  * // A server that streams one line of JSON every second
  * Deno.serve(() => {

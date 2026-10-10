@@ -10,7 +10,7 @@ export type Falsy = false | 0 | 0n | "" | null | undefined;
  *
  * @example Usage
  * ```ts ignore
- * import { assertFalse } from "@flareosaur/assert";
+ * import { assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assertFalse(false); // Doesn't throw
  * assertFalse(true); // Throws

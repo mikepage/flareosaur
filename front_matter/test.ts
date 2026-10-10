@@ -15,8 +15,8 @@ export type { Format };
  *
  * @example Test for valid YAML front matter
  * ```ts
- * import { test } from "@flareosaur/front-matter/test";
- * import { assert } from "@flareosaur/assert";
+ * import { test } from "@mikepage/flareosaur/front-matter/test";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const result = test(
  * `---
@@ -28,8 +28,8 @@ export type { Format };
  *
  * @example Test for valid TOML front matter
  * ```ts
- * import { test } from "@flareosaur/front-matter/test";
- * import { assert } from "@flareosaur/assert";
+ * import { test } from "@mikepage/flareosaur/front-matter/test";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const result = test(
  * `---toml
@@ -41,8 +41,8 @@ export type { Format };
  *
  * @example Test for valid JSON front matter
  * ```ts
- * import { test } from "@flareosaur/front-matter/test";
- * import { assert } from "@flareosaur/assert";
+ * import { test } from "@mikepage/flareosaur/front-matter/test";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const result = test(
  * `---json
@@ -54,8 +54,8 @@ export type { Format };
  *
  * @example JSON front matter is not valid as YAML
  * ```ts
- * import { test } from "@flareosaur/front-matter/test";
- * import { assertFalse } from "@flareosaur/assert";
+ * import { test } from "@mikepage/flareosaur/front-matter/test";
+ * import { assertFalse } from "@mikepage/flareosaur/assert";
  *
  * const result = test(
  * `---json

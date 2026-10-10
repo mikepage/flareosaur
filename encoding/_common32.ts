@@ -43,8 +43,8 @@ export type Base32Alphabet = "base32" | "base32hex" | "base32crockford";
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { calcSizeBase32 } from "@flareosaur/encoding/unstable-base32";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { calcSizeBase32 } from "@mikepage/flareosaur/encoding/unstable-base32";
  *
  * assertEquals(calcSizeBase32(1), 8);
  * ```

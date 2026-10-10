@@ -11,8 +11,8 @@ import { DAY } from "./constants.ts";
  *
  * @example Basic usage
  * ```ts
- * import { dayOfYear } from "@flareosaur/datetime/day-of-year";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dayOfYear } from "@mikepage/flareosaur/datetime/day-of-year";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(dayOfYear(new Date("2019-03-11T03:24:00")), 70);
  * ```
@@ -38,8 +38,8 @@ export function dayOfYear(date: Date): number {
  *
  * @example Usage
  * ```ts
- * import { dayOfYearUtc } from "@flareosaur/datetime/day-of-year";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dayOfYearUtc } from "@mikepage/flareosaur/datetime/day-of-year";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(dayOfYearUtc(new Date("2019-03-11T03:24:00.000Z")), 70);
  * ```

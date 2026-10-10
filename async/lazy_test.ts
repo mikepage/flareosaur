@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertRejects, assertStrictEquals } from "@flareosaur/assert";
+import { assertEquals, assertRejects, assertStrictEquals } from "../assert/mod.ts";
 import { Lazy } from "./lazy.ts";
 
 Deno.test("Lazy.get() initializes and returns sync value", async () => {

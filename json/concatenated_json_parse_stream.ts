@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { toTransformStream } from "@flareosaur/streams/to-transform-stream";
+import { toTransformStream } from "../streams/to_transform_stream.ts";
 import type { JsonValue } from "./types.ts";
 import { parse } from "./_common.ts";
 
@@ -18,8 +18,8 @@ const primitives = new Map(
  * @example Usage
  *
  * ```ts
- * import { ConcatenatedJsonParseStream } from "@flareosaur/json/concatenated-json-parse-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { ConcatenatedJsonParseStream } from "@mikepage/flareosaur/json/concatenated-json-parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   `{"foo":"bar"}`,
@@ -39,8 +39,8 @@ export class ConcatenatedJsonParseStream
    *
    * @example Usage
    * ```ts
-   * import { ConcatenatedJsonParseStream } from "@flareosaur/json/concatenated-json-parse-stream";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { ConcatenatedJsonParseStream } from "@mikepage/flareosaur/json/concatenated-json-parse-stream";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const stream = ReadableStream.from([
    *   `{"foo":"bar"}`,
@@ -59,8 +59,8 @@ export class ConcatenatedJsonParseStream
    *
    * @example Usage
    * ```ts
-   * import { ConcatenatedJsonParseStream } from "@flareosaur/json/concatenated-json-parse-stream";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { ConcatenatedJsonParseStream } from "@mikepage/flareosaur/json/concatenated-json-parse-stream";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const stream = ReadableStream.from([
    *   `{"foo":"bar"}`,

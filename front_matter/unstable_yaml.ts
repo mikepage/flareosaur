@@ -2,7 +2,7 @@
 // This module is browser compatible.
 
 import { extractFrontMatter } from "./_shared.ts";
-import { parse, type ParseOptions } from "@flareosaur/yaml/parse";
+import { parse, type ParseOptions } from "../yaml/parse.ts";
 import type { Extract } from "./types.ts";
 import { EXTRACT_YAML_REGEXP } from "./_formats.ts";
 
@@ -16,8 +16,8 @@ export type { Extract };
  *
  * @example Extract YAML front matter
  * ```ts
- * import { extract } from "@flareosaur/front-matter/unstable-yaml";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extract } from "@mikepage/flareosaur/front-matter/unstable-yaml";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const output = `---yaml
  * date: 2022-01-01
@@ -34,7 +34,7 @@ export type { Extract };
  *
  * @typeParam T The type of the parsed front matter.
  * @param text The text to extract YAML front matter from.
- * @param options The options to pass to `@flareosaur/yaml/parse`.
+ * @param options The options to pass to `@mikepage/flareosaur/yaml/parse`.
  * @returns The extracted YAML front matter and body content.
  */
 export function extract<T>(text: string, options?: ParseOptions): Extract<T> {

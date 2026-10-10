@@ -10,8 +10,8 @@
  *
  * @example Response with Cache-Control and ETag
  * ```ts ignore
- * import { formatCacheControl } from "@flareosaur/http/unstable-cache-control";
- * import { eTag } from "@flareosaur/http/etag";
+ * import { formatCacheControl } from "@mikepage/flareosaur/http/unstable-cache-control";
+ * import { eTag } from "@mikepage/flareosaur/http/etag";
  *
  * Deno.serve(async (_req) => {
  *   const body = "hello";
@@ -29,7 +29,7 @@
  *
  * @example Parse request Cache-Control
  * ```ts ignore
- * import { parseCacheControl } from "@flareosaur/http/unstable-cache-control";
+ * import { parseCacheControl } from "@mikepage/flareosaur/http/unstable-cache-control";
  *
  * Deno.serve((req) => {
  *   const cc = parseCacheControl(req.headers.get("cache-control"));
@@ -235,8 +235,8 @@ function parseFieldNames(value: string): string[] {
  *
  * @example Usage
  * ```ts
- * import { parseCacheControl } from "@flareosaur/http/unstable-cache-control";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parseCacheControl } from "@mikepage/flareosaur/http/unstable-cache-control";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const cc = parseCacheControl("max-age=3600, no-store");
  * assertEquals(cc.maxAge, 3600);
@@ -402,8 +402,8 @@ function append(
  *
  * @example Usage
  * ```ts
- * import { formatCacheControl } from "@flareosaur/http/unstable-cache-control";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { formatCacheControl } from "@mikepage/flareosaur/http/unstable-cache-control";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const value = formatCacheControl({ maxAge: 300, mustRevalidate: true });
  * assertEquals(value, "max-age=300, must-revalidate");

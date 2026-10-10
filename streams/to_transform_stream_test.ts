@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertRejects, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertRejects, assertThrows } from "../assert/mod.ts";
 import { toTransformStream } from "./to_transform_stream.ts";
 
 Deno.test({

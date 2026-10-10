@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { interleave } from "@flareosaur/collections/interleave";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { interleave } from "@mikepage/flareosaur/collections/interleave";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [1, 2, 3];
  * const letters = ["a", "b", "c"];
@@ -26,8 +26,8 @@
  *
  * @example Unequal-length arrays
  * ```ts
- * import { interleave } from "@flareosaur/collections/interleave";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { interleave } from "@mikepage/flareosaur/collections/interleave";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   interleave([1, 2, 3], ["a", "b"], [true]),
@@ -37,8 +37,8 @@
  *
  * @example With iterables
  * ```ts
- * import { interleave } from "@flareosaur/collections/interleave";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { interleave } from "@mikepage/flareosaur/collections/interleave";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   interleave(new Set([1, 2, 3]), ["a", "b", "c"]),

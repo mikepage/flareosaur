@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assert, assertLessOrEqual } from "@flareosaur/assert";
+import { assert, assertLessOrEqual } from "../assert/mod.ts";
 import { FixedChunkStream } from "./unstable_fixed_chunk_stream.ts";
 
 Deno.test("FixedChunkStream", async () => {

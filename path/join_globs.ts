@@ -2,7 +2,7 @@
 // This module is browser compatible.
 
 import type { GlobOptions } from "./_common/glob_to_reg_exp.ts";
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { joinGlobs as posixJoinGlobs } from "./posix/join_globs.ts";
 import { joinGlobs as windowsJoinGlobs } from "./windows/join_globs.ts";
 
@@ -16,8 +16,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { joinGlobs } from "@flareosaur/path/join-globs";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { joinGlobs } from "@mikepage/flareosaur/path/join-globs";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(joinGlobs(["foo", "bar", "..", "baz"]), "foo\\baz");

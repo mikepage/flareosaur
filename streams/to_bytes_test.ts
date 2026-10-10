@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertRejects } from "@flareosaur/assert";
+import { assertEquals, assertRejects } from "../assert/mod.ts";
 import { toBytes } from "./to_bytes.ts";
 
 Deno.test("toBytes() concatenates multiple chunks", async () => {

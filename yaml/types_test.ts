@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertInstanceOf } from "@flareosaur/assert";
+import { assertEquals, assertInstanceOf } from "../assert/mod.ts";
 import { YamlSyntaxError } from "./types.ts";
 
 Deno.test("YamlSyntaxError() is a SyntaxError", () => {

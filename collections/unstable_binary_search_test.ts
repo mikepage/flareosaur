@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { binarySearch } from "./unstable_binary_search.ts";
-import { assertSpyCalls, spy } from "@flareosaur/testing/mock";
+import { assertSpyCalls, spy } from "../testing/mock.ts";
 
 Deno.test("binarySearch() gives exact or non-exact indexes", async (t) => {
   await t.step("examples", () => {

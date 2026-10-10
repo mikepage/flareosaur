@@ -7,8 +7,8 @@ import { parse } from "./parse.ts";
  *
  * @example Usage
  * ```ts
- * import { canParse } from "@flareosaur/semver/can-parse";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { canParse } from "@mikepage/flareosaur/semver/can-parse";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(canParse("1.2.3"));
  * assertFalse(canParse("invalid"));

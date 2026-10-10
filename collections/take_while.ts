@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { takeWhile } from "@flareosaur/collections/take-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { takeWhile } from "@mikepage/flareosaur/collections/take-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [1, 2, 3, 4, 5, 6];
  *
@@ -28,8 +28,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { takeWhile } from "@flareosaur/collections/take-while";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { takeWhile } from "@mikepage/flareosaur/collections/take-while";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [20, 30, 20];
  * const result = takeWhile(array, (_, index) => index < 2);

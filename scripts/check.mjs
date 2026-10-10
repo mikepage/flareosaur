@@ -19,9 +19,12 @@ function walk(dir) {
   });
 }
 
-const workspace = JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8"))
-  .workspace.map((p) => p.slice(2));
-const files = workspace
+// The package directories, from the targets of the root deno.json exports.
+const exportTargets = Object.values(
+  JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8")).exports,
+);
+const packages = [...new Set(exportTargets.map((t) => t.split("/")[1]))];
+const files = packages
   .flatMap((pkg) => walk(join(ROOT, pkg)))
   .filter((f) => f.endsWith(".ts") && !TEST_FILE.test(f))
   .map((f) => relative(ROOT, f));

@@ -2,7 +2,7 @@
 
 import * as posix from "./posix/mod.ts";
 import * as windows from "./windows/mod.ts";
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 
 Deno.test("windows.toNamespacedPath() returns the namespaced path", () => {
   {

@@ -75,8 +75,8 @@
  * ```
  *
  * ```ts
- * import { parse, stringify } from "@flareosaur/toml";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, stringify } from "@mikepage/flareosaur/toml";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = {
  *   bin: [

@@ -15,8 +15,8 @@ export type { Uint8Array_ };
  *
  * @example Basic usage
  * ```ts
- * import { repeat } from "@flareosaur/bytes/repeat";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { repeat } from "@mikepage/flareosaur/bytes/repeat";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const source = new Uint8Array([0, 1, 2]);
  *
@@ -25,8 +25,8 @@ export type { Uint8Array_ };
  *
  * @example Zero count
  * ```ts
- * import { repeat } from "@flareosaur/bytes/repeat";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { repeat } from "@mikepage/flareosaur/bytes/repeat";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const source = new Uint8Array([0, 1, 2]);
  *

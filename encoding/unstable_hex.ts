@@ -5,8 +5,8 @@
  * Functions to encode and decode to and from hexadecimal strings.
  *
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeHex, type Uint8Array_ } from "@flareosaur/encoding/unstable-hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeHex, type Uint8Array_ } from "@mikepage/flareosaur/encoding/unstable-hex";
  *
  * assertEquals(encodeHex("Hello World"), "48656c6c6f20576f726c64");
  * assertEquals(
@@ -47,8 +47,8 @@ import { detach } from "./_common_detach.ts";
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeHex, type Uint8Array_ } from "@flareosaur/encoding/unstable-hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeHex, type Uint8Array_ } from "@mikepage/flareosaur/encoding/unstable-hex";
  *
  * assertEquals(encodeHex("Hello World"), "48656c6c6f20576f726c64");
  * assertEquals(
@@ -85,12 +85,12 @@ export function encodeHex(
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  * import {
  *   calcSizeHex,
  *   encodeHex,
  *   encodeIntoHex,
- * } from "@flareosaur/encoding/unstable-hex";
+ * } from "@mikepage/flareosaur/encoding/unstable-hex";
  *
  * const prefix = "data:url/fake,";
  * const input = await Deno.readFile("./deno.lock");
@@ -135,8 +135,8 @@ export function encodeIntoHex(
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { decodeHex } from "@flareosaur/encoding/unstable-hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { decodeHex } from "@mikepage/flareosaur/encoding/unstable-hex";
  *
  * assertEquals(
  *   decodeHex("48656c6c6f20576f726c64"),

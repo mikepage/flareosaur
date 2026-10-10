@@ -7,7 +7,7 @@ import {
   red,
   stripAnsiCode,
   yellow,
-} from "@flareosaur/internal/styles";
+} from "../internal/styles.ts";
 
 function createHeader(): string[] {
   return [

@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import { SECOND } from "@flareosaur/datetime/constants";
+ * import { SECOND } from "@mikepage/flareosaur/datetime/constants";
  *
  * SECOND; // 1_000
  * ```
@@ -17,7 +17,7 @@ export const SECOND = 1e3;
  *
  * @example
  * ```ts
- * import { MINUTE } from "@flareosaur/datetime/constants";
+ * import { MINUTE } from "@mikepage/flareosaur/datetime/constants";
  *
  * MINUTE; // 60_000
  * ```
@@ -28,7 +28,7 @@ export const MINUTE: number = SECOND * 60;
  *
  * @example
  * ```ts
- * import { HOUR } from "@flareosaur/datetime/constants";
+ * import { HOUR } from "@mikepage/flareosaur/datetime/constants";
  *
  * HOUR; // 3_600_000
  * ```
@@ -39,7 +39,7 @@ export const HOUR: number = MINUTE * 60;
  *
  * @example
  * ```ts
- * import { DAY } from "@flareosaur/datetime/constants";
+ * import { DAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * DAY; // 86_400_000
  * ```
@@ -50,7 +50,7 @@ export const DAY: number = HOUR * 24;
  *
  * @example
  * ```ts
- * import { WEEK } from "@flareosaur/datetime/constants";
+ * import { WEEK } from "@mikepage/flareosaur/datetime/constants";
  *
  * WEEK; // 604_800_000
  * ```
@@ -61,7 +61,7 @@ export const WEEK: number = DAY * 7;
  *
  * @example
  * ```ts
- * import { JANUARY } from "@flareosaur/datetime/constants";
+ * import { JANUARY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 1); // 2025-01-01
  * ```
@@ -72,7 +72,7 @@ export const JANUARY = 0;
  *
  * @example
  * ```ts
- * import { FEBRUARY } from "@flareosaur/datetime/constants";
+ * import { FEBRUARY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, FEBRUARY, 1); // 2025-02-01
  * ```
@@ -83,7 +83,7 @@ export const FEBRUARY = 1;
  *
  * @example
  * ```ts
- * import { MARCH } from "@flareosaur/datetime/constants";
+ * import { MARCH } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, MARCH, 1); // 2025-03-01
  * ```
@@ -94,7 +94,7 @@ export const MARCH = 2;
  *
  * @example
  * ```ts
- * import { APRIL } from "@flareosaur/datetime/constants";
+ * import { APRIL } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, APRIL, 1); // 2025-04-01
  * ```
@@ -105,7 +105,7 @@ export const APRIL = 3;
  *
  * @example
  * ```ts
- * import { MAY } from "@flareosaur/datetime/constants";
+ * import { MAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, MAY, 1); // 2025-05-01
  * ```
@@ -116,7 +116,7 @@ export const MAY = 4;
  *
  * @example
  * ```ts
- * import { JUNE } from "@flareosaur/datetime/constants";
+ * import { JUNE } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JUNE, 1); // 2025-06-01
  * ```
@@ -127,7 +127,7 @@ export const JUNE = 5;
  *
  * @example
  * ```ts
- * import { JULY } from "@flareosaur/datetime/constants";
+ * import { JULY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JULY, 1); // 2025-07-01
  * ```
@@ -138,7 +138,7 @@ export const JULY = 6;
  *
  * @example
  * ```ts
- * import { AUGUST } from "@flareosaur/datetime/constants";
+ * import { AUGUST } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, AUGUST, 1); // 2025-08-01
  * ```
@@ -149,7 +149,7 @@ export const AUGUST = 7;
  *
  * @example
  * ```ts
- * import { SEPTEMBER } from "@flareosaur/datetime/constants";
+ * import { SEPTEMBER } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, SEPTEMBER, 1); // 2025-09-01
  * ```
@@ -160,7 +160,7 @@ export const SEPTEMBER = 8;
  *
  * @example
  * ```ts
- * import { OCTOBER } from "@flareosaur/datetime/constants";
+ * import { OCTOBER } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, OCTOBER, 1); // 2025-10-01
  * ```
@@ -171,7 +171,7 @@ export const OCTOBER = 9;
  *
  * @example
  * ```ts
- * import { NOVEMBER } from "@flareosaur/datetime/constants";
+ * import { NOVEMBER } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, NOVEMBER, 1); // 2025-11-01
  * ```
@@ -182,7 +182,7 @@ export const NOVEMBER = 10;
  *
  * @example
  * ```ts
- * import { DECEMBER } from "@flareosaur/datetime/constants";
+ * import { DECEMBER } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, DECEMBER, 1); // 2025-12-01
  * ```
@@ -193,7 +193,7 @@ export const DECEMBER = 11;
  *
  * @example
  * ```ts
- * import { JANUARY, SUNDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, SUNDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 5).getDay() === SUNDAY; // true
  * ```
@@ -204,7 +204,7 @@ export const SUNDAY = 0;
  *
  * @example
  * ```ts
- * import { JANUARY, MONDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, MONDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 6).getDay() === MONDAY; // true
  * ```
@@ -215,7 +215,7 @@ export const MONDAY = 1;
  *
  * @example
  * ```ts
- * import { JANUARY, TUESDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, TUESDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 7).getDay() === TUESDAY; // true
  * ```
@@ -226,7 +226,7 @@ export const TUESDAY = 2;
  *
  * @example
  * ```ts
- * import { JANUARY, WEDNESDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, WEDNESDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 1).getDay() === WEDNESDAY; // true
  * ```
@@ -237,7 +237,7 @@ export const WEDNESDAY = 3;
  *
  * @example
  * ```ts
- * import { JANUARY, THURSDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, THURSDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 2).getDay() === THURSDAY; // true
  * ```
@@ -248,7 +248,7 @@ export const THURSDAY = 4;
  *
  * @example
  * ```ts
- * import { JANUARY, FRIDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, FRIDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 3).getDay() === FRIDAY; // true
  * ```
@@ -259,7 +259,7 @@ export const FRIDAY = 5;
  *
  * @example
  * ```ts
- * import { JANUARY, SATURDAY } from "@flareosaur/datetime/constants";
+ * import { JANUARY, SATURDAY } from "@mikepage/flareosaur/datetime/constants";
  *
  * new Date(2025, JANUARY, 4).getDay() === SATURDAY; // true
  * ```

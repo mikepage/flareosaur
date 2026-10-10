@@ -21,8 +21,8 @@ export interface LimitedBytesTransformStreamOptions {
  *
  * @example `size` is equal to the total byte length of the chunks
  * ```ts
- * import { LimitedBytesTransformStream } from "@flareosaur/streams/limited-bytes-transform-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { LimitedBytesTransformStream } from "@mikepage/flareosaur/streams/limited-bytes-transform-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from(["1234", "5678"]);
  * const transformed = stream.pipeThrough(new TextEncoderStream()).pipeThrough(
@@ -38,8 +38,8 @@ export interface LimitedBytesTransformStreamOptions {
  * @example `size` is less than the total byte length of the chunks, and at the
  * boundary of the chunks
  * ```ts
- * import { LimitedBytesTransformStream } from "@flareosaur/streams/limited-bytes-transform-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { LimitedBytesTransformStream } from "@mikepage/flareosaur/streams/limited-bytes-transform-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from(["1234", "5678"]);
  * const transformed = stream.pipeThrough(new TextEncoderStream()).pipeThrough(
@@ -57,8 +57,8 @@ export interface LimitedBytesTransformStreamOptions {
  * @example `size` is less than the total byte length of the chunks, and not at
  * the boundary of the chunks
  * ```ts
- * import { LimitedBytesTransformStream } from "@flareosaur/streams/limited-bytes-transform-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { LimitedBytesTransformStream } from "@mikepage/flareosaur/streams/limited-bytes-transform-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from(["1234", "5678"]);
  * const transformed = stream.pipeThrough(new TextEncoderStream()).pipeThrough(
@@ -79,8 +79,8 @@ export interface LimitedBytesTransformStreamOptions {
  * To do so, set `options.error` to `true`.
  *
  * ```ts
- * import { LimitedBytesTransformStream } from "@flareosaur/streams/limited-bytes-transform-stream";
- * import { assertRejects } from "@flareosaur/assert";
+ * import { LimitedBytesTransformStream } from "@mikepage/flareosaur/streams/limited-bytes-transform-stream";
+ * import { assertRejects } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from(["1234", "5678"]);
  * const transformed = stream.pipeThrough(new TextEncoderStream()).pipeThrough(

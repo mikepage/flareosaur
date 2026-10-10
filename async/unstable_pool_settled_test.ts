@@ -6,7 +6,7 @@ import {
   assertLess,
   assertRejects,
   assertThrows,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import { delay } from "./delay.ts";
 
 Deno.test("pooledMapSettled() throws for invalid poolLimit", () => {

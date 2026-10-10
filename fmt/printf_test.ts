@@ -6,8 +6,8 @@
 //   BSD: Copyright (c) 2009 The Go Authors. All rights reserved.
 
 import { printf, sprintf } from "./printf.ts";
-import { assertEquals, assertThrows } from "@flareosaur/assert";
-import { assertSpyCall, spy, stub } from "@flareosaur/testing/mock";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
+import { assertSpyCall, spy, stub } from "../testing/mock.ts";
 import * as c from "./colors.ts";
 
 Deno.test("sprintf() handles noVerb", function () {

@@ -16,8 +16,8 @@ import { allExtensions } from "./all_extensions.ts";
  *
  * @example Usage
  * ```ts
- * import { extension } from "@flareosaur/media-types/extension";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extension } from "@mikepage/flareosaur/media-types/extension";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(extension("text/plain"), "txt");
  * assertEquals(extension("application/json"), "json");

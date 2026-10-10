@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assert, assertEquals } from "@flareosaur/assert";
-import { assertType, type IsExact } from "@flareosaur/testing/types";
+import { assert, assertEquals } from "../assert/mod.ts";
+import { assertType, type IsExact } from "../testing/types.ts";
 
 import { eTag, ifMatch, ifNoneMatch } from "./etag.ts";
 

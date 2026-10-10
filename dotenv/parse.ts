@@ -64,8 +64,8 @@ function expand(str: string, variablesMap: Record<string, string>): string {
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/dotenv/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/dotenv/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const env = parse("GREETING=hello world");
  * assertEquals(env, { GREETING: "hello world" });

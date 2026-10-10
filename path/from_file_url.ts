@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { fromFileUrl as posixFromFileUrl } from "./posix/from_file_url.ts";
 import { fromFileUrl as windowsFromFileUrl } from "./windows/from_file_url.ts";
 
@@ -10,8 +10,8 @@ import { fromFileUrl as windowsFromFileUrl } from "./windows/from_file_url.ts";
  *
  * @example Usage
  * ```ts
- * import { fromFileUrl } from "@flareosaur/path/from-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { fromFileUrl } from "@mikepage/flareosaur/path/from-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(fromFileUrl("file:///home/foo"), "\\home\\foo");

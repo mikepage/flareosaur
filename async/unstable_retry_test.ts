@@ -6,9 +6,9 @@ import {
   assertInstanceOf,
   assertRejects,
   assertStrictEquals,
-} from "@flareosaur/assert";
-import { FakeTime } from "@flareosaur/testing/time";
-import { stub } from "@flareosaur/testing/mock";
+} from "../assert/mod.ts";
+import { FakeTime } from "../testing/time.ts";
+import { stub } from "../testing/mock.ts";
 
 /** Runs an always-failing function to exhaustion, returning the wait before each retry. */
 async function waitsUntilExhausted(options: RetryOptions): Promise<number[]> {

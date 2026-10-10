@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 import { createDetails, diffStr, tokenize, unescape } from "./diff_str.ts";
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 
 Deno.test({
   name: 'diff() "a" vs "b" (diffstr)',

@@ -5,7 +5,7 @@ import {
   assertFalse,
   assertRejects,
   assertStrictEquals,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 
 // allKeyed tests
 

@@ -7,8 +7,8 @@
  *
  * @example Comparing numbers
  * ```ts
- * import { ascend } from "@flareosaur/data-structures";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { ascend } from "@mikepage/flareosaur/data-structures";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(ascend(1, 2), -1);
  * assertEquals(ascend(2, 1), 1);
@@ -30,8 +30,8 @@ export function ascend<T>(a: T, b: T): -1 | 0 | 1 {
  *
  * @example Comparing numbers
  * ```ts
- * import { descend } from "@flareosaur/data-structures";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { descend } from "@mikepage/flareosaur/data-structures";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(descend(1, 2), 1);
  * assertEquals(descend(2, 1), -1);

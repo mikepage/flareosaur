@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { includesNeedle } from "./includes_needle.ts";
-import { assert } from "@flareosaur/assert";
+import { assert } from "../assert/mod.ts";
 
 Deno.test("includesNeedle()", () => {
   const encoder = new TextEncoder();

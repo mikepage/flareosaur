@@ -17,8 +17,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { mapValues } from "@flareosaur/collections/map-values";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapValues } from "@mikepage/flareosaur/collections/map-values";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const usersById = {
  *   a5ec: { name: "Mischa" },
@@ -55,8 +55,8 @@ export function mapValues<T, O, K extends string>(
  *
  * @example Basic usage
  * ```ts
- * import { mapValues } from "@flareosaur/collections/map-values";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { mapValues } from "@mikepage/flareosaur/collections/map-values";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const usersById = {
  *   "a5ec": { name: "Mischa" },

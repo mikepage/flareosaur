@@ -23,8 +23,8 @@
  *
  * @example Usage
  * ```ts
- * import { binarySearch } from "@flareosaur/collections/unstable-binary-search";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { binarySearch } from "@mikepage/flareosaur/collections/unstable-binary-search";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(binarySearch([0, 1], 0), 0);
  * assertEquals(binarySearch([0, 1], 1), 1);

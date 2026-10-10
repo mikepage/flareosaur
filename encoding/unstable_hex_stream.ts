@@ -5,10 +5,10 @@
  * TransformStream classes to encode and decode to and from hexadecimal data in a streaming manner.
  *
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeHex } from "@flareosaur/encoding/unstable-hex";
- * import { HexEncoderStream } from "@flareosaur/encoding/unstable-hex-stream";
- * import { toText } from "@flareosaur/streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeHex } from "@mikepage/flareosaur/encoding/unstable-hex";
+ * import { HexEncoderStream } from "@mikepage/flareosaur/encoding/unstable-hex-stream";
+ * import { toText } from "@mikepage/flareosaur/streams";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable
@@ -50,10 +50,10 @@ const decoder = new TextDecoder();
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { encodeHex } from "@flareosaur/encoding/unstable-hex";
- * import { HexEncoderStream } from "@flareosaur/encoding/unstable-hex-stream";
- * import { toText } from "@flareosaur/streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { encodeHex } from "@mikepage/flareosaur/encoding/unstable-hex";
+ * import { HexEncoderStream } from "@mikepage/flareosaur/encoding/unstable-hex-stream";
+ * import { toText } from "@mikepage/flareosaur/streams";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable
@@ -99,12 +99,12 @@ export class HexEncoderStream<T extends "string" | "bytes">
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  * import {
  *   HexDecoderStream,
  *   HexEncoderStream,
- * } from "@flareosaur/encoding/unstable-hex-stream";
- * import { toBytes } from "@flareosaur/streams/to-bytes";
+ * } from "@mikepage/flareosaur/encoding/unstable-hex-stream";
+ * import { toBytes } from "@mikepage/flareosaur/streams/to-bytes";
  *
  * const readable = (await Deno.open("./deno.lock"))
  *   .readable

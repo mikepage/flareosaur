@@ -16,8 +16,8 @@ import { isPosixPathSeparator } from "./_util.ts";
  *
  * @example Usage
  * ```ts
- * import { basename } from "@flareosaur/path/posix/basename";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { basename } from "@mikepage/flareosaur/path/posix/basename";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(basename("/home/user/Documents/"), "Documents");
  * assertEquals(basename("/home/user/Documents/image.png"), "image.png");
@@ -37,8 +37,8 @@ import { isPosixPathSeparator } from "./_util.ts";
  * and setting the `hash` and `search` properties to empty strings.
  *
  * ```ts
- * import { basename } from "@flareosaur/path/posix/basename";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { basename } from "@mikepage/flareosaur/path/posix/basename";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(basename("https://deno.land/std/path/mod.ts"), "mod.ts");
  * assertEquals(basename("https://deno.land/std/path/mod.ts", ".ts"), "mod");

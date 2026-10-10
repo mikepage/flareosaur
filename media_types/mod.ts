@@ -14,8 +14,8 @@
  * along with its license.
  *
  * ```ts
- * import { contentType, allExtensions, getCharset } from "@flareosaur/media-types";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { contentType, allExtensions, getCharset } from "@mikepage/flareosaur/media-types";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(allExtensions("application/json"), ["json", "map"]);
  *

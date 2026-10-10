@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertRejects } from "@flareosaur/assert";
-import { FixedChunkStream } from "@flareosaur/streams/unstable-fixed-chunk-stream";
+import { assertRejects } from "../assert/mod.ts";
+import { FixedChunkStream } from "./unstable_fixed_chunk_stream.ts";
 import { AbortStream } from "./unstable_abort_stream.ts";
 
 Deno.test("AbortStream", async () => {

@@ -7,7 +7,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { fail } from "@flareosaur/assert";
+ * import { fail } from "@mikepage/flareosaur/assert";
  *
  * fail("Deliberately failed!"); // Throws
  * ```

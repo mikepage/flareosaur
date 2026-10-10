@@ -5,8 +5,8 @@
  * Utilities for dealing with {@linkcode Date} objects.
  *
  * ```ts
- * import { dayOfYear, isLeap, difference, HOUR, MINUTE, SECOND } from "@flareosaur/datetime";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dayOfYear, isLeap, difference, HOUR, MINUTE, SECOND } from "@mikepage/flareosaur/datetime";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(dayOfYear(new Date("2019-03-11T03:24:00")), 70);
  * assertEquals(isLeap(1970), false);

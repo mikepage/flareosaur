@@ -1,10 +1,10 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { AssertionError, assertThrows } from "./mod.ts";
 import { assertEquals } from "./unstable_equals.ts";
-import { DIFF_CONTEXT_LENGTH } from "@flareosaur/internal/truncate-build-message";
-import { stripAnsiCode } from "@flareosaur/internal/styles";
-import { dedent } from "@flareosaur/text/unstable-dedent";
-import { stub } from "@flareosaur/testing/mock";
+import { DIFF_CONTEXT_LENGTH } from "../internal/truncate_build_message.ts";
+import { stripAnsiCode } from "../internal/styles.ts";
+import { dedent } from "../text/unstable_dedent.ts";
+import { stub } from "../testing/mock.ts";
 import { disposableStack } from "../internal/_testing.ts";
 
 function assertDiffMessage(a: unknown, b: unknown, expected: string) {

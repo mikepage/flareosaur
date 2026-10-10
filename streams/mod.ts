@@ -6,8 +6,8 @@
  * Includes buffering and conversion.
  *
  * ```ts
- * import { toText } from "@flareosaur/streams";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toText } from "@mikepage/flareosaur/streams";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from(["Hello, world!"]);
  * const text = await toText(stream);

@@ -7,7 +7,7 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { unreachable } from "@flareosaur/assert";
+ * import { unreachable } from "@mikepage/flareosaur/assert";
  *
  * unreachable(); // Throws
  * ```

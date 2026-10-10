@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { lastIndexOfNeedle } from "./last_index_of_needle.ts";
 
 Deno.test("lastIndexOfNeedle() handles repeating occurrence", () => {

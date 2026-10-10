@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { unzip } from "@flareosaur/collections/unzip";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { unzip } from "@mikepage/flareosaur/collections/unzip";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const parents = [
  *   ["Maria", "Jeff"],

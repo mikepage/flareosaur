@@ -7,8 +7,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { ByteSliceStream } from "@flareosaur/streams/byte-slice-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { ByteSliceStream } from "@mikepage/flareosaur/streams/byte-slice-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   new Uint8Array([0, 1]),
@@ -24,8 +24,8 @@
  *
  * @example Get a range of bytes from a fetch response body
  * ```ts
- * import { ByteSliceStream } from "@flareosaur/streams/byte-slice-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { ByteSliceStream } from "@mikepage/flareosaur/streams/byte-slice-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const response = await fetch("https://example.com");
  * const rangedStream = response.body!

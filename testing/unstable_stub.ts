@@ -28,8 +28,8 @@ export interface Stub<
  *
  * @example Usage
  * ```ts
- * import { assertSpyCalls } from "@flareosaur/testing/mock";
- * import { stub } from "@flareosaur/testing/unstable-stub";
+ * import { assertSpyCalls } from "@mikepage/flareosaur/testing/mock";
+ * import { stub } from "@mikepage/flareosaur/testing/unstable-stub";
  *
  * const obj = {
  *   method() {
@@ -65,8 +65,8 @@ export function stub<
  *
  * @example Usage
  * ```ts
- * import { stub } from "@flareosaur/testing/unstable-stub";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { stub } from "@mikepage/flareosaur/testing/unstable-stub";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = {
  *   method(): number {
@@ -102,9 +102,9 @@ export function stub<
  *
  * @example Usage
  * ```ts
- * import { assertSpyCalls } from "@flareosaur/testing/mock";
- * import { stub } from "@flareosaur/testing/unstable-stub";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertSpyCalls } from "@mikepage/flareosaur/testing/mock";
+ * import { stub } from "@mikepage/flareosaur/testing/unstable-stub";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = {
  *  prop: "foo",

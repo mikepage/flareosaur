@@ -10,8 +10,8 @@
  * import {
  *   encodeBase64,
  *   decodeBase64,
- * } from "@flareosaur/encoding/base64";
- * import { assertEquals } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/encoding/base64";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const foobar = new TextEncoder().encode("foobar");
  *
@@ -43,8 +43,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase64 } from "@flareosaur/encoding/base64";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeBase64 } from "@mikepage/flareosaur/encoding/base64";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeBase64("foobar"), "Zm9vYmFy");
  * ```
@@ -72,8 +72,8 @@ export function encodeBase64(data: ArrayBuffer | Uint8Array | string): string {
  *
  * @example Usage
  * ```ts
- * import { decodeBase64 } from "@flareosaur/encoding/base64";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeBase64 } from "@mikepage/flareosaur/encoding/base64";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   decodeBase64("Zm9vYmFy"),

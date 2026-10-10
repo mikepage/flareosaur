@@ -12,8 +12,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { normalizeGlob } from "@flareosaur/path/posix/normalize-glob";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { normalizeGlob } from "@mikepage/flareosaur/path/posix/normalize-glob";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const path = normalizeGlob("foo/bar/../*", { globstar: true });
  * assertEquals(path, "foo/*");

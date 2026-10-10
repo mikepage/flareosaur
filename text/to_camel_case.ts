@@ -8,8 +8,8 @@ import { capitalizeWord, splitToWords } from "./_util.ts";
  *
  * @example Usage
  * ```ts
- * import { toCamelCase } from "@flareosaur/text/to-camel-case";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toCamelCase } from "@mikepage/flareosaur/text/to-camel-case";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(toCamelCase("deno is awesome"),"denoIsAwesome");
  * ```

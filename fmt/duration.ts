@@ -5,8 +5,8 @@
  * Format milliseconds to time duration.
  *
  * ```ts
- * import { format } from "@flareosaur/fmt/duration";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/duration";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(99674, { style: "digital" }), "00:00:01:39:674:000:000");
  *
@@ -109,8 +109,8 @@ export interface FormatOptions {
  *
  * @example Usage
  * ```ts
- * import { format } from "@flareosaur/fmt/duration";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/fmt/duration";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(format(99674, { style: "digital" }), "00:00:01:39:674:000:000");
  *

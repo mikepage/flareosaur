@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { pick } from "@flareosaur/collections/pick";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { pick } from "@mikepage/flareosaur/collections/pick";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = { a: 5, b: 6, c: 7, d: 8 };
  * const picked = pick(obj, ["a", "c"]);

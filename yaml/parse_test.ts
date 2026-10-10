@@ -11,8 +11,8 @@ import {
   assertEquals,
   assertInstanceOf,
   assertThrows,
-} from "@flareosaur/assert";
-import { assertSpyCall, spy } from "@flareosaur/testing/mock";
+} from "../assert/mod.ts";
+import { assertSpyCall, spy } from "../testing/mock.ts";
 
 Deno.test({
   name: "parse() handles single document yaml string",

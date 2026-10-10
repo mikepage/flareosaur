@@ -22,8 +22,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { partition } from "@flareosaur/collections/partition";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { partition } from "@mikepage/flareosaur/collections/partition";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const mixed = [1, "a", 2, "b"];
  * const isString = (x: unknown): x is string => typeof x === "string";
@@ -53,8 +53,8 @@ export function partition<T, U extends T>(
  *
  * @example Basic usage
  * ```ts
- * import { partition } from "@flareosaur/collections/partition";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { partition } from "@mikepage/flareosaur/collections/partition";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [5, 6, 7, 8, 9];
  * const [even, odd] = partition(numbers, (it) => it % 2 === 0);
@@ -65,8 +65,8 @@ export function partition<T, U extends T>(
  *
  * @example Using the index parameter
  * ```ts
- * import { partition } from "@flareosaur/collections/partition";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { partition } from "@mikepage/flareosaur/collections/partition";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [2, 4, 6];
  * const [evenIndexed, oddIndexed] = partition(

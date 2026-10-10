@@ -5,10 +5,10 @@ import {
   assertLess,
   assertNotEquals,
   assertStrictEquals,
-} from "@flareosaur/assert";
+} from "../assert/mod.ts";
 import { throttle, type ThrottledFunction } from "./unstable_throttle.ts";
 import { delay } from "./delay.ts";
-import { FakeTime } from "@flareosaur/testing/time";
+import { FakeTime } from "../testing/time.ts";
 
 Deno.test("throttle() handles called", async () => {
   let called = 0;

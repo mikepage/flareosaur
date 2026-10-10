@@ -1,13 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { stub } from "@flareosaur/testing/mock";
+import { stub } from "../testing/mock.ts";
 import {
   deleteCookie,
   getCookies,
   getSetCookies,
   setCookie,
 } from "./cookie.ts";
-import { assert, assertEquals, assertThrows } from "@flareosaur/assert";
-import { assertType, type IsExact } from "@flareosaur/testing/types";
+import { assert, assertEquals, assertThrows } from "../assert/mod.ts";
+import { assertType, type IsExact } from "../testing/types.ts";
 
 Deno.test({
   name: "getCookies() parses cookie",

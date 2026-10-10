@@ -9,7 +9,7 @@
  * Input order is preserved.
  *
  * For grouping an in-hand iterable instead of a stream, see
- * {@link https://jsr.io/@std/collections/doc/chunk | `chunk` from `@flareosaur/collections`}.
+ * {@link https://jsr.io/@std/collections/doc/chunk | `chunk` from `@mikepage/flareosaur/collections`}.
  * For resizing `Uint8Array` chunks at the byte level, see
  * {@linkcode FixedChunkStream}.
  *
@@ -17,8 +17,8 @@
  *
  * @example Batch records for bulk upload
  * ```ts
- * import { BatchStream } from "@flareosaur/streams/batch-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { BatchStream } from "@mikepage/flareosaur/streams/batch-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const records = ReadableStream.from([1, 2, 3, 4, 5])
  *   .pipeThrough(new BatchStream(2));
@@ -28,8 +28,8 @@
  *
  * @example Type inference inside a pipeline
  * ```ts
- * import { BatchStream } from "@flareosaur/streams/batch-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { BatchStream } from "@mikepage/flareosaur/streams/batch-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * interface User {
  *   id: string;

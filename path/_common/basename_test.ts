@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../../assert/mod.ts";
 import { assertArgs, lastPathSegment, stripSuffix } from "./basename.ts";
 import { CHAR_FORWARD_SLASH } from "./constants.ts";
 

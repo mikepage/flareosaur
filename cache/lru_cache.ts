@@ -58,8 +58,8 @@ export interface LruCacheOptions<K, V> {
  *
  * @example Basic usage
  * ```ts
- * import { LruCache } from "@flareosaur/cache";
- * import { assert, assertEquals } from "@flareosaur/assert";
+ * import { LruCache } from "@mikepage/flareosaur/cache";
+ * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const MAX_SIZE = 3;
  * const cache = new LruCache<string, number>(MAX_SIZE);
@@ -80,8 +80,8 @@ export interface LruCacheOptions<K, V> {
  *
  * @example Adding an onEject callback
  * ```ts
- * import { LruCache } from "@flareosaur/cache";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { LruCache } from "@mikepage/flareosaur/cache";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const ejected: [string, number, string][] = [];
  * const cache = new LruCache<string, number>(2, {
@@ -133,8 +133,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Max size
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const cache = new LruCache<string, number>(100);
    * assertEquals(cache.maxSize, 100);
@@ -173,8 +173,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Checking for the existence of a key
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assert } from "@flareosaur/assert";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assert } from "@mikepage/flareosaur/assert";
    *
    * const cache = new LruCache<string, number>(100);
    *
@@ -195,8 +195,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Getting a value from the cache
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const cache = new LruCache<string, number>(100);
    *
@@ -226,8 +226,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Peeking at a value without promoting it
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const cache = new LruCache<string, number>(3);
    * cache.set("a", 1);
@@ -255,7 +255,7 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Setting a value in the cache
    * ```ts no-assert
-   * import { LruCache } from "@flareosaur/cache";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
    *
    * const cache = new LruCache<string, number>(100);
    * cache.set("a", 1);
@@ -283,8 +283,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Deleting a key from the cache
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const cache = new LruCache<string, number>(1);
    *
@@ -321,8 +321,8 @@ export class LruCache<K, V> extends Map<K, V>
    *
    * @example Usage
    * ```ts
-   * import { LruCache } from "@flareosaur/cache";
-   * import { assertEquals } from "@flareosaur/assert/equals";
+   * import { LruCache } from "@mikepage/flareosaur/cache";
+   * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
    *
    * const cache = new LruCache<string, number>(100);
    *

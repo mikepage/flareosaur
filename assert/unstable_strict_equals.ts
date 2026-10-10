@@ -1,9 +1,9 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { assertStrictEquals as _assertStrictEquals } from "./strict_equals.ts";
-import { truncateDiff } from "@flareosaur/internal/truncate-build-message";
+import { truncateDiff } from "../internal/truncate_build_message.ts";
 // deno-lint-ignore no-unused-vars
-import type { DIFF_CONTEXT_LENGTH } from "@flareosaur/internal/truncate-build-message";
+import type { DIFF_CONTEXT_LENGTH } from "../internal/truncate_build_message.ts";
 
 /**
  * Make an assertion that `actual` and `expected` are strictly equal, using
@@ -18,7 +18,7 @@ import type { DIFF_CONTEXT_LENGTH } from "@flareosaur/internal/truncate-build-me
  *
  * @example Usage
  * ```ts ignore
- * import { assertStrictEquals } from "@flareosaur/assert";
+ * import { assertStrictEquals } from "@mikepage/flareosaur/assert";
  *
  * const a = {};
  * const b = a;

@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assert, assertFalse, assertThrows } from "@flareosaur/assert";
+import { assert, assertFalse, assertThrows } from "../assert/mod.ts";
 
 import { type Format, test } from "./test.ts";
 

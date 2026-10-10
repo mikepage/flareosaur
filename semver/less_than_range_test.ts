@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // Copyright Isaac Z. Schlueter and npm contributors. All rights reserved. ISC license.
 
-import { assert, assertEquals, assertFalse } from "@flareosaur/assert";
+import { assert, assertEquals, assertFalse } from "../assert/mod.ts";
 import {
   format,
   formatRange,

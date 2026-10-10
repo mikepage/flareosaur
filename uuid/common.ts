@@ -13,8 +13,8 @@ import { NIL_UUID } from "./constants.ts";
  *
  * @example Usage
  * ```ts
- * import { isNil } from "@flareosaur/uuid";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { isNil } from "@mikepage/flareosaur/uuid";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(isNil("00000000-0000-0000-0000-000000000000"));
  * assertFalse(isNil(crypto.randomUUID()));
@@ -33,8 +33,8 @@ export function isNil(id: string): boolean {
  *
  * @example Usage
  * ```ts
- * import { validate } from "@flareosaur/uuid";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { validate } from "@mikepage/flareosaur/uuid";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(validate("6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"));
  * assertFalse(validate("not a UUID"));
@@ -56,8 +56,8 @@ export function validate(uuid: string): boolean {
  *
  * @example Usage
  * ```ts
- * import { version } from "@flareosaur/uuid";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { version } from "@mikepage/flareosaur/uuid";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(version("d9428888-122b-11e1-b85c-61cd3cbb3210"), 1);
  * assertEquals(version("6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"), 4);

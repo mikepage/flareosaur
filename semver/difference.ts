@@ -9,8 +9,8 @@ import { compareIdentifier } from "./_shared.ts";
  *
  * @example Usage
  * ```ts
- * import { parse, difference } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, difference } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const version1 = parse("1.2.3");
  * const version2 = parse("1.2.4");

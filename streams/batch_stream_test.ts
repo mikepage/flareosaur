@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
 import { BatchStream } from "./batch_stream.ts";
 
 Deno.test("BatchStream() emits at the configured size", async () => {

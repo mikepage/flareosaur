@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { CappedDelimiterStream } from "@flareosaur/streams/unstable-capped-delimiter-stream";
+import { CappedDelimiterStream } from "../streams/unstable_capped_delimiter_stream.ts";
 
 /**
  * The output that is passed from a {@linkcode FormDataDecoderStream}.
@@ -45,8 +45,8 @@ export interface FormDataEntry {
  *
  * @example Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { FormDataDecoderStream } from "@flareosaur/http/unstable-formdata-decoder-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { FormDataDecoderStream } from "@mikepage/flareosaur/http/unstable-formdata-decoder-stream";
  * const request = new Request("https://example.com", {
  *   method: "POST",
  *   body: function() {
@@ -275,8 +275,8 @@ export class FormDataDecoderStream {
    *
    * @example Usage
    * ```ts
-   * import { assertEquals } from "@flareosaur/assert";
-   * import { FormDataDecoderStream } from "@flareosaur/http/unstable-formdata-decoder-stream";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
+   * import { FormDataDecoderStream } from "@mikepage/flareosaur/http/unstable-formdata-decoder-stream";
    * const request = new Request("https://example.com", {
    *   method: "POST",
    *   body: function() {
@@ -311,8 +311,8 @@ export class FormDataDecoderStream {
    *
    * @example Usage
    * ```ts
-   * import { assert, assertEquals } from "@flareosaur/assert";
-   * import { FormDataDecoderStream } from "@flareosaur/http/unstable-formdata-decoder-stream";
+   * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
+   * import { FormDataDecoderStream } from "@mikepage/flareosaur/http/unstable-formdata-decoder-stream";
    * const request = new Request("https://example.com", {
    *   method: "POST",
    *   body: function() {

@@ -8,7 +8,7 @@
  * APIs when possible.
  *
  * ```ts no-assert
- * import { crypto } from "@flareosaur/crypto/crypto";
+ * import { crypto } from "@mikepage/flareosaur/crypto/crypto";
  *
  * const message = "Hello, Deno!";
  * const encoder = new TextEncoder();

@@ -10,8 +10,8 @@ import { greaterThan } from "./greater_than.ts";
  *
  * @example Usage
  * ```ts
- * import { parse, parseRange, maxSatisfying } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, parseRange, maxSatisfying } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const versions = ["1.2.3", "1.2.4", "1.3.0", "2.0.0", "2.1.0"].map(parse);
  * const range = parseRange(">=1.0.0 <2.0.0");

@@ -7,8 +7,8 @@
  * import {
  *   assertSpyCalls,
  *   spy,
- * } from "@flareosaur/testing/mock";
- * import { FakeTime } from "@flareosaur/testing/time";
+ * } from "@mikepage/flareosaur/testing/mock";
+ * import { FakeTime } from "@mikepage/flareosaur/testing/time";
  *
  * function secondInterval(cb: () => void) {
  *   return setInterval(cb, 1000);
@@ -36,9 +36,9 @@
  * @module
  */
 
-import { RedBlackTree } from "@flareosaur/data-structures/red-black-tree";
-import { ascend } from "@flareosaur/data-structures/comparators";
-import type { DelayOptions } from "@flareosaur/async/delay";
+import { RedBlackTree } from "../data_structures/red_black_tree.ts";
+import { ascend } from "../data_structures/comparators.ts";
+import type { DelayOptions } from "../async/delay.ts";
 import { _internals } from "./_time.ts";
 
 export type { DelayOptions };
@@ -49,8 +49,8 @@ export type { DelayOptions };
  *
  * @example Usage
  * ```ts
- * import { FakeTime, TimeError } from "@flareosaur/testing/time";
- * import { assertThrows } from "@flareosaur/assert";
+ * import { FakeTime, TimeError } from "@mikepage/flareosaur/testing/time";
+ * import { assertThrows } from "@mikepage/flareosaur/assert";
  *
  * assertThrows(() => {
  *   const time = new FakeTime();
@@ -263,8 +263,8 @@ let dueTree: RedBlackTree<DueNode>;
  * import {
  *   assertSpyCalls,
  *   spy,
- * } from "@flareosaur/testing/mock";
- * import { FakeTime } from "@flareosaur/testing/time";
+ * } from "@mikepage/flareosaur/testing/mock";
+ * import { FakeTime } from "@mikepage/flareosaur/testing/time";
  *
  * function secondInterval(cb: () => void) {
  *   return setInterval(cb, 1000);
@@ -351,8 +351,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals, assertNotEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals, assertNotEquals } from "@mikepage/flareosaur/assert";
    *
    * const setTimeout = globalThis.setTimeout;
    *
@@ -382,8 +382,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals, assertNotEquals } from "@flareosaur/assert"
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals, assertNotEquals } from "@mikepage/flareosaur/assert"
    *
    * const setTimeout = globalThis.setTimeout;
    *
@@ -410,8 +410,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals, assertNotEquals } from "@flareosaur/assert"
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals, assertNotEquals } from "@mikepage/flareosaur/assert"
    *
    * const setTimeout = globalThis.setTimeout;
    *
@@ -460,8 +460,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -485,8 +485,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -536,8 +536,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -555,8 +555,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -600,8 +600,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assert } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assert } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -627,8 +627,8 @@ export class FakeTime {
    * import {
    *   assertSpyCalls,
    *   spy,
-   * } from "@flareosaur/testing/mock";
-   * import { FakeTime } from "@flareosaur/testing/time";
+   * } from "@mikepage/flareosaur/testing/mock";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
    *
    * function secondInterval(cb: () => void) {
    *   return setInterval(cb, 1000);
@@ -665,8 +665,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assert, assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -693,8 +693,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assert, assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -722,8 +722,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assert, assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -754,8 +754,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -785,8 +785,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals } from "@mikepage/flareosaur/assert";
    *
    * const fakeTime = new FakeTime(15_000);
    *
@@ -814,8 +814,8 @@ export class FakeTime {
    *
    * @example Usage
    * ```ts
-   * import { FakeTime } from "@flareosaur/testing/time";
-   * import { assertEquals, assertNotEquals } from "@flareosaur/assert";
+   * import { FakeTime } from "@mikepage/flareosaur/testing/time";
+   * import { assertEquals, assertNotEquals } from "@mikepage/flareosaur/assert";
    *
    * const setTimeout = globalThis.setTimeout;
    *

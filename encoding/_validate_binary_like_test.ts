@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
 import { validateBinaryLike } from "./_validate_binary_like.ts";
 
 Deno.test("validateBinaryLike()", () => {

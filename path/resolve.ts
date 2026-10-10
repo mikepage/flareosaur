@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { resolve as posixResolve } from "./posix/resolve.ts";
 import { resolve as windowsResolve } from "./windows/resolve.ts";
 
@@ -10,8 +10,8 @@ import { resolve as windowsResolve } from "./windows/resolve.ts";
  *
  * @example Usage
  * ```ts
- * import { resolve } from "@flareosaur/path/resolve";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { resolve } from "@mikepage/flareosaur/path/resolve";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(resolve("C:\\foo", "bar", "baz"), "C:\\foo\\bar\\baz");

@@ -16,8 +16,8 @@ export type { Extract };
  *
  * @example Usage
  * ```ts
- * import { extract } from "@flareosaur/front-matter/any";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extract } from "@mikepage/flareosaur/front-matter/any";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const output = `---json
  * {

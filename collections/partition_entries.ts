@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { partitionEntries } from "@flareosaur/collections/partition-entries";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { partitionEntries } from "@mikepage/flareosaur/collections/partition-entries";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const menu = {
  *   Salad: 11,

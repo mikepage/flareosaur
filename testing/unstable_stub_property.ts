@@ -15,8 +15,8 @@
  *
  * @example Usage
  * ```ts
- * import { stubProperty } from "@flareosaur/testing/unstable-stub-property";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { stubProperty } from "@mikepage/flareosaur/testing/unstable-stub-property";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const obj = { foo: "bar" };
  * {

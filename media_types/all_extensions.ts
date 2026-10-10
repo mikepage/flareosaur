@@ -17,8 +17,8 @@ import { extensions } from "./_db.ts";
  *
  * @example Usage
  * ```ts
- * import { allExtensions } from "@flareosaur/media-types/all-extensions";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { allExtensions } from "@mikepage/flareosaur/media-types/all-extensions";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(allExtensions("application/json"), ["json", "map"]);
  * assertEquals(allExtensions("text/html; charset=UTF-8"), ["html", "htm", "shtml"]);

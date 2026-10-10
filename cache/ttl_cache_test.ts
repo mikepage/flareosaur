@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { TtlCache } from "./ttl_cache.ts";
-import { assertEquals, assertThrows } from "@flareosaur/assert";
-import { FakeTime } from "@flareosaur/testing/time";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
+import { FakeTime } from "../testing/time.ts";
 
 const UNSET = Symbol("UNSET");
 

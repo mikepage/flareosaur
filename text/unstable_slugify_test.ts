@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertMatch } from "@flareosaur/assert";
+import { assertEquals, assertMatch } from "../assert/mod.ts";
 import {
   ASCII_DIACRITICS_REGEXP,
   DIACRITICS_REGEXP,

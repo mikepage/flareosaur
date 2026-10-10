@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { concat } from "@flareosaur/bytes/concat";
+import { concat } from "../bytes/concat.ts";
 
 /**
  * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to an
@@ -12,8 +12,8 @@ import { concat } from "@flareosaur/bytes/concat";
  *
  * @example Basic usage
  * ```ts
- * import { toArrayBuffer } from "@flareosaur/streams/to-array-buffer";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toArrayBuffer } from "@mikepage/flareosaur/streams/to-array-buffer";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const stream = ReadableStream.from([
  *   new Uint8Array([1, 2]),

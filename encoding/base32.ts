@@ -10,8 +10,8 @@
  * Modified from {@link https://github.com/beatgammit/base64-js}.
  *
  * ```ts
- * import { encodeBase32, decodeBase32 } from "@flareosaur/encoding/base32";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeBase32, decodeBase32 } from "@mikepage/flareosaur/encoding/base32";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeBase32("foobar"), "MZXW6YTBOI======");
  *
@@ -45,8 +45,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase32 } from "@flareosaur/encoding/base32";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeBase32 } from "@mikepage/flareosaur/encoding/base32";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeBase32("6c60c0"), "GZRTMMDDGA======");
  * ```
@@ -74,8 +74,8 @@ export function encodeBase32(data: ArrayBuffer | Uint8Array | string): string {
  *
  * @example Usage
  * ```ts
- * import { decodeBase32 } from "@flareosaur/encoding/base32";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeBase32 } from "@mikepage/flareosaur/encoding/base32";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   decodeBase32("GZRTMMDDGA======"),

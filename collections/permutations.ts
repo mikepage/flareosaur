@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { permutations } from "@flareosaur/collections/permutations";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { permutations } from "@mikepage/flareosaur/collections/permutations";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const numbers = [ 1, 2 ];
  * const windows = permutations(numbers);

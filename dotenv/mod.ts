@@ -6,8 +6,8 @@
  * Note: The key needs to match the pattern /^[a-zA-Z_][a-zA-Z0-9_]*$/.
  *
  * ```ts
- * import { parse, stringify } from "@flareosaur/dotenv";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, stringify } from "@mikepage/flareosaur/dotenv";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(parse("GREETING=hello world"), { GREETING: "hello world" });
  * assertEquals(stringify({ GREETING: "hello world" }), "GREETING='hello world'");

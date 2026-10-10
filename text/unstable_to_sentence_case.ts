@@ -24,8 +24,8 @@ export interface SentenceCaseOptions extends BaseTitleCaseOptions {}
  *
  * @example Usage
  * ```ts
- * import { toSentenceCase } from "@flareosaur/text/unstable-to-sentence-case";
- * import { assertEquals } from "@flareosaur/assert/equals";
+ * import { toSentenceCase } from "@mikepage/flareosaur/text/unstable-to-sentence-case";
+ * import { assertEquals } from "@mikepage/flareosaur/assert/equals";
  *
  * assertEquals(toSentenceCase("deno is awesome"), "Deno is awesome");
  * ```

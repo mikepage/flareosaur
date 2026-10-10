@@ -11,8 +11,8 @@
  * each other, see {@linkcode generate} for details.
  *
  * ```ts
- * import { generate, validate, extractTimestamp } from "@flareosaur/uuid/v7";
- * import { assert, assertEquals } from "@flareosaur/assert";
+ * import { generate, validate, extractTimestamp } from "@mikepage/flareosaur/uuid/v7";
+ * import { assert, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const uuid = generate();
  * assert(validate(uuid));
@@ -36,8 +36,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "@flareosaur/uuid/v7";
- * import { assert, assertFalse } from "@flareosaur/assert";
+ * import { validate } from "@mikepage/flareosaur/uuid/v7";
+ * import { assert, assertFalse } from "@mikepage/flareosaur/assert";
  *
  * assert(validate("017f22e2-79b0-7cc3-98c4-dc0c0c07398f"));
  * assertFalse(validate("fac8c1e0-ad1a-4204-a0d0-8126ae84495d"));
@@ -64,8 +64,8 @@ export function validate(id: string): boolean {
  *
  * @example Usage
  * ```ts
- * import { generate, validate } from "@flareosaur/uuid/v7";
- * import { assert } from "@flareosaur/assert";
+ * import { generate, validate } from "@mikepage/flareosaur/uuid/v7";
+ * import { assert } from "@mikepage/flareosaur/assert";
  *
  * const uuid = generate();
  * assert(validate(uuid));
@@ -101,8 +101,8 @@ export function generate(timestamp: number = Date.now()): string {
  *
  * @example Usage
  * ```ts
- * import { extractTimestamp } from "@flareosaur/uuid/v7";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { extractTimestamp } from "@mikepage/flareosaur/uuid/v7";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const uuid = "017f22e2-79b0-7cc3-98c4-dc0c0c07398f";
  * const timestamp = extractTimestamp(uuid);

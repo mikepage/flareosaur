@@ -7,8 +7,8 @@
  * ## Parsing CSV
  *
  * ```ts
- * import { parse } from "@flareosaur/csv/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/csv/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const string = "a,b,c\nd,e,f";
  *
@@ -41,8 +41,8 @@
  * ## Parsing CSV from a Stream
  *
  * ```ts
- * import { CsvParseStream } from "@flareosaur/csv/parse-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Parse from a stream (useful for large files)
  * const source = ReadableStream.from([
@@ -69,8 +69,8 @@
  * ## Stringifying Data to CSV
  *
  * ```ts
- * import { stringify } from "@flareosaur/csv/stringify";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { stringify } from "@mikepage/flareosaur/csv/stringify";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * // Convert array of arrays to CSV
  * const arrayData = [["name", "age", "city"], ["john", "30", "new york"], ["mary", "25", "los angeles"]];
@@ -91,8 +91,8 @@
  * ## Streaming Stringify Data to CSV
  *
  * ```ts
- * import { CsvStringifyStream } from "@flareosaur/csv/stringify-stream";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { CsvStringifyStream } from "@mikepage/flareosaur/csv/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * async function writeCsvToTempFile(): Promise<string> {
  *   const path = await Deno.makeTempFile();

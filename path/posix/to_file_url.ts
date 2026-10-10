@@ -9,8 +9,8 @@ import { isAbsolute } from "./is_absolute.ts";
  *
  * @example Usage
  * ```ts
- * import { toFileUrl } from "@flareosaur/path/posix/to-file-url";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { toFileUrl } from "@mikepage/flareosaur/path/posix/to-file-url";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(toFileUrl("/home/foo"), new URL("file:///home/foo"));
  * assertEquals(toFileUrl("/home/foo bar"), new URL("file:///home/foo%20bar"));

@@ -31,9 +31,9 @@ export interface AbortableOptions {
  *
  * @example Error-handling a timeout
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { delay } from "@flareosaur/async/delay";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const promise = delay(1_000);
  *
@@ -47,9 +47,9 @@ export interface AbortableOptions {
  *
  * @example Error-handling an abort
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { delay } from "@flareosaur/async/delay";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const promise = delay(1_000);
  * const controller = new AbortController();
@@ -65,8 +65,8 @@ export interface AbortableOptions {
  *
  * @example Passing an optional signal through options
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * async function process(options: { signal?: AbortSignal } = {}) {
  *   return await abortable(Promise.resolve("Hello"), options);
@@ -99,9 +99,9 @@ export function abortable<T>(
  *
  * @example Error-handling a timeout
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { delay } from "@flareosaur/async/delay";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const asyncIter = async function* () {
  *   yield "Hello";
@@ -126,9 +126,9 @@ export function abortable<T>(
  *
  * @example Error-handling an abort
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { delay } from "@flareosaur/async/delay";
- * import { assertRejects, assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { delay } from "@mikepage/flareosaur/async/delay";
+ * import { assertRejects, assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const asyncIter = async function* () {
  *   yield "Hello";
@@ -154,8 +154,8 @@ export function abortable<T>(
  *
  * @example Passing an optional signal through options
  * ```ts
- * import { abortable } from "@flareosaur/async/unstable-abortable";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { abortable } from "@mikepage/flareosaur/async/unstable-abortable";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const asyncIter = async function* () {
  *   yield "Hello";

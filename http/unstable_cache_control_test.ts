@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals, assertThrows } from "@flareosaur/assert";
-import { assertType, type IsExact } from "@flareosaur/testing/types";
+import { assertEquals, assertThrows } from "../assert/mod.ts";
+import { assertType, type IsExact } from "../testing/types.ts";
 import {
   type CacheControl,
   formatCacheControl,

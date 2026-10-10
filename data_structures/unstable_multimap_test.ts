@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertEquals, assertNotStrictEquals, assertThrows } from "@flareosaur/assert";
+import { assertEquals, assertNotStrictEquals, assertThrows } from "../assert/mod.ts";
 import { MultiMap } from "./unstable_multimap.ts";
 
 Deno.test("MultiMap.add() adds a value under a new key", () => {

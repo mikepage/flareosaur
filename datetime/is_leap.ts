@@ -21,8 +21,8 @@ function isYearNumberALeapYear(yearNumber: number): boolean {
  *
  * @example Basic usage
  * ```ts
- * import { isLeap } from "@flareosaur/datetime/is-leap";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { isLeap } from "@mikepage/flareosaur/datetime/is-leap";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(isLeap(new Date("1970-01-02")), false);
  *
@@ -35,7 +35,7 @@ function isYearNumberALeapYear(yearNumber: number): boolean {
  *
  * @example Accounting for timezones
  * ```ts no-assert
- * import { isLeap } from "@flareosaur/datetime/is-leap";
+ * import { isLeap } from "@mikepage/flareosaur/datetime/is-leap";
  *
  *  // True if the local timezone is GMT+0; false if the local timezone is GMT-1
  * isLeap(new Date("2000-01-01"));
@@ -62,8 +62,8 @@ export function isLeap(year: Date | number): boolean {
  *
  * @example Basic usage
  * ```ts
- * import { isUtcLeap } from "@flareosaur/datetime/is-leap";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { isUtcLeap } from "@mikepage/flareosaur/datetime/is-leap";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(isUtcLeap(new Date("2000-01-01")), true);
  *

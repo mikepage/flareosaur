@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { AssertionError } from "./assertion_error.ts";
-import { stripAnsiCode } from "@flareosaur/internal/styles";
+import { stripAnsiCode } from "../internal/styles.ts";
 
 /**
  * Make an assertion that `error` is an `Error`.
@@ -11,7 +11,7 @@ import { stripAnsiCode } from "@flareosaur/internal/styles";
  *
  * @example Usage
  * ```ts ignore
- * import { assertIsError } from "@flareosaur/assert";
+ * import { assertIsError } from "@mikepage/flareosaur/assert";
  *
  * assertIsError(null); // Throws
  * assertIsError(new RangeError("Out of range")); // Doesn't throw

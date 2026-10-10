@@ -19,8 +19,8 @@ import { preferredMediaTypes } from "./_negotiation/media_type.ts";
  *
  * @example Usage
  * ```ts
- * import { accepts } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { accepts } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: {
@@ -48,8 +48,8 @@ export function accepts(request: Pick<Request, "headers">): string[];
  *
  *  @example Usage
  * ```ts
- * import { accepts } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { accepts } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: {
@@ -89,8 +89,8 @@ export function accepts(
  *
  * @example Usage
  * ```ts
- * import { acceptsEncodings } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { acceptsEncodings } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: { "accept-encoding": "deflate, gzip;q=1.0, *;q=0.5" },
@@ -114,8 +114,8 @@ export function acceptsEncodings(request: Pick<Request, "headers">): string[];
  *
  * @example Usage
  * ```ts
- * import { acceptsEncodings } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { acceptsEncodings } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: { "accept-encoding": "deflate, gzip;q=1.0, *;q=0.5" },
@@ -154,8 +154,8 @@ export function acceptsEncodings(
  *
  * @example Usage
  * ```ts
- * import { acceptsLanguages } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { acceptsLanguages } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: {
@@ -176,8 +176,8 @@ export function acceptsLanguages(request: Pick<Request, "headers">): string[];
  *
  * @example Usage
  * ```ts
- * import { acceptsLanguages } from "@flareosaur/http/negotiation";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { acceptsLanguages } from "@mikepage/flareosaur/http/negotiation";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const request = new Request("https://example.com/", {
  *   headers: {

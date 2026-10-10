@@ -12,8 +12,8 @@
  * import {
  *   decodeHex,
  *   encodeHex,
- * } from "@flareosaur/encoding/hex";
- * import { assertEquals } from "@flareosaur/assert";
+ * } from "@mikepage/flareosaur/encoding/hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeHex("abc"), "616263");
  *
@@ -48,8 +48,8 @@ new TextEncoder()
  *
  * @example Usage
  * ```ts
- * import { encodeHex } from "@flareosaur/encoding/hex";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { encodeHex } from "@mikepage/flareosaur/encoding/hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(encodeHex("abc"), "616263");
  * ```
@@ -77,8 +77,8 @@ export function encodeHex(src: string | Uint8Array | ArrayBuffer): string {
  *
  * @example Usage
  * ```ts
- * import { decodeHex } from "@flareosaur/encoding/hex";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeHex } from "@mikepage/flareosaur/encoding/hex";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals(
  *   decodeHex("616263"),

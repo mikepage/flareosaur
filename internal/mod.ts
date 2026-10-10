@@ -6,8 +6,8 @@
  * Note: this module is for internal use only and should not be used directly.
  *
  * ```ts
- * import { diff, diffStr, buildMessage } from "@flareosaur/internal";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { diff, diffStr, buildMessage } from "@mikepage/flareosaur/internal";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const a = [1, 2, 3];
  * const b = [1, 2, 4];

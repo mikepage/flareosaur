@@ -1,10 +1,10 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { equal } from "./equal.ts";
-import { buildMessage } from "@flareosaur/internal/build-message";
-import { diff } from "@flareosaur/internal/diff";
-import { diffStr } from "@flareosaur/internal/diff-str";
-import { format } from "@flareosaur/internal/format";
+import { buildMessage } from "../internal/build_message.ts";
+import { diff } from "../internal/diff.ts";
+import { diffStr } from "../internal/diff_str.ts";
+import { format } from "../internal/format.ts";
 
 import { AssertionError } from "./assertion_error.ts";
 
@@ -23,14 +23,14 @@ import { AssertionError } from "./assertion_error.ts";
  *
  * @example Usage
  * ```ts ignore
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * assertEquals("world", "world"); // Doesn't throw
  * assertEquals("hello", "world"); // Throws
  * ```
  * @example Compare `Blob` objects
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const bytes1 = await new Blob(["foo"]).bytes();
  * const bytes2 = await new Blob(["foo"]).bytes();

@@ -56,8 +56,8 @@ export type JoinToStringOptions = {
  *
  * @example Usage with options
  * ```ts
- * import { joinToString } from "@flareosaur/collections/join-to-string";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { joinToString } from "@mikepage/flareosaur/collections/join-to-string";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const users = [
  *   { name: "Kim" },
@@ -78,8 +78,8 @@ export type JoinToStringOptions = {
  *
  * @example Using the index parameter
  * ```ts
- * import { joinToString } from "@flareosaur/collections/join-to-string";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { joinToString } from "@mikepage/flareosaur/collections/join-to-string";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const names = ["Kim", "Anna", "Tim"];
  * const result = joinToString(names, (name, index) => `${index}:${name}`);

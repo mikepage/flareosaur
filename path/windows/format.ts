@@ -9,8 +9,8 @@ import type { ParsedPath } from "../types.ts";
  *
  * @example Usage
  * ```ts
- * import { format } from "@flareosaur/path/windows/format";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { format } from "@mikepage/flareosaur/path/windows/format";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const path = format({
  *   root: "C:\\",

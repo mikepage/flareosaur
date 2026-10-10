@@ -38,9 +38,12 @@ try {
   git("add", "-A");
   git("-c", "user.name=port", "-c", "user.email=port@localhost", "commit", "-qm", "port");
 
-  const workspace = JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8"))
-    .workspace.map((p) => p.slice(2));
-  for (const pkg of workspace) {
+  // The package directories, from the targets of the root deno.json exports.
+  const exportTargets = Object.values(
+    JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8")).exports,
+  );
+  const packages = [...new Set(exportTargets.map((t) => t.split("/")[1]))];
+  for (const pkg of packages) {
     rmSync(join(tmp, pkg), { recursive: true, force: true });
     cpSync(join(ROOT, pkg), join(tmp, pkg), { recursive: true });
   }

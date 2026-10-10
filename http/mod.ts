@@ -8,7 +8,7 @@
  * A small program for serving local files over HTTP.
  *
  * ```sh
- * deno run --allow-net --allow-read jsr:@flareosaur/http/file-server
+ * deno run --allow-net --allow-read jsr:@mikepage/flareosaur/http/file-server
  * Listening on:
  * - Local: http://localhost:8000
  * ```
@@ -49,7 +49,7 @@
  * in an http request would look like this:
  *
  * ```ts ignore
- * import { UserAgent } from "@flareosaur/http/user-agent";
+ * import { UserAgent } from "@mikepage/flareosaur/http/user-agent";
  *
  * Deno.serve((req) => {
  *   const userAgent = new UserAgent(req.headers.get("user-agent") ?? "");
@@ -64,8 +64,8 @@
  * handlers based on the request path and method.
  *
  * ```ts ignore
- * import { route, type Route } from "@flareosaur/http/unstable-route";
- * import { serveDir } from "@flareosaur/http/file-server";
+ * import { route, type Route } from "@mikepage/flareosaur/http/unstable-route";
+ * import { serveDir } from "@mikepage/flareosaur/http/file-server";
  *
  * const routes: Route[] = [
  *   {

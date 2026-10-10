@@ -1,9 +1,0 @@
-{
-  "name": "@flareosaur/dotenv",
-  "version": "0.225.8",
-  "exports": {
-    ".": "./mod.ts",
-    "./parse": "./parse.ts",
-    "./stringify": "./stringify.ts"
-  }
-}

@@ -16,8 +16,8 @@ function formatComparator(comparator: Comparator): string {
  *
  * @example Usage
  * ```ts
- * import { formatRange, parseRange } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { formatRange, parseRange } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const range = parseRange(">=1.2.3 <1.2.4");
  * assertEquals(formatRange(range), ">=1.2.3 <1.2.4");

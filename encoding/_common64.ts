@@ -41,8 +41,8 @@ export type Base64Alphabet = "base64" | "base64url";
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "@flareosaur/assert";
- * import { calcSizeBase64 } from "@flareosaur/encoding/unstable-base64";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ * import { calcSizeBase64 } from "@mikepage/flareosaur/encoding/unstable-base64";
  *
  * assertEquals(calcSizeBase64(1), 4);
  * ```

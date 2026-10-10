@@ -7,8 +7,8 @@ This package provides utilities for testing.
 - [Type assertions](https://jsr.io/@std/testing/doc/types/~)
 
 ```ts
-import { assertSpyCalls, spy } from "@flareosaur/testing/mock";
-import { FakeTime } from "@flareosaur/testing/time";
+import { assertSpyCalls, spy } from "@mikepage/flareosaur/testing/mock";
+import { FakeTime } from "@mikepage/flareosaur/testing/time";
 
 function secondInterval(cb: () => void) {
   return setInterval(cb, 1000);

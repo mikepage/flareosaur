@@ -1,5 +1,5 @@
 diff --git a/dotenv/mod.ts b/dotenv/mod.ts
-index 1f14182..0af3f47 100644
+index 509a675..3be2e75 100644
 --- a/dotenv/mod.ts
 +++ b/dotenv/mod.ts
 @@ -13,296 +13,13 @@
@@ -8,7 +8,7 @@ index 1f14182..0af3f47 100644
   *
 - * ## Migrating from `load()`
 - *
-- * {@linkcode load}, {@linkcode loadSync} and the `@flareosaur/dotenv/load` side-effect
+- * {@linkcode load}, {@linkcode loadSync} and the `@mikepage/flareosaur/dotenv/load` side-effect
 - * module are deprecated in favor of the runtime's
 - * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
 - * flag, which Node.js and Bun also support:
@@ -20,7 +20,7 @@ index 1f14182..0af3f47 100644
 - *
 - * | Deprecated API | Replacement |
 - * | -------------- | ----------- |
-- * | `import "@flareosaur/dotenv/load"` | `deno run --env-file app.ts` |
+- * | `import "@mikepage/flareosaur/dotenv/load"` | `deno run --env-file app.ts` |
 - * | `load({ export: true })` / `loadSync({ export: true })` | `--env-file` |
 - * | `load({ envPath: "./.env_prod" })` | `--env-file=.env_prod` |
 - * | `load()` (read into an object, no export) | `parse(await Deno.readTextFile(".env"))` |
@@ -32,7 +32,7 @@ index 1f14182..0af3f47 100644
 - *   optional:
 - *
 - * ```ts ignore
-- * import { parse } from "@flareosaur/dotenv";
+- * import { parse } from "@mikepage/flareosaur/dotenv";
 - *
 - * let env: Record<string, string> = {};
 - * try {
@@ -95,7 +95,7 @@ index 1f14182..0af3f47 100644
 - *
 - * @example Usage
 - * ```ts ignore
-- * import { loadSync } from "@flareosaur/dotenv";
+- * import { loadSync } from "@mikepage/flareosaur/dotenv";
 - *
 - * const conf = loadSync();
 - * ```
@@ -149,7 +149,7 @@ index 1f14182..0af3f47 100644
 - * @example Basic usage
 - * ```ts ignore
 - * // app.ts
-- * import { load } from "@flareosaur/dotenv";
+- * import { load } from "@mikepage/flareosaur/dotenv";
 - *
 - * console.log(await load({ export: true })); // { GREETING: "hello world" }
 - * console.log(Deno.env.get("GREETING")); // hello world
@@ -167,7 +167,7 @@ index 1f14182..0af3f47 100644
 - * @example Auto-loading
 - * ```ts ignore
 - * // app.ts
-- * import "@flareosaur/dotenv/load";
+- * import "@mikepage/flareosaur/dotenv/load";
 - *
 - * console.log(Deno.env.get("GREETING")); // hello world
 - * ```
@@ -196,7 +196,7 @@ index 1f14182..0af3f47 100644
 - *
 - * @example Using with options
 - * ```ts ignore
-- * import { load } from "@flareosaur/dotenv";
+- * import { load } from "@mikepage/flareosaur/dotenv";
 - *
 - * const conf = await load({
 - *   envPath: "./.env_prod", // Uses .env_prod instead of .env
@@ -304,7 +304,7 @@ index 1f14182..0af3f47 100644
 -  }
 -}
 diff --git a/dotenv/parse.ts b/dotenv/parse.ts
-index 111d348..b63bb85 100644
+index 012c29f..a56ef3c 100644
 --- a/dotenv/parse.ts
 +++ b/dotenv/parse.ts
 @@ -47,7 +47,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
@@ -317,14 +317,14 @@ index 111d348..b63bb85 100644
      });
    }
 diff --git a/fmt/printf.ts b/fmt/printf.ts
-index 89f53f1..0ee2570 100644
+index 60d7d06..0a07ca2 100644
 --- a/fmt/printf.ts
 +++ b/fmt/printf.ts
 @@ -162,6 +162,19 @@
   */
  
  import { stripAnsiCode } from "./colors.ts";
-+import { inspect as fallbackInspect } from "@flareosaur/internal/inspect";
++import { inspect as fallbackInspect } from "../internal/inspect.ts";
 +
 +// deno-lint-ignore no-explicit-any
 +const { Deno } = globalThis as any;
@@ -397,7 +397,7 @@ index 89f53f1..0ee2570 100644
 +  }
  }
 diff --git a/http/mod.ts b/http/mod.ts
-index eabf8c5..5bc2f07 100644
+index fb2e661..0de3ed9 100644
 --- a/http/mod.ts
 +++ b/http/mod.ts
 @@ -104,4 +104,3 @@ export * from "./negotiation.ts";
@@ -406,14 +406,14 @@ index eabf8c5..5bc2f07 100644
  export * from "./user_agent.ts";
 -export * from "./file_server.ts";
 diff --git a/http/unstable_formdata_encoder_stream.ts b/http/unstable_formdata_encoder_stream.ts
-index 2b0c96b..60743c3 100644
+index 6c9040d..edacded 100644
 --- a/http/unstable_formdata_encoder_stream.ts
 +++ b/http/unstable_formdata_encoder_stream.ts
 @@ -1,7 +1,6 @@
  // Copyright 2018-2026 the Deno authors. MIT license.
  
- import { encodeBase64 } from "@flareosaur/encoding/unstable-base64";
--import { toByteStream } from "@flareosaur/streams/unstable-to-byte-stream";
+ import { encodeBase64 } from "../encoding/unstable_base64.ts";
+-import { toByteStream } from "../streams/unstable_to_byte_stream.ts";
  
  /**
   * The input that can be passed to a {@linkcode FormDataEncoderStream}.
@@ -472,7 +472,7 @@ index 2b0c96b..60743c3 100644
          } catch (reason) {
            await reader.cancel(reason);
 diff --git a/http/unstable_route.ts b/http/unstable_route.ts
-index 29197e4..964910e 100644
+index a0c6dce..b24872a 100644
 --- a/http/unstable_route.ts
 +++ b/http/unstable_route.ts
 @@ -1,13 +1,17 @@
@@ -619,21 +619,8 @@ index 29197e4..964910e 100644
    };
  }
  
-diff --git a/internal/deno.json b/internal/deno.json
-index 5cbe455..1263720 100644
---- a/internal/deno.json
-+++ b/internal/deno.json
-@@ -11,6 +11,7 @@
-     "./os": "./os.ts",
-     "./styles": "./styles.ts",
-     "./truncate-build-message": "./truncate_build_message.ts",
--    "./types": "./types.ts"
-+    "./types": "./types.ts",
-+    "./inspect": "./inspect.ts"
-   }
- }
 diff --git a/internal/format.ts b/internal/format.ts
-index 5430a9d..e6b2ecf 100644
+index 0f90482..29e2897 100644
 --- a/internal/format.ts
 +++ b/internal/format.ts
 @@ -1,6 +1,8 @@
@@ -710,7 +697,7 @@ index 5430a9d..e6b2ecf 100644
 -  return "[[Unable to format value]]";
  }
 diff --git a/internal/format_test.ts b/internal/format_test.ts
-index 62d1ffd..9be481a 100644
+index 9319022..63b96c0 100644
 --- a/internal/format_test.ts
 +++ b/internal/format_test.ts
 @@ -133,8 +133,9 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
@@ -1283,12 +1270,12 @@ index 0000000..228263a
 +  return formatValue(value, ctx, 0, false);
 +}
 diff --git a/jsonc/parse_test.ts b/jsonc/parse_test.ts
-index 8489597..a1ace6d 100644
+index 113900a..b1b067c 100644
 --- a/jsonc/parse_test.ts
 +++ b/jsonc/parse_test.ts
 @@ -8,9 +8,6 @@ import {
    assertThrows,
- } from "@flareosaur/assert";
+ } from "../assert/mod.ts";
  
 -import "./testdata/JSONTestSuite/test.ts";
 -import "./testdata/test262/test.ts";
@@ -1297,7 +1284,7 @@ index 8489597..a1ace6d 100644
  
  function assertValidParse(text: string, expected: unknown) {
 diff --git a/streams/byte_slice_stream.ts b/streams/byte_slice_stream.ts
-index 79cf925..e23801b 100644
+index d07bf6b..9cf4184 100644
 --- a/streams/byte_slice_stream.ts
 +++ b/streams/byte_slice_stream.ts
 @@ -45,13 +45,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
@@ -1322,7 +1309,7 @@ index 79cf925..e23801b 100644
        },
        transform: (chunk, controller) => {
 diff --git a/streams/concat_readable_streams.ts b/streams/concat_readable_streams.ts
-index bad5ec8..80d6237 100644
+index 77c169e..78f441a 100644
 --- a/streams/concat_readable_streams.ts
 +++ b/streams/concat_readable_streams.ts
 @@ -30,21 +30,28 @@ export function concatReadableStreams<T>(
@@ -1358,7 +1345,7 @@ index bad5ec8..80d6237 100644
      },
    });
 diff --git a/streams/unstable_capped_delimiter_stream.ts b/streams/unstable_capped_delimiter_stream.ts
-index 8eee5ee..7c10c76 100644
+index 93cb38a..0c46ec3 100644
 --- a/streams/unstable_capped_delimiter_stream.ts
 +++ b/streams/unstable_capped_delimiter_stream.ts
 @@ -112,6 +112,16 @@ export class CappedDelimiterStream

@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { sumOf } from "@flareosaur/collections/sum-of";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sumOf } from "@mikepage/flareosaur/collections/sum-of";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const people = [
  *   { name: "Anna", age: 34 },
@@ -31,8 +31,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { sumOf } from "@flareosaur/collections/sum-of";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { sumOf } from "@mikepage/flareosaur/collections/sum-of";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [1, 2, 3];
  * const result = sumOf(array, (_, index) => index);

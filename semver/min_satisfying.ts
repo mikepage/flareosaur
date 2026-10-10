@@ -10,8 +10,8 @@ import { lessThan } from "./less_than.ts";
  *
  * @example Usage
  * ```ts
- * import { parse, parseRange, minSatisfying } from "@flareosaur/semver";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse, parseRange, minSatisfying } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const versions = ["0.2.0", "1.2.3", "1.3.0", "2.0.0", "2.1.0"].map(parse);
  * const range = parseRange(">=1.0.0 <2.0.0");

@@ -41,8 +41,8 @@ function sanitizeInput(input: string) {
  *
  * @example Usage
  * ```ts
- * import { parse } from "@flareosaur/yaml/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parse } from "@mikepage/flareosaur/yaml/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const data = parse(`
  * id: 1
@@ -79,8 +79,8 @@ export function parse(
  *
  * @example Usage
  * ```ts
- * import { parseAll } from "@flareosaur/yaml/parse";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { parseAll } from "@mikepage/flareosaur/yaml/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const data = parseAll(`
  * ---

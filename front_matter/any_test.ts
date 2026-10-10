@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { extract } from "@flareosaur/front-matter/any";
+import { extract } from "./any.ts";
 import { assertEquals } from "../assert/equals.ts";
 import { assertThrows } from "../assert/throws.ts";
 

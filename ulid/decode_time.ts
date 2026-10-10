@@ -17,8 +17,8 @@ import {
  *
  * @example Decode the time from a ULID
  * ```ts
- * import { decodeTime, ulid } from "@flareosaur/ulid";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { decodeTime, ulid } from "@mikepage/flareosaur/ulid";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const timestamp = 150_000;
  * const ulidString = ulid(timestamp);

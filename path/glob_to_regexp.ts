@@ -2,7 +2,7 @@
 // This module is browser compatible.
 
 import type { GlobOptions } from "./_common/glob_to_reg_exp.ts";
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 
 import { globToRegExp as posixGlobToRegExp } from "./posix/glob_to_regexp.ts";
 import {
@@ -70,8 +70,8 @@ export type { GlobOptions };
  *
  * @example Usage
  * ```ts
- * import { globToRegExp } from "@flareosaur/path/glob-to-regexp";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { globToRegExp } from "@mikepage/flareosaur/path/glob-to-regexp";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(globToRegExp("*.js"), /^[^\\/]*\.js(?:\\|\/)*$/);

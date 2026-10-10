@@ -2,7 +2,7 @@
 
 import { assertThrows } from "../assert/throws.ts";
 import { extract } from "./toml.ts";
-import { assertEquals } from "@flareosaur/assert/equals";
+import { assertEquals } from "../assert/equals.ts";
 
 Deno.test("toml() extracts type error on invalid input", () => {
   assertThrows(() => extract(""));

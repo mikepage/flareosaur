@@ -17,8 +17,8 @@ export interface WordSimilaritySortOptions extends CompareSimilarityOptions {}
  * @example Basic usage
  *
  * ```ts
- * import { wordSimilaritySort } from "@flareosaur/text/word-similarity-sort";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { wordSimilaritySort } from "@mikepage/flareosaur/text/word-similarity-sort";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const possibleWords = ["length", "size", "blah", "help"];
  * const suggestions = wordSimilaritySort("hep", possibleWords);
@@ -29,8 +29,8 @@ export interface WordSimilaritySortOptions extends CompareSimilarityOptions {}
  * @example Case-sensitive sorting
  *
  * ```ts
- * import { wordSimilaritySort } from "@flareosaur/text/word-similarity-sort";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { wordSimilaritySort } from "@mikepage/flareosaur/text/word-similarity-sort";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const possibleWords = ["length", "Size", "blah", "HELP"];
  * const suggestions = wordSimilaritySort("hep", possibleWords, { caseSensitive: true });

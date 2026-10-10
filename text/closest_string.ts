@@ -29,8 +29,8 @@ export interface ClosestStringOptions {
  *
  * @example Usage
  * ```ts
- * import { closestString } from "@flareosaur/text/closest-string";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { closestString } from "@mikepage/flareosaur/text/closest-string";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const possibleWords = ["length", "size", "blah", "help"];
  * const suggestion = closestString("hep", possibleWords);

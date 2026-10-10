@@ -16,8 +16,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { findSingle } from "@flareosaur/collections/find-single";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { findSingle } from "@mikepage/flareosaur/collections/find-single";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const bookings = [
  *   { month: "January", active: false },
@@ -33,8 +33,8 @@
  *
  * @example Using the index parameter
  * ```ts
- * import { findSingle } from "@flareosaur/collections/find-single";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { findSingle } from "@mikepage/flareosaur/collections/find-single";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const array = [9, 12, 13];
  * const result = findSingle(array, (_, index) => index === 1);

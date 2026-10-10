@@ -27,7 +27,7 @@ export interface WaitForOptions {
  *
  * @example Basic usage
  * ```ts ignore
- * import { waitFor } from "@flareosaur/async/unstable-wait-for";
+ * import { waitFor } from "@mikepage/flareosaur/async/unstable-wait-for";
  *
  * // Deno server to acknowledge reception of request/webhook
  * let requestReceived = false;

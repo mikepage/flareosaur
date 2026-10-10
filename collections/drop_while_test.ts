@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertEquals } from "@flareosaur/assert";
+import { assertEquals } from "../assert/mod.ts";
 import { dropWhile } from "./drop_while.ts";
 
 Deno.test("dropWhile() handles Array", () => {

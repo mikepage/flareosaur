@@ -13,8 +13,8 @@
  *
  * @example Usage
  * ```ts
- * import { AbortStream } from "@flareosaur/streams/unstable-abort-stream";
- * import { assertRejects } from "@flareosaur/assert/rejects";
+ * import { AbortStream } from "@mikepage/flareosaur/streams/unstable-abort-stream";
+ * import { assertRejects } from "@mikepage/flareosaur/assert/rejects";
  *
  * const controller = new AbortController();
  * controller.abort(new Error("STOP"));

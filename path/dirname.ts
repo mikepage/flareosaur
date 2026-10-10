@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { isWindows } from "@flareosaur/internal/os";
+import { isWindows } from "../internal/os.ts";
 import { dirname as posixDirname } from "./posix/dirname.ts";
 import { dirname as windowsDirname } from "./windows/dirname.ts";
 
@@ -10,8 +10,8 @@ import { dirname as windowsDirname } from "./windows/dirname.ts";
  *
  * @example Usage
  * ```ts
- * import { dirname } from "@flareosaur/path/dirname";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { dirname } from "@mikepage/flareosaur/path/dirname";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(dirname("C:\\home\\user\\Documents\\image.png"), "C:\\home\\user\\Documents");

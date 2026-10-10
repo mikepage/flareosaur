@@ -6,8 +6,8 @@
  * expiration policies.
  *
  * ```ts
- * import { memoize, LruCache, type MemoizationCacheResult } from "@flareosaur/cache";
- * import { assertEquals } from "@flareosaur/assert";
+ * import { memoize, LruCache, type MemoizationCacheResult } from "@mikepage/flareosaur/cache";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
  * const cache = new LruCache<string, MemoizationCacheResult<bigint>>(1000);
  *
