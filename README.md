@@ -180,9 +180,10 @@ regenerate.
 
 ### Releasing
 
-Bump `version` in `deno.json` and push to `main`. CI runs the checks and tests,
-then publishes to JSR with GitHub OIDC. Pushes without a version bump publish
-nothing.
+Versions are CalVer, `YYYYMMDD.0.N`, with N counting releases that day from 1
+(`20261010.0.1`, `20261010.0.2`, …). Set `version` in `deno.json` and push to
+`main`. CI runs the checks and tests, then publishes to JSR with GitHub OIDC.
+Pushes without a version bump publish nothing.
 
 ## License
 
