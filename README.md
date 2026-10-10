@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" width="160" alt="flareosaur: an orange dinosaur with flames along its back">
+</p>
+
 # flareosaur
 
 The most used parts of the

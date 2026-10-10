@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">flareosaur</title>
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF8A1F"/>
+      <stop offset="1" stop-color="#E8530E"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#F2500B"/>
+      <stop offset="1" stop-color="#FFB02E"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#FFB02E"/>
+      <stop offset="1" stop-color="#FFE98A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Flames along the back: an outer tongue and a lighter core each -->
+  <g fill="url(#flame)">
+    <path d="M58 166 C46 148 52 128 66 116 C66 130 72 136 76 140 C78 130 84 124 90 120 C96 138 92 156 82 166 Z"/>
+    <path d="M86 150 C70 126 78 96 100 76 C98 98 108 106 112 114 C116 100 124 92 134 86 C140 110 134 134 120 150 Z"/>
+    <path d="M124 136 C112 116 118 96 134 82 C134 98 142 104 146 110 C150 100 156 94 164 90 C168 108 160 124 150 136 Z"/>
+  </g>
+  <g fill="url(#core)">
+    <path d="M66 162 C62 150 66 140 72 134 C74 142 80 146 82 152 C84 156 82 160 78 162 Z"/>
+    <path d="M98 146 C92 130 96 116 106 106 C108 118 116 124 120 132 C122 138 118 144 114 146 Z"/>
+    <path d="M132 132 C128 120 132 110 138 104 C140 112 146 116 150 122 C152 128 148 132 144 132 Z"/>
+  </g>
+
+  <!-- Legs, tucked under the body -->
+  <rect x="100" y="170" width="24" height="54" rx="11" fill="#D9480F"/>
+  <rect x="148" y="170" width="24" height="54" rx="11" fill="#D9480F"/>
+
+  <!-- Body, neck and head -->
+  <path fill="url(#body)" d="M18 178
+    C56 168 78 136 118 126
+    C146 119 162 120 170 100
+    C175 80 186 66 206 66
+    C226 66 238 78 238 93
+    C238 106 229 112 215 112
+    L198 112
+    C190 114 188 126 188 140
+    C188 168 177 188 158 194
+    C138 200 110 200 94 192
+    C70 185 44 182 18 178 Z"/>
+
+  <!-- Eye and smile -->
+  <circle cx="212" cy="86" r="7" fill="#FFF7ED"/>
+  <circle cx="214" cy="86" r="3.5" fill="#1C1917"/>
+  <path d="M220 103 C226 103 230 101 233 98" fill="none" stroke="#9A2E06" stroke-width="3" stroke-linecap="round"/>
+</svg>
