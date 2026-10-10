@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `obj` is not an instance of `type`. If so, then throw.
+ *
+ * Exports {@linkcode assertNotInstanceOf}.
+ *
+ * @module
+ */
 import { assertFalse } from "./false.ts";
 
 /**

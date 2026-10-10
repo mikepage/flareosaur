@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A regular expression for stripping non-word characters from slugs.
+ *
+ * Exports {@linkcode NON_WORD_REGEXP}, {@linkcode DIACRITICS_REGEXP}, {@linkcode ASCII_DIACRITICS_REGEXP}, {@linkcode NON_ASCII_REGEXP}, {@linkcode slugify}, {@linkcode SlugifyOptions}.
+ *
+ * @module
+ */
+
 const wordSegmenter = new Intl.Segmenter("en-US", { granularity: "word" });
 
 /** Options for {@linkcode slugify}. */

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Removes indentation from multiline strings.
+ *
+ * Exports {@linkcode dedent}, {@linkcode dedent}, {@linkcode dedent}.
+ *
+ * @module
+ */
 import { longestCommonPrefix } from "./unstable_longest_common_prefix.ts";
 
 const WHITE_SPACE = String.raw`\t\v\f\ufeff\p{Space_Separator}`;

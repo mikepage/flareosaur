@@ -4,6 +4,14 @@
 /**
  * Converts a path to a namespaced path. This function returns the path as is on posix.
  *
+ * Exports {@linkcode toNamespacedPath}.
+ *
+ * @module
+ */
+
+/**
+ * Converts a path to a namespaced path. This function returns the path as is on posix.
+ *
  * @example Usage
  * ```ts
  * import { toNamespacedPath } from "@mikepage/flareosaur/path/posix/to-namespaced-path";

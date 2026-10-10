@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Colors the output of assertion diffs.
+ *
+ * Exports {@linkcode createColor}, {@linkcode createSign}, {@linkcode buildMessage}, {@linkcode BuildMessageOptions}.
+ *
+ * @module
+ */
+
 import { bgGreen, bgRed, bold, gray, green, red, white } from "./styles.ts";
 import type { DiffResult, DiffType } from "./types.ts";
 

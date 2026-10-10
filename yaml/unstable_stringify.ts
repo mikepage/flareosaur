@@ -4,6 +4,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a JavaScript object or value to a YAML document string.
+ *
+ * Exports {@linkcode stringify}, {@linkcode StringifyOptions}, {@linkcode ImplicitType}, {@linkcode KindType}, {@linkcode RepresentFn}, {@linkcode SchemaType}, {@linkcode Type}.
+ *
+ * @module
+ */
+
 import { DumperState } from "./_dumper_state.ts";
 import { getSchema, type ImplicitType, type SchemaType } from "./_schema.ts";
 import type { StringifyOptions as StableStringifyOptions } from "./stringify.ts";

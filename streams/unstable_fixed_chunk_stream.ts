@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A transform stream that resize {@linkcode Uint8Array} chunks into perfectly `size` chunks with the exception of the last chunk.
+ *
+ * Exports {@linkcode FixedChunkStream}.
+ *
+ * @module
+ */
+
+/**
  * A transform stream that resize {@linkcode Uint8Array} chunks into perfectly
  * `size` chunks with the exception of the last chunk.
  *

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns the ISO week number of the provided date (1-53).
+ *
+ * Exports {@linkcode weekOfYear}.
+ *
+ * @module
+ */
+
 import { DAY, WEEK } from "./constants.ts";
 
 const DAYS_PER_WEEK = 7;

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Calculates the difference of the 2 given dates in various units. If the units are omitted, it returns the difference in the all available units.
+ *
+ * Exports {@linkcode difference}, {@linkcode Unit}, {@linkcode DifferenceFormat}, {@linkcode DifferenceOptions}.
+ *
+ * @module
+ */
+
 import { DAY, HOUR, MINUTE, SECOND, WEEK } from "./constants.ts";
 
 /**

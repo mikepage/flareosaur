@@ -2,6 +2,12 @@
 // This module is browser compatible.
 
 /**
+ * Exports {@linkcode toTransformStream}.
+ *
+ * @module
+ */
+
+/**
  * Convert the generator function into a {@linkcode TransformStream}.
  *
  * @typeparam I The type of the chunks in the source stream.

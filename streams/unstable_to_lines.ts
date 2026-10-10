@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s into one of lines delimited by `\n` or `\r\n`. Trims the last line if empty.
+ *
+ * Exports {@linkcode toLines}.
+ *
+ * @module
+ */
+
 import { TextLineStream } from "./text_line_stream.ts";
 
 /**

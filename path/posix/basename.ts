@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the last portion of a `path`. Trailing directory separators are ignored, and optional suffix is removed.
+ *
+ * Exports {@linkcode basename}.
+ *
+ * @module
+ */
+
 import {
   assertArgs,
   lastPathSegment,

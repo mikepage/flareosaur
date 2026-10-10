@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Converts a string into Sentence Case.
+ *
+ * Exports {@linkcode toSentenceCase}, {@linkcode SentenceCaseOptions}, {@linkcode BaseTitleCaseOptions}.
+ *
+ * @module
+ */
 import { resolveOptions, titleCaseSegment } from "./_title_case_util.ts";
 import type { BaseTitleCaseOptions } from "./_title_case_util.ts";
 export type { BaseTitleCaseOptions };

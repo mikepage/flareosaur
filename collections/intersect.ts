@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns all distinct elements that appear at least once in each of the given iterables.
+ *
+ * Exports {@linkcode intersect}.
+ *
+ * @module
+ */
+
+/**
  * Returns all distinct elements that appear at least once in each of the given
  * iterables.
  *

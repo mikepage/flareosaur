@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion, an error will be thrown if `expr` does not have a truthy value.
+ *
+ * Exports {@linkcode assert}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 
 /**

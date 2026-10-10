@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns a new record with all entries of the given record except the ones that have a key that does not match the given predicate.
+ *
+ * Exports {@linkcode filterKeys}.
+ *
+ * @module
+ */
+
+/**
  * Returns a new record with all entries of the given record except the ones that
  * have a key that does not match the given predicate.
  *

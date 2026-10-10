@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a path string to a file URL.
+ *
+ * Exports {@linkcode toFileUrl}.
+ *
+ * @module
+ */
+
 import { encodeWhitespace } from "../_common/to_file_url.ts";
 import { isAbsolute } from "./is_absolute.ts";
 

@@ -265,6 +265,62 @@ wasm.exports.__wbindgen_start();
   );
 }
 
+// JSR wants a module doc in every entrypoint. std's one-function files (e.g.
+// assert/equals.ts) have none, so give them one built from the first paragraph
+// of their main export's doc.
+function addModuleDocs(exports) {
+  for (const target of Object.values(exports)) {
+    const path = join(OUT, target);
+    if (!/\.(ts|mts|js|mjs)$/.test(path) || !existsSync(path)) continue;
+    const src = readFileSync(path, "utf8");
+    if (src.includes("@module")) continue;
+
+    const names = [...src.matchAll(
+      /^export (?:declare )?(?:async )?(?:abstract )?(?:function\*?|class|const|let|enum) (\w+)/gm,
+    )].map((m) => m[1]);
+    const types = [...src.matchAll(/^export (?:interface|type) (\w+)/gm)]
+      .map((m) => m[1]);
+    const reexports = [...src.matchAll(/^export (?:type )?\{([^}]*)\}/gm)]
+      .flatMap((m) => m[1].split(",").map((n) => n.trim().split(/\s+as\s+/).pop()))
+      .filter(Boolean);
+    const main = names[0] ?? types[0];
+
+    let summary = "";
+    if (main) {
+      const doc = src.match(new RegExp(
+        `/\\*\\*((?:(?!\\*/)[\\s\\S])*)\\*/\\s*export (?:declare )?(?:async )?(?:abstract )?(?:function\\*?|class|const|let|enum|interface|type) ${main}\\b`,
+      ));
+      const lines = (doc?.[1] ?? "").split("\n")
+        .map((l) => l.replace(/^\s*\* ?/, "").trimEnd());
+      const paragraph = [];
+      for (const line of lines) {
+        if (line.startsWith("@")) break;
+        if (!line.trim()) {
+          if (paragraph.length) break;
+          continue;
+        }
+        paragraph.push(line.trim());
+      }
+      summary = paragraph.join(" ");
+    }
+    const listed = [...names, ...types, ...reexports]
+      .map((n) => `{@linkcode ${n}}`).join(", ");
+    const body = [
+      ...(summary ? [summary, ""] : []),
+      ...(listed ? [`Exports ${listed}.`, ""] : []),
+      "@module",
+    ];
+    const comment = `/**\n${body.map((l) => l ? ` * ${l}` : " *").join("\n")}\n */\n`;
+
+    // After the leading line comments (copyright, compatibility notes).
+    const lines = src.split("\n");
+    let at = 0;
+    while (at < lines.length && lines[at].startsWith("//")) at++;
+    lines.splice(at, 0, "", comment.trimEnd());
+    writeFileSync(path, lines.join("\n"));
+  }
+}
+
 function writeExports(exports) {
   const path = join(OUT, "deno.json");
   if (!existsSync(path)) return;
@@ -282,6 +338,7 @@ for (const [dir, opts] of Object.entries(PACKAGES)) {
   portPackage(dir, opts, specifiers);
 }
 externalizeWasm();
+addModuleDocs(exports);
 writeExports(exports);
 
 const patches = join(ROOT, "patches");

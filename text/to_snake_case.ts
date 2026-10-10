@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a string into snake_case.
+ *
+ * Exports {@linkcode toSnakeCase}.
+ *
+ * @module
+ */
+
 import { splitToWords } from "./_util.ts";
 
 /**

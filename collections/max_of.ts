@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given selector to all elements of the provided collection and returns the max value of all elements. If an empty array is provided the function will return undefined.
+ *
+ * Exports {@linkcode maxOf}, {@linkcode maxOf}, {@linkcode maxOf}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given selector to all elements of the provided collection and
  * returns the max value of all elements. If an empty array is provided the
  * function will return undefined.

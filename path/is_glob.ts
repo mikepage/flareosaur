@@ -4,6 +4,14 @@
 /**
  * Test whether the given string is a glob.
  *
+ * Exports {@linkcode isGlob}.
+ *
+ * @module
+ */
+
+/**
+ * Test whether the given string is a glob.
+ *
  * @example Usage
  * ```ts
  * import { isGlob } from "@mikepage/flareosaur/path/is-glob";

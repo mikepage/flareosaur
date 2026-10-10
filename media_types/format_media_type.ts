@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Serializes the media type and the optional parameters as a media type conforming to {@link https://www.rfc-editor.org/rfc/rfc2045.html | RFC 2045} and {@link https://www.rfc-editor.org/rfc/rfc2616.html | RFC 2616}.
+ *
+ * Exports {@linkcode formatMediaType}.
+ *
+ * @module
+ */
+
 import { isIterator, isToken, needsEncoding } from "./_util.ts";
 
 /**

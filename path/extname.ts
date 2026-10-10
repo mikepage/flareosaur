@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the extension of the path with leading period (".").
+ *
+ * Exports {@linkcode extname}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { extname as posixExtname } from "./posix/extname.ts";
 import { extname as windowsExtname } from "./windows/extname.ts";

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts the input into a string. Objects, Sets and Maps are sorted so as to make tests less flaky.
+ *
+ * Exports {@linkcode format}, {@linkcode InspectFn}.
+ *
+ * @module
+ */
+
 import { inspect as fallbackInspect } from "./inspect.ts";
 
 /** An inspect function conforming to the shape of `Deno.inspect` and `node:util`'s `inspect` */

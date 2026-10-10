@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Formats a date to a string with the specified format.
+ *
+ * Exports {@linkcode format}, {@linkcode FormatOptions}.
+ *
+ * @module
+ */
+
 import { DateTimeFormatter } from "./_date_time_formatter.ts";
 
 /** Options for {@linkcode format}. */

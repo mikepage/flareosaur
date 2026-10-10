@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `error` is an `Error`. If not then an error will be thrown. An error class and a string that should be included in the error message can also be asserted.
+ *
+ * Exports {@linkcode assertIsError}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 import { stripAnsiCode } from "../internal/styles.ts";
 

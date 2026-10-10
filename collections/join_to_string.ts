@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Transforms the elements in the given array to strings using the given selector. Joins the produced strings into one using the given `separator` and applying the given `prefix` and `suffix` to the whole string afterwards.
+ *
+ * Exports {@linkcode joinToString}, {@linkcode JoinToStringOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode joinToString}. */
 export type JoinToStringOptions = {
   /**

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the last portion of a path.
+ *
+ * Exports {@linkcode basename}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { basename as posixBasename } from "./posix/basename.ts";
 import { basename as windowsBasename } from "./windows/basename.ts";

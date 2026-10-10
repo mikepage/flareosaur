@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON}-formatted {@linkcode ReadableSteam} of strings or {@linkcode Uint8Array}s to an object. Works the same as {@linkcode Response.json} and {@linkcode Request.json}, but also extends to support streams of strings.
+ *
+ * Exports {@linkcode toJson}.
+ *
+ * @module
+ */
+
 import { toText } from "./to_text.ts";
 
 /**

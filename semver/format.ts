@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Format a SemVer object into a string.
+ *
+ * Exports {@linkcode format}.
+ *
+ * @module
+ */
 import type { SemVer } from "./types.ts";
 
 function formatNumber(value: number) {

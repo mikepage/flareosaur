@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Normalizes a glob string.
+ *
+ * Exports {@linkcode normalizeGlob}, {@linkcode GlobOptions}.
+ *
+ * @module
+ */
+
 import type { GlobOptions } from "./_common/glob_to_reg_exp.ts";
 import { isWindows } from "../internal/os.ts";
 import { normalizeGlob as posixNormalizeGlob } from "./posix/normalize_glob.ts";

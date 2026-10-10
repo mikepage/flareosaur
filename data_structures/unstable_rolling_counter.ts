@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A fixed-size rolling counter.
+ *
+ * Exports {@linkcode RollingCounter}, {@linkcode RollingCounterSnapshot}, {@linkcode ReadonlyRollingCounter}.
+ *
+ * @module
+ */
+
+/**
  * A serializable snapshot of a {@linkcode RollingCounter}'s state.
  *
  * Obtain one via {@linkcode RollingCounter.prototype.toJSON | `toJSON`} and

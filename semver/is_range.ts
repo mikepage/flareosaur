@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Does a deep check on the object to determine if its a valid range.
+ *
+ * Exports {@linkcode isRange}.
+ *
+ * @module
+ */
 import type { Comparator, Range } from "./types.ts";
 import { OPERATORS } from "./_constants.ts";
 import { ALL } from "./_constants.ts";

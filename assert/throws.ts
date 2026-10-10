@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Executes a function, expecting it to throw. If it does not, then it throws.
+ *
+ * Exports {@linkcode assertThrows}, {@linkcode assertThrows}, {@linkcode assertThrows}.
+ *
+ * @module
+ */
 import { assertIsError } from "./is_error.ts";
 import { AssertionError } from "./assertion_error.ts";
 

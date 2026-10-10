@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Calculates the {@link https://en.wikipedia.org/wiki/Levenshtein_distance | Levenshtein distance} between two strings.
+ *
+ * Exports {@linkcode levenshteinDistance}.
+ *
+ * @module
+ */
 const { ceil } = Math;
 
 // This implements Myers' bit-vector algorithm as described here:

@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given selector to all elements in the given collection and calculates the sum of the results.
+ *
+ * Exports {@linkcode sumOf}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given selector to all elements in the given collection and
  * calculates the sum of the results.
  *

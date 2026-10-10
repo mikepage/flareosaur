@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
+/**
+ * ### Overview {@linkcode FormDataEncoderStream} is a class based off the [RFC 7578](https://datatracker.ietf.org/doc/html/rfc7578) spec and offers a way to create a {@linkcode FormData} in a streaming manner. Enabling one to send large amounts of information without having it all locally in memory first.
+ *
+ * Exports {@linkcode FormDataEncoderStream}, {@linkcode FormDataInput}.
+ *
+ * @module
+ */
+
 import { encodeBase64 } from "../encoding/unstable_base64.ts";
 
 /**

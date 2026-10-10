@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns the full `Content-Type` or `Content-Disposition` header value for the given extension or media type.
+ *
+ * Exports {@linkcode contentType}, {@linkcode DB}, {@linkcode ContentTypeToExtension}, {@linkcode KnownExtensionOrType}.
+ *
+ * @module
+ */
+
 import { parseMediaType } from "./parse_media_type.ts";
 import { getCharset } from "./get_charset.ts";
 import { formatMediaType } from "./format_media_type.ts";

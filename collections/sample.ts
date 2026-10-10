@@ -4,6 +4,14 @@
 /**
  * Returns a random element from the given iterable.
  *
+ * Exports {@linkcode sample}.
+ *
+ * @module
+ */
+
+/**
+ * Returns a random element from the given iterable.
+ *
  * @typeParam T The type of the elements in the iterable.
  *
  * @param iterable The iterable to sample from.

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A counting semaphore for limiting concurrent access to a resource.
+ *
+ * Exports {@linkcode Semaphore}.
+ *
+ * @module
+ */
+
 /** Internal node for the FIFO waiting queue. */
 interface Node {
   res: () => void;

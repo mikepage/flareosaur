@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Builds N-tuples of elements from the given N iterables with matching indices, stopping when the shortest iterable is exhausted.
+ *
+ * Exports {@linkcode zip}.
+ *
+ * @module
+ */
+
+/**
  * Builds N-tuples of elements from the given N iterables with matching
  * indices, stopping when the shortest iterable is exhausted.
  *

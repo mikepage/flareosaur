@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * pooledMap transforms values from an (async) iterable into another async iterable. The transforms are done concurrently, with a max concurrency defined by the poolLimit.
+ *
+ * Exports {@linkcode pooledMap}.
+ *
+ * @module
+ */
+
 /** Error message emitted from the thrown error while mapping. */
 const ERROR_WHILE_MAPPING_MESSAGE =
   "Cannot complete the mapping as an error was thrown from an item";

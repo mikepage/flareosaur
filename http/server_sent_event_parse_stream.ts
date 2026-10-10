@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Transforms a byte stream of server-sent events into parsed message objects.
+ *
+ * Exports {@linkcode ServerSentEventParseStream}, {@linkcode ServerSentEventParsedMessage}, {@linkcode ServerSentEventParseStreamOptions}.
+ *
+ * @module
+ */
+
 import type { ServerSentEventMessage } from "./server_sent_event_stream.ts";
 
 /**

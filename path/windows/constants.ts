@@ -3,6 +3,14 @@
 
 /**
  * The character used to separate entries in the PATH environment variable.
+ *
+ * Exports {@linkcode DELIMITER}, {@linkcode SEPARATOR}, {@linkcode SEPARATOR_PATTERN}.
+ *
+ * @module
+ */
+
+/**
+ * The character used to separate entries in the PATH environment variable.
  */
 export const DELIMITER = ";" as const;
 /**

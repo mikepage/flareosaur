@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * An error class for representing HTTP errors with status codes.
+ *
+ * Exports {@linkcode HttpError}, {@linkcode HttpErrorOptions}.
+ *
+ * @module
+ */
 import { type ErrorStatus, STATUS_TEXT } from "./status.ts";
 
 /**

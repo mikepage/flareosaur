@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `actual` and `expected` are almost equal numbers through a given tolerance. It can be used to take into account IEEE-754 double-precision floating-point representation limitations. If the values are not almost equal then throw.
+ *
+ * Exports {@linkcode assertAlmostEquals}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 
 /**

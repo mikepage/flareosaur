@@ -4,6 +4,14 @@
 /**
  * Make a {@linkcode Promise} abortable with the given signal.
  *
+ * Exports {@linkcode abortable}, {@linkcode abortable}, {@linkcode abortable}.
+ *
+ * @module
+ */
+
+/**
+ * Make a {@linkcode Promise} abortable with the given signal.
+ *
  * @throws {DOMException} If the signal is already aborted and `signal.reason`
  * is undefined. Otherwise, throws `signal.reason`.
  * @typeParam T The type of the provided and returned promise.

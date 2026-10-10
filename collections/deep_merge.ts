@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Merges the two given records, recursively merging any nested records with the second collection overriding the first in case of conflict.
+ *
+ * Exports {@linkcode deepMerge}, {@linkcode deepMerge}, {@linkcode deepMerge}, {@linkcode MergingStrategy}, {@linkcode DeepMergeOptions}, {@linkcode ExpandRecursively}, {@linkcode PartialByType}, {@linkcode SetValueType}, {@linkcode MergeAllSets}, {@linkcode ArrayValueType}, {@linkcode MergeAllArrays}, {@linkcode MapKeyType}, {@linkcode MapValueType}, {@linkcode MergeAllMaps}, {@linkcode MergeAllRecords}, {@linkcode OmitComplexes}, {@linkcode ObjectXorKeys}, {@linkcode MergeRightOmitComplexes}, {@linkcode Merge}, {@linkcode DeepMerge}.
+ *
+ * @module
+ */
+
 /** Default merging options - cached to avoid object allocation on each call */
 const DEFAULT_OPTIONS: DeepMergeOptions = {
   arrays: "merge",

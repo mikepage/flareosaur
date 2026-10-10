@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Error thrown when {@linkcode CircuitBreaker} is open and rejects a request.
+ *
+ * Exports {@linkcode CircuitBreakerOpenError}, {@linkcode CircuitBreaker}, {@linkcode CircuitState}, {@linkcode CircuitBreakerOptions}, {@linkcode CircuitBreakerExecuteOptions}.
+ *
+ * @module
+ */
+
 import { RollingCounter } from "../data_structures/unstable_rolling_counter.ts";
 
 /**

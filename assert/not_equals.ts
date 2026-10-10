@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Make an assertion that `actual` and `expected` are not equal, deeply. If not then throw.
+ *
+ * Exports {@linkcode assertNotEquals}.
+ *
+ * @module
+ */
+
 import { equal } from "./equal.ts";
 import { AssertionError } from "./assertion_error.ts";
 import { format } from "../internal/format.ts";

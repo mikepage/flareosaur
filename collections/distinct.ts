@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns all distinct elements in the given array, preserving order by first occurrence.
+ *
+ * Exports {@linkcode distinct}.
+ *
+ * @module
+ */
+
+/**
  * Returns all distinct elements in the given array, preserving order by first
  * occurrence.
  *

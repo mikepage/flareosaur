@@ -1,4 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
+
+/**
+ * Replaces an instance method with a Stub with empty implementation.
+ *
+ * Exports {@linkcode stub}, {@linkcode stub}, {@linkcode stub}, {@linkcode stub}, {@linkcode Stub}.
+ *
+ * @module
+ */
 import { isSpy, registerMock, unregisterMock } from "./_mock_utils.ts";
 import {
   type GetParametersFromProp,

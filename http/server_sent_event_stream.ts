@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Transforms server-sent message objects into strings for the client.
+ *
+ * Exports {@linkcode ServerSentEventStream}, {@linkcode ServerSentEventMessage}.
+ *
+ * @module
+ */
+
 const NEWLINE_REGEXP = /\r\n|\r|\n/;
 const encoder = new TextEncoder();
 

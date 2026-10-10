@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns a tuple of two records with the first one containing all entries of the given record that match the given predicate and the second one containing all that do not.
+ *
+ * Exports {@linkcode partitionEntries}.
+ *
+ * @module
+ */
+
+/**
  * Returns a tuple of two records with the first one containing all entries of
  * the given record that match the given predicate and the second one containing
  * all that do not.

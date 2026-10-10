@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Formats the SemVerrange into a string.
+ *
+ * Exports {@linkcode formatRange}.
+ *
+ * @module
+ */
 import { format } from "./format.ts";
 import type { Comparator, Range } from "./types.ts";
 import { isWildcardComparator } from "./_shared.ts";

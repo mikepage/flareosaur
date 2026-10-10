@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Truncates a string to at most `maxLength` UTF-16 code units. When truncation occurs the suffix is included within the `maxLength` budget. Surrogate pairs are never split, so the result may be shorter than `maxLength` when a cut would land inside a pair. When the suffix itself contains surrogate pairs and `maxLength` is very small, the result can even be empty.
+ *
+ * Exports {@linkcode truncate}, {@linkcode TruncateOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode truncate}. */
 export interface TruncateOptions {
   /**

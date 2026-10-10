@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A transform stream that only transforms from the zero-indexed `start` and `end` bytes (both inclusive).
+ *
+ * Exports {@linkcode ByteSliceStream}.
+ *
+ * @module
+ */
+
+/**
  * A transform stream that only transforms from the zero-indexed `start` and
  * `end` bytes (both inclusive).
  *

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Test to see if the SemVer satisfies the range.
+ *
+ * Exports {@linkcode satisfies}.
+ *
+ * @module
+ */
+
 import type { Range, SemVer } from "./types.ts";
 import { testComparatorSet } from "./_test_comparator_set.ts";
 

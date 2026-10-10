@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Generate a path from `ParsedPath` object.
+ *
+ * Exports {@linkcode format}.
+ *
+ * @module
+ */
+
 import { _format, assertArg } from "../_common/format.ts";
 import type { ParsedPath } from "../types.ts";
 

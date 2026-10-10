@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns a new byte slice composed of `count` repetitions of the `source` array.
+ *
+ * Exports {@linkcode repeat}, {@linkcode Uint8Array_}.
+ *
+ * @module
+ */
 import { copy } from "./copy.ts";
 import type { Uint8Array_ } from "./_types.ts";
 export type { Uint8Array_ };

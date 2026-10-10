@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns all the extensions known to be associated with the media type `type`, or `undefined` if no extensions are found.
+ *
+ * Exports {@linkcode allExtensions}.
+ *
+ * @module
+ */
+
 import { parseMediaType } from "./parse_media_type.ts";
 import { extensions } from "./_db.ts";
 

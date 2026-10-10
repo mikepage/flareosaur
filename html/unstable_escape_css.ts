@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Escapes a string for direct interpolation into an external CSS style sheet, within a `<style>` element, or in a selector.
+ *
+ * Exports {@linkcode escapeCss}.
+ *
+ * @module
+ */
+
+/**
  * Escapes a string for direct interpolation into an external
  * CSS style sheet, within a `<style>` element, or in a selector.
  *

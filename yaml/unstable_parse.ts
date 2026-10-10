@@ -4,6 +4,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parse and return a YAML string as a parsed YAML document object.
+ *
+ * Exports {@linkcode parse}, {@linkcode parseAll}, {@linkcode ParseOptions}, {@linkcode ImplicitType}, {@linkcode KindType}, {@linkcode RepresentFn}, {@linkcode SchemaType}, {@linkcode Type}.
+ *
+ * @module
+ */
+
 import { isEOL } from "./_chars.ts";
 import { LoaderState } from "./_loader_state.ts";
 import type { ParseOptions as StableParseOptions } from "./parse.ts";

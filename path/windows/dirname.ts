@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the directory path of a `path`.
+ *
+ * Exports {@linkcode dirname}.
+ *
+ * @module
+ */
+
 import { assertArg } from "../_common/dirname.ts";
 import { CHAR_COLON } from "../_common/constants.ts";
 import { stripTrailingSeparators } from "../_common/strip_trailing_separators.ts";

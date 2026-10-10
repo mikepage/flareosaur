@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Composes a new record with all keys and values inverted.
+ *
+ * Exports {@linkcode invert}, {@linkcode InvertResult}.
+ *
+ * @module
+ */
+
 /** Return type for {@linkcode invert}. */
 export type InvertResult<T extends Record<PropertyKey, PropertyKey>> = {
   [P in keyof T as T[P]]: P;

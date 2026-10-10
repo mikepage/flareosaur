@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Escapes a JavaScript object or other data for safe interpolation inside a `<script>` tag.
+ *
+ * Exports {@linkcode escapeJs}, {@linkcode EscapeJsOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode escapeJs} */
 export type EscapeJsOptions = {
   /**

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to an {@linkcode ArrayBuffer}. Works the same as {@linkcode Response.arrayBuffer}.
+ *
+ * Exports {@linkcode toArrayBuffer}.
+ *
+ * @module
+ */
+
 import { concat } from "../bytes/concat.ts";
 
 /**

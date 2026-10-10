@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Joins a sequence of globs, then normalizes the resulting glob.
+ *
+ * Exports {@linkcode joinGlobs}, {@linkcode GlobOptions}.
+ *
+ * @module
+ */
+
 import type { GlobOptions } from "./_common/glob_to_reg_exp.ts";
 import { isWindows } from "../internal/os.ts";
 import { joinGlobs as posixJoinGlobs } from "./posix/join_globs.ts";

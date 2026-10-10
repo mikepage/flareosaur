@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Executes a function which returns a promise, expecting it to reject.
+ *
+ * Exports {@linkcode assertRejects}, {@linkcode assertRejects}, {@linkcode assertRejects}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 import { assertIsError } from "./is_error.ts";
 

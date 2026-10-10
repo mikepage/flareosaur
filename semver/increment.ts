@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns the new SemVer resulting from an increment by release type.
+ *
+ * Exports {@linkcode increment}, {@linkcode IncrementOptions}.
+ *
+ * @module
+ */
 import { parseBuild, parsePrerelease } from "./_shared.ts";
 import type { ReleaseType, SemVer } from "./types.ts";
 

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 /**
+ * Merge multiple streams into a single one, not taking order into account. If a stream ends before other ones, the other will continue adding data, and the finished one will not add any more data.
+ *
+ * Exports {@linkcode mergeReadableStreams}.
+ *
+ * @module
+ */
+
+/**
  * Merge multiple streams into a single one, not taking order into account.
  * If a stream ends before other ones, the other will continue adding data,
  * and the finished one will not add any more data.

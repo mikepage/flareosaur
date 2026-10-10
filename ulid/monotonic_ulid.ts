@@ -3,6 +3,14 @@
 // Copyright 2017 Alizain Feerasta. All rights reserved. MIT license.
 // This module is browser compatible.
 
+/**
+ * Generate a ULID that monotonically increases even for the same millisecond, optionally passing the current time. If the current time is not passed, it will default to `Date.now()`.
+ *
+ * Exports {@linkcode monotonicUlid}.
+ *
+ * @module
+ */
+
 import { monotonicFactory } from "./_util.ts";
 
 const defaultMonotonicUlid = monotonicFactory();

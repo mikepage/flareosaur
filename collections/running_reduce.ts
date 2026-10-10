@@ -2,6 +2,12 @@
 // This module is browser compatible.
 
 /**
+ * Exports {@linkcode runningReduce}.
+ *
+ * @module
+ */
+
+/**
  * Calls the given reducer on each element of the given collection, passing its
  * result as the accumulator to the next respective call, starting with the
  * given initialValue. Returns all intermediate accumulator results.

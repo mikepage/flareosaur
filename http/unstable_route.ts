@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 /**
+ * Routes requests to handlers using a linear scan over all routes.
+ *
+ * Exports {@linkcode routeLinear}, {@linkcode routeRadix}, {@linkcode RequestHandler}, {@linkcode Handler}, {@linkcode Route}, {@linkcode route}.
+ *
+ * @module
+ */
+
+/**
  * A handler for HTTP requests. The arguments after the request are passed
  * through unchanged, e.g. `env` and `ctx` in a Workers `fetch` handler.
  *

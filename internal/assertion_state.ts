@@ -4,6 +4,14 @@
 /**
  * Check the test suite internal state
  *
+ * Exports {@linkcode AssertionState}, {@linkcode getAssertionState}.
+ *
+ * @module
+ */
+
+/**
+ * Check the test suite internal state
+ *
  * @example Usage
  * ```ts
  * import { AssertionState } from "@mikepage/flareosaur/internal";

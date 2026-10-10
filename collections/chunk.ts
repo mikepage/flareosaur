@@ -4,6 +4,14 @@
 /**
  * Splits the given array into an array of chunks of the given size and returns them.
  *
+ * Exports {@linkcode chunk}.
+ *
+ * @module
+ */
+
+/**
+ * Splits the given array into an array of chunks of the given size and returns them.
+ *
  * @typeParam T The type of the elements in the iterable.
  *
  * @param iterable The iterable to take elements from.

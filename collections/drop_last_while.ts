@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns an array that drops all elements in the given iterable until the last element that does not match the given predicate.
+ *
+ * Exports {@linkcode dropLastWhile}.
+ *
+ * @module
+ */
+
+/**
  * Returns an array that drops all elements in the given iterable until the
  * last element that does not match the given predicate.
  *

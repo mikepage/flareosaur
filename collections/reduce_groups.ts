@@ -1,6 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Exports {@linkcode reduceGroups}.
+ *
+ * @module
+ */
+
 import { mapValues } from "./map_values.ts";
 
 /**

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Finds the most similar string from an array of strings.
+ *
+ * Exports {@linkcode closestString}, {@linkcode ClosestStringOptions}.
+ *
+ * @module
+ */
 import { levenshteinDistance } from "./levenshtein_distance.ts";
 
 /** Options for {@linkcode closestString}. */

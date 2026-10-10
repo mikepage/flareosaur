@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Error thrown when operating on a closed channel. When thrown from {@linkcode Channel.send}, the `value` property carries the unsent value for recovery.
+ *
+ * Exports {@linkcode ChannelClosedError}, {@linkcode Channel}, {@linkcode ChannelReceiveResult}, {@linkcode ChannelOptions}, {@linkcode ChannelSendOptions}, {@linkcode ChannelReceiveOptions}.
+ *
+ * @module
+ */
+
 import { Deque } from "../data_structures/deque.ts";
 
 const RESOLVED: Promise<void> = Promise.resolve();

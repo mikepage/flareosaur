@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Convert each chunk to a CSV record.
+ *
+ * Exports {@linkcode CsvStringifyStream}, {@linkcode CsvStringifyStreamOptions}.
+ *
+ * @module
+ */
 import { stringify } from "./stringify.ts";
 
 /** Options for {@linkcode CsvStringifyStream}. */

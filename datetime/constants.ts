@@ -4,6 +4,14 @@
 /**
  * The number of milliseconds in a second.
  *
+ * Exports {@linkcode SECOND}, {@linkcode MINUTE}, {@linkcode HOUR}, {@linkcode DAY}, {@linkcode WEEK}, {@linkcode JANUARY}, {@linkcode FEBRUARY}, {@linkcode MARCH}, {@linkcode APRIL}, {@linkcode MAY}, {@linkcode JUNE}, {@linkcode JULY}, {@linkcode AUGUST}, {@linkcode SEPTEMBER}, {@linkcode OCTOBER}, {@linkcode NOVEMBER}, {@linkcode DECEMBER}, {@linkcode SUNDAY}, {@linkcode MONDAY}, {@linkcode TUESDAY}, {@linkcode WEDNESDAY}, {@linkcode THURSDAY}, {@linkcode FRIDAY}, {@linkcode SATURDAY}.
+ *
+ * @module
+ */
+
+/**
+ * The number of milliseconds in a second.
+ *
  * @example
  * ```ts
  * import { SECOND } from "@mikepage/flareosaur/datetime/constants";

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that actual includes expected. If not then throw.
+ *
+ * Exports {@linkcode assertStringIncludes}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 
 /**

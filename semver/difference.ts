@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns difference between two SemVers by the release type, or `undefined` if the SemVers are the same.
+ *
+ * Exports {@linkcode difference}.
+ *
+ * @module
+ */
 import type { ReleaseType, SemVer } from "./types.ts";
 import { compareIdentifier } from "./_shared.ts";
 

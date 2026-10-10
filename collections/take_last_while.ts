@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns all elements in the given iterable after the last element that does not match the given predicate.
+ *
+ * Exports {@linkcode takeLastWhile}.
+ *
+ * @module
+ */
+
+/**
  * Returns all elements in the given iterable after the last element that does not
  * match the given predicate.
  *

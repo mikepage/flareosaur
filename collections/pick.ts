@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Creates a new object by including the specified keys from the provided object.
+ *
+ * Exports {@linkcode pick}.
+ *
+ * @module
+ */
+
+/**
  * Creates a new object by including the specified keys from the provided
  * object.
  *

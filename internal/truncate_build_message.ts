@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * The environment variable used for setting diff context length.
+ *
+ * Exports {@linkcode DIFF_CONTEXT_LENGTH}, {@linkcode getTruncationContextLengthFromEnv}, {@linkcode truncateDiff}, {@linkcode consolidateCommon}.
+ *
+ * @module
+ */
 import type { CommonDiffResult, DiffResult } from "./types.ts";
 
 /** The environment variable used for setting diff context length. */

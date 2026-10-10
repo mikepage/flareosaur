@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parses the media type and any optional parameters, per {@link https://www.rfc-editor.org/rfc/rfc1521.html | RFC 1521}.
+ *
+ * Exports {@linkcode parseMediaType}.
+ *
+ * @module
+ */
+
 import { consumeMediaParam, decode2331Encoding } from "./_util.ts";
 
 const SEMICOLON_REGEXP = /^\s*;\s*$/;

@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns a tuple of two arrays with the first one containing all elements in the given array that match the given predicate and the second one containing all that do not.
+ *
+ * Exports {@linkcode partition}, {@linkcode partition}, {@linkcode partition}.
+ *
+ * @module
+ */
+
+/**
  * Returns a tuple of two arrays with the first one containing all elements in
  * the given array that match the given predicate and the second one
  * containing all that do not.

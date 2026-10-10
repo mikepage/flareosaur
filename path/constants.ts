@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * The character used to separate entries in the PATH environment variable. On Windows, this is `;`. On all other platforms, this is `:`.
+ *
+ * Exports {@linkcode DELIMITER}, {@linkcode SEPARATOR}, {@linkcode SEPARATOR_PATTERN}.
+ *
+ * @module
+ */
 import { isWindows } from "../internal/os.ts";
 
 /**

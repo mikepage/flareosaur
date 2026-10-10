@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Cache the results of a function based on its arguments.
+ *
+ * Exports {@linkcode memoize}, {@linkcode MemoizationCache}, {@linkcode MemoizationCacheResult}, {@linkcode MemoizeOptions}.
+ *
+ * @module
+ */
+
 import { _serializeArgList } from "./_serialize_arg_list.ts";
 
 /**

@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Check whether byte slices are equal to each other.
+ *
+ * Exports {@linkcode equals}.
+ *
+ * @module
+ */
+
+/**
  * Check whether byte slices are equal to each other using 8-bit comparisons.
  *
  * @param a First array to check equality

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `actual` and `expected` are equal, deeply. If not deeply equal, then throw.
+ *
+ * Exports {@linkcode assertEquals}.
+ *
+ * @module
+ */
 import { assertEquals as _assertEquals } from "./equals.ts";
 import { truncateDiff } from "../internal/truncate_build_message.ts";
 // deno-lint-ignore no-unused-vars

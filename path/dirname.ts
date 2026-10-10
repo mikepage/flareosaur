@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the directory path of a path.
+ *
+ * Exports {@linkcode dirname}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { dirname as posixDirname } from "./posix/dirname.ts";
 import { dirname as windowsDirname } from "./windows/dirname.ts";

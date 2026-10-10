@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to a {@linkcode Uint8Array}. Works the same as {@linkcode Response.bytes}.
+ *
+ * Exports {@linkcode toBytes}.
+ *
+ * @module
+ */
+
+/**
  * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to a
  * {@linkcode Uint8Array}. Works the same as {@linkcode Response.bytes}.
  *

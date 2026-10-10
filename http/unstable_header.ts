@@ -5,6 +5,14 @@
 /**
  * HTTP Headers with status permanent
  *
+ * Exports {@linkcode HEADER}, {@linkcode Header}.
+ *
+ * @module
+ */
+
+/**
+ * HTTP Headers with status permanent
+ *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
  * @see {@link https://www.iana.org/assignments/http-fields/http-fields.xhtml#field-names | IANA Hypertext Transfer Protocol (HTTP) Field Name Registry}

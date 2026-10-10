@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns the media type associated with the file extension, or `undefined` if no media type is found.
+ *
+ * Exports {@linkcode typeByExtension}.
+ *
+ * @module
+ */
+
 import { types } from "./_db.ts";
 
 /**

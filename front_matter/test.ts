@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
+/**
+ * Tests if a string has valid front matter. Supports {@link https://yaml.org | YAML}, {@link https://toml.io | TOML} and {@link https://www.json.org/ | JSON}.
+ *
+ * Exports {@linkcode test}, {@linkcode Format}.
+ *
+ * @module
+ */
+
 import { EXTRACT_REGEXP_MAP, type Format } from "./_formats.ts";
 
 export type { Format };

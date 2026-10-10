@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts an object to a {@link https://toml.io | TOML} string.
+ *
+ * Exports {@linkcode stringify}, {@linkcode StringifyOptions}.
+ *
+ * @module
+ */
+
 // Bare keys may only contain ASCII letters,
 // ASCII digits, underscores, and dashes (A-Za-z0-9_-).
 function joinKeys(keys: string[]): string {

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parse each chunk as JSON.
+ *
+ * Exports {@linkcode JsonParseStream}.
+ *
+ * @module
+ */
+
 import type { JsonValue } from "./types.ts";
 import { parse } from "./_common.ts";
 

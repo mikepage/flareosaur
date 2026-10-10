@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A {@linkcode TransformStream} that groups input chunks into fixed-size batches. Emits a `T[]` once `size` input chunks have been collected and flushes any final non-empty partial batch when the input closes.
+ *
+ * Exports {@linkcode BatchStream}.
+ *
+ * @module
+ */
+
+/**
  * A {@linkcode TransformStream} that groups input chunks into fixed-size
  * batches. Emits a `T[]` once `size` input chunks have been collected and
  * flushes any final non-empty partial batch when the input closes.

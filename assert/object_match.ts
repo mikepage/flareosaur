@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `expected` object is a subset of `actual` object, deeply. If not, then throw a diff of the objects, with mismatching properties highlighted.
+ *
+ * Exports {@linkcode assertObjectMatch}.
+ *
+ * @module
+ */
 import { assertEquals } from "./equals.ts";
 
 /**

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Escapes text for safe interpolation into HTML text content and quoted attributes.
+ *
+ * Exports {@linkcode escape}, {@linkcode unescape}, {@linkcode EntityList}, {@linkcode UnescapeOptions}.
+ *
+ * @module
+ */
+
 /** Object structure for a list of HTML entities. */
 export type EntityList = Record<string, string>;
 

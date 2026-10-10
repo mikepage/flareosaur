@@ -2,6 +2,12 @@
 // This module is browser compatible.
 
 /**
+ * Exports {@linkcode debounce}, {@linkcode DebouncedFunction}, {@linkcode DebounceOptions}.
+ *
+ * @module
+ */
+
+/**
  * A debounced function whose execution is delayed by a given `wait`
  * time in milliseconds. If the function is called again before
  * the timeout expires, the previous call will be aborted.

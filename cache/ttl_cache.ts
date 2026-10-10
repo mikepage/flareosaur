@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Time-to-live cache.
+ *
+ * Exports {@linkcode TtlCache}, {@linkcode TtlCacheSetOptions}, {@linkcode TtlCacheOptions}.
+ *
+ * @module
+ */
+
 import type { MemoizationCache } from "./memoize.ts";
 
 /**

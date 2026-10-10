@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Concatenate an array of byte slices into a single slice.
+ *
+ * Exports {@linkcode concat}, {@linkcode Uint8Array_}.
+ *
+ * @module
+ */
+
 import type { Uint8Array_ } from "./_types.ts";
 export type { Uint8Array_ };
 

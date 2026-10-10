@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A variable-sized buffer of bytes with `readable` and `writable` getters that allows you to work with {@link https://developer.mozilla.org/en-US/docs/Web/API/Streams_API | Web Streams API}.
+ *
+ * Exports {@linkcode Buffer}, {@linkcode BufferBytesOptions}.
+ *
+ * @module
+ */
+
 import { copy } from "../bytes/copy.ts";
 
 const MAX_SIZE = 2 ** 32 - 2;

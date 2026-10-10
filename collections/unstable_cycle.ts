@@ -4,6 +4,14 @@
 /**
  * Creates an iterator that cycles indefinitely over the provided iterable.
  *
+ * Exports {@linkcode cycle}.
+ *
+ * @module
+ */
+
+/**
+ * Creates an iterator that cycles indefinitely over the provided iterable.
+ *
  * Each time the iterable is exhausted, a new iterator is obtained to start the cycle again.
  * This generator will yield the values from the iterable continuously.
  *

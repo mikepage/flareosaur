@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Determines whether the UUID is the {@link https://www.rfc-editor.org/rfc/rfc4122#section-4.1.7 | nil UUID}.
+ *
+ * Exports {@linkcode isNil}, {@linkcode validate}, {@linkcode version}.
+ *
+ * @module
+ */
+
 import { NIL_UUID } from "./constants.ts";
 
 /**

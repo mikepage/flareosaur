@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns the first element having the smallest value according to the provided comparator or undefined if there are no elements.
+ *
+ * Exports {@linkcode minWith}.
+ *
+ * @module
+ */
+
+/**
  * Returns the first element having the smallest value according to the provided
  * comparator or undefined if there are no elements.
  *

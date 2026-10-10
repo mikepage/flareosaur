@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns a promise with the signed cookie value from the given cryptographic key.
+ *
+ * Exports {@linkcode signCookie}, {@linkcode verifySignedCookie}, {@linkcode parseSignedCookie}.
+ *
+ * @module
+ */
 import { decodeHex, encodeHex } from "../encoding/hex.ts";
 
 const encoder = new TextEncoder();

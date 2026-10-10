@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given selector to all elements of the given collection and returns the min value of all elements. If an empty array is provided the function will return undefined.
+ *
+ * Exports {@linkcode minOf}, {@linkcode minOf}, {@linkcode minOf}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given selector to all elements of the given collection and
  * returns the min value of all elements. If an empty array is provided the
  * function will return undefined.

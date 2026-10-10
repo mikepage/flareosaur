@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A {@linkcode TransformStream} that will only read & enqueue `size` amount of chunks.
+ *
+ * Exports {@linkcode LimitedTransformStream}, {@linkcode LimitedTransformStreamOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode LimitedTransformStream} */
 export interface LimitedTransformStreamOptions {
   /**

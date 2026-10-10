@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `obj` is an instance of `type`. If not then throw.
+ *
+ * Exports {@linkcode assertInstanceOf}, {@linkcode AnyConstructor}, {@linkcode GetConstructorType}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 
 /** Any constructor */

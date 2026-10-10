@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns the index of the last occurrence of the needle array in the source array, or -1 if it is not present.
+ *
+ * Exports {@linkcode lastIndexOfNeedle}.
+ *
+ * @module
+ */
+
+/**
  * Returns the index of the last occurrence of the needle array in the source
  * array, or -1 if it is not present.
  *

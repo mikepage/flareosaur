@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
+/**
+ * Parse `.env` file output in an object.
+ *
+ * Exports {@linkcode parse}.
+ *
+ * @module
+ */
+
 type LineParseResult = {
   key: string;
   unquoted: string;

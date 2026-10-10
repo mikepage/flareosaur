@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A priority queue implemented with a binary heap. The heap is in descending order by default, using JavaScript's built-in comparison operators to sort the values.
+ *
+ * Exports {@linkcode BinaryHeap}.
+ *
+ * @module
+ */
+
 import { descend } from "./comparators.ts";
 
 /** Swaps the values at two indexes in an array. */

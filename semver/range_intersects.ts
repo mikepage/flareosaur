@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * The ranges intersect every range of AND comparators intersects with a least one range of OR ranges.
+ *
+ * Exports {@linkcode rangeIntersects}.
+ *
+ * @module
+ */
 import { isWildcardComparator } from "./_shared.ts";
 import { compare } from "./compare.ts";
 import { satisfies } from "./satisfies.ts";

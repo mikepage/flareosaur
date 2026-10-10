@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns whether the given year is a leap year. Passing in a {@linkcode Date} object will return the leap year status of the year of that object and take the current timezone into account. Passing in a number will return the leap year status of that number.
+ *
+ * Exports {@linkcode isLeap}, {@linkcode isUtcLeap}.
+ *
+ * @module
+ */
+
 function isYearNumberALeapYear(yearNumber: number): boolean {
   return (
     (yearNumber % 4 === 0 && yearNumber % 100 !== 0) || yearNumber % 400 === 0

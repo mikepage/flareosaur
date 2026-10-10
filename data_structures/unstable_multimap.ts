@@ -4,6 +4,14 @@
 /**
  * A map that associates each key with an ordered list of values.
  *
+ * Exports {@linkcode MultiMap}.
+ *
+ * @module
+ */
+
+/**
+ * A map that associates each key with an ordered list of values.
+ *
  * Unlike {@linkcode Map}, each key can hold multiple values. Values are stored
  * in insertion order, and duplicate values under the same key are preserved.
  *

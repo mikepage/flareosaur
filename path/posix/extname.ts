@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the extension of the `path` with leading period.
+ *
+ * Exports {@linkcode extname}.
+ *
+ * @module
+ */
+
 import { CHAR_DOT } from "../_common/constants.ts";
 import { assertPath } from "../_common/assert_path.ts";
 import { isPosixPathSeparator } from "./_util.ts";

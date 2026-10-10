@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Like join(), but doesn't collapse "**\/.." when `globstar` is true.
+ *
+ * Exports {@linkcode joinGlobs}, {@linkcode GlobOptions}.
+ *
+ * @module
+ */
+
 import type { GlobOptions } from "../_common/glob_to_reg_exp.ts";
 import { join } from "./join.ts";
 import { SEPARATOR } from "./constants.ts";

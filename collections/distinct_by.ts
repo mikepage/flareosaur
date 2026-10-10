@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns all elements in the given array that produce a unique value using the given discriminator, with the first matching occurrence retained.
+ *
+ * Exports {@linkcode distinctBy}.
+ *
+ * @module
+ */
+
+/**
  * Returns all elements in the given array that produce a unique value using
  * the given discriminator, with the first matching occurrence retained.
  *

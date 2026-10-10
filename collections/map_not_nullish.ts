@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns a new array, containing all elements in the given array transformed using the given transformer, except the ones that were transformed to `null` or `undefined`.
+ *
+ * Exports {@linkcode mapNotNullish}.
+ *
+ * @module
+ */
+
+/**
  * Returns a new array, containing all elements in the given array transformed
  * using the given transformer, except the ones that were transformed to `null`
  * or `undefined`.

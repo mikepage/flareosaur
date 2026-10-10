@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Transform a stream `string` into a stream where each chunk is divided by a given delimiter.
+ *
+ * Exports {@linkcode TextDelimiterStream}.
+ *
+ * @module
+ */
+
 import { createLPS } from "./_common.ts";
 
 import type {

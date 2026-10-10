@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns the number of the day in the year in the local time zone.
+ *
+ * Exports {@linkcode dayOfYear}, {@linkcode dayOfYearUtc}.
+ *
+ * @module
+ */
+
 import { DAY } from "./constants.ts";
 
 /**

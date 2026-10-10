@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns all elements in the given collection, sorted by their result using the given selector. The selector function is called only once for each element. Ascending or descending order can be specified through the `order` option. By default, the elements are sorted in ascending order.
+ *
+ * Exports {@linkcode sortBy}, {@linkcode Order}, {@linkcode SortByOptions}.
+ *
+ * @module
+ */
+
 /** Order option for {@linkcode SortByOptions}. */
 export type Order = "asc" | "desc";
 

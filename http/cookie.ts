@@ -4,6 +4,14 @@
 // This module is browser compatible.
 
 /**
+ * Parse cookies of a header
+ *
+ * Exports {@linkcode getCookies}, {@linkcode setCookie}, {@linkcode deleteCookie}, {@linkcode getSetCookies}, {@linkcode Cookie}.
+ *
+ * @module
+ */
+
+/**
  * Represents an HTTP Cookie.
  *
  * @see {@link https://www.rfc-editor.org/rfc/rfc6265.html#section-4.2.1}

@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Builds two separate arrays from the given array of 2-tuples, with the first returned array holding all first tuple elements and the second one holding all the second elements.
+ *
+ * Exports {@linkcode unzip}.
+ *
+ * @module
+ */
+
+/**
  * Builds two separate arrays from the given array of 2-tuples, with the first
  * returned array holding all first tuple elements and the second one holding
  * all the second elements.

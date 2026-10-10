@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * When checking the values of cryptographic hashes are equal, default comparisons can be susceptible to timing based attacks, where attacker is able to find out information about the host system by repeatedly checking response times to equality comparisons of values.
+ *
+ * Exports {@linkcode timingSafeEqual}.
+ *
+ * @module
+ */
+
 function toUint8Array(
   value: ArrayBufferView | ArrayBufferLike,
 ): Uint8Array {

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Determines the common path from a set of paths for the given OS.
+ *
+ * Exports {@linkcode common}.
+ *
+ * @module
+ */
+
 import { common as _common } from "./_common/common.ts";
 import { SEPARATOR } from "./constants.ts";
 

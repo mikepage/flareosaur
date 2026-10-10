@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Multiplexes multiple async iterators into a single stream. It currently makes an assumption that the final result (the value returned and not yielded from the iterator) does not matter; if there is any result, it is discarded.
+ *
+ * Exports {@linkcode MuxAsyncIterator}.
+ *
+ * @module
+ */
+
 interface TaggedYieldedValue<T> {
   iterator: AsyncIterator<T>;
   value: T;

@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A template literal tag function for creating HTML strings with interpolated values.
+ *
+ * Exports {@linkcode html}.
+ *
+ * @module
+ */
+
+/**
  * A template literal tag function for creating HTML strings with interpolated
  * values.
  *

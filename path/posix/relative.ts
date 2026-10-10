@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return the relative path from `from` to `to` based on current working directory.
+ *
+ * Exports {@linkcode relative}.
+ *
+ * @module
+ */
+
 import { isPosixPathSeparator } from "./_util.ts";
 import { resolve } from "./resolve.ts";
 import { assertArgs } from "../_common/relative.ts";

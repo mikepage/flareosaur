@@ -4,6 +4,14 @@
 /**
  * Returns all distinct elements that appear in any of the given arrays.
  *
+ * Exports {@linkcode union}.
+ *
+ * @module
+ */
+
+/**
+ * Returns all distinct elements that appear in any of the given arrays.
+ *
  * @typeParam T The type of the array elements.
  *
  * @param arrays The arrays to get the union of.

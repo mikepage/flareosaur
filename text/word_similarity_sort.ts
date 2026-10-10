@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Sorts a string-array by similarity to a given string.
+ *
+ * Exports {@linkcode wordSimilaritySort}, {@linkcode WordSimilaritySortOptions}.
+ *
+ * @module
+ */
 import {
   compareSimilarity,
   type CompareSimilarityOptions,

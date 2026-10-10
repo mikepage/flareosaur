@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts an array of objects into a CSV string.
+ *
+ * Exports {@linkcode stringify}, {@linkcode PropertyAccessor}, {@linkcode ColumnDetails}, {@linkcode Column}, {@linkcode DataItem}, {@linkcode StringifyOptions}.
+ *
+ * @module
+ */
+
 /** Array index or record key corresponding to a value for a data object. */
 export type PropertyAccessor = number | string;
 

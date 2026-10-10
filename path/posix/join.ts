@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Join all given a sequence of `paths`,then normalizes the resulting path.
+ *
+ * Exports {@linkcode join}.
+ *
+ * @module
+ */
+
 import { assertPath } from "../_common/assert_path.ts";
 import { fromFileUrl } from "./from_file_url.ts";
 import { normalize } from "./normalize.ts";

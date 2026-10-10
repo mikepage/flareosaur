@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Convert each chunk to JSON string.
+ *
+ * Exports {@linkcode JsonStringifyStream}, {@linkcode StringifyStreamOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode JsonStringifyStream}. */
 export interface StringifyStreamOptions {
   /**

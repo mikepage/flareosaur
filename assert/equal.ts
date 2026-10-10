@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Deep equality comparison used in assertions.
+ *
+ * Exports {@linkcode equal}.
+ *
+ * @module
+ */
+
 type KeyedCollection = Set<unknown> | Map<unknown, unknown>;
 function isKeyedCollection(x: unknown): x is KeyedCollection {
   return x instanceof Set || x instanceof Map;

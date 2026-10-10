@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given selector to elements in the given array until a value is produced that is neither `null` nor `undefined` and returns that value. Returns `undefined` if no such value is produced.
+ *
+ * Exports {@linkcode firstNotNullishOf}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given selector to elements in the given array until a value is
  * produced that is neither `null` nor `undefined` and returns that value.
  * Returns `undefined` if no such value is produced.

@@ -4,6 +4,14 @@
 /**
  * Creates a new object by excluding the specified keys from the provided object.
  *
+ * Exports {@linkcode omit}.
+ *
+ * @module
+ */
+
+/**
+ * Creates a new object by excluding the specified keys from the provided object.
+ *
  * @typeParam T The type of the object.
  * @typeParam K The type of the keys to omit.
  *

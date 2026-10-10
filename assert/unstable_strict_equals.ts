@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `actual` and `expected` are strictly equal, using {@linkcode Object.is} for equality comparison. If not, then throw.
+ *
+ * Exports {@linkcode assertStrictEquals}.
+ *
+ * @module
+ */
 import { assertStrictEquals as _assertStrictEquals } from "./strict_equals.ts";
 import { truncateDiff } from "../internal/truncate_build_message.ts";
 // deno-lint-ignore no-unused-vars

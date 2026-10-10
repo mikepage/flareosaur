@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Unescape invisible characters.
+ *
+ * Exports {@linkcode unescape}, {@linkcode tokenize}, {@linkcode createDetails}, {@linkcode diffStr}.
+ *
+ * @module
+ */
+
 import type { ChangedDiffResult, DiffResult } from "./types.ts";
 import { diff } from "./diff.ts";
 

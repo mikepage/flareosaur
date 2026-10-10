@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Creates an array of common elements between two arrays.
+ *
+ * Exports {@linkcode createCommon}, {@linkcode assertFp}, {@linkcode backTrace}, {@linkcode createFp}, {@linkcode diff}, {@linkcode FarthestPoint}.
+ *
+ * @module
+ */
+
 import type { DiffResult, DiffType } from "./types.ts";
 
 /** Represents the farthest point in the diff algorithm. */

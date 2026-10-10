@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Generates sliding views of the given iterable of the given size and returns an array containing all of them.
+ *
+ * Exports {@linkcode slidingWindows}, {@linkcode SlidingWindowsOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode slidingWindows}. */
 export interface SlidingWindowsOptions {
   /**

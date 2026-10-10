@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolve a {@linkcode Promise} after a given predicate becomes true or the timeout amount of milliseconds has been reached.
+ *
+ * Exports {@linkcode waitFor}, {@linkcode WaitForOptions}.
+ *
+ * @module
+ */
+
 import { deadline } from "./deadline.ts";
 
 /** Options for {@linkcode waitFor}. */

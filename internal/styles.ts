@@ -3,6 +3,14 @@
 // A module to print ANSI terminal colors. Inspired by chalk, kleur, and colors
 // on npm.
 
+/**
+ * Sets the style of text to be printed to bold.
+ *
+ * Exports {@linkcode bold}, {@linkcode red}, {@linkcode green}, {@linkcode yellow}, {@linkcode white}, {@linkcode gray}, {@linkcode brightBlack}, {@linkcode bgRed}, {@linkcode bgGreen}, {@linkcode stripAnsiCode}.
+ *
+ * @module
+ */
+
 // This code is vendored from `fmt/colors.ts`.
 
 // deno-lint-ignore no-explicit-any

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolve a {@linkcode Promise} after a given amount of milliseconds.
+ *
+ * Exports {@linkcode delay}, {@linkcode DelayOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode delay}. */
 export interface DelayOptions {
   /** Signal used to abort the delay. */

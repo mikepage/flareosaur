@@ -4,6 +4,14 @@
 /**
  * Error thrown when an assertion fails.
  *
+ * Exports {@linkcode AssertionError}.
+ *
+ * @module
+ */
+
+/**
+ * Error thrown when an assertion fails.
+ *
  * @example Usage
  * ```ts
  * import { AssertionError } from "@mikepage/flareosaur/assert";

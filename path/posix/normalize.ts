@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Normalize the `path`, resolving `'..'` and `'.'` segments. Note that resolving these segments does not necessarily mean that all will be eliminated. A `'..'` at the top-level will be preserved, and an empty path is canonically `'.'`.
+ *
+ * Exports {@linkcode normalize}.
+ *
+ * @module
+ */
+
 import { assertArg } from "../_common/normalize.ts";
 import { normalizeString } from "../_common/normalize_string.ts";
 import { isPosixPathSeparator } from "./_util.ts";

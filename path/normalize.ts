@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Normalize the path, resolving `'..'` and `'.'` segments.
+ *
+ * Exports {@linkcode normalize}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { normalize as posixNormalize } from "./posix/normalize.ts";
 import { normalize as windowsNormalize } from "./windows/normalize.ts";

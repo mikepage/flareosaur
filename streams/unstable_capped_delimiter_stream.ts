@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
+/**
+ * {@linkcode CappedDelimiterStream} is a TransformStream that splits a `ReadableStream<Uint8Array>` by a provided `delimiter`, returning {@linkcode CappedDelimiterEntry} objects. Each entry's match property indicates whether the corresponding value ended with the delimiter. The class also requires a `limit` property to specify the max length that each entry can be, which can be preferable if your delimiter is unlikely to appear often.
+ *
+ * Exports {@linkcode CappedDelimiterStream}, {@linkcode CappedDelimiterEntry}, {@linkcode CappedDelimiterOptions}.
+ *
+ * @module
+ */
+
 import { toByteStream } from "./unstable_to_byte_stream.ts";
 
 /**

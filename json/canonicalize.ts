@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Serializes a JSON value to a canonical string per {@link https://www.rfc-editor.org/rfc/rfc8785 | RFC 8785} JSON Canonicalization Scheme (JCS).
+ *
+ * Exports {@linkcode canonicalize}, {@linkcode canonicalizeToBytes}.
+ *
+ * @module
+ */
+
 import type { JsonPrimitive, JsonValue } from "./types.ts";
 import type { Uint8Array_ } from "./_types.ts";
 

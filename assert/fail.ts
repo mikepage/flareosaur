@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Forcefully throws a failed assertion.
+ *
+ * Exports {@linkcode fail}.
+ *
+ * @module
+ */
 import { AssertionError } from "./assertion_error.ts";
 
 /**

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
+/**
+ * ### Overview {@linkcode FormDataDecoderStream} is a class based off the [RFC 7578](https://datatracker.ietf.org/doc/html/rfc7578) spec and offers a way to decode a {@linkcode FormData} in a streaming manner. Enabling one to receive large amounts of information and start working with it, without having it all locally in memory first.
+ *
+ * Exports {@linkcode FormDataDecoderStream}, {@linkcode FormDataEntry}.
+ *
+ * @module
+ */
+
 import { CappedDelimiterStream } from "../streams/unstable_capped_delimiter_stream.ts";
 
 /**

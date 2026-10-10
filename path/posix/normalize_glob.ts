@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Like normalize(), but doesn't collapse "**\/.." when `globstar` is true.
+ *
+ * Exports {@linkcode normalizeGlob}, {@linkcode GlobOptions}.
+ *
+ * @module
+ */
+
 import type { GlobOptions } from "../_common/glob_to_reg_exp.ts";
 import { normalize } from "./normalize.ts";
 import { SEPARATOR_PATTERN } from "./constants.ts";

@@ -3,6 +3,14 @@
 // Copyright 2017 Alizain Feerasta. All rights reserved. MIT license.
 // This module is browser compatible.
 
+/**
+ * Extracts the number of milliseconds since the Unix epoch that had passed when the ULID was generated. If the ULID is malformed, an error will be thrown.
+ *
+ * Exports {@linkcode decodeTime}.
+ *
+ * @module
+ */
+
 import {
   ENCODING,
   ENCODING_LEN,

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolves path to a namespace path.  This is a no-op on non-windows systems.
+ *
+ * Exports {@linkcode toNamespacedPath}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { toNamespacedPath as posixToNamespacedPath } from "./posix/to_namespaced_path.ts";
 import { toNamespacedPath as windowsToNamespacedPath } from "./windows/to_namespaced_path.ts";

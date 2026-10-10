@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolves path segments into a path.
+ *
+ * Exports {@linkcode resolve}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { resolve as posixResolve } from "./posix/resolve.ts";
 import { resolve as windowsResolve } from "./windows/resolve.ts";

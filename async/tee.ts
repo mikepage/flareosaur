@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Branches the given async iterable into the `n` branches.
+ *
+ * Exports {@linkcode tee}, {@linkcode Tuple}, {@linkcode TupleOf}.
+ *
+ * @module
+ */
+
+/**
  * Utility for representing n-tuple. Used in {@linkcode tee}.
  *
  * @internal

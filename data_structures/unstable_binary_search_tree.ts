@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * An unbalanced binary search tree. The values are in ascending order by default, using JavaScript's built-in comparison operators to sort the values.
+ *
+ * Exports {@linkcode BinarySearchTree}.
+ *
+ * @module
+ */
+
 import type { BinarySearchNode, Direction } from "./_binary_search_node.ts";
 import { BinarySearchTree as StableBinarySearchTree } from "./binary_search_tree.ts";
 import { internals } from "./_binary_search_tree_internals.ts";

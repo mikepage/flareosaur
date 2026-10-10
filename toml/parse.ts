@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parses a {@link https://toml.io | TOML} string into an object.
+ *
+ * Exports {@linkcode parse}.
+ *
+ * @module
+ */
+
 import { parserFactory, toml } from "./_parser.ts";
 
 /**

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parses the given range string and returns a Range object. If the range string is invalid, `undefined` is returned.
+ *
+ * Exports {@linkcode tryParseRange}.
+ *
+ * @module
+ */
+
 import type { Range } from "./types.ts";
 import { parseRange } from "./parse_range.ts";
 

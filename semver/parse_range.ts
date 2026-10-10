@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parses a range string into a {@linkcode Range} object.
+ *
+ * Exports {@linkcode parseRange}.
+ *
+ * @module
+ */
+
 import {
   COMPARATOR_REGEXP,
   OPERATOR_XRANGE_REGEXP,

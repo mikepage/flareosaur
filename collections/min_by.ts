@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns the first element that is the smallest value of the given function or undefined if there are no elements.
+ *
+ * Exports {@linkcode minBy}, {@linkcode minBy}, {@linkcode minBy}, {@linkcode minBy}, {@linkcode minBy}.
+ *
+ * @module
+ */
+
+/**
  * Returns the first element that is the smallest value of the given function or
  * undefined if there are no elements.
  *

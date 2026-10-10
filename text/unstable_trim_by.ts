@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Trims all instances of the specified pattern at the start and end of the string.
+ *
+ * Exports {@linkcode trimBy}, {@linkcode trimStartBy}, {@linkcode trimEndBy}, {@linkcode TrimPattern}.
+ *
+ * @module
+ */
 import { escape } from "../regexp/escape.ts";
 
 /**

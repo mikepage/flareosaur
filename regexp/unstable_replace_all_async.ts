@@ -4,6 +4,14 @@
 /**
  * Asynchronously replaces all occurrences of a pattern in a string.
  *
+ * Exports {@linkcode replaceAllAsync}.
+ *
+ * @module
+ */
+
+/**
+ * Asynchronously replaces all occurrences of a pattern in a string.
+ *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
  * @param text - The original string.

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Repeatedly calls a function until a condition is met, then returns the result.
+ *
+ * Exports {@linkcode poll}, {@linkcode PollOptions}.
+ *
+ * @module
+ */
+
 import { delay } from "./delay.ts";
 
 /** Options for {@linkcode poll}. */

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Parses CSV string into an array of arrays of strings.
+ *
+ * Exports {@linkcode parse}, {@linkcode parse}, {@linkcode parse}, {@linkcode ParseOptions}, {@linkcode ParseResult}, {@linkcode RecordWithColumn}.
+ *
+ * @module
+ */
+
 import {
   convertRowToObject,
   createBareQuoteErrorMessage,

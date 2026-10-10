@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Performs a Unicode-aware string reversal.
+ *
+ * Exports {@linkcode reverse}, {@linkcode ReverseOptions}.
+ *
+ * @module
+ */
+
 // Copyright Mathias Bynens <https://mathiasbynens.be/>
 //
 // Permission is hereby granted, free of charge, to any person obtaining

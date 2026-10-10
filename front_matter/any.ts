@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Extracts and parses {@link https://yaml.org | YAML}, {@link https://toml.io | TOML}, or {@link https://www.json.org/ | JSON} from the metadata of front matter content, depending on the format.
+ *
+ * Exports {@linkcode extract}, {@linkcode Extract}.
+ *
+ * @module
+ */
+
 import { extract as extractToml } from "./toml.ts";
 import { extract as extractYaml } from "./yaml.ts";
 import { extract as extractJson } from "./json.ts";

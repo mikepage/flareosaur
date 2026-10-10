@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A {@linkcode TransformStream} that will only read & enqueue chunks until the total amount of enqueued data exceeds `size`. The last chunk that would exceed the limit will NOT be enqueued, in which case a {@linkcode RangeError} is thrown when `options.error` is set to true, otherwise the stream is just terminated.
+ *
+ * Exports {@linkcode LimitedBytesTransformStream}, {@linkcode LimitedBytesTransformStreamOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode LimitedBytesTransformStream}. */
 export interface LimitedBytesTransformStreamOptions {
   /**

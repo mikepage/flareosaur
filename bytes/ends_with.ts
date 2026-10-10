@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns `true` if the suffix array appears at the end of the source array, `false` otherwise.
+ *
+ * Exports {@linkcode endsWith}.
+ *
+ * @module
+ */
+
+/**
  * Returns `true` if the suffix array appears at the end of the source array,
  * `false` otherwise.
  *

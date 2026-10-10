@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Determines whether the source array contains the needle array.
+ *
+ * Exports {@linkcode includesNeedle}.
+ *
+ * @module
+ */
+
 import { indexOfNeedle } from "./index_of_needle.ts";
 
 /**

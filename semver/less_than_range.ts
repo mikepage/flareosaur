@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Check if the SemVer is less than the range.
+ *
+ * Exports {@linkcode lessThanRange}.
+ *
+ * @module
+ */
+
 import type { Comparator, Range, SemVer } from "./types.ts";
 import { testComparatorSet } from "./_test_comparator_set.ts";
 import { isWildcardComparator } from "./_shared.ts";

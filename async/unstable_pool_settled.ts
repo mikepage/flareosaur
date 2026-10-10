@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Like {@linkcode pooledMap}, but does not fail fast. Every item is processed regardless of earlier failures. Results are yielded as {@linkcode PromiseSettledResult} objects in input order.
+ *
+ * Exports {@linkcode pooledMapSettled}, {@linkcode PooledMapSettledOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode pooledMapSettled}. */
 export interface PooledMapSettledOptions {
   /**

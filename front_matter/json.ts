@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Extracts and parses {@link https://www.json.org/ | JSON } from the metadata of front matter content.
+ *
+ * Exports {@linkcode extract}, {@linkcode Extract}.
+ *
+ * @module
+ */
+
 import { extractFrontMatter } from "./_shared.ts";
 import { EXTRACT_JSON_REGEXP } from "./_formats.ts";
 import type { Extract } from "./types.ts";

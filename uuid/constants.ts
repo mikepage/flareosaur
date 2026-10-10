@@ -4,6 +4,14 @@
 /**
  * Name string is a fully-qualified domain name.
  *
+ * Exports {@linkcode NAMESPACE_DNS}, {@linkcode NAMESPACE_URL}, {@linkcode NAMESPACE_OID}, {@linkcode NAMESPACE_X500}, {@linkcode NIL_UUID}.
+ *
+ * @module
+ */
+
+/**
+ * Name string is a fully-qualified domain name.
+ *
  * @example Usage
  * ```ts
  * import { NAMESPACE_DNS } from "@mikepage/flareosaur/uuid/constants";

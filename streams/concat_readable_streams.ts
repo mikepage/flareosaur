@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Concatenates multiple `ReadableStream`s into a single ordered `ReadableStream`.
+ *
+ * Exports {@linkcode concatReadableStreams}.
+ *
+ * @module
+ */
+
+/**
  * Concatenates multiple `ReadableStream`s into a single ordered
  * `ReadableStream`.
  *

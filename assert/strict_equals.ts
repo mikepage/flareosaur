@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `actual` and `expected` are strictly equal, using {@linkcode Object.is} for equality comparison. If not, then throw.
+ *
+ * Exports {@linkcode assertStrictEquals}.
+ *
+ * @module
+ */
 import { buildMessage } from "../internal/build_message.ts";
 import { diff } from "../internal/diff.ts";
 import { diffStr } from "../internal/diff_str.ts";

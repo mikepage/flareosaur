@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolves all values in a record of promises in parallel, returning a promise that resolves to a record with the same keys and resolved values.
+ *
+ * Exports {@linkcode allKeyed}, {@linkcode allSettledKeyed}, {@linkcode PromiseRecord}, {@linkcode SettledRecord}.
+ *
+ * @module
+ */
+
 // TC39 spec uses [[OwnPropertyKeys]] (Reflect.ownKeys) then filters for enumerable.
 // This equivalent is faster on V8: Object.keys returns only enumerable string keys,
 // so we only need to filter symbol keys for enumerability. See also assert/equal.ts.

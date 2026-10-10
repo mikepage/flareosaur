@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Generate a path from a {@linkcode ParsedPath} object. It does the opposite of {@linkcode https://jsr.io/@std/path/doc/~/parse | parse()}.
+ *
+ * Exports {@linkcode format}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { format as posixFormat } from "./posix/format.ts";
 import { format as windowsFormat } from "./windows/format.ts";

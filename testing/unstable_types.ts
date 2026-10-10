@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 /**
+ * Checks if the actual type `A` is assignable to the expected type `E`, and vice versa.
+ *
+ * Exports {@linkcode IsMutuallyAssignable}.
+ *
+ * @module
+ */
+
+/**
  * Checks if the actual type `A` is assignable to the expected type `E`, and
  * vice versa.
  *

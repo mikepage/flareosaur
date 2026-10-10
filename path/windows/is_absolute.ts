@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Verifies whether provided path is absolute.
+ *
+ * Exports {@linkcode isAbsolute}.
+ *
+ * @module
+ */
+
 import { CHAR_COLON } from "../_common/constants.ts";
 import { assertPath } from "../_common/assert_path.ts";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.ts";

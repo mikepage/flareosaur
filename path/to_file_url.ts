@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a path string to a file URL.
+ *
+ * Exports {@linkcode toFileUrl}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { toFileUrl as posixToFileUrl } from "./posix/to_file_url.ts";
 import { toFileUrl as windowsToFileUrl } from "./windows/to_file_url.ts";

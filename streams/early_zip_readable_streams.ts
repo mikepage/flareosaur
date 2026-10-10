@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Merge multiple streams into a single one, taking order into account, and each stream will wait for a chunk to enqueue before the next stream can append another chunk.
+ *
+ * Exports {@linkcode earlyZipReadableStreams}.
+ *
+ * @module
+ */
+
+/**
  * Merge multiple streams into a single one, taking order into account, and each
  * stream will wait for a chunk to enqueue before the next stream can append
  * another chunk.

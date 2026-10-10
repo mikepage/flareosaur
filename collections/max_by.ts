@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns the first element that is the largest value of the given function or undefined if there are no elements.
+ *
+ * Exports {@linkcode maxBy}, {@linkcode maxBy}, {@linkcode maxBy}, {@linkcode maxBy}, {@linkcode maxBy}.
+ *
+ * @module
+ */
+
+/**
  * Returns the first element that is the largest value of the given function or
  * undefined if there are no elements.
  *

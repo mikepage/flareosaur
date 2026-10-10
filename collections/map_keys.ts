@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given transformer to all keys in the given record's entries and returns a new record containing the transformed entries.
+ *
+ * Exports {@linkcode mapKeys}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given transformer to all keys in the given record's entries and
  * returns a new record containing the transformed entries.
  *

@@ -5,6 +5,14 @@
 /**
  * HTTP Methods derived from IANA Hypertext Transfer Protocol (HTTP) Method Registry
  *
+ * Exports {@linkcode METHOD}, {@linkcode Method}.
+ *
+ * @module
+ */
+
+/**
+ * HTTP Methods derived from IANA Hypertext Transfer Protocol (HTTP) Method Registry
+ *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
  * @see {@link https://www.iana.org/assignments/http-methods/http-methods.xhtml#methods | IANA Hypertext Transfer Protocol (HTTP) Method Registry}

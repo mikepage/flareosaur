@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Asserts that `actual` contains all values in `expected`, using deep equality for non-primitive values.
+ *
+ * Exports {@linkcode assertArrayIncludes}, {@linkcode ArrayLikeArg}.
+ *
+ * @module
+ */
 import { equal } from "./equal.ts";
 import { format } from "../internal/format.ts";
 import { AssertionError } from "./assertion_error.ts";

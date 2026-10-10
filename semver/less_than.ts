@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Less than comparison for two SemVers.
+ *
+ * Exports {@linkcode lessThan}.
+ *
+ * @module
+ */
 import type { SemVer } from "./types.ts";
 import { compare } from "./compare.ts";
 

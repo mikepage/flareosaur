@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a string into camelCase.
+ *
+ * Exports {@linkcode toCamelCase}.
+ *
+ * @module
+ */
+
 import { capitalizeWord, splitToWords } from "./_util.ts";
 
 /**

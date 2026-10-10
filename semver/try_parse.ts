@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns the parsed SemVer, or `undefined` if it's not valid.
+ *
+ * Exports {@linkcode tryParse}.
+ *
+ * @module
+ */
 import type { SemVer } from "./types.ts";
 import { parse } from "./parse.ts";
 

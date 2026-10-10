@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Verifies whether provided path is absolute.
+ *
+ * Exports {@linkcode isAbsolute}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { isAbsolute as posixIsAbsolute } from "./posix/is_absolute.ts";
 import { isAbsolute as windowsIsAbsolute } from "./windows/is_absolute.ts";

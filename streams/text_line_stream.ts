@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Transform a stream into a stream where each chunk is divided by a newline, be it `\n` or `\r\n`. `\r` can be enabled via the `allowCR` option.
+ *
+ * Exports {@linkcode TextLineStream}, {@linkcode TextLineStreamOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode TextLineStream}. */
 export interface TextLineStreamOptions {
   /**

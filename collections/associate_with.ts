@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Associates each string element of an array with a value returned by a selector function.
+ *
+ * Exports {@linkcode associateWith}.
+ *
+ * @module
+ */
+
+/**
  * Associates each string element of an array with a value returned by a selector
  * function.
  *

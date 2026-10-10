@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Applies the given aggregator to each group in the given grouping, returning the results together with the respective group keys
+ *
+ * Exports {@linkcode aggregateGroups}.
+ *
+ * @module
+ */
+
 import { mapEntries } from "./map_entries.ts";
 
 /**

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns `true` if both SemVers are equivalent.
+ *
+ * Exports {@linkcode equals}.
+ *
+ * @module
+ */
 import { compare } from "./compare.ts";
 import type { SemVer } from "./types.ts";
 

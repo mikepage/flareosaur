@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given transformer to all entries in the given record and returns a new record containing the results.
+ *
+ * Exports {@linkcode mapEntries}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given transformer to all entries in the given record and returns
  * a new record containing the results.
  *

@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Takes a string and generates a comparator function to determine which of two strings is more similar to the given one.
+ *
+ * Exports {@linkcode compareSimilarity}, {@linkcode CompareSimilarityOptions}.
+ *
+ * @module
+ */
 import { levenshteinDistance } from "./levenshtein_distance.ts";
 
 /** Options for {@linkcode compareSimilarity}. */

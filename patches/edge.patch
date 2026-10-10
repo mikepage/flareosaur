@@ -304,10 +304,10 @@ index 509a675..3be2e75 100644
 -  }
 -}
 diff --git a/dotenv/parse.ts b/dotenv/parse.ts
-index 012c29f..a56ef3c 100644
+index 0f49dee..be3e5df 100644
 --- a/dotenv/parse.ts
 +++ b/dotenv/parse.ts
-@@ -47,7 +47,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
+@@ -55,7 +55,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
        const defaultValue = inBracketsDefault ?? notInBracketsDefault;
  
        return (
@@ -406,18 +406,18 @@ index fb2e661..0de3ed9 100644
  export * from "./user_agent.ts";
 -export * from "./file_server.ts";
 diff --git a/http/unstable_formdata_encoder_stream.ts b/http/unstable_formdata_encoder_stream.ts
-index 6c9040d..edacded 100644
+index d8d6ed1..b1f8bba 100644
 --- a/http/unstable_formdata_encoder_stream.ts
 +++ b/http/unstable_formdata_encoder_stream.ts
-@@ -1,7 +1,6 @@
- // Copyright 2018-2026 the Deno authors. MIT license.
+@@ -9,7 +9,6 @@
+  */
  
  import { encodeBase64 } from "../encoding/unstable_base64.ts";
 -import { toByteStream } from "../streams/unstable_to_byte_stream.ts";
  
  /**
   * The input that can be passed to a {@linkcode FormDataEncoderStream}.
-@@ -110,11 +109,17 @@ export class FormDataEncoderStream {
+@@ -118,11 +117,17 @@ export class FormDataEncoderStream {
          );
  
          try {
@@ -437,7 +437,7 @@ index 6c9040d..edacded 100644
  
            // deno-lint-ignore no-explicit-any
            if ((buffer.buffer as any).detached) {
-@@ -122,9 +127,10 @@ export class FormDataEncoderStream {
+@@ -130,9 +135,10 @@ export class FormDataEncoderStream {
            } else if (buffer.buffer === value.buffer) {
              controller.byobRequest!.respond(value.length);
            } else {
@@ -451,7 +451,7 @@ index 6c9040d..edacded 100644
            }
          } catch (error) {
            controller.error(error);
-@@ -176,13 +182,15 @@ export class FormDataEncoderStream {
+@@ -184,13 +190,15 @@ export class FormDataEncoderStream {
          buffer = yield this.#setString(buffer, input.value);
        } else {
          if (input.value instanceof Blob) input.value = input.value.stream();
@@ -472,11 +472,11 @@ index 6c9040d..edacded 100644
          } catch (reason) {
            await reader.cancel(reason);
 diff --git a/http/unstable_route.ts b/http/unstable_route.ts
-index a0c6dce..b24872a 100644
+index 56e2cad..57a7123 100644
 --- a/http/unstable_route.ts
 +++ b/http/unstable_route.ts
-@@ -1,13 +1,17 @@
- // Copyright 2018-2026 the Deno authors. MIT license.
+@@ -9,13 +9,17 @@
+  */
  
  /**
 - * A handler for HTTP requests.
@@ -496,7 +496,7 @@ index a0c6dce..b24872a 100644
  ) => Response | Promise<Response>;
  
  /**
-@@ -15,16 +19,18 @@ export type RequestHandler = (
+@@ -23,16 +27,18 @@ export type RequestHandler = (
   *
   * @experimental **UNSTABLE**: New API, yet to be vetted.
   *
@@ -519,7 +519,7 @@ index a0c6dce..b24872a 100644
  ) => Response | Promise<Response>;
  
  /**
-@@ -32,7 +38,8 @@ export type Handler = (
+@@ -40,7 +46,8 @@ export type Handler = (
   *
   * @experimental **UNSTABLE**: New API, yet to be vetted.
   */
@@ -529,7 +529,7 @@ index a0c6dce..b24872a 100644
    /**
     * Request URL pattern.
     */
-@@ -47,7 +54,7 @@ export interface Route {
+@@ -55,7 +62,7 @@ export interface Route {
    /**
     * Request handler.
     */
@@ -538,7 +538,7 @@ index a0c6dce..b24872a 100644
  }
  
  function methodMatches(
-@@ -89,25 +96,26 @@ function methodMatches(
+@@ -97,25 +104,26 @@ function methodMatches(
   *   return new Response("Not found", { status: 404 });
   * }
   *
@@ -573,7 +573,7 @@ index a0c6dce..b24872a 100644
    };
  }
  
-@@ -264,7 +272,7 @@ function createNode(): RouteNode {
+@@ -272,7 +280,7 @@ function createNode(): RouteNode {
   *   return new Response("Not found", { status: 404 });
   * }
   *
@@ -582,7 +582,7 @@ index a0c6dce..b24872a 100644
   * ```
   *
   * @param routes Route configurations
-@@ -273,10 +281,11 @@ function createNode(): RouteNode {
+@@ -281,10 +289,11 @@ function createNode(): RouteNode {
   * Allowed response can be done in this function.
   * @returns Request handler
   */
@@ -598,7 +598,7 @@ index a0c6dce..b24872a 100644
    const root = createNode();
    const fallbackRoutes: IndexedRoute[] = [];
    let insertionCounter = 0;
-@@ -421,7 +430,7 @@ export function routeRadix(
+@@ -429,7 +438,7 @@ export function routeRadix(
    // and let pruning skip the rest of the tree if one matches.
    const radixMinIndex = root.minIndex;
  
@@ -607,7 +607,7 @@ index a0c6dce..b24872a 100644
      const state: MatchState = {
        request,
        pathname: parsePathname(request.url),
-@@ -453,9 +462,9 @@ export function routeRadix(
+@@ -461,9 +470,9 @@ export function routeRadix(
      }
  
      if (state.bestRoute !== null) {
@@ -620,19 +620,19 @@ index a0c6dce..b24872a 100644
  }
  
 diff --git a/internal/format.ts b/internal/format.ts
-index 0f90482..29e2897 100644
+index f48f7d3..0480000 100644
 --- a/internal/format.ts
 +++ b/internal/format.ts
-@@ -1,6 +1,8 @@
- // Copyright 2018-2026 the Deno authors. MIT license.
- // This module is browser compatible.
+@@ -9,6 +9,8 @@
+  * @module
+  */
  
 +import { inspect as fallbackInspect } from "./inspect.ts";
 +
  /** An inspect function conforming to the shape of `Deno.inspect` and `node:util`'s `inspect` */
  export type InspectFn = (
    v: unknown,
-@@ -40,48 +42,20 @@ export function format(v: unknown): string {
+@@ -48,48 +50,20 @@ export function format(v: unknown): string {
    const inspect: InspectFn | undefined = Deno?.inspect ??
      process?.getBuiltinModule?.("node:util")?.inspect;
  
@@ -1284,10 +1284,10 @@ index 113900a..b1b067c 100644
  
  function assertValidParse(text: string, expected: unknown) {
 diff --git a/streams/byte_slice_stream.ts b/streams/byte_slice_stream.ts
-index d07bf6b..9cf4184 100644
+index 5d52723..d41f113 100644
 --- a/streams/byte_slice_stream.ts
 +++ b/streams/byte_slice_stream.ts
-@@ -45,13 +45,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
+@@ -53,13 +53,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
     * @param end The zero-indexed byte index to stop reading at. Inclusive.
     */
    constructor(start = 0, end: number = Infinity) {
@@ -1309,10 +1309,10 @@ index d07bf6b..9cf4184 100644
        },
        transform: (chunk, controller) => {
 diff --git a/streams/concat_readable_streams.ts b/streams/concat_readable_streams.ts
-index 77c169e..78f441a 100644
+index 92c4dbb..2949fcd 100644
 --- a/streams/concat_readable_streams.ts
 +++ b/streams/concat_readable_streams.ts
-@@ -30,21 +30,28 @@ export function concatReadableStreams<T>(
+@@ -38,21 +38,28 @@ export function concatReadableStreams<T>(
    ...streams: ReadableStream<T>[]
  ): ReadableStream<T> {
    let i = 0;
@@ -1345,10 +1345,10 @@ index 77c169e..78f441a 100644
      },
    });
 diff --git a/streams/unstable_capped_delimiter_stream.ts b/streams/unstable_capped_delimiter_stream.ts
-index 93cb38a..0c46ec3 100644
+index 79aca5c..87c2e4c 100644
 --- a/streams/unstable_capped_delimiter_stream.ts
 +++ b/streams/unstable_capped_delimiter_stream.ts
-@@ -112,6 +112,16 @@ export class CappedDelimiterStream
+@@ -120,6 +120,16 @@ export class CappedDelimiterStream
      { delimiter, limit }: CappedDelimiterOptions,
    ): AsyncGenerator<CappedDelimiterEntry> {
      const reader = toByteStream(readable).getReader({ mode: "byob" });
@@ -1365,7 +1365,7 @@ index 93cb38a..0c46ec3 100644
      let buffer = (await reader.read(
        new Uint8Array(limit + delimiter.length),
        { min: limit + delimiter.length },
-@@ -126,12 +136,7 @@ export class CappedDelimiterStream
+@@ -134,12 +144,7 @@ export class CappedDelimiterStream
          yield { match: true, value: buffer.slice(0, i) };
          buffer.set(buffer.subarray(i + delimiter.length));
          buffer = buffer.subarray(-i - delimiter.length);
@@ -1379,7 +1379,7 @@ index 93cb38a..0c46ec3 100644
          continue a;
        }
        if (buffer.byteLength < buffer.buffer.byteLength) {
-@@ -145,12 +150,7 @@ export class CappedDelimiterStream
+@@ -153,12 +158,7 @@ export class CappedDelimiterStream
        yield { match: false, value: buffer.slice(0, -delimiter.length) };
        buffer.set(buffer.subarray(-delimiter.length));
        buffer = buffer.subarray(delimiter.length);

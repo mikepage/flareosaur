@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Least-recently-used cache.
+ *
+ * Exports {@linkcode LruCache}, {@linkcode LruCacheEjectionReason}, {@linkcode LruCacheOptions}, {@linkcode MemoizationCache}.
+ *
+ * @module
+ */
+
 import type { MemoizationCache } from "./memoize.ts";
 export type { MemoizationCache };
 

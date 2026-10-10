@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A transform stream that accepts a {@linkcode AbortSignal} to easily abort a stream pipeThrough.
+ *
+ * Exports {@linkcode AbortStream}.
+ *
+ * @module
+ */
+
+/**
  * A transform stream that accepts a {@linkcode AbortSignal} to easily abort a
  * stream pipeThrough.
  *

@@ -4,6 +4,14 @@
 /**
  * Stringify an object into a valid `.env` file format.
  *
+ * Exports {@linkcode stringify}.
+ *
+ * @module
+ */
+
+/**
+ * Stringify an object into a valid `.env` file format.
+ *
  * @example Usage
  * ```ts
  * import { stringify } from "@mikepage/flareosaur/dotenv/stringify";

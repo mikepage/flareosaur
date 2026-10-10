@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns true if the given value is part of the given object, otherwise it returns false.
+ *
+ * Exports {@linkcode includesValue}.
+ *
+ * @module
+ */
+
+/**
  * Returns true if the given value is part of the given object, otherwise it
  * returns false.
  *

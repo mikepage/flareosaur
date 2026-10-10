@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns whether the given string is a valid custom element name, as per the requirements defined in {@link https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name}.
+ *
+ * Exports {@linkcode isValidCustomElementName}.
+ *
+ * @module
+ */
+
 const FORBIDDEN_CUSTOM_ELEMENT_NAMES: string[] = [
   "annotation-xml",
   "color-profile",

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Determines whether a string is a valid {@link https://www.rfc-editor.org/rfc/rfc9562.html#section-5.3 | UUIDv3}.
+ *
+ * Exports {@linkcode validate}, {@linkcode generate}.
+ *
+ * @module
+ */
+
 import { bytesToUuid, uuidToBytes } from "./_common.ts";
 import { concat } from "../bytes/concat.ts";
 import { crypto } from "../crypto/crypto.ts";

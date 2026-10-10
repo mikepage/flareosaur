@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns an element if and only if that element is the only one matching the given condition. Returns `undefined` otherwise.
+ *
+ * Exports {@linkcode findSingle}.
+ *
+ * @module
+ */
+
+/**
  * Returns an element if and only if that element is the only one matching the
  * given condition. Returns `undefined` otherwise.
  *

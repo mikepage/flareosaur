@@ -4,6 +4,14 @@
 /**
  * Gets the longest common prefix of an array of strings.
  *
+ * Exports {@linkcode longestCommonPrefix}.
+ *
+ * @module
+ */
+
+/**
+ * Gets the longest common prefix of an array of strings.
+ *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
  * @param strs The array of strings to find the common prefix for.

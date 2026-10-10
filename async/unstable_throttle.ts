@@ -1,6 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Exports {@linkcode throttle}, {@linkcode ThrottleOptions}, {@linkcode ThrottledFunction}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode throttle} */
 export type ThrottleOptions = {
   /**

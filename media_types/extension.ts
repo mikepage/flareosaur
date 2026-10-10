@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Returns the most relevant extension for the given media type, or `undefined` if no extension can be found.
+ *
+ * Exports {@linkcode extension}.
+ *
+ * @module
+ */
+
 import { allExtensions } from "./all_extensions.ts";
 
 /**

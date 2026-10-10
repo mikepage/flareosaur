@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Converts a {@linkcode ReadableSteam} of strings or {@linkcode Uint8Array}s to a single string. Works the same as {@linkcode Response.text} and {@linkcode Request.text}, but also extends to support streams of strings.
+ *
+ * Exports {@linkcode toText}.
+ *
+ * @module
+ */
+
+/**
  * Converts a {@linkcode ReadableSteam} of strings or {@linkcode Uint8Array}s
  * to a single string. Works the same as {@linkcode Response.text} and
  * {@linkcode Request.text}, but also extends to support streams of strings.

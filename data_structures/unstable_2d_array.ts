@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * A 2d array. Unlike a normal array, it does not grow dynamically, and needs to be manually resized with the {@linkcode D2Array.prototype.resize | `resize`} method. It can never have the width or height be 0.
+ *
+ * Exports {@linkcode D2Array}.
+ *
+ * @module
+ */
 import { assert } from "../assert/mod.ts";
 
 /**

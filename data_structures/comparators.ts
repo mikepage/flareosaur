@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Compare two values in ascending order using JavaScript's built in comparison operators.
+ *
+ * Exports {@linkcode ascend}, {@linkcode descend}.
+ *
+ * @module
+ */
+
+/**
  * Compare two values in ascending order using JavaScript's built in comparison
  * operators.
  *

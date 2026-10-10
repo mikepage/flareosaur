@@ -4,6 +4,14 @@
 /**
  * Returns an array excluding all given values from an iterable.
  *
+ * Exports {@linkcode withoutAll}.
+ *
+ * @module
+ */
+
+/**
+ * Returns an array excluding all given values from an iterable.
+ *
  * Note: If both inputs are {@linkcode Set}s, and you want the difference as a
  * {@linkcode Set}, you could use {@linkcode Set.prototype.difference} instead.
  *

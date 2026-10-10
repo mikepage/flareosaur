@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Create a promise which will be rejected with {@linkcode DOMException} when a given delay is exceeded.
+ *
+ * Exports {@linkcode deadline}, {@linkcode DeadlineOptions}.
+ *
+ * @module
+ */
+
 import { abortable } from "./abortable.ts";
 
 /** Options for {@linkcode deadline}. */

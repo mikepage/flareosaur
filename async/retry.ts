@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Error thrown in {@linkcode retry} once the maximum number of failed attempts has been reached.
+ *
+ * Exports {@linkcode RetryError}, {@linkcode retry}, {@linkcode RetryOptions}.
+ *
+ * @module
+ */
 import { delay } from "./delay.ts";
 import { exponentialBackoffWithJitter } from "./_util.ts";
 

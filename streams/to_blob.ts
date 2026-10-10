@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to a {@linkcode Blob}. Works the same as {@linkcode Response.blob}.
+ *
+ * Exports {@linkcode toBlob}.
+ *
+ * @module
+ */
+
+/**
  * Converts a {@linkcode ReadableStream} of {@linkcode Uint8Array}s to a
  * {@linkcode Blob}. Works the same as {@linkcode Response.blob}.
  *

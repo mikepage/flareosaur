@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * A lazy value that is initialized at most once, with built-in deduplication of concurrent callers. Prevents the common race where two concurrent `get()` calls both trigger the initializer; only one initialization runs and all callers share the same promise.
+ *
+ * Exports {@linkcode Lazy}, {@linkcode LazyGetOptions}.
+ *
+ * @module
+ */
+
+/**
  * Options for {@linkcode Lazy.prototype.get}.
  */
 export interface LazyGetOptions {

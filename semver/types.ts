@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * The possible release types are used as an operator for the increment function and as a result of the difference function.
+ *
+ * Exports {@linkcode ReleaseType}, {@linkcode Operator}, {@linkcode Comparator}, {@linkcode SemVer}, {@linkcode Range}.
+ *
+ * @module
+ */
+
+/**
  * The possible release types are used as an operator for the
  * increment function and as a result of the difference function.
  */

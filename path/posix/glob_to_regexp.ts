@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Convert a glob string to a regular expression.
+ *
+ * Exports {@linkcode globToRegExp}, {@linkcode GlobOptions}.
+ *
+ * @module
+ */
+
 import {
   _globToRegExp,
   type GlobConstants,

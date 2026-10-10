@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns `true` if the prefix array appears at the start of the source array, `false` otherwise.
+ *
+ * Exports {@linkcode startsWith}.
+ *
+ * @module
+ */
+
+/**
  * Returns `true` if the prefix array appears at the start of the source array,
  * `false` otherwise.
  *

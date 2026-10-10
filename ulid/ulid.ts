@@ -3,6 +3,14 @@
 // Copyright 2017 Alizain Feerasta. All rights reserved. MIT license.
 // This module is browser compatible.
 
+/**
+ * Generate a ULID, optionally based on a given timestamp. If the timestamp is not passed, it will default to `Date.now()`.
+ *
+ * Exports {@linkcode ulid}.
+ *
+ * @module
+ */
+
 import { encodeRandom, encodeTime } from "./_util.ts";
 
 /**

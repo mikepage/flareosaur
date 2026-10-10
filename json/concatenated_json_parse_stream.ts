@@ -1,4 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
+
+/**
+ * Stream to parse {@link https://en.wikipedia.org/wiki/JSON_streaming#Concatenated_JSON | Concatenated JSON}.
+ *
+ * Exports {@linkcode ConcatenatedJsonParseStream}.
+ *
+ * @module
+ */
 import { toTransformStream } from "../streams/to_transform_stream.ts";
 import type { JsonValue } from "./types.ts";
 import { parse } from "./_common.ts";

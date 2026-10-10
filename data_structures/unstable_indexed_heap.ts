@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A priority queue that supports looking up, removing, and re-prioritizing entries by key. Each entry is a unique `(key, priority)` pair. The entry with the smallest priority (under the comparator) is always at the front.
+ *
+ * Exports {@linkcode IndexedHeap}, {@linkcode HeapEntry}, {@linkcode ReadonlyIndexedHeap}.
+ *
+ * @module
+ */
+
 import { ascend } from "./comparators.ts";
 
 /**

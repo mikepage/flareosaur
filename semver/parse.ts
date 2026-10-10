@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Attempt to parse a string as a semantic version, returning a SemVer object.
+ *
+ * Exports {@linkcode parse}.
+ *
+ * @module
+ */
 import type { SemVer } from "./types.ts";
 import { parseBuild, parseNumber, parsePrerelease } from "./_shared.ts";
 import { FULL_REGEXP, MAX_LENGTH } from "./_shared.ts";

@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Given a media type or header value, identify the encoding charset. If the charset cannot be determined, the function returns `undefined`.
+ *
+ * Exports {@linkcode getCharset}.
+ *
+ * @module
+ */
+
 import { parseMediaType } from "./parse_media_type.ts";
 import type { DBEntry } from "./_util.ts";
 import { db, type KeyOfDb } from "./_db.ts";

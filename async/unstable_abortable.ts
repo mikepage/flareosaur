@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Make a {@linkcode Promise} abortable with the given signal.
+ *
+ * Exports {@linkcode abortable}, {@linkcode abortable}, {@linkcode abortable}, {@linkcode AbortableOptions}.
+ *
+ * @module
+ */
+
 /** Options for {@linkcode abortable}. */
 export interface AbortableOptions {
   /**

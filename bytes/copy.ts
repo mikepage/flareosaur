@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Copy bytes from the source array to the destination array and returns the number of bytes copied.
+ *
+ * Exports {@linkcode copy}.
+ *
+ * @module
+ */
+
+/**
  * Copy bytes from the source array to the destination array and returns the
  * number of bytes copied.
  *

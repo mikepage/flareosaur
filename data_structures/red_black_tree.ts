@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A red-black tree. This is a kind of self-balancing binary search tree, extending {@linkcode BinarySearchTree}. The values are in ascending order by default, using JavaScript's built-in comparison operators to sort the values.
+ *
+ * Exports {@linkcode RedBlackTree}.
+ *
+ * @module
+ */
+
 import { ascend } from "./comparators.ts";
 import { BinarySearchTree } from "./binary_search_tree.ts";
 import { type Direction, RedBlackNode } from "./_red_black_node.ts";

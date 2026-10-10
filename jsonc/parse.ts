@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Converts a JSON with Comments (JSONC) string into an object.
+ *
+ * Exports {@linkcode parse}, {@linkcode JsonValue}.
+ *
+ * @module
+ */
+
 import type { JsonValue } from "../json/types.ts";
 export type { JsonValue };
 

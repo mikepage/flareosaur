@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Calls the given (possibly asynchronous) function up to `maxAttempts` times. Retries as long as the given function throws. If the attempts are exhausted, throws a {@linkcode RetryError} with `cause` set to the inner exception.
+ *
+ * Exports {@linkcode retry}, {@linkcode RetryOptions}, {@linkcode RetryError}.
+ *
+ * @module
+ */
 import { delay } from "./delay.ts";
 import { exponentialBackoffWithJitter } from "./_util.ts";
 import {

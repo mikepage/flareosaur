@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Checks to see if value is a valid SemVer object. It does a check into each field including prerelease and build.
+ *
+ * Exports {@linkcode isSemVer}.
+ *
+ * @module
+ */
 import { ANY } from "./_constants.ts";
 import type { SemVer } from "./types.ts";
 import { isValidNumber, isValidString } from "./_shared.ts";

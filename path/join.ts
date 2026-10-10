@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Joins a sequence of paths, then normalizes the resulting path.
+ *
+ * Exports {@linkcode join}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import { join as posixJoin } from "./posix/join.ts";
 import { join as windowsJoin } from "./windows/join.ts";

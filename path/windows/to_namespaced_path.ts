@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Resolves path to a namespace path
+ *
+ * Exports {@linkcode toNamespacedPath}.
+ *
+ * @module
+ */
+
 import {
   CHAR_BACKWARD_SLASH,
   CHAR_COLON,

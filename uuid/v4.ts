@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Determines whether a string is a valid {@link https://www.rfc-editor.org/rfc/rfc9562.html#section-5.4 | UUIDv4}.
+ *
+ * Exports {@linkcode validate}.
+ *
+ * @module
+ */
+
 const UUID_REGEXP =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

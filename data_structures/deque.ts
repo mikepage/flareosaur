@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * A double-ended queue backed by a ring buffer. Pushing, popping, and indexed access stay fast as the deque grows.
+ *
+ * Exports {@linkcode Deque}, {@linkcode ReadonlyDeque}.
+ *
+ * @module
+ */
+
 const MIN_CAPACITY = 8;
 const MIN_SHRINK_CAPACITY = 64;
 

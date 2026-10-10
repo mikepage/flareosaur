@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Divide a stream into chunks delimited by a given byte sequence.
+ *
+ * Exports {@linkcode DelimiterStream}, {@linkcode DelimiterDisposition}, {@linkcode DelimiterStreamOptions}.
+ *
+ * @module
+ */
+
 import { concat } from "../bytes/concat.ts";
 import { createLPS } from "./_common.ts";
 

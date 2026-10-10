@@ -4,6 +4,14 @@
 /**
  * Stubs a property on an object, retaining the attributes of the original property descriptor as far as possible.
  *
+ * Exports {@linkcode stubProperty}.
+ *
+ * @module
+ */
+
+/**
+ * Stubs a property on an object, retaining the attributes of the original property descriptor as far as possible.
+ *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
  * @typeParam Self The type of the object to stub a property of.

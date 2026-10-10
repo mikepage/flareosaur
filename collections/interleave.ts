@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Returns all elements from the given iterables in round-robin order. Unlike {@linkcode zip}, which stops at the shortest iterable and returns tuples, `interleave` continues until all input iterables are exhausted and returns a flat array. All input iterables are consumed eagerly.
+ *
+ * Exports {@linkcode interleave}.
+ *
+ * @module
+ */
+
+/**
  * Returns all elements from the given iterables in round-robin order.
  * Unlike {@linkcode zip}, which stops at the shortest iterable and returns
  * tuples, `interleave` continues until all input iterables are exhausted and

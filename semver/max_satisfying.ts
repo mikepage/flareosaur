@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns the highest SemVer in the list that satisfies the range, or `undefined` if none of them do.
+ *
+ * Exports {@linkcode maxSatisfying}.
+ *
+ * @module
+ */
 import type { Range, SemVer } from "./types.ts";
 import { satisfies } from "./satisfies.ts";
 import { greaterThan } from "./greater_than.ts";

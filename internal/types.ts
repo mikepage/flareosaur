@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Ways that lines in a diff can be different.
+ *
+ * Exports {@linkcode DiffType}, {@linkcode DiffResult}, {@linkcode CommonDiffResult}, {@linkcode ChangedDiffResult}.
+ *
+ * @module
+ */
+
 /** Ways that lines in a diff can be different. */
 export type DiffType = DiffResult<unknown>["type"];
 

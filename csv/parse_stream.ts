@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * `CsvParseStream` transforms a stream of CSV-encoded text into a stream of parsed objects.
+ *
+ * Exports {@linkcode CsvParseStream}, {@linkcode CsvParseStreamOptions}, {@linkcode RowType}.
+ *
+ * @module
+ */
+
 import {
   convertRowToObject,
   type LineReader,

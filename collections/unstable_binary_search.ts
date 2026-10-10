@@ -4,6 +4,14 @@
 /**
  * Binary search within a sorted array, allowing for non-exact matches.
  *
+ * Exports {@linkcode binarySearch}.
+ *
+ * @module
+ */
+
+/**
+ * Binary search within a sorted array, allowing for non-exact matches.
+ *
  * Binary searching may be preferable to `Array#findIndex` if the array is
  * large and performance is at a premium, or if information about the insertion
  * index is needed upon non-exact matches (`Array#findIndex` simply returns

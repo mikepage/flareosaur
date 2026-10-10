@@ -2,6 +2,14 @@
 // This module is browser compatible.
 
 /**
+ * Applies the given transformer to all values in the given record and returns a new record containing the resulting keys associated to the last value that produced them.
+ *
+ * Exports {@linkcode mapValues}, {@linkcode mapValues}, {@linkcode mapValues}.
+ *
+ * @module
+ */
+
+/**
  * Applies the given transformer to all values in the given record and returns a
  * new record containing the resulting keys associated to the last value that
  * produced them.

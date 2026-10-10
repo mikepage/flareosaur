@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Returns true if the string can be parsed as SemVer.
+ *
+ * Exports {@linkcode canParse}.
+ *
+ * @module
+ */
 import { parse } from "./parse.ts";
 
 /**

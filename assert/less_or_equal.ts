@@ -1,5 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
+
+/**
+ * Make an assertion that `actual` is less than or equal to `expected`. If not then throw.
+ *
+ * Exports {@linkcode assertLessOrEqual}.
+ *
+ * @module
+ */
 import { format } from "../internal/format.ts";
 import { AssertionError } from "./assertion_error.ts";
 

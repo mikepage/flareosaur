@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return a `ParsedPath` object of the `path`.
+ *
+ * Exports {@linkcode parse}, {@linkcode ParsedPath}.
+ *
+ * @module
+ */
+
 import { CHAR_COLON, CHAR_DOT } from "../_common/constants.ts";
 import type { ParsedPath } from "../types.ts";
 import { assertPath } from "../_common/assert_path.ts";

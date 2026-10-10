@@ -1,6 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+/**
+ * Return an object containing the parsed components of the path.
+ *
+ * Exports {@linkcode parse}, {@linkcode ParsedPath}.
+ *
+ * @module
+ */
+
 import { isWindows } from "../internal/os.ts";
 import type { ParsedPath } from "./types.ts";
 import { parse as posixParse } from "./posix/parse.ts";
