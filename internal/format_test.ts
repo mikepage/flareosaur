@@ -133,8 +133,9 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
     stack.use(stubProperty(global, "Deno", undefined));
     stack.use(stubProperty(global, "process", undefined));
 
-    assertEquals(format([..."abcd"]), '[\n  "a",\n  "b",\n  "c",\n  "d"\n]');
-    assertEquals(format({ a: 1, b: 2 }), '{\n  "a": 1,\n  "b": 2\n}');
+    // Without either, format() uses its own port of Deno's layout rules.
+    assertEquals(format([..."abcd"]), '[\n  "a",\n  "b",\n  "c",\n  "d",\n]');
+    assertEquals(format({ a: 1, b: 2 }), "{\n  a: 1,\n  b: 2,\n}");
     assertEquals(format(1), "1");
     assertEquals(format("1"), '"1"');
     assertEquals(format(1n), "1n");
@@ -144,7 +145,8 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
     assertEquals(format(undefined), "undefined");
     assertEquals(format("undefined"), '"undefined"');
     assertEquals(format(Symbol("x")), "Symbol(x)");
-    assertEquals(format(new Map()), "[object Map]");
+    assertEquals(format(new Map()), "Map(0) {}");
+    assertEquals(format(new Set([2, 1])), "Set(2) {\n  1,\n  2,\n}");
 
     const badlyBehavedObject: Record<string, unknown> = {
       toString() {
@@ -157,7 +159,14 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
 
     badlyBehavedObject.self = badlyBehavedObject;
 
-    assertEquals(format(badlyBehavedObject), `[[Unable to format value]]`);
+    assertEquals(
+      format(badlyBehavedObject),
+      `<ref *1> {
+  [Symbol(Symbol.toStringTag)]: [Getter: <Inspection threw (This object cannot be stringified)>],
+  self: [Circular *1],
+  toString: [Function: toString],
+}`,
+    );
 
     assertThrows(
       // @ts-expect-error different types

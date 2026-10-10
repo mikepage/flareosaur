@@ -12,6 +12,7 @@
 import { build } from "esbuild";
 import { Miniflare } from "miniflare";
 import {
+  existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
@@ -20,7 +21,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "node_modules/.flareosaur-test");
@@ -28,6 +29,7 @@ const COMPAT_DATE = "2026-07-30";
 
 const args = process.argv.slice(2);
 const verbose = args.includes("--verbose");
+const trace = args.includes("--trace");
 const workspace = JSON.parse(readFileSync(join(ROOT, "deno.json"), "utf8"))
   .workspace.map((p) => p.slice(2));
 // "pkg" runs a package, "pkg/file_test.ts" a single file of it.
@@ -38,7 +40,15 @@ const selected = targets.length
 const fileFilter = (pkg, file) =>
   !targets.some((t) => t.startsWith(`${pkg}/`)) ||
   targets.includes(`${pkg}/${file}`);
-const skips = JSON.parse(readFileSync(join(ROOT, "scripts/skip.json"), "utf8"));
+// file -> "*" or test names, from skip.json groups of { reason, tests }.
+const skips = {};
+for (const { tests } of JSON.parse(readFileSync(join(ROOT, "scripts/skip.json"), "utf8"))) {
+  for (const [file, names] of Object.entries(tests)) {
+    skips[file] = names === "*" || skips[file] === "*"
+      ? "*"
+      : [...(skips[file] ?? []), ...names];
+  }
+}
 
 function walk(dir) {
   return readdirSync(dir).flatMap((name) => {
@@ -48,12 +58,40 @@ function walk(dir) {
   });
 }
 
+function walkAll(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const p = join(dir, name);
+    return statSync(p).isDirectory() ? walkAll(p) : [p];
+  });
+}
+
 const posix = (p) => p.split("\\").join("/");
 
 function isSkipped(pkg, file, name) {
   const list = skips[`${pkg}/${file}`];
   return list === "*" || (Array.isArray(list) && list.includes(name));
 }
+
+// Resolves @flareosaur/<pkg>[/<export>] through each package's deno.json.
+const exportsMap = new Map();
+for (const pkg of workspace) {
+  const { name, exports } = JSON.parse(
+    readFileSync(join(ROOT, pkg, "deno.json"), "utf8"),
+  );
+  const entries = typeof exports === "string" ? { ".": exports } : exports;
+  for (const [sub, file] of Object.entries(entries)) {
+    exportsMap.set(sub === "." ? name : `${name}/${sub.slice(2)}`, join(ROOT, pkg, file));
+  }
+}
+const workspaceResolver = {
+  name: "workspace",
+  setup(b) {
+    b.onResolve({ filter: /^@flareosaur\// }, (a) => {
+      const path = exportsMap.get(a.path);
+      return path ? { path } : { errors: [{ text: `Unknown export ${a.path}` }] };
+    });
+  },
+};
 
 // A few tests import node: built-ins to compare against Node. workerd has none
 // without nodejs_compat, so they resolve to stubs that throw when used.
@@ -76,6 +114,22 @@ export const { inspect, isMainThread, Worker, cwd, platform } = new Proxy({}, { 
   },
 };
 
+// Bundling erases import.meta.url, so test files get their own file URL back.
+// Tests that then read from that path still fail and are listed in skip.json,
+// but the rest of the file loads.
+const importMeta = {
+  name: "import-meta",
+  setup(b) {
+    b.onLoad({ filter: /(_test|[\\/]test)\.ts$/ }, (a) => {
+      const url = JSON.stringify(pathToFileURL(a.path).href);
+      const contents = readFileSync(a.path, "utf8")
+        .replaceAll("import.meta.url", url)
+        .replaceAll("import.meta.resolve(", `((s) => new URL(s, ${url}).href)(`);
+      return { contents, loader: "ts" };
+    });
+  },
+};
+
 async function bundle(pkg) {
   const dir = join(ROOT, pkg);
   const out = join(OUT, pkg);
@@ -92,7 +146,9 @@ async function bundle(pkg) {
   );
   const rel = (f) => JSON.stringify(posix(relative(out, f)));
   const entry = [
-    `import { run } from ${rel(join(ROOT, "scripts/test_shim.js"))};`,
+    `import { run, setFixtures } from ${rel(join(ROOT, "scripts/test_shim.js"))};`,
+    `import fixtures from "./fixtures.json";`,
+    `setFixtures(fixtures);`,
     ...entries.map((e, i) =>
       `import * as _export${i} from ${rel(join(dir, e))};`
     ),
@@ -105,10 +161,19 @@ async function bundle(pkg) {
     `  async fetch(request) {`,
     `    const file = new URL(request.url).searchParams.get("file");`,
     `    if (!file) return Response.json(Object.keys(files));`,
-    `    return Response.json(await run({ [file]: files[file] }));`,
+    `    const trace = new URL(request.url).searchParams.has("trace");`,
+    `    return Response.json(await run({ [file]: files[file] }, trace));`,
     `  },`,
     `};`,
   ].join("\n");
+  const fixtures = {};
+  const testdata = join(dir, "testdata");
+  if (existsSync(testdata)) {
+    for (const f of walkAll(testdata)) {
+      fixtures[f] = readFileSync(f).toString("base64");
+    }
+  }
+  writeFileSync(join(out, "fixtures.json"), JSON.stringify(fixtures));
   const entryPath = join(out, "entry.js");
   writeFileSync(entryPath, entry);
 
@@ -121,11 +186,16 @@ async function bundle(pkg) {
     platform: "neutral",
     target: "esnext",
     conditions: ["workerd", "worker", "browser"],
-    tsconfig: join(ROOT, "tsconfig.json"),
     loader: { ".wasm": "copy" },
-    define: { "Deno.test": "__denoTest" },
+    define: {
+      "Deno.test": "__denoTest",
+      "Deno.readFile": "__denoReadFile",
+      "Deno.readFileSync": "__denoReadFileSync",
+      "Deno.readTextFile": "__denoReadTextFile",
+      "Deno.readTextFileSync": "__denoReadTextFileSync",
+    },
     inject: [join(ROOT, "scripts/test_shim.js")],
-    plugins: [nodeStubs],
+    plugins: [workspaceResolver, nodeStubs, importMeta],
     keepNames: true,
     logLevel: "silent",
   });
@@ -160,7 +230,7 @@ async function runPackage(pkg) {
     const files = await (await mf.dispatchFetch("http://localhost/")).json();
     for (const file of files) {
       try {
-        const url = `http://localhost/?file=${encodeURIComponent(file)}`;
+        const url = `http://localhost/?file=${encodeURIComponent(file)}${trace ? "&trace" : ""}`;
         const res = await mf.dispatchFetch(url);
         const text = await res.text();
         if (!res.ok) throw new Error(text.slice(0, 2000));
@@ -180,13 +250,18 @@ async function runPackage(pkg) {
   return results;
 }
 
+const usedSkips = new Set();
 const totals = { pass: 0, fail: 0, ignored: 0, skipped: 0 };
 const failures = [];
 for (const pkg of selected) {
   const results = await runPackage(pkg);
   const count = { pass: 0, fail: 0, ignored: 0, skipped: 0 };
   for (const r of results) {
-    if (r.status === "fail" && isSkipped(pkg, r.file, r.name)) r.status = "skipped";
+    if (r.status === "fail" && isSkipped(pkg, r.file, r.name)) {
+      r.status = "skipped";
+      usedSkips.add(`${pkg}/${r.file}`);
+      usedSkips.add(`${pkg}/${r.file} :: ${r.name}`);
+    }
     count[r.status]++;
     totals[r.status]++;
     if (r.status === "fail") failures.push({ pkg, ...r });
@@ -195,6 +270,19 @@ for (const pkg of selected) {
   console.log(
     `${mark} ${pkg.padEnd(16)} ${count.pass} passed, ${count.fail} failed, ${count.skipped} skipped, ${count.ignored} ignored`,
   );
+}
+
+// Skip entries for tests that no longer fail should be removed.
+const stale = Object.entries(skips).flatMap(([file, names]) => {
+  if (!selected.includes(file.split("/")[0])) return [];
+  if (names === "*") return usedSkips.has(file) ? [] : [file];
+  return names.filter((n) => !usedSkips.has(`${file} :: ${n}`)).map((n) =>
+    `${file} :: ${n}`
+  );
+});
+if (stale.length && !targets.some((t) => t.includes("/"))) {
+  console.log("\nStale entries in scripts/skip.json (these tests pass now):");
+  for (const s of stale) console.log(`  ${s}`);
 }
 
 if (failures.length) {

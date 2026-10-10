@@ -162,6 +162,19 @@
  */
 
 import { stripAnsiCode } from "./colors.ts";
+import { inspect as fallbackInspect } from "@flareosaur/internal/inspect";
+
+// deno-lint-ignore no-explicit-any
+const { Deno } = globalThis as any;
+const noColor: boolean = Deno?.noColor ?? true;
+
+// Deno.inspect where it exists. Elsewhere (Workers) a port of its layout
+// rules that never colors.
+function inspect(value: unknown, options: Record<string, unknown> = {}) {
+  return typeof Deno?.inspect === "function"
+    ? Deno.inspect(value, options) as string
+    : fallbackInspect(value, options);
+}
 
 const State = {
   PASSTHROUGH: 0,
@@ -258,7 +271,7 @@ class Printf {
     for (let i = 0; i !== this.haveSeen.length; ++i) {
       if (!this.haveSeen[i]) {
         extras = true;
-        err += ` '${Deno.inspect(this.args[i])}'`;
+        err += ` '${inspect(this.args[i])}'`;
       }
     }
     err += ")";
@@ -921,7 +934,7 @@ class Printf {
       const options = this.flags.precision !== -1
         ? { depth: this.flags.precision }
         : {};
-      return this.pad(Deno.inspect(val, options));
+      return this.pad(inspect(val, options));
     } else {
       const p = this.flags.precision;
       return p === -1 ? val.toString() : val.toString().slice(0, p);
@@ -942,8 +955,8 @@ class Printf {
    * @param compact Whether or not the output should be compact.
    */
   fmtI(val: unknown, compact: boolean): string {
-    return Deno.inspect(val, {
-      colors: !Deno?.noColor,
+    return inspect(val, {
+      colors: !noColor,
       compact,
       depth: Infinity,
       iterableLimit: Infinity,
@@ -957,8 +970,8 @@ class Printf {
  *
  * See the module documentation for the available format strings.
  *
- * `%v`, `%i`, and `%I` are only supported in Deno runtime. Other formats are supported in
- * other major runtimes.
+ * `%v`, `%i`, and `%I` use `Deno.inspect` in Deno and a port of its layout
+ * rules elsewhere, without colors.
  *
  * @example Usage
  * ```ts
@@ -1011,5 +1024,14 @@ export function sprintf(format: string, ...args: unknown[]): string {
  */
 export function printf(format: string, ...args: unknown[]) {
   const s = sprintf(format, ...args);
-  Deno.stdout.writeSync(new TextEncoder().encode(s));
+  // deno-lint-ignore no-explicit-any
+  const stdout = (globalThis as any).Deno?.stdout;
+  if (stdout) {
+    stdout.writeSync(new TextEncoder().encode(s));
+  } else {
+    // Workers have no stdout. console.log ends the line, so drop one
+    // trailing newline to avoid printing an empty line after it.
+    // deno-lint-ignore no-console
+    console.log(s.endsWith("\n") ? s.slice(0, -1) : s);
+  }
 }

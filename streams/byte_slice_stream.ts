@@ -45,13 +45,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
    * @param end The zero-indexed byte index to stop reading at. Inclusive.
    */
   constructor(start = 0, end: number = Infinity) {
+    // Validated before super(): workerd does not rethrow errors from a
+    // transformer's start() in the constructor.
+    if (start < 0) {
+      throw new RangeError(
+        `Cannot construct ByteSliceStream as start must be >= 0: received ${start}`,
+      );
+    }
     super({
       start: () => {
-        if (start < 0) {
-          throw new RangeError(
-            `Cannot construct ByteSliceStream as start must be >= 0: received ${start}`,
-          );
-        }
         end += 1;
       },
       transform: (chunk, controller) => {

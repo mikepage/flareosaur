@@ -8,9 +8,6 @@ import {
   assertThrows,
 } from "@flareosaur/assert";
 
-import "./testdata/JSONTestSuite/test.ts";
-import "./testdata/test262/test.ts";
-
 // The test code for the jsonc module can also be found in the testcode directory.
 
 function assertValidParse(text: string, expected: unknown) {

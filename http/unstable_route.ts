@@ -1,13 +1,17 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 /**
- * A handler for HTTP requests.
+ * A handler for HTTP requests. The arguments after the request are passed
+ * through unchanged, e.g. `env` and `ctx` in a Workers `fetch` handler.
  *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
+ *
+ * @typeParam A Arguments passed after the request.
  */
-export type RequestHandler = (
+// deno-lint-ignore no-explicit-any
+export type RequestHandler<A extends unknown[] = any[]> = (
   request: Request,
-  info?: Deno.ServeHandlerInfo,
+  ...args: A
 ) => Response | Promise<Response>;
 
 /**
@@ -15,16 +19,18 @@ export type RequestHandler = (
  *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  *
- * Extends {@linkcode Deno.ServeHandlerInfo} by adding a `params` argument.
+ * Extends {@linkcode RequestHandler} by adding a `params` argument.
  *
+ * @typeParam A Arguments passed after the request, e.g. `env` and `ctx`.
  * @param request Request
  * @param params URL pattern result
- * @param info Request info
+ * @param args The remaining arguments the router was called with
  */
-export type Handler = (
+// deno-lint-ignore no-explicit-any
+export type Handler<A extends unknown[] = any[]> = (
   request: Request,
   params: URLPatternResult,
-  info?: Deno.ServeHandlerInfo,
+  ...args: A
 ) => Response | Promise<Response>;
 
 /**
@@ -32,7 +38,8 @@ export type Handler = (
  *
  * @experimental **UNSTABLE**: New API, yet to be vetted.
  */
-export interface Route {
+// deno-lint-ignore no-explicit-any
+export interface Route<A extends unknown[] = any[]> {
   /**
    * Request URL pattern.
    */
@@ -47,7 +54,7 @@ export interface Route {
   /**
    * Request handler.
    */
-  handler: Handler;
+  handler: Handler<A>;
 }
 
 function methodMatches(
@@ -89,25 +96,26 @@ function methodMatches(
  *   return new Response("Not found", { status: 404 });
  * }
  *
- * Deno.serve(routeLinear(routes, defaultHandler));
+ * export default { fetch: routeLinear(routes, defaultHandler) };
  * ```
  *
  * @param routes Route configurations
  * @param defaultHandler Default request handler
  * @returns Request handler
  */
-export function routeLinear(
-  routes: Route[],
-  defaultHandler: RequestHandler,
-): RequestHandler {
+// deno-lint-ignore no-explicit-any
+export function routeLinear<A extends unknown[] = any[]>(
+  routes: Route<A>[],
+  defaultHandler: RequestHandler<A>,
+): RequestHandler<A> {
   // TODO(iuioiua): Use `URLPatternList` once available (https://github.com/whatwg/urlpattern/pull/166)
-  return (request: Request, info?: Deno.ServeHandlerInfo) => {
+  return (request: Request, ...args: A) => {
     for (const route of routes) {
       if (!methodMatches(route.method, request.method)) continue;
       const match = route.pattern.exec(request.url);
-      if (match) return route.handler(request, match, info);
+      if (match) return route.handler(request, match, ...args);
     }
-    return defaultHandler(request, info);
+    return defaultHandler(request, ...args);
   };
 }
 
@@ -264,7 +272,7 @@ function createNode(): RouteNode {
  *   return new Response("Not found", { status: 404 });
  * }
  *
- * Deno.serve(route(routes, defaultHandler));
+ * export default { fetch: route(routes, defaultHandler) };
  * ```
  *
  * @param routes Route configurations
@@ -273,10 +281,11 @@ function createNode(): RouteNode {
  * Allowed response can be done in this function.
  * @returns Request handler
  */
-export function routeRadix(
-  routes: Route[],
-  defaultHandler: RequestHandler,
-): RequestHandler {
+// deno-lint-ignore no-explicit-any
+export function routeRadix<A extends unknown[] = any[]>(
+  routes: Route<A>[],
+  defaultHandler: RequestHandler<A>,
+): RequestHandler<A> {
   const root = createNode();
   const fallbackRoutes: IndexedRoute[] = [];
   let insertionCounter = 0;
@@ -421,7 +430,7 @@ export function routeRadix(
   // and let pruning skip the rest of the tree if one matches.
   const radixMinIndex = root.minIndex;
 
-  return (request: Request, info?: Deno.ServeHandlerInfo) => {
+  return (request: Request, ...args: A) => {
     const state: MatchState = {
       request,
       pathname: parsePathname(request.url),
@@ -453,9 +462,9 @@ export function routeRadix(
     }
 
     if (state.bestRoute !== null) {
-      return state.bestRoute.handler(request, state.bestParams!, info);
+      return state.bestRoute.handler(request, state.bestParams!, ...args);
     }
-    return defaultHandler(request, info);
+    return defaultHandler(request, ...args);
   };
 }
 

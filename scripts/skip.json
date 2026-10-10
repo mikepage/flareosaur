@@ -1,1 +1,127 @@
-{}
+[
+  {
+    "reason": "Opens fixtures with Deno.open, or fetch() on a file: URL",
+    "tests": {
+      "csv/parse_stream_test.ts": [
+        "CsvParseStream should work with Deno.FsFile's readable",
+        "CsvParseStream.cancel() does not leak file when called in the middle of iteration"
+      ],
+      "encoding/unstable_base32_stream_test.ts": "*",
+      "encoding/unstable_base64_stream_test.ts": "*",
+      "encoding/unstable_hex_stream_test.ts": "*",
+      "json/concatenated_json_parse_stream_test.ts": [
+        "parse() handles concatenated-json testdata"
+      ],
+      "json/parse_stream_test.ts": [
+        "parse() handles jsonl testdata",
+        "parse() handles ndjson testdata",
+        "parse() handles json-seq testdata"
+      ]
+    }
+  },
+  {
+    "reason": "Spawns a subprocess with Deno.Command or a Worker",
+    "tests": {
+      "assert/unstable_equals_test.ts": [
+        "assertEquals() truncates unchanged lines of large diffs when \"DIFF_CONTEXT_LENGTH\" is set"
+      ],
+      "fmt/printf_test.ts": [
+        "printf() prints the result synchronously"
+      ],
+      "internal/assertion_state_test.ts": "*",
+      "internal/styles_test.ts": [
+        "noColor"
+      ],
+      "jsonc/parse_test.ts": [
+        "parse() uses Object.defineProperty when setting object property"
+      ],
+      "toml/parse_test.ts": [
+        "parse() doesn't pollute prototype with __proto__"
+      ],
+      "yaml/parse_test.ts": [
+        "parse() handles __proto__"
+      ],
+      "uuid/v1_test.ts": [
+        "generate() uses random bytes from rng option"
+      ],
+      "path/is_glob_test.ts": [
+        "isGlob works with the input that includes large number of open brackets"
+      ]
+    }
+  },
+  {
+    "reason": "Tests a Deno-only API (Deno.unrefTimer, Deno.memoryUsage, Deno.inspect, Deno.env)",
+    "tests": {
+      "async/delay_test.ts": [
+        "delay() handles persistent option",
+        "delay() handles persistent option with reference error",
+        "delay() handles persistent option with error"
+      ],
+      "crypto/crypto_test.ts": [
+        "digest() keeps memory usage reasonable with large inputs",
+        "digest() keeps memory usage reasonable with many calls"
+      ],
+      "data_structures/unstable_multimap_test.ts": [
+        "MultiMap is inspected as 'MultiMap(size) { key => [values], ... }'",
+        "MultiMap is inspected as 'MultiMap(0) {}' when empty",
+        "MultiMap inspect does not alias internal state"
+      ],
+      "http/user_agent_test.ts": [
+        "UserAgent supports custom inspect in Deno"
+      ],
+      "semver/is_semver_test.ts": "*",
+      "streams/unstable_abort_stream_test.ts": "*"
+    }
+  },
+  {
+    "reason": "Compares against Node built-ins (process.cwd, node:util), which workerd lacks without nodejs_compat",
+    "tests": {
+      "http/user_agent_test.ts": [
+        "UserAgent supports custom inspect in Node.js"
+      ],
+      "internal/format_test.ts": [
+        "format() has fallback if Deno.inspect is not available"
+      ],
+      "path/join_test.ts": [
+        "join() returns \".\" if input is empty"
+      ],
+      "path/relative_test.ts": [
+        "relative() returns current working directory if input is empty"
+      ],
+      "path/resolve_test.ts": "*"
+    }
+  },
+  {
+    "reason": "Uses eval(), which Workers forbid",
+    "tests": {
+      "text/unstable_dedent_test.ts": [
+        "dedent() handles mixed tabs and spaces",
+        "dedent() handles blank lines correctly"
+      ]
+    }
+  },
+  {
+    "reason": "Compares Function.prototype.toString() output, which bundling reformats",
+    "tests": {
+      "csv/stringify_test.ts": [
+        "stringify() handles various inputs"
+      ]
+    }
+  },
+  {
+    "reason": "workerd fills in the default reason phrase for Response.statusText",
+    "tests": {
+      "http/unstable_problem_details_test.ts": [
+        "createProblemDetailsResponse() leaves statusText empty when not provided"
+      ]
+    }
+  },
+  {
+    "reason": "workerd does not pull before a synchronous cancel(), so the generator has not started yet",
+    "tests": {
+      "streams/to_transform_stream_test.ts": [
+        "toTransformStream() propagates cancellation from readable 2"
+      ]
+    }
+  }
+]

@@ -112,6 +112,16 @@ export class CappedDelimiterStream
     { delimiter, limit }: CappedDelimiterOptions,
   ): AsyncGenerator<CappedDelimiterEntry> {
     const reader = toByteStream(readable).getReader({ mode: "byob" });
+    // Fills `view` and returns the whole buffer up to the end of the new
+    // bytes. Uses the offset of the view that was passed in, because workerd
+    // returns the empty view of a closed stream at the wrong byteOffset.
+    const refill = async (
+      view: Uint8Array<ArrayBuffer>,
+    ): Promise<Uint8Array<ArrayBuffer>> => {
+      const offset = view.byteOffset;
+      const { value } = await reader.read(view, { min: view.length });
+      return new Uint8Array(value!.buffer, 0, offset + value!.byteLength);
+    };
     let buffer = (await reader.read(
       new Uint8Array(limit + delimiter.length),
       { min: limit + delimiter.length },
@@ -126,12 +136,7 @@ export class CappedDelimiterStream
         yield { match: true, value: buffer.slice(0, i) };
         buffer.set(buffer.subarray(i + delimiter.length));
         buffer = buffer.subarray(-i - delimiter.length);
-        buffer = (await reader.read(buffer, { min: buffer.length })).value!;
-        buffer = new Uint8Array(
-          buffer.buffer,
-          0,
-          buffer.byteOffset + buffer.byteLength,
-        );
+        buffer = await refill(buffer);
         continue a;
       }
       if (buffer.byteLength < buffer.buffer.byteLength) {
@@ -145,12 +150,7 @@ export class CappedDelimiterStream
       yield { match: false, value: buffer.slice(0, -delimiter.length) };
       buffer.set(buffer.subarray(-delimiter.length));
       buffer = buffer.subarray(delimiter.length);
-      buffer = (await reader.read(buffer, { min: buffer.length })).value!;
-      buffer = new Uint8Array(
-        buffer.buffer,
-        0,
-        buffer.byteOffset + buffer.byteLength,
-      );
+      buffer = await refill(buffer);
     }
   }
 

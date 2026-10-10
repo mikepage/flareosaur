@@ -8,6 +8,30 @@ const realClearTimeout = globalThis.clearTimeout;
 const TIMEOUT_MS = 20_000;
 
 const registered = [];
+
+// Test fixtures, embedded by the bundler: absolute path -> base64 contents.
+let fixtures = {};
+export function setFixtures(map) {
+  fixtures = map;
+}
+
+function fixture(path) {
+  const href = path instanceof URL ? path.href : String(path);
+  const key = href.startsWith("file:")
+    ? decodeURIComponent(new URL(href).pathname)
+    : href;
+  const data = fixtures[key];
+  if (data === undefined) throw new Error(`No such fixture: ${key}`);
+  return Uint8Array.from(atob(data), (c) => c.charCodeAt(0));
+}
+
+// Stand-ins for the Deno file reads that tests use on their own testdata.
+export const __denoReadFileSync = (path) => fixture(path);
+export const __denoReadTextFileSync = (path) =>
+  new TextDecoder().decode(fixture(path));
+export const __denoReadFile = async (path) => fixture(path);
+export const __denoReadTextFile = async (path) =>
+  new TextDecoder().decode(fixture(path));
 let currentFile = "";
 
 function normalize(a, b, c) {
@@ -68,7 +92,7 @@ async function runFn(def, parent) {
   return failures.length ? failures.join("\n") : null;
 }
 
-export async function run(files) {
+export async function run(files, trace = false) {
   const results = [];
   for (const [file, load] of Object.entries(files)) {
     currentFile = file;
@@ -85,6 +109,8 @@ export async function run(files) {
         continue;
       }
       let error;
+      // deno-lint-ignore no-console
+      if (trace) console.log(`[trace] ${file} :: ${def.name}`);
       try {
         error = await withTimeout(runFn(def, undefined));
       } catch (e) {

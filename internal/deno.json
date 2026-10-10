@@ -11,6 +11,7 @@
     "./os": "./os.ts",
     "./styles": "./styles.ts",
     "./truncate-build-message": "./truncate_build_message.ts",
-    "./types": "./types.ts"
+    "./types": "./types.ts",
+    "./inspect": "./inspect.ts"
   }
 }

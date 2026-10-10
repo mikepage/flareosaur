@@ -6,17 +6,18 @@
   "license": "MIT",
   "scripts": {
     "port": "node scripts/port.mjs",
-    "check": "tsc -p tsconfig.json",
+    "patch": "node scripts/make_patch.mjs",
+    "check": "node scripts/check.mjs",
     "test": "node scripts/test.mjs"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "5.20261010.1",
+    "deno": "2.9.6",
     "esbuild": "0.28.2",
-    "miniflare": "4.20260730.0",
-    "typescript": "7.0.2"
+    "miniflare": "4.20260730.0"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
-    "workerd@1.20260730.1": true
+    "workerd@1.20260730.1": true,
+    "deno@2.9.6": true
   }
 }

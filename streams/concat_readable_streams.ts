@@ -30,21 +30,28 @@ export function concatReadableStreams<T>(
   ...streams: ReadableStream<T>[]
 ): ReadableStream<T> {
   let i = 0;
+  // The reader stays open between pulls so cancel() can go through it. A
+  // stream that is locked by an in-flight pull rejects stream.cancel(), and
+  // workerd starts pulling before a synchronous cancel() gets in.
+  let reader: ReadableStreamDefaultReader<T> | undefined;
   return new ReadableStream<T>({
     async pull(controller) {
-      const reader = streams[i]!.getReader();
+      reader ??= streams[i]!.getReader();
       const { done, value } = await reader.read();
       if (done) {
+        reader.releaseLock();
+        reader = undefined;
         if (streams.length === ++i) {
           return controller.close();
         }
         return await this.pull!(controller);
       }
       controller.enqueue(value);
-      reader.releaseLock();
     },
     async cancel(reason) {
-      const promises = streams.map((stream) => stream.cancel(reason));
+      const promises = streams.map((stream, index) =>
+        index === i && reader ? reader.cancel(reason) : stream.cancel(reason)
+      );
       await Promise.allSettled(promises);
     },
   });

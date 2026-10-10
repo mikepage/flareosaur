@@ -6,16 +6,20 @@
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "lib": [
-      "ESNext"
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "dom.asynciterable"
     ],
     "types": [
-      "npm:@cloudflare/workers-types"
+      "./types/web.d.ts"
     ]
   },
   "exclude": [
     ".git",
     "node_modules",
-    "scripts"
+    "scripts",
+    "types"
   ],
   "workspace": [
     "./assert",

@@ -1,6 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
+import { inspect as fallbackInspect } from "./inspect.ts";
+
 /** An inspect function conforming to the shape of `Deno.inspect` and `node:util`'s `inspect` */
 export type InspectFn = (
   v: unknown,
@@ -40,48 +42,20 @@ export function format(v: unknown): string {
   const inspect: InspectFn | undefined = Deno?.inspect ??
     process?.getBuiltinModule?.("node:util")?.inspect;
 
-  return typeof inspect === "function"
-    ? inspect(v, {
-      depth: Infinity,
-      sorted: true,
-      trailingComma: true,
-      compact: false,
-      iterableLimit: Infinity,
-      // getters should be true in assertEquals.
-      getters: true,
-      strAbbreviateSize: Infinity,
-    })
-    : basicInspect(v);
-}
-
-const formatters: ((v: unknown) => string | undefined)[] = [
-  (v) => {
-    if (typeof v === "undefined") return "undefined";
-    if (typeof v === "bigint") return `${v}n`;
-
-    if (
-      typeof v === "string" ||
-      typeof v === "number" ||
-      typeof v === "boolean" ||
-      v === null ||
-      Array.isArray(v) ||
-      [null, Object.prototype].includes(Object.getPrototypeOf(v))
-    ) {
-      return JSON.stringify(v, null, 2);
-    }
-  },
-  (v) => String(v),
-  (v) => Object.prototype.toString.call(v),
-];
-
-// for environments lacking both `Deno.inspect` and `process.inspect`
-function basicInspect(v: unknown): string {
-  for (const fmt of formatters) {
-    try {
-      const result = fmt(v);
-      if (typeof result === "string") return result;
-    } catch { /* try the next one */ }
+  const options = {
+    depth: Infinity,
+    sorted: true,
+    trailingComma: true,
+    compact: false,
+    iterableLimit: Infinity,
+    // getters should be true in assertEquals.
+    getters: true,
+    strAbbreviateSize: Infinity,
+  };
+  if (typeof inspect === "function") return inspect(v, options);
+  try {
+    return fallbackInspect(v, options);
+  } catch {
+    return "[[Unable to format value]]";
   }
-
-  return "[[Unable to format value]]";
 }

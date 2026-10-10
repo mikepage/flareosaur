@@ -1,11 +1,14 @@
 // Copyright 2026 the flareosaur authors. MIT license.
 // Ports packages from a denoland/std checkout into this repo.
 //
-//   node scripts/port.mjs [path/to/std]
+//   node scripts/port.mjs [path/to/std] [--no-patches] [--out <dir>]
 //
 // Steps: copy the selected packages, drop files that need Deno or Node APIs,
 // rename @std/* to @flareosaur/*, turn crypto's inline wasm into a .wasm
 // module import, then apply patches/*.patch for the hand-made edge fixes.
+//
+// To change the edge fixes, edit the ported files and run
+// scripts/make_patch.mjs, which diffs them against a fresh unpatched port.
 
 import { execFileSync } from "node:child_process";
 import {
@@ -22,7 +25,13 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const STD = resolve(process.argv[2] ?? join(ROOT, "../std"));
+const args = process.argv.slice(2);
+const outIndex = args.indexOf("--out");
+const OUT = outIndex === -1 ? ROOT : resolve(args[outIndex + 1]);
+const positional = args.filter((a, i) =>
+  !a.startsWith("--") && (outIndex === -1 || i !== outIndex + 1)
+);
+const STD = resolve(positional[0] ?? join(ROOT, "../std"));
 const SCOPE = "@flareosaur";
 
 // Package name -> files to leave out (paths relative to the package, a
@@ -47,7 +56,18 @@ const PACKAGES = {
   data_structures: {},
   datetime: {},
   // load.ts and the load*() functions read .env files from disk.
-  dotenv: { exclude: ["load.ts"] },
+  dotenv: {
+    exclude: [
+      "load.ts",
+      "load_test.ts",
+      "mod_test.ts",
+      "testdata/app_defaults.ts",
+      "testdata/app_load.ts",
+      "testdata/app_load_child.ts",
+      "testdata/app_load_parent.ts",
+    ],
+    dropExports: ["./load"],
+  },
   encoding: {},
   fmt: {},
   front_matter: {},
@@ -73,7 +93,8 @@ const PACKAGES = {
   },
   internal: {},
   json: {},
-  jsonc: {},
+  // The conformance suites read their fixtures from disk and eval them.
+  jsonc: { exclude: ["testdata/"] },
   media_types: { exclude: ["vendor/update.ts"] },
   path: {},
   regexp: {},
@@ -119,7 +140,9 @@ const TEXT = /\.(ts|mts|mjs|js|json|jsonc|md)$/;
 
 function skip(rel, opts) {
   if (opts.only) return !opts.only.includes(rel);
-  if (/(^|\/)_benches?\//.test(rel) || /_bench\.ts$/.test(rel)) return true;
+  if (/(^|\/)(_benches?|_tools)\//.test(rel) || /_bench\.ts$/.test(rel)) {
+    return true;
+  }
   return (opts.exclude ?? []).some((e) =>
     e.endsWith("/") ? rel.startsWith(e) : rel === e
   );
@@ -144,7 +167,7 @@ function rename(src) {
 
 function portPackage(name, opts) {
   const from = join(STD, name);
-  const to = join(ROOT, name);
+  const to = join(OUT, name);
   rmSync(to, { recursive: true, force: true });
   for (const file of walk(from)) {
     const rel = relative(from, file);
@@ -166,7 +189,7 @@ function portPackage(name, opts) {
 // workerd refuses to compile wasm from bytes at runtime, so the inline base64
 // blob becomes a .wasm file imported as a WebAssembly.Module.
 function externalizeWasm() {
-  const lib = join(ROOT, "crypto/_wasm/lib");
+  const lib = join(OUT, "crypto/_wasm/lib");
   const loaderPath = join(lib, "deno_std_wasm_crypto.mjs");
   const loader = readFileSync(loaderPath, "utf8");
   const match = loader.match(/base64decode\("\\\n([\s\S]*?)"\);/);
@@ -195,28 +218,9 @@ wasm.exports.__wbindgen_start();
   );
 }
 
-// tsc and the test bundler resolve @flareosaur/* through these paths.
-function writeTsconfigPaths() {
-  const paths = {};
-  for (const name of Object.keys(PACKAGES)) {
-    const { name: pkg, exports } = JSON.parse(
-      readFileSync(join(ROOT, name, "deno.json"), "utf8"),
-    );
-    const entries = typeof exports === "string" ? { ".": exports } : exports;
-    for (const [sub, file] of Object.entries(entries)) {
-      paths[sub === "." ? pkg : `${pkg}/${sub.slice(2)}`] = [
-        `./${name}/${file.slice(2)}`,
-      ];
-    }
-  }
-  writeFileSync(
-    join(ROOT, "tsconfig.paths.json"),
-    JSON.stringify({ compilerOptions: { paths } }, null, 2) + "\n",
-  );
-}
-
 function writeWorkspace() {
-  const path = join(ROOT, "deno.json");
+  const path = join(OUT, "deno.json");
+  if (!existsSync(path)) return;
   const config = JSON.parse(readFileSync(path, "utf8"));
   config.workspace = Object.keys(PACKAGES).map((n) => `./${n}`);
   writeFileSync(path, JSON.stringify(config, null, 2) + "\n");
@@ -228,14 +232,13 @@ if (!existsSync(join(STD, "deno.json"))) {
 }
 for (const [name, opts] of Object.entries(PACKAGES)) portPackage(name, opts);
 externalizeWasm();
-writeTsconfigPaths();
 writeWorkspace();
 
 const patches = join(ROOT, "patches");
-if (existsSync(patches) && !process.argv.includes("--no-patches")) {
+if (existsSync(patches) && !args.includes("--no-patches")) {
   for (const p of readdirSync(patches).filter((f) => f.endsWith(".patch")).sort()) {
     execFileSync("git", ["apply", "--whitespace=nowarn", join(patches, p)], {
-      cwd: ROOT,
+      cwd: OUT,
       stdio: "inherit",
     });
     console.log(`applied ${p}`);
@@ -243,5 +246,5 @@ if (existsSync(patches) && !process.argv.includes("--no-patches")) {
 }
 const rev = execFileSync("git", ["rev-parse", "--short", "HEAD"], { cwd: STD })
   .toString().trim();
-writeFileSync(join(ROOT, "UPSTREAM"), `denoland/std@${rev}\n`);
+writeFileSync(join(OUT, "UPSTREAM"), `denoland/std@${rev}\n`);
 console.log(`ported ${Object.keys(PACKAGES).length} packages from std@${rev}`);

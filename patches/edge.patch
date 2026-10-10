@@ -1,0 +1,1408 @@
+diff --git a/dotenv/mod.ts b/dotenv/mod.ts
+index 1f14182..0af3f47 100644
+--- a/dotenv/mod.ts
++++ b/dotenv/mod.ts
+@@ -13,296 +13,13 @@
+  * assertEquals(stringify({ GREETING: "hello world" }), "GREETING='hello world'");
+  * ```
+  *
+- * ## Migrating from `load()`
+- *
+- * {@linkcode load}, {@linkcode loadSync} and the `@flareosaur/dotenv/load` side-effect
+- * module are deprecated in favor of the runtime's
+- * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
+- * flag, which Node.js and Bun also support:
+- *
+- * ```sh
+- * deno run --env-file app.ts
+- * deno run --env-file=.env --env-file=.env.local app.ts
+- * ```
+- *
+- * | Deprecated API | Replacement |
+- * | -------------- | ----------- |
+- * | `import "@flareosaur/dotenv/load"` | `deno run --env-file app.ts` |
+- * | `load({ export: true })` / `loadSync({ export: true })` | `--env-file` |
+- * | `load({ envPath: "./.env_prod" })` | `--env-file=.env_prod` |
+- * | `load()` (read into an object, no export) | `parse(await Deno.readTextFile(".env"))` |
+- *
+- * Differences to be aware of:
+- *
+- * - `load()` silently ignores a missing file. `--env-file` warns but continues,
+- *   while the `parse()` replacement above throws. To treat the file as
+- *   optional:
+- *
+- * ```ts ignore
+- * import { parse } from "@flareosaur/dotenv";
+- *
+- * let env: Record<string, string> = {};
+- * try {
+- *   env = parse(await Deno.readTextFile(".env"));
+- * } catch (e) {
+- *   if (!(e instanceof Deno.errors.NotFound)) throw e;
+- * }
+- * ```
+- *
+- * - `$VAR` inside a double-quoted value stays literal with `load()` but
+- *   expands with `--env-file`. Use single quotes for values containing a
+- *   literal `$`.
+- * - `${KEY:-default}` and nested defaults are not supported by `--env-file`.
+- *   Use {@linkcode parse}, which keeps the full expansion behavior.
+- * - Node's `--env-file` performs no variable expansion at all.
+- * - On platforms without a CLI, e.g. Deno Deploy, set environment variables
+- *   through the platform's configuration instead.
++ * Unlike `@std/dotenv`, there is no `load()`, `loadSync()` or `./load`
++ * module: Workers have no filesystem and no process environment. Configure
++ * variables and secrets as Worker bindings, or pass the text of a `.env` file
++ * to {@linkcode parse}.
+  *
+  * @module
+  */
+ 
+-import { parse } from "./parse.ts";
+-
+ export * from "./stringify.ts";
+ export * from "./parse.ts";
+-
+-/**
+- * Options for {@linkcode load} and {@linkcode loadSync}.
+- *
+- * @deprecated This will be removed in 0.227.0. Use the
+- * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
+- * flag or {@linkcode parse} instead. See the
+- * {@link https://jsr.io/@std/dotenv | module documentation} for migration
+- * notes.
+- */
+-export interface LoadOptions {
+-  /**
+-   * Optional path to `.env` file. To prevent the default value from being
+-   * used, set to `null`.
+-   *
+-   * @default {"./.env"}
+-   */
+-  envPath?: string | URL | null;
+-
+-  /**
+-   * Set to `true` to export all `.env` variables to the current processes
+-   * environment. Variables are then accessible via `Deno.env.get(<key>)`.
+-   *
+-   * @default {false}
+-   */
+-  export?: boolean;
+-}
+-
+-/**
+- * Works identically to {@linkcode load}, but synchronously.
+- *
+- * @example Usage
+- * ```ts ignore
+- * import { loadSync } from "@flareosaur/dotenv";
+- *
+- * const conf = loadSync();
+- * ```
+- *
+- * @param options Options for loading the environment variables.
+- * @returns The parsed environment variables.
+- *
+- * @deprecated This will be removed in 0.227.0. Use the
+- * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
+- * flag or {@linkcode parse} instead. See the
+- * {@link https://jsr.io/@std/dotenv | module documentation} for migration
+- * notes.
+- */
+-export function loadSync(
+-  options: LoadOptions = {},
+-): Record<string, string> {
+-  const {
+-    envPath = ".env",
+-    export: _export = false,
+-  } = options;
+-  const conf = envPath ? parseFileSync(envPath) : {};
+-
+-  if (_export) {
+-    for (const [key, value] of Object.entries(conf)) {
+-      if (Deno.env.get(key) !== undefined) continue;
+-      Deno.env.set(key, value);
+-    }
+-  }
+-
+-  return conf;
+-}
+-
+-/**
+- * Load environment variables from a `.env` file.  Loaded variables are accessible
+- * in a configuration object returned by the `load()` function, as well as optionally
+- * exporting them to the process environment using the `export` option.
+- *
+- * Inspired by the node modules {@linkcode https://github.com/motdotla/dotenv | dotenv}
+- * and {@linkcode https://github.com/motdotla/dotenv-expand | dotenv-expand}.
+- *
+- * Note: The key needs to match the pattern /^[a-zA-Z_][a-zA-Z0-9_]*$/.
+- *
+- * ## Basic usage
+- * ```sh
+- * # .env
+- * GREETING=hello world
+- * ```
+- *
+- * Then import the environment variables using the `load` function.
+- *
+- * @example Basic usage
+- * ```ts ignore
+- * // app.ts
+- * import { load } from "@flareosaur/dotenv";
+- *
+- * console.log(await load({ export: true })); // { GREETING: "hello world" }
+- * console.log(Deno.env.get("GREETING")); // hello world
+- * ```
+- *
+- * Run this with `deno run --allow-read --allow-env app.ts`.
+- *
+- * .env files support blank lines, comments, multi-line values and more.
+- * See Parsing Rules below for more detail.
+- *
+- * ## Auto loading
+- * Import the `load.ts` module to auto-import from the `.env` file and into
+- * the process environment.
+- *
+- * @example Auto-loading
+- * ```ts ignore
+- * // app.ts
+- * import "@flareosaur/dotenv/load";
+- *
+- * console.log(Deno.env.get("GREETING")); // hello world
+- * ```
+- *
+- * Run this with `deno run --allow-read --allow-env app.ts`.
+- *
+- * ## Files
+- * Dotenv supports a number of different files, all of which are optional.
+- * File names and paths are configurable.
+- *
+- * |File|Purpose|
+- * |----|-------|
+- * |.env|primary file for storing key-value environment entries
+- *
+- * ## Configuration
+- *
+- * Loading environment files comes with a number of options passed into
+- * the `load()` function, all of which are optional.
+- *
+- * |Option|Default|Description
+- * |------|-------|-----------
+- * |envPath|./.env|Path and filename of the `.env` file.  Use null to prevent the .env file from being loaded.
+- * |export|false|When true, this will export all environment variables in the `.env` file to the process environment (e.g. for use by `Deno.env.get()`) but only if they are not already set.  If a variable is already in the process, the `.env` value is ignored.
+- *
+- * ### Example configuration
+- *
+- * @example Using with options
+- * ```ts ignore
+- * import { load } from "@flareosaur/dotenv";
+- *
+- * const conf = await load({
+- *   envPath: "./.env_prod", // Uses .env_prod instead of .env
+- *   export: true, // Exports all variables to the environment
+- * });
+- * ```
+- *
+- * ## Permissions
+- *
+- * At a minimum, loading the `.env` related files requires the `--allow-read` permission.  Additionally, if
+- * you access the process environment, either through exporting your configuration or expanding variables
+- * in your `.env` file, you will need the `--allow-env` permission.  E.g.
+- *
+- * ```sh
+- * deno run --allow-read=.env --allow-env=ENV1,ENV2 app.ts
+- * ```
+- *
+- * ## Parsing Rules
+- *
+- * The parsing engine currently supports the following rules:
+- *
+- * - Variables that already exist in the environment are not overridden with
+- *   `export: true`
+- * - `BASIC=basic` becomes `{ BASIC: "basic" }`
+- * - empty lines are skipped
+- * - lines beginning with `#` are treated as comments
+- * - empty values become empty strings (`EMPTY=` becomes `{ EMPTY: "" }`)
+- * - single and double quoted values are escaped (`SINGLE_QUOTE='quoted'` becomes
+- *   `{ SINGLE_QUOTE: "quoted" }`)
+- * - new lines are expanded in double quoted values (`MULTILINE="new\nline"`
+- *   becomes
+- *
+- * ```
+- * { MULTILINE: "new\nline" }
+- * ```
+- *
+- * - inner quotes are maintained (think JSON) (`JSON={"foo": "bar"}` becomes
+- *   `{ JSON: "{\"foo\": \"bar\"}" }`)
+- * - whitespace is removed from both ends of unquoted values (see more on
+- *   {@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim | trim})
+- *   (`FOO= some value` becomes `{ FOO: "some value" }`)
+- * - whitespace is preserved on both ends of quoted values (`FOO=" some value "`
+- *   becomes `{ FOO: " some value " }`)
+- * - dollar sign with an environment key in or without curly braces in unquoted
+- *   values will expand the environment key (`KEY=$KEY` or `KEY=${KEY}` becomes
+- *   `{ KEY: "<KEY_VALUE_FROM_ENV>" }`)
+- * - escaped dollar sign with an environment key in unquoted values will escape the
+- *   environment key rather than expand (`KEY=\$KEY` becomes `{ KEY: "\\$KEY" }`)
+- * - colon and a minus sign with a default value(which can also be another expand
+- *   value) in expanding construction in unquoted values will first attempt to
+- *   expand the environment key. If it’s not found, then it will return the default
+- *   value (`KEY=${KEY:-default}` If KEY exists it becomes
+- *   `{ KEY: "<KEY_VALUE_FROM_ENV>" }` If not, then it becomes
+- *   `{ KEY: "default" }`. Also there is possible to do this case
+- *   `KEY=${NO_SUCH_KEY:-${EXISTING_KEY:-default}}` which becomes
+- *   `{ KEY: "<EXISTING_KEY_VALUE_FROM_ENV>" }`)
+- *
+- * @param options The options
+- * @returns The parsed environment variables
+- *
+- * @deprecated This will be removed in 0.227.0. Use the
+- * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
+- * flag or {@linkcode parse} instead. See the
+- * {@link https://jsr.io/@std/dotenv | module documentation} for migration
+- * notes.
+- */
+-export async function load(
+-  options: LoadOptions = {},
+-): Promise<Record<string, string>> {
+-  const {
+-    envPath = ".env",
+-    export: _export = false,
+-  } = options;
+-  const conf = envPath ? await parseFile(envPath) : {};
+-
+-  if (_export) {
+-    for (const [key, value] of Object.entries(conf)) {
+-      if (Deno.env.get(key) !== undefined) continue;
+-      Deno.env.set(key, value);
+-    }
+-  }
+-
+-  return conf;
+-}
+-
+-function parseFileSync(
+-  filepath: string | URL,
+-): Record<string, string> {
+-  try {
+-    return parse(Deno.readTextFileSync(filepath));
+-  } catch (e) {
+-    if (e instanceof Deno.errors.NotFound) return {};
+-    throw e;
+-  }
+-}
+-
+-async function parseFile(
+-  filepath: string | URL,
+-): Promise<Record<string, string>> {
+-  try {
+-    return parse(await Deno.readTextFile(filepath));
+-  } catch (e) {
+-    if (e instanceof Deno.errors.NotFound) return {};
+-    throw e;
+-  }
+-}
+diff --git a/dotenv/parse.ts b/dotenv/parse.ts
+index 111d348..b63bb85 100644
+--- a/dotenv/parse.ts
++++ b/dotenv/parse.ts
+@@ -47,7 +47,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
+       const defaultValue = inBracketsDefault ?? notInBracketsDefault;
+ 
+       return (
+-        variablesMap[expandValue] ?? Deno.env.get(expandValue) ?? defaultValue
++        variablesMap[expandValue] ?? defaultValue
+       );
+     });
+   }
+diff --git a/fmt/printf.ts b/fmt/printf.ts
+index 89f53f1..0ee2570 100644
+--- a/fmt/printf.ts
++++ b/fmt/printf.ts
+@@ -162,6 +162,19 @@
+  */
+ 
+ import { stripAnsiCode } from "./colors.ts";
++import { inspect as fallbackInspect } from "@flareosaur/internal/inspect";
++
++// deno-lint-ignore no-explicit-any
++const { Deno } = globalThis as any;
++const noColor: boolean = Deno?.noColor ?? true;
++
++// Deno.inspect where it exists. Elsewhere (Workers) a port of its layout
++// rules that never colors.
++function inspect(value: unknown, options: Record<string, unknown> = {}) {
++  return typeof Deno?.inspect === "function"
++    ? Deno.inspect(value, options) as string
++    : fallbackInspect(value, options);
++}
+ 
+ const State = {
+   PASSTHROUGH: 0,
+@@ -258,7 +271,7 @@ class Printf {
+     for (let i = 0; i !== this.haveSeen.length; ++i) {
+       if (!this.haveSeen[i]) {
+         extras = true;
+-        err += ` '${Deno.inspect(this.args[i])}'`;
++        err += ` '${inspect(this.args[i])}'`;
+       }
+     }
+     err += ")";
+@@ -921,7 +934,7 @@ class Printf {
+       const options = this.flags.precision !== -1
+         ? { depth: this.flags.precision }
+         : {};
+-      return this.pad(Deno.inspect(val, options));
++      return this.pad(inspect(val, options));
+     } else {
+       const p = this.flags.precision;
+       return p === -1 ? val.toString() : val.toString().slice(0, p);
+@@ -942,8 +955,8 @@ class Printf {
+    * @param compact Whether or not the output should be compact.
+    */
+   fmtI(val: unknown, compact: boolean): string {
+-    return Deno.inspect(val, {
+-      colors: !Deno?.noColor,
++    return inspect(val, {
++      colors: !noColor,
+       compact,
+       depth: Infinity,
+       iterableLimit: Infinity,
+@@ -957,8 +970,8 @@ class Printf {
+  *
+  * See the module documentation for the available format strings.
+  *
+- * `%v`, `%i`, and `%I` are only supported in Deno runtime. Other formats are supported in
+- * other major runtimes.
++ * `%v`, `%i`, and `%I` use `Deno.inspect` in Deno and a port of its layout
++ * rules elsewhere, without colors.
+  *
+  * @example Usage
+  * ```ts
+@@ -1011,5 +1024,14 @@ export function sprintf(format: string, ...args: unknown[]): string {
+  */
+ export function printf(format: string, ...args: unknown[]) {
+   const s = sprintf(format, ...args);
+-  Deno.stdout.writeSync(new TextEncoder().encode(s));
++  // deno-lint-ignore no-explicit-any
++  const stdout = (globalThis as any).Deno?.stdout;
++  if (stdout) {
++    stdout.writeSync(new TextEncoder().encode(s));
++  } else {
++    // Workers have no stdout. console.log ends the line, so drop one
++    // trailing newline to avoid printing an empty line after it.
++    // deno-lint-ignore no-console
++    console.log(s.endsWith("\n") ? s.slice(0, -1) : s);
++  }
+ }
+diff --git a/http/mod.ts b/http/mod.ts
+index eabf8c5..5bc2f07 100644
+--- a/http/mod.ts
++++ b/http/mod.ts
+@@ -104,4 +104,3 @@ export * from "./negotiation.ts";
+ export * from "./server_sent_event_stream.ts";
+ export * from "./server_sent_event_parse_stream.ts";
+ export * from "./user_agent.ts";
+-export * from "./file_server.ts";
+diff --git a/http/unstable_formdata_encoder_stream.ts b/http/unstable_formdata_encoder_stream.ts
+index 2b0c96b..60743c3 100644
+--- a/http/unstable_formdata_encoder_stream.ts
++++ b/http/unstable_formdata_encoder_stream.ts
+@@ -1,7 +1,6 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
+ 
+ import { encodeBase64 } from "@flareosaur/encoding/unstable-base64";
+-import { toByteStream } from "@flareosaur/streams/unstable-to-byte-stream";
+ 
+ /**
+  * The input that can be passed to a {@linkcode FormDataEncoderStream}.
+@@ -110,11 +109,17 @@ export class FormDataEncoderStream {
+         );
+ 
+         try {
+-          const { done, value } = await gen.next(buffer);
+-          if (done) {
++          let result = await gen.next(buffer);
++          // Responding with zero bytes to an open stream is a TypeError per
++          // spec (workerd enforces it), so skip empty chunks.
++          while (!result.done && result.value.byteLength === 0) {
++            result = await gen.next(buffer);
++          }
++          if (result.done) {
+             controller.close();
+             return controller.byobRequest!.respond(0);
+           }
++          const value = result.value;
+ 
+           // deno-lint-ignore no-explicit-any
+           if ((buffer.buffer as any).detached) {
+@@ -122,9 +127,10 @@ export class FormDataEncoderStream {
+           } else if (buffer.buffer === value.buffer) {
+             controller.byobRequest!.respond(value.length);
+           } else {
+-            buffer.set(value.subarray(0, length));
+-            controller.byobRequest!.respond(length);
+-            controller.enqueue(value.subarray(length));
++            const n = Math.min(length, value.length);
++            buffer.set(value.subarray(0, n));
++            controller.byobRequest!.respond(n);
++            if (value.length > n) controller.enqueue(value.slice(n));
+           }
+         } catch (error) {
+           controller.error(error);
+@@ -176,13 +182,15 @@ export class FormDataEncoderStream {
+         buffer = yield this.#setString(buffer, input.value);
+       } else {
+         if (input.value instanceof Blob) input.value = input.value.stream();
+-        const reader = toByteStream(input.value).getReader({ mode: "byob" });
++        // A default reader, not BYOB into the request's buffer: after such a
++        // read transfers the buffer, workerd's byobRequest.view is detached
++        // and respondWithNewView() rejects the filled view.
++        const reader = input.value.getReader();
+         try {
+           while (true) {
+-            const { done, value } = await reader
+-              .read(buffer, { min: buffer.length });
+-            buffer = yield value!;
++            const { done, value } = await reader.read();
+             if (done) break;
++            buffer = yield value;
+           }
+         } catch (reason) {
+           await reader.cancel(reason);
+diff --git a/http/unstable_route.ts b/http/unstable_route.ts
+index 29197e4..964910e 100644
+--- a/http/unstable_route.ts
++++ b/http/unstable_route.ts
+@@ -1,13 +1,17 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
+ 
+ /**
+- * A handler for HTTP requests.
++ * A handler for HTTP requests. The arguments after the request are passed
++ * through unchanged, e.g. `env` and `ctx` in a Workers `fetch` handler.
+  *
+  * @experimental **UNSTABLE**: New API, yet to be vetted.
++ *
++ * @typeParam A Arguments passed after the request.
+  */
+-export type RequestHandler = (
++// deno-lint-ignore no-explicit-any
++export type RequestHandler<A extends unknown[] = any[]> = (
+   request: Request,
+-  info?: Deno.ServeHandlerInfo,
++  ...args: A
+ ) => Response | Promise<Response>;
+ 
+ /**
+@@ -15,16 +19,18 @@ export type RequestHandler = (
+  *
+  * @experimental **UNSTABLE**: New API, yet to be vetted.
+  *
+- * Extends {@linkcode Deno.ServeHandlerInfo} by adding a `params` argument.
++ * Extends {@linkcode RequestHandler} by adding a `params` argument.
+  *
++ * @typeParam A Arguments passed after the request, e.g. `env` and `ctx`.
+  * @param request Request
+  * @param params URL pattern result
+- * @param info Request info
++ * @param args The remaining arguments the router was called with
+  */
+-export type Handler = (
++// deno-lint-ignore no-explicit-any
++export type Handler<A extends unknown[] = any[]> = (
+   request: Request,
+   params: URLPatternResult,
+-  info?: Deno.ServeHandlerInfo,
++  ...args: A
+ ) => Response | Promise<Response>;
+ 
+ /**
+@@ -32,7 +38,8 @@ export type Handler = (
+  *
+  * @experimental **UNSTABLE**: New API, yet to be vetted.
+  */
+-export interface Route {
++// deno-lint-ignore no-explicit-any
++export interface Route<A extends unknown[] = any[]> {
+   /**
+    * Request URL pattern.
+    */
+@@ -47,7 +54,7 @@ export interface Route {
+   /**
+    * Request handler.
+    */
+-  handler: Handler;
++  handler: Handler<A>;
+ }
+ 
+ function methodMatches(
+@@ -89,25 +96,26 @@ function methodMatches(
+  *   return new Response("Not found", { status: 404 });
+  * }
+  *
+- * Deno.serve(routeLinear(routes, defaultHandler));
++ * export default { fetch: routeLinear(routes, defaultHandler) };
+  * ```
+  *
+  * @param routes Route configurations
+  * @param defaultHandler Default request handler
+  * @returns Request handler
+  */
+-export function routeLinear(
+-  routes: Route[],
+-  defaultHandler: RequestHandler,
+-): RequestHandler {
++// deno-lint-ignore no-explicit-any
++export function routeLinear<A extends unknown[] = any[]>(
++  routes: Route<A>[],
++  defaultHandler: RequestHandler<A>,
++): RequestHandler<A> {
+   // TODO(iuioiua): Use `URLPatternList` once available (https://github.com/whatwg/urlpattern/pull/166)
+-  return (request: Request, info?: Deno.ServeHandlerInfo) => {
++  return (request: Request, ...args: A) => {
+     for (const route of routes) {
+       if (!methodMatches(route.method, request.method)) continue;
+       const match = route.pattern.exec(request.url);
+-      if (match) return route.handler(request, match, info);
++      if (match) return route.handler(request, match, ...args);
+     }
+-    return defaultHandler(request, info);
++    return defaultHandler(request, ...args);
+   };
+ }
+ 
+@@ -264,7 +272,7 @@ function createNode(): RouteNode {
+  *   return new Response("Not found", { status: 404 });
+  * }
+  *
+- * Deno.serve(route(routes, defaultHandler));
++ * export default { fetch: route(routes, defaultHandler) };
+  * ```
+  *
+  * @param routes Route configurations
+@@ -273,10 +281,11 @@ function createNode(): RouteNode {
+  * Allowed response can be done in this function.
+  * @returns Request handler
+  */
+-export function routeRadix(
+-  routes: Route[],
+-  defaultHandler: RequestHandler,
+-): RequestHandler {
++// deno-lint-ignore no-explicit-any
++export function routeRadix<A extends unknown[] = any[]>(
++  routes: Route<A>[],
++  defaultHandler: RequestHandler<A>,
++): RequestHandler<A> {
+   const root = createNode();
+   const fallbackRoutes: IndexedRoute[] = [];
+   let insertionCounter = 0;
+@@ -421,7 +430,7 @@ export function routeRadix(
+   // and let pruning skip the rest of the tree if one matches.
+   const radixMinIndex = root.minIndex;
+ 
+-  return (request: Request, info?: Deno.ServeHandlerInfo) => {
++  return (request: Request, ...args: A) => {
+     const state: MatchState = {
+       request,
+       pathname: parsePathname(request.url),
+@@ -453,9 +462,9 @@ export function routeRadix(
+     }
+ 
+     if (state.bestRoute !== null) {
+-      return state.bestRoute.handler(request, state.bestParams!, info);
++      return state.bestRoute.handler(request, state.bestParams!, ...args);
+     }
+-    return defaultHandler(request, info);
++    return defaultHandler(request, ...args);
+   };
+ }
+ 
+diff --git a/internal/deno.json b/internal/deno.json
+index 5cbe455..1263720 100644
+--- a/internal/deno.json
++++ b/internal/deno.json
+@@ -11,6 +11,7 @@
+     "./os": "./os.ts",
+     "./styles": "./styles.ts",
+     "./truncate-build-message": "./truncate_build_message.ts",
+-    "./types": "./types.ts"
++    "./types": "./types.ts",
++    "./inspect": "./inspect.ts"
+   }
+ }
+diff --git a/internal/format.ts b/internal/format.ts
+index 5430a9d..e6b2ecf 100644
+--- a/internal/format.ts
++++ b/internal/format.ts
+@@ -1,6 +1,8 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
+ // This module is browser compatible.
+ 
++import { inspect as fallbackInspect } from "./inspect.ts";
++
+ /** An inspect function conforming to the shape of `Deno.inspect` and `node:util`'s `inspect` */
+ export type InspectFn = (
+   v: unknown,
+@@ -40,48 +42,20 @@ export function format(v: unknown): string {
+   const inspect: InspectFn | undefined = Deno?.inspect ??
+     process?.getBuiltinModule?.("node:util")?.inspect;
+ 
+-  return typeof inspect === "function"
+-    ? inspect(v, {
+-      depth: Infinity,
+-      sorted: true,
+-      trailingComma: true,
+-      compact: false,
+-      iterableLimit: Infinity,
+-      // getters should be true in assertEquals.
+-      getters: true,
+-      strAbbreviateSize: Infinity,
+-    })
+-    : basicInspect(v);
+-}
+-
+-const formatters: ((v: unknown) => string | undefined)[] = [
+-  (v) => {
+-    if (typeof v === "undefined") return "undefined";
+-    if (typeof v === "bigint") return `${v}n`;
+-
+-    if (
+-      typeof v === "string" ||
+-      typeof v === "number" ||
+-      typeof v === "boolean" ||
+-      v === null ||
+-      Array.isArray(v) ||
+-      [null, Object.prototype].includes(Object.getPrototypeOf(v))
+-    ) {
+-      return JSON.stringify(v, null, 2);
+-    }
+-  },
+-  (v) => String(v),
+-  (v) => Object.prototype.toString.call(v),
+-];
+-
+-// for environments lacking both `Deno.inspect` and `process.inspect`
+-function basicInspect(v: unknown): string {
+-  for (const fmt of formatters) {
+-    try {
+-      const result = fmt(v);
+-      if (typeof result === "string") return result;
+-    } catch { /* try the next one */ }
++  const options = {
++    depth: Infinity,
++    sorted: true,
++    trailingComma: true,
++    compact: false,
++    iterableLimit: Infinity,
++    // getters should be true in assertEquals.
++    getters: true,
++    strAbbreviateSize: Infinity,
++  };
++  if (typeof inspect === "function") return inspect(v, options);
++  try {
++    return fallbackInspect(v, options);
++  } catch {
++    return "[[Unable to format value]]";
+   }
+-
+-  return "[[Unable to format value]]";
+ }
+diff --git a/internal/format_test.ts b/internal/format_test.ts
+index 62d1ffd..9be481a 100644
+--- a/internal/format_test.ts
++++ b/internal/format_test.ts
+@@ -133,8 +133,9 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
+     stack.use(stubProperty(global, "Deno", undefined));
+     stack.use(stubProperty(global, "process", undefined));
+ 
+-    assertEquals(format([..."abcd"]), '[\n  "a",\n  "b",\n  "c",\n  "d"\n]');
+-    assertEquals(format({ a: 1, b: 2 }), '{\n  "a": 1,\n  "b": 2\n}');
++    // Without either, format() uses its own port of Deno's layout rules.
++    assertEquals(format([..."abcd"]), '[\n  "a",\n  "b",\n  "c",\n  "d",\n]');
++    assertEquals(format({ a: 1, b: 2 }), "{\n  a: 1,\n  b: 2,\n}");
+     assertEquals(format(1), "1");
+     assertEquals(format("1"), '"1"');
+     assertEquals(format(1n), "1n");
+@@ -144,7 +145,8 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
+     assertEquals(format(undefined), "undefined");
+     assertEquals(format("undefined"), '"undefined"');
+     assertEquals(format(Symbol("x")), "Symbol(x)");
+-    assertEquals(format(new Map()), "[object Map]");
++    assertEquals(format(new Map()), "Map(0) {}");
++    assertEquals(format(new Set([2, 1])), "Set(2) {\n  1,\n  2,\n}");
+ 
+     const badlyBehavedObject: Record<string, unknown> = {
+       toString() {
+@@ -157,7 +159,14 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
+ 
+     badlyBehavedObject.self = badlyBehavedObject;
+ 
+-    assertEquals(format(badlyBehavedObject), `[[Unable to format value]]`);
++    assertEquals(
++      format(badlyBehavedObject),
++      `<ref *1> {
++  [Symbol(Symbol.toStringTag)]: [Getter: <Inspection threw (This object cannot be stringified)>],
++  self: [Circular *1],
++  toString: [Function: toString],
++}`,
++    );
+ 
+     assertThrows(
+       // @ts-expect-error different types
+diff --git a/internal/inspect.ts b/internal/inspect.ts
+new file mode 100644
+index 0000000..228263a
+--- /dev/null
++++ b/internal/inspect.ts
+@@ -0,0 +1,525 @@
++// Copyright 2026 the flareosaur authors. MIT license.
++// This module is browser compatible.
++
++/**
++ * A runtime-independent stand-in for `Deno.inspect`, used where neither
++ * `Deno.inspect` nor `node:util` exists (Cloudflare Workers without
++ * nodejs_compat, browsers). It follows the layout rules of Deno's console
++ * (which come from Node's `util.inspect`): `depth`, numeric and boolean
++ * `compact`, `breakLength`, `sorted`, `trailingComma`, `getters`,
++ * `iterableLimit` and `strAbbreviateSize`. It never colors, and does not
++ * group long arrays into columns.
++ *
++ * @module
++ */
++
++/** Options for {@linkcode inspect}, a subset of `Deno.InspectOptions`. */
++export interface InspectOptions {
++  /** Nesting depth to expand. Deeper objects print as `[Object]`. */
++  depth?: number;
++  /**
++   * `false` puts every entry on its own line. A number joins the innermost
++   * levels onto one line when they fit in `breakLength`. `true` joins
++   * whatever fits.
++   */
++  compact?: boolean | number;
++  /** Line width used by `compact`. */
++  breakLength?: number;
++  /** Sort object keys and Map/Set entries. */
++  sorted?: boolean;
++  /** Add a comma after the last entry of a multi-line object. */
++  trailingComma?: boolean;
++  /** Call getters and show their values. */
++  getters?: boolean;
++  /** Maximum number of array, Map or Set entries to show. */
++  iterableLimit?: number;
++  /** Maximum length of a nested string before it is abbreviated. */
++  strAbbreviateSize?: number;
++}
++
++const DEFAULTS: Required<InspectOptions> = {
++  depth: 4,
++  compact: 3,
++  breakLength: 80,
++  sorted: false,
++  trailingComma: false,
++  getters: false,
++  iterableLimit: 100,
++  strAbbreviateSize: 100,
++};
++
++const IDENT = /^[a-zA-Z_][a-zA-Z_0-9]*$/;
++const QUOTES = ['"', "'", "`"];
++const CUSTOM_INSPECT = Symbol.for("Deno.customInspect");
++
++const ESCAPES: Record<string, string> = {
++  "\b": "\\b",
++  "\f": "\\f",
++  "\n": "\\n",
++  "\r": "\\r",
++  "\t": "\\t",
++  "\v": "\\v",
++};
++
++interface Ctx extends Required<InspectOptions> {
++  seen: object[];
++  circular: Map<object, number>;
++  currentDepth: number;
++  indentationLvl: number;
++}
++
++/** Quotes a string the way Deno does: the first quote it does not contain. */
++export function quoteString(str: string): string {
++  const quote = QUOTES.find((q) => !str.includes(q)) ?? QUOTES[0]!;
++  const escaped = str
++    .replace(new RegExp(`(?=[${quote}\\\\])`, "g"), "\\")
++    // deno-lint-ignore no-control-regex
++    .replace(/[\x00-\x1f\x7f-\x9f]/g, (c) =>
++      ESCAPES[c] ??
++        `\\x${c.charCodeAt(0).toString(16).padStart(2, "0")}`);
++  return `${quote}${escaped}${quote}`;
++}
++
++function formatString(str: string, ctx: Ctx, nested: boolean): string {
++  if (nested && str.length > ctx.strAbbreviateSize) {
++    const rest = str.length - ctx.strAbbreviateSize;
++    return `${
++      quoteString(str.slice(0, ctx.strAbbreviateSize))
++    }... ${rest} more character${rest > 1 ? "s" : ""}`;
++  }
++  return quoteString(str);
++}
++
++function formatKey(key: string | symbol): string {
++  if (typeof key === "symbol") return `[${String(key)}]`;
++  if (key === "__proto__") return "['__proto__']";
++  return IDENT.test(key) ? key : quoteString(key);
++}
++
++// deno-lint-ignore ban-types
++function functionBase(fn: Function): string {
++  const source = Function.prototype.toString.call(fn);
++  if (source.startsWith("class")) {
++    const parent = Object.getPrototypeOf(fn);
++    const base = fn.name ? `class ${fn.name}` : "class (anonymous)";
++    return parent && parent !== Function.prototype && parent.name
++      ? `[${base} extends ${parent.name}]`
++      : `[${base}]`;
++  }
++  const kind = toStringTag(fn);
++  return fn.name ? `[${kind}: ${fn.name}]` : `[${kind} (anonymous)]`;
++}
++
++function constructorName(obj: object): string | null {
++  let proto = Object.getPrototypeOf(obj);
++  while (proto) {
++    const ctor = Object.getOwnPropertyDescriptor(proto, "constructor")?.value;
++    if (typeof ctor === "function" && ctor.name) return ctor.name;
++    proto = Object.getPrototypeOf(proto);
++  }
++  return null;
++}
++
++function indentLines(text: string): string {
++  return text.replaceAll("\n", "\n  ");
++}
++
++function isBelowBreakLength(
++  ctx: Ctx,
++  output: string[],
++  start: number,
++  base: string,
++): boolean {
++  let total = output.length + start;
++  if (total + output.length > ctx.breakLength) return false;
++  for (const entry of output) {
++    total += entry.length;
++    if (total > ctx.breakLength) return false;
++  }
++  return base === "" || !base.includes("\n");
++}
++
++// Joins formatted entries into one object literal, like Node's
++// reduceToSingleString().
++function reduce(
++  ctx: Ctx,
++  output: string[],
++  base: string,
++  braces: [string, string],
++  level: number,
++): string {
++  const head = base ? `${base} ` : "";
++  if (ctx.compact !== true) {
++    if (
++      typeof ctx.compact === "number" && ctx.compact >= 1 &&
++      ctx.currentDepth - level < ctx.compact
++    ) {
++      const start = output.length + ctx.indentationLvl + braces[0].length +
++        base.length + 10;
++      if (isBelowBreakLength(ctx, output, start, base)) {
++        const joined = output.join(", ");
++        if (!joined.includes("\n")) {
++          return `${head}${braces[0]} ${joined} ${braces[1]}`;
++        }
++      }
++    }
++    const comma = ctx.trailingComma ? "," : "";
++    return `${head}${braces[0]}\n  ${
++      output.map(indentLines).join(",\n  ")
++    }${comma}\n${braces[1]}`;
++  }
++  if (isBelowBreakLength(ctx, output, 0, base)) {
++    return `${braces[0]}${base ? ` ${base}` : ""} ${output.join(", ")} ${
++      braces[1]
++    }`;
++  }
++  const ln = base === "" && braces[0].length === 1
++    ? " "
++    : `${base ? ` ${base}` : ""}\n  `;
++  return `${braces[0]}${ln}${output.map(indentLines).join(",\n  ")} ${
++    braces[1]
++  }`;
++}
++
++function formatValue(
++  value: unknown,
++  ctx: Ctx,
++  level: number,
++  nested: boolean,
++): string {
++  switch (typeof value) {
++    case "string":
++      return formatString(value, ctx, nested);
++    case "number":
++      return Object.is(value, -0) ? "-0" : String(value);
++    case "bigint":
++      return `${value}n`;
++    case "boolean":
++      return String(value);
++    case "undefined":
++      return "undefined";
++    case "symbol":
++      return String(value);
++  }
++  if (value === null) return "null";
++  const obj = value as object;
++
++  // deno-lint-ignore no-explicit-any
++  const custom = (obj as any)[CUSTOM_INSPECT];
++  if (typeof custom === "function") {
++    const options = { ...pickOptions(ctx), depth: ctx.depth - level };
++    return String(custom.call(
++      obj,
++      (v: unknown, o?: InspectOptions) => inspect(v, { ...options, ...o }),
++      options,
++    ));
++  }
++
++  if (ctx.seen.includes(obj)) {
++    let id = ctx.circular.get(obj);
++    if (id === undefined) {
++      id = ctx.circular.size + 1;
++      ctx.circular.set(obj, id);
++    }
++    return `[Circular *${id}]`;
++  }
++
++  ctx.seen.push(obj);
++  try {
++    const body = formatRaw(obj, ctx, level);
++    const id = ctx.circular.get(obj);
++    return id === undefined ? body : `<ref *${id}> ${body}`;
++  } finally {
++    ctx.seen.pop();
++  }
++}
++
++function pickOptions(ctx: Ctx): Required<InspectOptions> {
++  const { seen: _s, circular: _c, currentDepth: _d, indentationLvl: _i, ...o } =
++    ctx;
++  return o;
++}
++
++function formatProperty(
++  obj: object,
++  key: string | symbol,
++  ctx: Ctx,
++  level: number,
++): string {
++  const desc = Object.getOwnPropertyDescriptor(obj, key)!;
++  let shown: string;
++  ctx.indentationLvl += 2;
++  if (desc.get || desc.set) {
++    const label = desc.get && desc.set
++      ? "Getter/Setter"
++      : desc.get
++      ? "Getter"
++      : "Setter";
++    if (desc.get && ctx.getters) {
++      try {
++        shown = `[${label}: ${
++          formatValue(desc.get.call(obj), ctx, level + 1, true)
++        }]`;
++      } catch (e) {
++        const msg = e instanceof Error ? e.message : String(e);
++        shown = `[${label}: <Inspection threw (${msg})>]`;
++      }
++    } else {
++      shown = `[${label}]`;
++    }
++  } else {
++    shown = formatValue(desc.value, ctx, level + 1, true);
++  }
++  ctx.indentationLvl -= 2;
++  return `${formatKey(key)}: ${shown}`;
++}
++
++function ownKeys(obj: object, skip: (key: string) => boolean = () => false) {
++  return [
++    ...Object.keys(obj).filter((k) => !skip(k)),
++    ...Object.getOwnPropertySymbols(obj).filter((s) =>
++      Object.prototype.propertyIsEnumerable.call(obj, s)
++    ),
++  ];
++}
++
++// Platform objects such as URL or Headers keep their state behind prototype
++// accessors and would print as `URL {}`. WebIDL attributes are enumerable
++// accessors (JS class accessors are not), so list those instead.
++function platformAttributes(obj: object, ctx: Ctx, level: number): string[] {
++  const entries: string[] = [];
++  let proto = Object.getPrototypeOf(obj);
++  while (proto && proto !== Object.prototype) {
++    for (const key of Object.keys(proto)) {
++      const get = Object.getOwnPropertyDescriptor(proto, key)?.get;
++      if (!get) continue;
++      try {
++        const v = get.call(obj);
++        if (typeof v === "function") continue;
++        ctx.indentationLvl += 2;
++        entries.push(
++          `${formatKey(key)}: ${formatValue(v, ctx, level + 1, true)}`,
++        );
++        ctx.indentationLvl -= 2;
++      } catch { /* not readable on this object */ }
++    }
++    proto = Object.getPrototypeOf(proto);
++  }
++  return entries;
++}
++
++function formatList(
++  values: Iterable<unknown>,
++  size: number,
++  ctx: Ctx,
++  format: (v: unknown) => string,
++): string[] {
++  const output: string[] = [];
++  ctx.indentationLvl += 2;
++  for (const v of values) {
++    if (output.length === ctx.iterableLimit) break;
++    output.push(format(v));
++  }
++  ctx.indentationLvl -= 2;
++  const rest = size - output.length;
++  if (rest > 0) output.push(`... ${rest} more item${rest > 1 ? "s" : ""}`);
++  return output;
++}
++
++function toStringTag(obj: object): string {
++  try {
++    return Object.prototype.toString.call(obj).slice(8, -1);
++  } catch {
++    return "Object";
++  }
++}
++
++function formatRaw(obj: object, ctx: Ctx, level: number): string {
++  const tag = toStringTag(obj);
++  const name = constructorName(obj);
++  let base = "";
++  let braces: [string, string] = ["{", "}"];
++  let output: string[];
++  let keys: (string | symbol)[];
++  let sortWhole = true;
++
++  if (typeof obj === "function") {
++    base = functionBase(obj);
++    keys = ownKeys(obj);
++    if (keys.length === 0) return base;
++    output = [];
++  } else if (Array.isArray(obj)) {
++    keys = ownKeys(obj, (k) => /^\d+$/.test(k));
++    const prefix = name && name !== "Array" ? `${name}(${obj.length}) ` : "";
++    braces = [`${prefix}[`, "]"];
++    if (obj.length === 0 && keys.length === 0) return `${braces[0]}]`;
++    if (level > ctx.depth) return `[${name ?? "Array"}]`;
++    ctx.currentDepth = level;
++    output = [];
++    ctx.indentationLvl += 2;
++    let holes = 0;
++    const flush = () => {
++      if (holes) output.push(`<${holes} empty item${holes > 1 ? "s" : ""}>`);
++      holes = 0;
++    };
++    let shown = 0;
++    for (let i = 0; i < obj.length && shown < ctx.iterableLimit; i++) {
++      if (!Object.hasOwn(obj, i)) {
++        holes++;
++        continue;
++      }
++      flush();
++      output.push(formatValue(obj[i], ctx, level + 1, true));
++      shown = i + 1;
++    }
++    flush();
++    ctx.indentationLvl -= 2;
++    const rest = obj.length - Math.max(shown, output.length);
++    if (shown >= ctx.iterableLimit && rest > 0) {
++      output.push(`... ${rest} more item${rest > 1 ? "s" : ""}`);
++    }
++    sortWhole = false;
++  } else if (ArrayBuffer.isView(obj) && !(obj instanceof DataView)) {
++    // deno-lint-ignore no-explicit-any
++    const arr = obj as any as ArrayLike<number | bigint>;
++    keys = [];
++    braces = [`${name ?? tag}(${arr.length}) [`, "]"];
++    if (arr.length === 0) return `${braces[0]}]`;
++    if (level > ctx.depth) return `[${name ?? tag}]`;
++    output = formatList(
++      Array.from(arr),
++      arr.length,
++      ctx,
++      (v) => formatValue(v, ctx, level + 1, true),
++    );
++    sortWhole = false;
++  } else if (obj instanceof Map) {
++    keys = ownKeys(obj);
++    braces = [`${name ?? "Map"}(${obj.size}) {`, "}"];
++    if (obj.size === 0 && keys.length === 0) return `${braces[0]}}`;
++    if (level > ctx.depth) return `[${name ?? "Map"}]`;
++    ctx.currentDepth = level;
++    output = formatList(obj, obj.size, ctx, (e) => {
++      const [k, v] = e as [unknown, unknown];
++      return `${formatValue(k, ctx, level + 1, true)} => ${
++        formatValue(v, ctx, level + 1, true)
++      }`;
++    });
++  } else if (obj instanceof Set) {
++    keys = ownKeys(obj);
++    braces = [`${name ?? "Set"}(${obj.size}) {`, "}"];
++    if (obj.size === 0 && keys.length === 0) return `${braces[0]}}`;
++    if (level > ctx.depth) return `[${name ?? "Set"}]`;
++    ctx.currentDepth = level;
++    output = formatList(
++      obj,
++      obj.size,
++      ctx,
++      (v) => formatValue(v, ctx, level + 1, true),
++    );
++  } else if (obj instanceof Date) {
++    const time = obj.getTime();
++    base = Number.isNaN(time) ? "Invalid Date" : obj.toISOString();
++    keys = ownKeys(obj);
++    if (keys.length === 0) return base;
++    output = [];
++  } else if (obj instanceof RegExp) {
++    base = String(obj);
++    keys = ownKeys(obj, (k) => k === "lastIndex");
++    if (keys.length === 0) return base;
++    output = [];
++  } else if (obj instanceof Error) {
++    base = obj.stack ?? `${obj.name}: ${obj.message}`;
++    keys = ownKeys(obj, (k) => k === "stack");
++    output = [];
++    if (obj.cause !== undefined && !Object.keys(obj).includes("cause")) {
++      ctx.indentationLvl += 2;
++      output.push(`[cause]: ${formatValue(obj.cause, ctx, level + 1, true)}`);
++      ctx.indentationLvl -= 2;
++    }
++    if (keys.length === 0 && output.length === 0) return base;
++  } else if (obj instanceof WeakMap || obj instanceof WeakSet) {
++    return `${name ?? tag} { <items unknown> }`;
++  } else if (obj instanceof Promise) {
++    return `${name ?? "Promise"} { <unknown> }`;
++  } else if (
++    obj instanceof Number || obj instanceof String ||
++    obj instanceof Boolean || obj instanceof BigInt ||
++    obj instanceof Symbol
++  ) {
++    base = `[${tag}: ${formatValue(obj.valueOf(), ctx, level, false)}]`;
++    keys = ownKeys(obj, (k) => obj instanceof String && /^\d+$/.test(k));
++    if (keys.length === 0) return base;
++    output = [];
++  } else if (obj instanceof ArrayBuffer) {
++    const bytes = [...new Uint8Array(obj)].map((b) =>
++      b.toString(16).padStart(2, "0")
++    );
++    return reduce(
++      ctx,
++      [
++        `[Uint8Contents]: <${bytes.join(" ")}>`,
++        `byteLength: ${obj.byteLength}`,
++      ],
++      "",
++      ["ArrayBuffer {", "}"],
++      level,
++    );
++  } else {
++    keys = ownKeys(obj);
++    let prefix: string;
++    if (Object.getPrototypeOf(obj) === null) {
++      prefix = "[Object: null prototype] ";
++    } else if (name === "Object" || name === null) {
++      prefix = tag !== "Object" ? `Object [${tag}] ` : "";
++    } else {
++      prefix = tag !== "Object" && tag !== name
++        ? `${name} [${tag}] `
++        : `${name} `;
++    }
++    braces = [`${prefix}{`, "}"];
++    output = [];
++    if (keys.length === 0) {
++      if (level > ctx.depth) return `${braces[0]}}`;
++      const attributes = platformAttributes(obj, ctx, level);
++      if (attributes.length === 0) return `${braces[0]}}`;
++      ctx.currentDepth = level;
++      return reduce(ctx, attributes, base, braces, level);
++    }
++  }
++
++  if (level > ctx.depth) {
++    return base || `[${name ?? "Object"}]`;
++  }
++  ctx.currentDepth = level;
++  const props = keys.map((k) => formatProperty(obj, k, ctx, level));
++  if (ctx.sorted) {
++    if (sortWhole) {
++      output = [...output, ...props].sort();
++    } else {
++      output = [...output, ...props.sort()];
++    }
++  } else {
++    output = [...output, ...props];
++  }
++  return reduce(ctx, output, base, braces, level);
++}
++
++/**
++ * Formats a value like `Deno.inspect()`, without colors.
++ *
++ * @param value The value to format.
++ * @param options Formatting options. Defaults match `Deno.inspect()`.
++ * @returns The formatted string.
++ */
++export function inspect(value: unknown, options: InspectOptions = {}): string {
++  const ctx: Ctx = {
++    ...DEFAULTS,
++    ...options,
++    seen: [],
++    circular: new Map(),
++    currentDepth: 0,
++    indentationLvl: 0,
++  };
++  return formatValue(value, ctx, 0, false);
++}
+diff --git a/jsonc/parse_test.ts b/jsonc/parse_test.ts
+index 8489597..a1ace6d 100644
+--- a/jsonc/parse_test.ts
++++ b/jsonc/parse_test.ts
+@@ -8,9 +8,6 @@ import {
+   assertThrows,
+ } from "@flareosaur/assert";
+ 
+-import "./testdata/JSONTestSuite/test.ts";
+-import "./testdata/test262/test.ts";
+-
+ // The test code for the jsonc module can also be found in the testcode directory.
+ 
+ function assertValidParse(text: string, expected: unknown) {
+diff --git a/streams/byte_slice_stream.ts b/streams/byte_slice_stream.ts
+index 79cf925..e23801b 100644
+--- a/streams/byte_slice_stream.ts
++++ b/streams/byte_slice_stream.ts
+@@ -45,13 +45,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
+    * @param end The zero-indexed byte index to stop reading at. Inclusive.
+    */
+   constructor(start = 0, end: number = Infinity) {
++    // Validated before super(): workerd does not rethrow errors from a
++    // transformer's start() in the constructor.
++    if (start < 0) {
++      throw new RangeError(
++        `Cannot construct ByteSliceStream as start must be >= 0: received ${start}`,
++      );
++    }
+     super({
+       start: () => {
+-        if (start < 0) {
+-          throw new RangeError(
+-            `Cannot construct ByteSliceStream as start must be >= 0: received ${start}`,
+-          );
+-        }
+         end += 1;
+       },
+       transform: (chunk, controller) => {
+diff --git a/streams/concat_readable_streams.ts b/streams/concat_readable_streams.ts
+index bad5ec8..80d6237 100644
+--- a/streams/concat_readable_streams.ts
++++ b/streams/concat_readable_streams.ts
+@@ -30,21 +30,28 @@ export function concatReadableStreams<T>(
+   ...streams: ReadableStream<T>[]
+ ): ReadableStream<T> {
+   let i = 0;
++  // The reader stays open between pulls so cancel() can go through it. A
++  // stream that is locked by an in-flight pull rejects stream.cancel(), and
++  // workerd starts pulling before a synchronous cancel() gets in.
++  let reader: ReadableStreamDefaultReader<T> | undefined;
+   return new ReadableStream<T>({
+     async pull(controller) {
+-      const reader = streams[i]!.getReader();
++      reader ??= streams[i]!.getReader();
+       const { done, value } = await reader.read();
+       if (done) {
++        reader.releaseLock();
++        reader = undefined;
+         if (streams.length === ++i) {
+           return controller.close();
+         }
+         return await this.pull!(controller);
+       }
+       controller.enqueue(value);
+-      reader.releaseLock();
+     },
+     async cancel(reason) {
+-      const promises = streams.map((stream) => stream.cancel(reason));
++      const promises = streams.map((stream, index) =>
++        index === i && reader ? reader.cancel(reason) : stream.cancel(reason)
++      );
+       await Promise.allSettled(promises);
+     },
+   });
+diff --git a/streams/unstable_capped_delimiter_stream.ts b/streams/unstable_capped_delimiter_stream.ts
+index 8eee5ee..7c10c76 100644
+--- a/streams/unstable_capped_delimiter_stream.ts
++++ b/streams/unstable_capped_delimiter_stream.ts
+@@ -112,6 +112,16 @@ export class CappedDelimiterStream
+     { delimiter, limit }: CappedDelimiterOptions,
+   ): AsyncGenerator<CappedDelimiterEntry> {
+     const reader = toByteStream(readable).getReader({ mode: "byob" });
++    // Fills `view` and returns the whole buffer up to the end of the new
++    // bytes. Uses the offset of the view that was passed in, because workerd
++    // returns the empty view of a closed stream at the wrong byteOffset.
++    const refill = async (
++      view: Uint8Array<ArrayBuffer>,
++    ): Promise<Uint8Array<ArrayBuffer>> => {
++      const offset = view.byteOffset;
++      const { value } = await reader.read(view, { min: view.length });
++      return new Uint8Array(value!.buffer, 0, offset + value!.byteLength);
++    };
+     let buffer = (await reader.read(
+       new Uint8Array(limit + delimiter.length),
+       { min: limit + delimiter.length },
+@@ -126,12 +136,7 @@ export class CappedDelimiterStream
+         yield { match: true, value: buffer.slice(0, i) };
+         buffer.set(buffer.subarray(i + delimiter.length));
+         buffer = buffer.subarray(-i - delimiter.length);
+-        buffer = (await reader.read(buffer, { min: buffer.length })).value!;
+-        buffer = new Uint8Array(
+-          buffer.buffer,
+-          0,
+-          buffer.byteOffset + buffer.byteLength,
+-        );
++        buffer = await refill(buffer);
+         continue a;
+       }
+       if (buffer.byteLength < buffer.buffer.byteLength) {
+@@ -145,12 +150,7 @@ export class CappedDelimiterStream
+       yield { match: false, value: buffer.slice(0, -delimiter.length) };
+       buffer.set(buffer.subarray(-delimiter.length));
+       buffer = buffer.subarray(delimiter.length);
+-      buffer = (await reader.read(buffer, { min: buffer.length })).value!;
+-      buffer = new Uint8Array(
+-        buffer.buffer,
+-        0,
+-        buffer.byteOffset + buffer.byteLength,
+-      );
++      buffer = await refill(buffer);
+     }
+   }
+ 

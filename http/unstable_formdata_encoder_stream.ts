@@ -1,7 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
 import { encodeBase64 } from "@flareosaur/encoding/unstable-base64";
-import { toByteStream } from "@flareosaur/streams/unstable-to-byte-stream";
 
 /**
  * The input that can be passed to a {@linkcode FormDataEncoderStream}.
@@ -110,11 +109,17 @@ export class FormDataEncoderStream {
         );
 
         try {
-          const { done, value } = await gen.next(buffer);
-          if (done) {
+          let result = await gen.next(buffer);
+          // Responding with zero bytes to an open stream is a TypeError per
+          // spec (workerd enforces it), so skip empty chunks.
+          while (!result.done && result.value.byteLength === 0) {
+            result = await gen.next(buffer);
+          }
+          if (result.done) {
             controller.close();
             return controller.byobRequest!.respond(0);
           }
+          const value = result.value;
 
           // deno-lint-ignore no-explicit-any
           if ((buffer.buffer as any).detached) {
@@ -122,9 +127,10 @@ export class FormDataEncoderStream {
           } else if (buffer.buffer === value.buffer) {
             controller.byobRequest!.respond(value.length);
           } else {
-            buffer.set(value.subarray(0, length));
-            controller.byobRequest!.respond(length);
-            controller.enqueue(value.subarray(length));
+            const n = Math.min(length, value.length);
+            buffer.set(value.subarray(0, n));
+            controller.byobRequest!.respond(n);
+            if (value.length > n) controller.enqueue(value.slice(n));
           }
         } catch (error) {
           controller.error(error);
@@ -176,13 +182,15 @@ export class FormDataEncoderStream {
         buffer = yield this.#setString(buffer, input.value);
       } else {
         if (input.value instanceof Blob) input.value = input.value.stream();
-        const reader = toByteStream(input.value).getReader({ mode: "byob" });
+        // A default reader, not BYOB into the request's buffer: after such a
+        // read transfers the buffer, workerd's byobRequest.view is detached
+        // and respondWithNewView() rejects the filled view.
+        const reader = input.value.getReader();
         try {
           while (true) {
-            const { done, value } = await reader
-              .read(buffer, { min: buffer.length });
-            buffer = yield value!;
+            const { done, value } = await reader.read();
             if (done) break;
+            buffer = yield value;
           }
         } catch (reason) {
           await reader.cancel(reason);
