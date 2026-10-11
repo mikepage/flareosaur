@@ -23,7 +23,9 @@
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
     "./regexp": "./regexp/mod.ts",
+    "./testing/mock": "./testing/Mock.ts",
     "./testing/test": "./testing/Test.ts",
+    "./testing/time": "./testing/Time.ts",
     "./testing": "./testing/mod.ts",
     "./text": "./text/mod.ts",
     "./yaml": "./yaml/mod.ts"
