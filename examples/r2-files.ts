@@ -5,62 +5,109 @@
  * @group Cloudflare
  * @bindings r2:BUCKET
  * @resource {https://developers.cloudflare.com/r2/api/workers/workers-api-reference/} Cloudflare: R2 Workers API
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/API/URLPattern} MDN: URLPattern
  * @check PUT /files/notes/todo.txt buy milk -> 201 "notes/todo.txt"
- * @check GET /files/notes/todo.txt -> 200 "buy milk" header:content-type~"text/plain"
+ * @check GET /files/notes/todo.txt -> 200 "buy milk" header:content-type~"text/plain" header:etag~"\""
+ * @check GET /files/notes/todo.txt h:if-none-match="{{prev:etag}}" -> 304
+ * @check GET /files/notes/todo.txt h:range=bytes=0-2 -> 206 "buy" !"milk" header:content-range~"bytes 0-2/8"
  * @check PUT /files/notes/done.txt write examples -> 201
  * @check GET /objects -> 200 "notes/done.txt" "notes/todo.txt"
  * @check DELETE /files/notes/todo.txt -> 204
  * @check GET /files/notes/todo.txt -> 404
  *
- * A Worker has no disk; files go to an R2 bucket. The `R2.Bucket` service
- * covers what the Deno examples do with `Deno.readFile`, `Deno.writeFile`,
- * `Deno.remove` and walking a directory, with typed errors and `Option` for
- * missing files. Object bodies are Effect `Stream`s, so large files never
- * have to fit in memory.
+ * A Worker has no disk; files go to an R2 bucket. The binding covers what
+ * the Deno examples do with `Deno.readFile`, `Deno.writeFile`, `Deno.remove`
+ * and walking a directory. Bodies are Web Streams in both directions, so a
+ * large file never has to fit in memory. R2 also understands the request's
+ * conditional and range headers, which makes it a small file server.
  */
 
-import { Effect, Layer, Option } from "effect"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http"
-import * as R2 from "@mikepage/flareosaur/workers/r2"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+interface Env {
+  BUCKET: R2Bucket;
+}
 
-// Everything after /files/ is the object key.
-const keyOf = (request: HttpServerRequest.HttpServerRequest) =>
-  decodeURIComponent(new URL(request.url, "http://localhost").pathname.slice("/files/".length))
+// Everything after /files/ is the object key, slashes included.
+const file = new URLPattern({ pathname: "/files/:key+" });
 
-const routes = Layer.mergeAll(
-  // Write: stream the request body straight into the bucket.
-  HttpRouter.add("PUT", "/files/*", (request) =>
-    Effect.gen(function*() {
-      const bucket = yield* R2.Bucket
-      const object = yield* bucket.putStream(keyOf(request), request.stream, { contentType: "text/plain; charset=utf-8" })
-      return HttpServerResponse.jsonUnsafe({ key: object.key, size: object.size }, { status: 201 })
-    })),
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
 
-  // Read: stream the object back with its content type.
-  HttpRouter.add("GET", "/files/*", (request) =>
-    Effect.gen(function*() {
-      const bucket = yield* R2.Bucket
-      return Option.match(yield* bucket.get(keyOf(request)), {
-        onNone: () => HttpServerResponse.text("not found", { status: 404 }),
-        onSome: (object) =>
-          HttpServerResponse.stream(object.stream, {
-            contentType: object.info.httpMetadata?.contentType ?? "application/octet-stream",
-          }),
-      })
-    })),
+    // List: like walking a directory. list() returns up to 1000 keys per
+    // page; pass `cursor` to get the next page.
+    if (request.method === "GET" && url.pathname === "/objects") {
+      const { objects } = await env.BUCKET.list({
+        prefix: url.searchParams.get("prefix") ?? "",
+      });
+      return Response.json(objects.map((o) => ({ key: o.key, size: o.size })));
+    }
 
-  // List: like walking a directory.
-  HttpRouter.add("GET", "/objects", Effect.gen(function*() {
-    const objects = yield* (yield* R2.Bucket).list()
-    return HttpServerResponse.jsonUnsafe(objects.map((o) => ({ key: o.key, size: o.size })))
-  })),
+    const key = file.exec(url)?.pathname.groups.key;
+    if (!key) return new Response("not found", { status: 404 });
 
-  HttpRouter.add("DELETE", "/files/*", (request) =>
-    Effect.gen(function*() {
-      yield* (yield* R2.Bucket).remove(keyOf(request))
-      return HttpServerResponse.empty({ status: 204 })
-    })),
-)
+    switch (request.method) {
+      // Write: the request body streams straight into the bucket.
+      case "PUT": {
+        // R2 needs to know the length of a stream up front. With a
+        // Content-Length header the body streams; a chunked upload without
+        // one is buffered first.
+        const body = request.headers.has("content-length")
+          ? request.body
+          : await request.arrayBuffer();
+        const object = await env.BUCKET.put(key, body, {
+          httpMetadata: {
+            contentType: request.headers.get("content-type") ??
+              "text/plain; charset=utf-8",
+          },
+        });
+        return Response.json({ key: object.key, size: object.size }, {
+          status: 201,
+        });
+      }
 
-export default Worker.make({ layer: R2.layer("BUCKET"), fetch: routes })
+      // Read: hand R2 the request headers. It evaluates If-None-Match,
+      // If-Modified-Since and friends (onlyIf), and Range.
+      case "GET": {
+        const object = await env.BUCKET.get(key, {
+          onlyIf: request.headers,
+          range: request.headers,
+        });
+        if (!object) return new Response("not found", { status: 404 });
+
+        // writeHttpMetadata copies the stored content type, cache control
+        // and so on onto the response headers.
+        const headers = new Headers({ etag: object.httpEtag });
+        object.writeHttpMetadata(headers);
+
+        // A failed precondition returns the object without a body.
+        if (!("body" in object)) {
+          return new Response(null, { status: 304, headers });
+        }
+
+        // A range read: answer 206 with the part that was asked for.
+        const range = object.range as
+          | { offset: number; length: number }
+          | undefined;
+        if (request.headers.has("range") && range) {
+          const end = range.offset + range.length - 1;
+          headers.set(
+            "content-range",
+            `bytes ${range.offset}-${end}/${object.size}`,
+          );
+          return new Response(object.body, { status: 206, headers });
+        }
+        return new Response(object.body, { headers });
+      }
+
+      case "DELETE":
+        await env.BUCKET.delete(key);
+        return new Response(null, { status: 204 });
+
+      default:
+        return new Response("method not allowed", {
+          status: 405,
+          headers: { allow: "GET, PUT, DELETE" },
+        });
+    }
+  },
+} satisfies ExportedHandler<Env>;

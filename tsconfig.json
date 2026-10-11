@@ -1,11 +1,12 @@
 {
+  "//": "Type-checks the examples against the Workers runtime types. The packages themselves are checked by deno check (see scripts/check.mjs).",
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
-    "types": [],
+    "lib": ["ESNext"],
+    "types": ["@cloudflare/workers-types"],
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "skipLibCheck": true,
@@ -17,16 +18,5 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["*/**/*.ts", "types/*.d.ts"],
-  "exclude": [
-    "node_modules",
-    "scripts",
-    "**/_std/**/*_test.ts",
-    "**/_std/**/test.ts",
-    "**/_std/**/testdata/**",
-    "**/_std/**/_test_utils.ts",
-    "**/_std/**/_test_util.ts",
-    "**/_std/**/_testing.ts",
-    "**/_std/**/_test_comparator_set.ts"
-  ]
+  "include": ["examples/**/*.ts", "types/wasm.d.ts"]
 }

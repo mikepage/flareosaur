@@ -1,67 +1,106 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
-
 /**
- * HTTP utilities on top of `effect/http`: content negotiation, user agents,
- * `Cache-Control`, structured fields, signed cookies, message signatures,
- * problem details, entity tags, server-sent events and more.
+ * Provides user-friendly {@linkcode serve} on top of Deno's native HTTP server
+ * and other utilities for creating HTTP servers and clients.
  *
- * Most of `@std/http` already exists in Effect; use it directly:
+ * ## File Server
  *
- * | std                                  | Effect / here                                              |
- * | ------------------------------------ | ---------------------------------------------------------- |
- * | `getCookies`, `setCookie`, `deleteCookie`, `getSetCookies` | `HttpServerRequest.cookies`, `HttpServerResponse.setCookie` / `expireCookie`, `Cookies` |
- * | `STATUS_CODE`, `STATUS_TEXT`, `isErrorStatus`, ... | {@linkcode Status} (and `HttpStatus.fromLiteral`)   |
- * | `METHOD` (unstable)                  | {@linkcode Method} (and `HttpMethod`)                       |
- * | `HEADER` (unstable)                  | {@linkcode Header} (and `Headers`)                          |
- * | `accepts`, `acceptsEncodings`, `acceptsLanguages` | {@linkcode Negotiation}                        |
- * | `UserAgent`                          | {@linkcode UserAgent}                                       |
- * | `eTag`, `ifMatch`, `ifNoneMatch`     | {@linkcode ETag} (with Effect's `Etag`)                     |
- * | `ServerSentEventStream`, `ServerSentEventParseStream` | {@linkcode ServerSentEvents} (with `effect/encoding/Sse`) |
- * | `parseCacheControl`, `formatCacheControl` (unstable) | {@linkcode CacheControl}                     |
- * | structured fields (unstable)         | {@linkcode StructuredFields}                                |
- * | signed cookies (unstable)            | {@linkcode SignedCookie}                                    |
- * | message signatures (unstable)        | {@linkcode MessageSignatures}                               |
- * | problem details, `HttpError` (unstable) | {@linkcode ProblemDetails}                               |
- * | `route` (unstable)                   | `HttpRouter`, or {@linkcode Route} for `URLPattern` routes  |
- * | `FormDataEncoderStream`, `FormDataDecoderStream` (unstable) | {@linkcode FormData} (decoding via `Multipart`) |
- * | `serveDir`, `serveFile`              | `HttpStaticServer` / `HttpServerResponse.file`; Workers serve assets themselves |
+ * A small program for serving local files over HTTP.
  *
- * Each module is also its own entrypoint, e.g.
- * `@mikepage/flareosaur/http/negotiation`.
+ * ```sh
+ * deno run --allow-net --allow-read jsr:@mikepage/flareosaur/http/file-server
+ * Listening on:
+ * - Local: http://localhost:8000
+ * ```
  *
- * ```ts
- * import { Effect, Option } from "effect"
- * import { HttpRouter, HttpServerResponse } from "effect/http"
- * import { Negotiation, ProblemDetails } from "@mikepage/flareosaur/http"
+ * When the `--allow-sys=networkInterfaces` permission is provided, the file
+ * server will also display the local area network addresses that can be used to
+ * access the server.
  *
- * const Routes = HttpRouter.add(
- *   "GET",
- *   "/hello",
- *   Effect.gen(function*() {
- *     const type = yield* Negotiation.negotiate(["text/plain", "application/json"])
- *     if (Option.isNone(type)) return yield* ProblemDetails.problem(406)
- *     return type.value === "text/plain"
- *       ? HttpServerResponse.text("hello")
- *       : HttpServerResponse.jsonUnsafe({ hello: true })
- *   }),
- * )
+ * ## HTTP Status Code and Status Text
+ *
+ * Helper for processing status code and status text.
+ *
+ * ## HTTP errors
+ *
+ * Provides error classes for each HTTP error status code as well as utility
+ * functions for handling HTTP errors in a structured way.
+ *
+ * ## Methods
+ *
+ * Provides helper functions and types to work with HTTP method strings safely.
+ *
+ * ## Negotiation
+ *
+ * A set of functions which can be used to negotiate content types, encodings and
+ * languages when responding to requests.
+ *
+ * > Note: some libraries include accept charset functionality by analyzing the
+ * > `Accept-Charset` header. This is a legacy header that
+ * > {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Charset | clients omit and servers should ignore}
+ * > therefore is not provided.
+ *
+ * ## User agent handling
+ *
+ * The {@linkcode UserAgent} class provides user agent string parsing, allowing
+ * a user agent flag to be semantically understood.
+ *
+ * For example to integrate the user agent provided in the header `User-Agent`
+ * in an http request would look like this:
+ *
+ * ```ts ignore
+ * import { UserAgent } from "@mikepage/flareosaur/http/user-agent";
+ *
+ * Deno.serve((req) => {
+ *   const userAgent = new UserAgent(req.headers.get("user-agent") ?? "");
+ *   return new Response(`Hello, ${userAgent.browser.name}
+ *     on ${userAgent.os.name} ${userAgent.os.version}!`);
+ * });
+ * ```
+ *
+ * ### Routing
+ *
+ * {@linkcode route} provides an easy way to route requests to different
+ * handlers based on the request path and method.
+ *
+ * ```ts ignore
+ * import { route, type Route } from "@mikepage/flareosaur/http/unstable-route";
+ * import { serveDir } from "@mikepage/flareosaur/http/file-server";
+ *
+ * const routes: Route[] = [
+ *   {
+ *     pattern: new URLPattern({ pathname: "/about" }),
+ *     handler: () => new Response("About page"),
+ *   },
+ *   {
+ *     pattern: new URLPattern({ pathname: "/users/:id" }),
+ *     handler: (_req, _info, params) => new Response(params?.pathname.groups.id),
+ *   },
+ *   {
+ *     pattern: new URLPattern({ pathname: "/static/*" }),
+ *     handler: (req: Request) => serveDir(req)
+ *   },
+ *   {
+ *     method: ["GET", "HEAD"],
+ *     pattern: new URLPattern({ pathname: "/api" }),
+ *     handler: (req: Request) => new Response(req.method === 'HEAD' ? null : 'ok'),
+ *   },
+ * ];
+ *
+ * function defaultHandler(_req: Request) {
+ *   return new Response("Not found", { status: 404 });
+ * }
+ *
+ * Deno.serve(route(routes, defaultHandler));
  * ```
  *
  * @module
  */
 
-export * as CacheControl from "./CacheControl.ts"
-export * as ETag from "./Etag.ts"
-export * as FormData from "./FormData.ts"
-export * as Header from "./Header.ts"
-export * as MessageSignatures from "./MessageSignatures.ts"
-export * as Method from "./Method.ts"
-export * as Negotiation from "./Negotiation.ts"
-export * as ProblemDetails from "./ProblemDetails.ts"
-export * as Route from "./Route.ts"
-export * as ServerSentEvents from "./ServerSentEvents.ts"
-export * as SignedCookie from "./SignedCookie.ts"
-export * as Status from "./Status.ts"
-export * as StructuredFields from "./StructuredFields.ts"
-export * as UserAgent from "./UserAgent.ts"
+export * from "./cookie.ts";
+export * from "./etag.ts";
+export * from "./status.ts";
+export * from "./negotiation.ts";
+export * from "./server_sent_event_stream.ts";
+export * from "./server_sent_event_parse_stream.ts";
+export * from "./user_agent.ts";

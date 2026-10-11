@@ -1,114 +1,112 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
+// This module is browser compatible.
 
 /**
- * TOML v1.0 parsing and stringifying, as Effects and Schema codecs.
+ * {@linkcode parse} and {@linkcode stringify} for handling
+ * {@link https://toml.io | TOML} encoded data.
  *
- * `effect/encoding/Toml` ships a small configuration parser. This module is
- * the parser from `@std/toml`, which passes the official TOML test suite,
- * plus its stringifier, wrapped for Effect: failures are a typed
- * {@linkcode TomlError}, and {@linkcode schema} decodes TOML text straight
- * into a typed value.
+ * Be sure to read the supported types as not every spec is supported at the
+ * moment and the handling in TypeScript side is a bit different.
+ *
+ * ## Supported types and handling
+ *
+ * - [x] [Keys](https://toml.io/en/latest#keys)
+ * - [ ] [String](https://toml.io/en/latest#string)
+ * - [x] [Multiline String](https://toml.io/en/latest#string)
+ * - [x] [Literal String](https://toml.io/en/latest#string)
+ * - [ ] [Integer](https://toml.io/en/latest#integer)
+ * - [x] [Float](https://toml.io/en/latest#float)
+ * - [x] [Boolean](https://toml.io/en/latest#boolean)
+ * - [x] [Offset Date-time](https://toml.io/en/latest#offset-date-time)
+ * - [x] [Local Date-time](https://toml.io/en/latest#local-date-time)
+ * - [x] [Local Date](https://toml.io/en/latest#local-date)
+ * - [ ] [Local Time](https://toml.io/en/latest#local-time)
+ * - [x] [Table](https://toml.io/en/latest#table)
+ * - [x] [Inline Table](https://toml.io/en/latest#inline-table)
+ * - [ ] [Array of Tables](https://toml.io/en/latest#array-of-tables)
+ *
+ * _Supported with warnings see [Warning](#Warning)._
+ *
+ * ### Warning
+ *
+ * #### String
+ *
+ * Due to the spec, there is no flag to detect regex properly in a TOML
+ * declaration. So the regex is stored as string.
+ *
+ * #### Integer
+ *
+ * For **Binary** / **Octal** / **Hexadecimal** numbers, they are stored as string
+ * to be not interpreted as Decimal.
+ *
+ * #### Local Time
+ *
+ * Because local time does not exist in JavaScript, the local time is stored as a
+ * string.
+ *
+ * #### Array of Tables
+ *
+ * At the moment only simple declarations like below are supported:
+ *
+ * ```toml
+ * [[bin]]
+ * name = "deno"
+ * path = "cli/main.rs"
+ *
+ * [[bin]]
+ * name = "deno_core"
+ * path = "src/foo.rs"
+ *
+ * [[nib]]
+ * name = "node"
+ * path = "not_found"
+ * ```
+ *
+ * will output:
+ *
+ * ```json
+ * {
+ *   "bin": [
+ *     { "name": "deno", "path": "cli/main.rs" },
+ *     { "name": "deno_core", "path": "src/foo.rs" }
+ *   ],
+ *   "nib": [{ "name": "node", "path": "not_found" }]
+ * }
+ * ```
  *
  * ```ts
- * import { Effect, Schema } from "effect"
- * import * as Toml from "@mikepage/flareosaur/toml"
+ * import { parse, stringify } from "@mikepage/flareosaur/toml";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
- * const Config = Schema.Struct({ name: Schema.String, port: Schema.Int })
+ * const obj = {
+ *   bin: [
+ *     { name: "deno", path: "cli/main.rs" },
+ *     { name: "deno_core", path: "src/foo.rs" },
+ *   ],
+ *   nib: [{ name: "node", path: "not_found" }],
+ * };
  *
- * const program = Effect.gen(function*() {
- *   const config = yield* Schema.decodeEffect(Toml.schema(Config))('name = "api"\nport = 8080\n')
- *   const text = yield* Toml.stringify({ ...config, port: 9090 })
- *   return text // 'name = "api"\nport = 9090\n'
- * })
+ * const tomlString = stringify(obj);
+ * assertEquals(tomlString, `
+ * [[bin]]
+ * name = "deno"
+ * path = "cli/main.rs"
+ *
+ * [[bin]]
+ * name = "deno_core"
+ * path = "src/foo.rs"
+ *
+ * [[nib]]
+ * name = "node"
+ * path = "not_found"
+ * `);
+ *
+ * const tomlObject = parse(tomlString);
+ * assertEquals(tomlObject, obj);
  * ```
  *
  * @module
  */
 
-import { type Cause, Effect, Predicate, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
-import { parse as stdParse } from "./_std/parse.ts"
-import { stringify as stdStringify, type StringifyOptions } from "./_std/stringify.ts"
-
-export type { StringifyOptions }
-
-const TomlErrorBase: Schema.Class<
-  TomlError,
-  Schema.TaggedStruct<"TomlError", {
-    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
-    readonly message: Schema.String
-    readonly cause: Schema.Defect
-  }>,
-  Cause.YieldableError
-> = Schema.TaggedError<TomlError>()("TomlError", {
-  kind: Schema.Literals(["Parse", "Stringify"]),
-  message: Schema.String,
-  cause: Schema.Defect(),
-})
-
-/** A TOML document could not be parsed, or a value could not be stringified. */
-export class TomlError extends TomlErrorBase {}
-
-const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
-
-const parseError = (cause: unknown) => new TomlError({ kind: "Parse", message: messageOf(cause), cause })
-
-const stringifyError = (cause: unknown) => new TomlError({ kind: "Stringify", message: messageOf(cause), cause })
-
-const stringifyUnsafe = (value: unknown, options?: StringifyOptions): string => {
-  if (!Predicate.isObject(value) || Array.isArray(value)) {
-    throw new TypeError("A TOML document must be a table (a plain object)")
-  }
-  return stdStringify(value as Record<string, unknown>, options)
-}
-
-/**
- * Parses a TOML document into a record. Date-times and dates become `Date`s;
- * local times stay strings. Errors carry the line and column.
- */
-export const parse = (text: string): Effect.Effect<Record<string, unknown>, TomlError> =>
-  Effect.try({ try: () => stdParse(text), catch: parseError })
-
-/**
- * Stringifies a record as a TOML document. Fails when the value is not a
- * table or holds values TOML cannot represent (such as `null`).
- */
-export const stringify = (
-  value: Record<string, unknown>,
-  options?: StringifyOptions,
-): Effect.Effect<string, TomlError> => Effect.try({ try: () => stringifyUnsafe(value, options), catch: stringifyError })
-
-/** Options for {@linkcode schema}. */
-export interface SchemaOptions {
-  readonly stringify?: StringifyOptions | undefined
-}
-
-const issue = (error: unknown, input: unknown) => new SchemaIssue.InvalidValue({ message: messageOf(error) }, input)
-
-/** A transformation between TOML text and the record it holds. */
-export const transformation = (options?: SchemaOptions): SchemaTransformation.Transformation<unknown, string> =>
-  new SchemaTransformation.Transformation(
-    SchemaGetter.transformEffect((text: string) =>
-      Effect.try({ try: (): unknown => stdParse(text), catch: (e) => issue(e, text) })
-    ),
-    SchemaGetter.transformEffect((value: unknown) =>
-      Effect.try({ try: () => stringifyUnsafe(value, options?.stringify), catch: (e) => issue(e, value) })
-    ),
-  )
-
-/**
- * A Schema that decodes TOML text into `S` and encodes `S` back to TOML.
- *
- * ```ts
- * import { Schema } from "effect"
- * import * as Toml from "@mikepage/flareosaur/toml"
- *
- * const decode = Schema.decodeUnknownSync(Toml.schema(Schema.Struct({ a: Schema.Number })))
- * decode("a = 1") // { a: 1 }
- * ```
- */
-export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions): Schema.decodeTo<S, Schema.String> =>
-  Schema.String.pipe(Schema.decodeTo(target, transformation(options)))
-
-/** TOML text decoded to an unknown value. */
-export const UnknownFromToml: Schema.decodeTo<Schema.Unknown, Schema.String> = schema(Schema.Unknown)
+export * from "./stringify.ts";
+export * from "./parse.ts";

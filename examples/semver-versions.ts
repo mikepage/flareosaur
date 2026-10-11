@@ -3,38 +3,51 @@
  * @difficulty beginner
  * @tags workers, semver
  * @group Standard library
+ * @resource {https://jsr.io/@std/semver} @std/semver
  * @resource {https://semver.org} Semantic Versioning
- * @check GET / -> 200 "sorted: 1.2.0, 1.10.0, 2.0.0-beta.1, 2.0.0" "1.10.0 satisfies ^1.2.0: true" "best match for ~1.2: 1.2.0" "next minor: 1.11.0" "invalid: SemVerError"
+ * @check GET / -> 200 "sorted: 1.2.0, 1.10.0, 2.0.0-beta.1, 2.0.0" "1.10.0 satisfies ^1.2.0: true" "best match for ~1.2: 1.2.0" "next minor: 1.11.0" "difference: minor" "invalid: TypeError" "tryParse: undefined"
  *
  * Version strings cannot be compared as text: "1.10.0" sorts before
- * "1.2.0". A parsed `SemVer` comes with an Effect `Order`, so arrays sort
- * correctly with `Array.sort`, and ranges, increments and comparisons follow
- * the semver spec. Parsing returns a `Result` instead of throwing.
+ * "1.2.0". std's semver parses them into objects, and `compare` sorts
+ * them the way the spec says, prereleases before their release. Ranges,
+ * increments and comparisons follow npm's rules.
  */
 
-import { Array, Console, Effect, Option, Result } from "effect"
-import * as SemVer from "@mikepage/flareosaur/semver"
-import { script } from "./_lib/script.ts"
+import {
+  compare,
+  difference,
+  format,
+  increment,
+  maxSatisfying,
+  parse,
+  parseRange,
+  satisfies,
+  tryParse,
+} from "@mikepage/flareosaur/semver";
+import { script } from "./_lib/script.ts";
 
-const program = Effect.gen(function*() {
-  const versions = ["2.0.0", "1.10.0", "2.0.0-beta.1", "1.2.0"].map((v) => Result.getOrThrow(SemVer.parse(v)))
+export default script((print) => {
+  const versions = ["2.0.0", "1.10.0", "2.0.0-beta.1", "1.2.0"].map(parse);
 
-  // SemVer.Order knows that prereleases sort before the release.
-  const sorted = Array.sort(versions, SemVer.Order)
-  yield* Console.log(`sorted: ${sorted.map(SemVer.format).join(", ")}`)
+  // compare returns -1, 0 or 1, so it works with Array.prototype.toSorted.
+  const sorted = versions.toSorted(compare);
+  print(`sorted: ${sorted.map(format).join(", ")}`);
 
-  const caret = Result.getOrThrow(SemVer.parseRange("^1.2.0"))
-  yield* Console.log(`1.10.0 satisfies ^1.2.0: ${SemVer.satisfies(versions[1]!, caret)}`)
+  const v1_10 = parse("1.10.0");
+  print(`1.10.0 satisfies ^1.2.0: ${satisfies(v1_10, parseRange("^1.2.0"))}`);
 
-  const tilde = Result.getOrThrow(SemVer.parseRange("~1.2"))
-  const best = SemVer.maxSatisfying(versions, tilde)
-  yield* Console.log(`best match for ~1.2: ${Option.match(best, { onNone: () => "none", onSome: SemVer.format })}`)
+  // maxSatisfying picks the highest version in a range, if any.
+  const best = maxSatisfying(versions, parseRange("~1.2"));
+  print(`best match for ~1.2: ${best ? format(best) : "none"}`);
 
-  const next = SemVer.increment(versions[1]!, "minor")
-  yield* Console.log(`next minor: ${Result.match(next, { onFailure: () => "?", onSuccess: SemVer.format })}`)
+  print(`next minor: ${format(increment(v1_10, "minor"))}`);
+  print(`difference: ${difference(parse("1.2.0"), v1_10)}`);
 
-  const invalid = SemVer.parse("one.two")
-  yield* Console.log(`invalid: ${Result.isFailure(invalid) ? invalid.failure._tag : "?"}`)
-})
-
-export default script(program)
+  // parse throws on bad input; tryParse returns undefined instead.
+  try {
+    parse("one.two");
+  } catch (error) {
+    print(`invalid: ${error instanceof Error ? error.name : error}`);
+  }
+  print(`tryParse: ${tryParse("one.two")}`);
+});

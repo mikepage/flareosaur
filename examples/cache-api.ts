@@ -5,35 +5,56 @@
  * @group Cloudflare
  * @bindings outbound:echo
  * @resource {https://developers.cloudflare.com/workers/runtime-apis/cache/} Cloudflare: Cache API
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/API/Cache} MDN: Cache
  * @check GET /weather/amsterdam -> 200 "amsterdam" header:x-cache~"MISS"
  * @check GET /weather/amsterdam -> 200 "amsterdam" header:x-cache~"HIT"
  * @check GET /weather/paris -> 200 header:x-cache~"MISS"
  *
  * Deno implements the Web Cache API; Workers have it too, as `caches.default`,
- * in front of every data center. `Cache.cached` serves a request from the
- * cache or runs the effect, returns its response and stores a copy in the
- * background with `ctx.waitUntil`, so the user never waits for the write.
+ * a cache in each data center. Look the request up with `match`; on a miss,
+ * build the response, return it, and store a copy with `ctx.waitUntil` so
+ * the user never waits for the write. `Cache-Control: max-age` on the stored
+ * response decides how long it stays.
  */
 
-import { Effect } from "effect"
-import { FetchHttpClient, HttpClient } from "effect/http"
-import * as Cache from "@mikepage/flareosaur/workers/cache"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+const weather = new URLPattern({ pathname: "/weather/:city" });
 
 // The slow part: a call to an upstream weather API.
-const forecast = (city: string) =>
-  Effect.gen(function*() {
-    const client = yield* HttpClient.HttpClient
-    const upstream = yield* client.get(`https://weather.example.com/${city}`)
-    return new Response(`Forecast for ${city}: ${upstream.status === 200 ? "sunny" : "unknown"}`, {
-      headers: { "content-type": "text/plain" },
-    })
-  }).pipe(Effect.provide(FetchHttpClient.layer), Effect.orDie)
+async function forecast(city: string): Promise<Response> {
+  const upstream = await fetch(`https://weather.example.com/${city}`, {
+    signal: AbortSignal.timeout(5_000),
+  });
+  const summary = upstream.ok ? "sunny" : "unknown";
+  return new Response(`Forecast for ${city}: ${summary}`, {
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      // The cache keeps it for ten minutes.
+      "cache-control": "public, max-age=600",
+    },
+  });
+}
 
-export default Worker.make({
-  fetch: (request) => {
-    const city = new URL(request.url).pathname.split("/")[2] ?? "nowhere"
-    // Cache each city's forecast for ten minutes.
-    return Cache.cached(request, forecast(city), { maxAge: "10 minutes" })
+export default {
+  async fetch(request, _env, ctx) {
+    const city = weather.exec(request.url)?.pathname.groups.city;
+    if (!city || request.method !== "GET") {
+      return new Response("not found", { status: 404 });
+    }
+
+    // The cache key is the request: its URL, and the method, which must be GET.
+    const cache = caches.default;
+    const cached = await cache.match(request);
+    if (cached) {
+      // Cached responses are immutable; copy one to change its headers.
+      const hit = new Response(cached.body, cached);
+      hit.headers.set("x-cache", "HIT");
+      return hit;
+    }
+
+    const response = await forecast(city);
+    // A body can be read once: store a clone, return the original.
+    ctx.waitUntil(cache.put(request, response.clone()));
+    response.headers.set("x-cache", "MISS");
+    return response;
   },
-})
+} satisfies ExportedHandler;

@@ -1,38 +1,39 @@
 /**
  * @title Sleep and delay execution
  * @difficulty beginner
- * @tags workers, effect
+ * @tags workers, async
  * @group Basics
- * @resource {https://effect.website/docs/scheduling/introduction/} Effect: scheduling
+ * @resource {https://jsr.io/@std/async/doc/delay/~/delay} @std/async: delay
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/API/AbortController} MDN: AbortController
  * @check GET / -> 200 "waiting..." "done" "slept and then said: woke up" "sleep canceled after 50ms"
  *
  * Programs often need to wait: between retries, while polling, or to pace
- * requests. In Effect a sleep is just another effect: it never blocks, it
- * reads time from the `Clock` (so tests can fast-forward it), and it can be
- * interrupted.
+ * requests. std's `delay` is a promise that resolves after some
+ * milliseconds. It never blocks the isolate, and an `AbortSignal` cancels it.
  */
 
-import { Console, Effect, Fiber } from "effect"
-import { script } from "./_lib/script.ts"
+import { delay } from "@mikepage/flareosaur/async/delay";
+import { script } from "./_lib/script.ts";
 
-const program = Effect.gen(function*() {
-  // Effect.sleep takes a duration: a number of milliseconds, or a string
-  // like "100 millis" or "2 seconds".
-  yield* Console.log("waiting...")
-  yield* Effect.sleep("100 millis")
-  yield* Console.log("done") // prints 100ms later
+export default script(async (print) => {
+  // await delay(ms) pauses this request only. Other requests keep running.
+  print("waiting...");
+  await delay(100);
+  print("done"); // prints 100 ms later
 
-  // Effect.delay sleeps before running another effect.
-  const said = yield* Effect.succeed("woke up").pipe(Effect.delay("50 millis"))
-  yield* Console.log(`slept and then said: ${said}`)
+  // Delay a value: sleep, then go on with the result.
+  const said = await delay(50).then(() => "woke up");
+  print(`slept and then said: ${said}`);
 
-  // A sleep can be canceled by interrupting the fiber it runs on. There is
-  // no AbortController to thread through: interruption is built in.
-  const sleeper = yield* Effect.forkChild(Effect.sleep("10 seconds"))
-  yield* Effect.sleep("50 millis")
-  yield* Fiber.interrupt(sleeper)
-  yield* Console.log("sleep canceled after 50ms")
-})
-
-// script() turns the program into a Worker that responds with what it printed.
-export default script(program)
+  // A sleep can be canceled with an AbortController. The promise rejects
+  // with the signal's reason and the timer is cleared.
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 50);
+  try {
+    await delay(10_000, { signal: controller.signal });
+  } catch (error) {
+    if ((error as DOMException).name === "AbortError") {
+      print("sleep canceled after 50ms");
+    }
+  }
+});

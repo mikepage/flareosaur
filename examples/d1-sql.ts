@@ -5,75 +5,101 @@
  * @group Cloudflare
  * @bindings d1:DB
  * @resource {https://developers.cloudflare.com/d1/} Cloudflare: D1
- * @resource {https://effect.website/docs/sql/} Effect: SQL
+ * @resource {https://developers.cloudflare.com/d1/worker-api/} Cloudflare: D1 Workers API
  * @check POST /todos h:content-type=application/json {"title":"Write examples"} -> 201 "Write examples"
  * @check POST /todos h:content-type=application/json {"title":"Ship"} -> 201
  * @check POST /todos h:content-type=application/json {"title":""} -> 400
  * @check PATCH /todos/1 -> 200 "\"done\":true"
- * @check GET /todos -> 200 "Write examples" "Ship" "\"done\":true"
+ * @check PATCH /todos/99 -> 404
+ * @check POST /todos/batch h:content-type=application/json ["Test","Deploy"] -> 201 "\"count\":2"
+ * @check GET /todos -> 200 "Write examples" "Ship" "Deploy" "\"done\":true" "\"done\":false"
  *
  * The Deno examples use SQLite through `node:sqlite`; a Worker has D1, a
- * SQLite database as a binding. `@effect/sql-d1` makes it an Effect
- * `SqlClient`: queries are tagged templates with parameters bound safely,
- * and rows are decoded with a Schema.
+ * SQLite database as a binding. `prepare` a statement with `?` placeholders,
+ * `bind` the values (they are never spliced into the SQL), then read with
+ * `all`, `first` or `run`. `batch` sends several statements in one round
+ * trip and runs them in a transaction.
  */
 
-import { D1Client } from "@effect/sql-d1"
-import { Effect, Layer, Schema } from "effect"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http"
-import { SqlClient } from "effect/sql"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+interface Env {
+  DB: D1Database;
+}
 
-class Todo extends Schema.Class<Todo>("Todo")({
-  id: Schema.Int,
-  title: Schema.NonEmptyString,
-  // SQLite has no booleans: 0 or 1 in the table, a boolean in the app.
-  done: Schema.BooleanFromBit,
-}) {}
+// Rows as SQLite returns them: no booleans, so done is 0 or 1.
+interface Row {
+  id: number;
+  title: string;
+  done: number;
+}
 
-// The SqlClient comes from the D1 binding.
-const D1 = Layer.unwrap(Effect.map(Worker.binding("DB"), (db) => D1Client.layer({ db: db as never })))
+const toTodo = (row: Row) => ({ ...row, done: row.done === 1 });
 
-// A one-statement migration, run once per isolate when the layer is built.
-const Migrations = Layer.effectDiscard(Effect.gen(function*() {
-  const sql = yield* SqlClient.SqlClient
-  yield* sql`CREATE TABLE IF NOT EXISTS todos (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    done INTEGER NOT NULL DEFAULT 0
-  )`
-}))
+// In a real project this lives in a migration (wrangler d1 migrations).
+// Here every request makes sure the table exists; IF NOT EXISTS makes it cheap.
+const schema = `CREATE TABLE IF NOT EXISTS todos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  done INTEGER NOT NULL DEFAULT 0
+)`;
 
-const Database = Migrations.pipe(Layer.provideMerge(D1))
+const todo = new URLPattern({ pathname: "/todos/:id(\\d+)" });
 
-const decodeTodos = Schema.decodeUnknownEffect(Schema.Array(Todo))
+const isTitle = (value: unknown): value is string =>
+  typeof value === "string" && value.trim() !== "";
 
-const routes = Layer.mergeAll(
-  HttpRouter.add("GET", "/todos", Effect.gen(function*() {
-    const sql = yield* SqlClient.SqlClient
-    const todos = yield* decodeTodos(yield* sql`SELECT id, title, done FROM todos ORDER BY id`)
-    return HttpServerResponse.jsonUnsafe(todos)
-  })),
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    await env.DB.prepare(schema).run();
 
-  HttpRouter.add(
-    "POST",
-    "/todos",
-    Effect.gen(function*() {
-      const { title } = yield* HttpServerRequest.schemaBodyJson(Schema.Struct({ title: Schema.NonEmptyString }))
-      const sql = yield* SqlClient.SqlClient
-      // Interpolated values become bound parameters, never SQL text.
-      const rows = yield* sql`INSERT INTO todos (title) VALUES (${title}) RETURNING id, title, done`
-      const [todo] = yield* decodeTodos(rows)
-      return HttpServerResponse.jsonUnsafe(todo, { status: 201 })
-    }).pipe(Effect.catchTag("SchemaError", () => Effect.succeed(HttpServerResponse.text("invalid todo", { status: 400 })))),
-  ),
+    if (url.pathname === "/todos" && request.method === "GET") {
+      const { results } = await env.DB.prepare(
+        "SELECT id, title, done FROM todos ORDER BY id",
+      ).all<Row>();
+      return Response.json(results.map(toTodo));
+    }
 
-  HttpRouter.add("PATCH", "/todos/:id", Effect.gen(function*() {
-    const { id } = yield* HttpRouter.schemaPathParams(Schema.Struct({ id: Schema.FiniteFromString }))
-    const sql = yield* SqlClient.SqlClient
-    const [todo] = yield* decodeTodos(yield* sql`UPDATE todos SET done = 1 WHERE id = ${id} RETURNING id, title, done`)
-    return todo ? HttpServerResponse.jsonUnsafe(todo) : HttpServerResponse.text("not found", { status: 404 })
-  })),
-)
+    if (url.pathname === "/todos" && request.method === "POST") {
+      const body = await request.json<{ title?: unknown }>().catch(() => ({
+        title: undefined,
+      }));
+      if (!isTitle(body.title)) {
+        return new Response("invalid todo", { status: 400 });
+      }
+      // RETURNING gives back the new row; first() reads one row or null.
+      const row = await env.DB.prepare(
+        "INSERT INTO todos (title) VALUES (?) RETURNING id, title, done",
+      )
+        .bind(body.title)
+        .first<Row>();
+      return Response.json(toTodo(row!), { status: 201 });
+    }
 
-export default Worker.make({ layer: Database, fetch: routes })
+    // Several inserts, one round trip, all or nothing.
+    if (url.pathname === "/todos/batch" && request.method === "POST") {
+      const titles = await request.json().catch(() => null);
+      if (!Array.isArray(titles) || !titles.every(isTitle)) {
+        return new Response("invalid todos", { status: 400 });
+      }
+      const insert = env.DB.prepare("INSERT INTO todos (title) VALUES (?)");
+      const results = await env.DB.batch(
+        titles.map((title) => insert.bind(title)),
+      );
+      return Response.json({ count: results.length }, { status: 201 });
+    }
+
+    const id = todo.exec(url)?.pathname.groups.id;
+    if (id && request.method === "PATCH") {
+      const row = await env.DB.prepare(
+        "UPDATE todos SET done = 1 WHERE id = ? RETURNING id, title, done",
+      )
+        .bind(Number(id))
+        .first<Row>();
+      return row
+        ? Response.json(toTodo(row))
+        : new Response("not found", { status: 404 });
+    }
+
+    return new Response("not found", { status: 404 });
+  },
+} satisfies ExportedHandler<Env>;

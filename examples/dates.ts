@@ -3,39 +3,70 @@
  * @difficulty beginner
  * @tags workers, dates
  * @group Standard library
- * @resource {https://effect.website/docs/data-types/datetime/} Effect: DateTime
- * @check GET / -> 200 "formatted: 2026-10-11 14:30" "parsed: 2026-03-01T09:15:00.000Z" "invalid: DateTimeParseError" "in Amsterdam: 2026-10-11T16:30" "day 284, week 41" "until new year: 81 days"
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat} MDN: Intl.DateTimeFormat
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat} MDN: Intl.RelativeTimeFormat
+ * @resource {https://jsr.io/@std/datetime} @std/datetime
+ * @check GET / -> 200 "formatted: 2026-10-11 14:30" "parsed: 2026-03-01T09:15:00.000Z" "invalid: Error" "in Amsterdam: 11-10-2026, 16:30" "in New York: Sunday, October 11, 2026 at 10:30" "day 284, week 41" "until new year: 81 days" "relative: in 81 days" "dutch: over 2 maanden"
  *
- * Effect's `DateTime` is an immutable instant (optionally with a time
- * zone) and reads "now" from the `Clock`, so code that uses the current
- * time stays testable. `@mikepage/flareosaur/datetime` adds std's
- * pattern-based `format` and `parse`, and calendar helpers.
+ * Workers have `Date` and the full `Intl` API with time zone data:
+ * `Intl.DateTimeFormat` shows a moment in any zone and language, and
+ * `Intl.RelativeTimeFormat` writes "in 3 days". std's datetime adds
+ * pattern-based `format` and `parse`, calendar helpers and `difference`.
+ * Workers run in UTC, so a `Date` without a zone is UTC.
  */
 
-import { Console, DateTime, Duration, Effect } from "effect"
-import * as Dates from "@mikepage/flareosaur/datetime"
-import { script } from "./_lib/script.ts"
+import {
+  dayOfYear,
+  difference,
+  format,
+  parse,
+  weekOfYear,
+} from "@mikepage/flareosaur/datetime";
+import { script } from "./_lib/script.ts";
 
-const program = Effect.gen(function*() {
-  const meeting = DateTime.makeUnsafe("2026-10-11T14:30:00Z")
-  yield* Console.log(`formatted: ${Dates.format(meeting, "yyyy-MM-dd HH:mm")}`)
+export default script((print) => {
+  const meeting = new Date("2026-10-11T14:30:00Z");
 
-  // Parsing returns a Result: a DateTime, or a typed error.
-  const parsed = Dates.parse("01/03/2026 09:15", "dd/MM/yyyy HH:mm")
-  if (parsed._tag === "Success") yield* Console.log(`parsed: ${DateTime.formatIso(parsed.success)}`)
-  const invalid = Dates.parse("31/02/2026 09:15", "dd/MM/yyyy HH:mm")
-  if (invalid._tag === "Failure") yield* Console.log(`invalid: ${invalid.failure._tag}`)
+  // A fixed pattern, for logs and file names.
+  print(
+    `formatted: ${format(meeting, "yyyy-MM-dd HH:mm", { timeZone: "UTC" })}`,
+  );
 
-  // Time zones are part of the value.
-  const amsterdam = DateTime.makeZonedUnsafe(meeting, { timeZone: "Europe/Amsterdam" })
-  yield* Console.log(`in Amsterdam: ${DateTime.formatIsoZoned(amsterdam).slice(0, 16)}`)
+  // Parse a date in a known pattern. Text that does not fit the pattern
+  // throws.
+  const parsed = parse("01/03/2026 09:15", "dd/MM/yyyy HH:mm");
+  print(`parsed: ${parsed.toISOString()}`);
+  try {
+    parse("next tuesday", "dd/MM/yyyy HH:mm");
+  } catch (error) {
+    print(`invalid: ${error instanceof Error ? error.name : error}`);
+  }
 
-  yield* Console.log(`day ${Dates.dayOfYear(meeting)}, week ${Dates.weekOfYear(meeting)}`)
+  // Intl formats for people: any time zone, any language.
+  const amsterdam = new Intl.DateTimeFormat("nl-NL", {
+    timeZone: "Europe/Amsterdam",
+    dateStyle: "short",
+    timeStyle: "short",
+  });
+  print(`in Amsterdam: ${amsterdam.format(meeting)}`);
+  const newYork = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    dateStyle: "full",
+    timeStyle: "short",
+  });
+  print(`in New York: ${newYork.format(meeting)}`);
 
-  // Arithmetic and distances.
-  const newYear = DateTime.makeUnsafe("2027-01-01T00:00:00Z")
-  const until = DateTime.distance(meeting, newYear)
-  yield* Console.log(`until new year: ${Math.floor(Duration.toDays(until))} days`)
-})
+  // Calendar helpers.
+  print(`day ${dayOfYear(meeting)}, week ${weekOfYear(meeting)}`);
 
-export default script(program)
+  // difference counts whole units between two dates.
+  const newYear = new Date("2027-01-01T00:00:00Z");
+  const until = difference(meeting, newYear, { units: ["days", "months"] });
+  print(`until new year: ${until.days} days`);
+
+  // RelativeTimeFormat words it.
+  const en = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+  print(`relative: ${en.format(until.days ?? 0, "day")}`);
+  const nl = new Intl.RelativeTimeFormat("nl");
+  print(`dutch: ${nl.format(until.months ?? 0, "month")}`);
+});

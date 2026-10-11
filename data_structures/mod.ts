@@ -1,41 +1,32 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
+// This module is browser compatible.
 
 /**
- * Mutable data structures from `@std/data-structures`, with Effect
- * conventions: ordered structures take an Effect `Order`, lookups return an
- * `Option`, and every structure is pipeable and inspectable.
- *
- * Effect covers immutable collections (`HashMap`, `HashSet`, `Chunk`,
- * `MutableHashMap`, `MutableList`) and fiber-safe queues (`Queue`,
- * `TxPriorityQueue`). This package adds the classic mutable structures it
- * does not have: {@linkcode BinaryHeap}, {@linkcode IndexedHeap},
- * {@linkcode BinarySearchTree}, {@linkcode RedBlackTree},
- * {@linkcode Deque}, {@linkcode BidirectionalMap}, {@linkcode MultiMap},
- * {@linkcode RollingCounter} and {@linkcode D2Array}, plus std's
- * {@linkcode ascend} and {@linkcode descend} comparators as `Order`s.
+ * Data structures for use in algorithms and other data manipulation.
  *
  * ```ts
- * import { Order } from "effect"
- * import { BinaryHeap, RedBlackTree } from "@mikepage/flareosaur/data-structures"
+ * import { BinarySearchTree } from "@mikepage/flareosaur/data-structures";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
- * const maxHeap = BinaryHeap.from([4, 1, 3], Order.flip(Order.Number))
- * maxHeap.pop() // Option.some(4)
+ * const values = [3, 10, 13, 4, 6, 7, 1, 14];
+ * const tree = new BinarySearchTree<number>();
+ * values.forEach((value) => tree.insert(value));
  *
- * const tree = RedBlackTree.from([10, 20, 30], Order.Number)
- * tree.floor(25) // Option.some(20)
+ * assertEquals([...tree], [1, 3, 4, 6, 7, 10, 13, 14]);
+ * assertEquals(tree.min(), 1);
+ * assertEquals(tree.max(), 14);
+ * assertEquals(tree.find(42), null);
+ * assertEquals(tree.find(7), 7);
+ * assertEquals(tree.remove(42), false);
+ * assertEquals(tree.remove(7), true);
+ * assertEquals([...tree], [1, 3, 4, 6, 10, 13, 14]);
  * ```
  *
  * @module
  */
 
-export * from "./BidirectionalMap.ts"
-export * from "./BinaryHeap.ts"
-export * from "./BinarySearchTree.ts"
-export * from "./Comparators.ts"
-export * from "./D2Array.ts"
-export * from "./Deque.ts"
-export * from "./IndexedHeap.ts"
-export * from "./MultiMap.ts"
-export * from "./RedBlackTree.ts"
-export * from "./RollingCounter.ts"
+export * from "./binary_heap.ts";
+export * from "./binary_search_tree.ts";
+export * from "./comparators.ts";
+export * from "./deque.ts";
+export * from "./red_black_tree.ts";

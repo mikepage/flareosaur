@@ -3,42 +3,59 @@
  * @difficulty beginner
  * @tags workers, config
  * @group Standard library
- * @resource {https://effect.website/docs/configuration/} Effect: Config
- * @check GET / -> 200 "url: https://api.example.com/v2" "timeout: 5s" "retries: 3" "parse error: DotenvError"
+ * @resource {https://jsr.io/@std/dotenv} @std/dotenv
+ * @resource {https://developers.cloudflare.com/workers/configuration/environment-variables/} Workers: environment variables
+ * @bindings var:LOG_LEVEL=debug
+ * @check GET / -> 200 "url: https://api.example.com/v2" "timeout: 5s" "retries: 3" "log level: debug" "invalid key ignored: true" "back to text:" "RETRIES=3"
  *
  * Workers have no filesystem to load a `.env` file from, but .env text can
  * still be a config source: bundled with the Worker, stored in KV, or kept
- * in a test. `Dotenv.layer` turns it into an Effect `ConfigProvider`, with
- * std's variable expansion (`${BASE}/v2`), so `Config` reads from it.
+ * in a test. std's `parse` reads it into an object, with variable
+ * expansion (`${BASE}/v2`). Spread the Worker's own variables over it so
+ * the deployed values win.
  */
 
-import { Config, Console, Duration, Effect } from "effect"
-import * as Dotenv from "@mikepage/flareosaur/dotenv"
-import { script } from "./_lib/script.ts"
+import { parse, stringify } from "@mikepage/flareosaur/dotenv";
+import { script } from "./_lib/script.ts";
 
-const env = `
+interface Env {
+  LOG_LEVEL: string;
+}
+
+const defaults = `
 # API settings
 BASE=https://api.example.com
 API_URL=\${BASE}/v2
-TIMEOUT=5 seconds
+TIMEOUT_SECONDS=5
 RETRIES=3
-`
+LOG_LEVEL=info
+`;
 
-const AppConfig = Config.all({
-  url: Config.String("API_URL"),
-  timeout: Config.Duration("TIMEOUT"),
-  retries: Config.Int("RETRIES"),
-})
+export default script((print, env: Env) => {
+  // Values from .env text, then the Worker's variables on top. env holds
+  // every binding, so pick the variables you mean.
+  const config: Record<string, string> = {
+    ...parse(defaults),
+    LOG_LEVEL: env.LOG_LEVEL,
+  };
 
-const program = Effect.gen(function*() {
-  const config = yield* AppConfig.pipe(Effect.provide(Dotenv.layer(env)))
-  yield* Console.log(`url: ${config.url}`)
-  yield* Console.log(`timeout: ${Duration.toSeconds(config.timeout)}s`)
-  yield* Console.log(`retries: ${config.retries}`)
+  // Everything is a string. Convert and check what you use.
+  const timeout = Number(config.TIMEOUT_SECONDS);
+  const retries = Number.parseInt(config.RETRIES ?? "", 10);
+  if (!Number.isFinite(timeout) || !Number.isInteger(retries)) {
+    throw new TypeError("TIMEOUT_SECONDS and RETRIES must be numbers");
+  }
+  print(`url: ${config.API_URL}`);
+  print(`timeout: ${timeout}s`);
+  print(`retries: ${retries}`);
+  print(`log level: ${config.LOG_LEVEL}`);
 
-  // Invalid lines are typed errors, not silent warnings.
-  const error = yield* Effect.flip(Dotenv.parse("1BAD=value"))
-  yield* Console.log(`parse error: ${error._tag}`)
-})
+  // Keys must be identifiers. Anything else is skipped with a warning.
+  const parsed = parse("1BAD=value\nGOOD=yes");
+  print(`invalid key ignored: ${!("1BAD" in parsed) && parsed.GOOD === "yes"}`);
 
-export default script(program)
+  // stringify writes an object back to .env text, quoting where needed.
+  print(
+    `back to text:\n${stringify({ RETRIES: "3", GREETING: "hello world" })}`,
+  );
+});

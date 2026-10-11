@@ -1,20 +1,22 @@
 # flareosaur examples
 
-The [Deno examples](https://docs.deno.com/examples/), rewritten with Effect for Cloudflare Workers.
-Each file is a Worker with a commented walkthrough. No `nodejs_compat`.
+The [Deno examples](https://docs.deno.com/examples/), rewritten as plain Cloudflare Workers.
+Each file is a Worker with a commented walkthrough, built on web APIs, the
+Workers bindings and flareosaur's std where it helps. No `nodejs_compat`, no
+other dependencies.
 
 Run one with `npx wrangler dev examples/<name>.ts`. `npm run examples` checks them all in workerd.
 
 ## Basics
 
-- [Add a timeout to any effect](timeout-any-effect.ts)
+- [Add a timeout to any async work](timeout-any-async-work.ts)
 - [Check if two values are deeply equal](deep-equal.ts)
 - [Generate seeded random numbers](seeded-random.ts)
 - [Hello World](hello-world.ts)
-- [Set timeouts and intervals with schedules](repeat-with-schedules.ts)
+- [Set timeouts and intervals](timeouts-and-intervals.ts)
 - [Sleep and delay execution](sleep-and-delay.ts)
 - [Structured logging](structured-logging.ts)
-- [Cancel async work with interruption](cancel-with-interruption.ts) · intermediate
+- [Cancel async work with an AbortSignal](cancel-with-abort-signal.ts) · intermediate
 - [Memoize an expensive function](memoize.ts) · intermediate
 - [Retry with exponential backoff](exponential-backoff.ts) · intermediate
 - [Run tasks with a concurrency limit](concurrency-limit.ts) · intermediate
@@ -33,11 +35,11 @@ Run one with `npx wrangler dev examples/<name>.ts`. `npm run examples` checks th
 - [Content negotiation](http-server-negotiation.ts) · intermediate
 - [Errors as problem details](http-server-problem-details.ts) · intermediate
 - [Paginating results](http-server-pagination.ts) · intermediate
+- [Rate limiting](http-server-rate-limit.ts) · intermediate
 - [Request timeouts](http-server-request-timeouts.ts) · intermediate
 - [Server-sent events](http-server-sse.ts) · intermediate
 - [Sessions with signed cookies](http-server-signed-cookies.ts) · intermediate
 - [WebSockets](websocket-echo.ts) · intermediate
-- [Rate limiting](http-server-rate-limit.ts) · advanced
 
 ## Cloudflare
 
@@ -80,5 +82,5 @@ Run one with `npx wrangler dev examples/<name>.ts`. `npm run examples` checks th
 
 ## AI
 
-- [Connect to Claude with Effect AI](anthropic-chat.ts)
+- [Call Claude with fetch](anthropic-chat.ts)
 - [Build an MCP server](mcp-server.ts) · intermediate

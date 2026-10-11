@@ -4,34 +4,66 @@
  * @tags workers, http
  * @group HTTP
  * @resource {https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies} MDN: HTTP cookies
+ * @resource {https://jsr.io/@std/http/doc/cookie} @std/http: cookie
  * @check GET /visit -> 200 "first visit" header:set-cookie~"visits=1"
  * @check GET /visit h:cookie=visits=4 -> 200 "visit number 5" header:set-cookie~"visits=5"
- * @check GET /logout -> 200 header:set-cookie~"Max-Age=0"
+ * @check GET /visit h:cookie=visits=nonsense -> 200 "first visit" header:set-cookie~"visits=1"
+ * @check GET /logout -> 200 "Logged out" header:set-cookie~"Expires=Thu, 01 Jan 1970"
  *
- * Cookies carry state between requests. Read them from the request with a
- * Schema (so a tampered value is rejected), and set or expire them on the
- * response; Effect checks names, values and options when it serializes them.
+ * Cookies carry state between requests. The browser sends them in the
+ * `Cookie` header and the server sets them with `Set-Cookie`. std's cookie
+ * module parses the one and writes the other, checking names, values and
+ * attributes as it goes.
  */
 
-import { Effect, Layer, Option, Schema } from "effect"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+import {
+  deleteCookie,
+  getCookies,
+  setCookie,
+} from "@mikepage/flareosaur/http/cookie";
 
-const VisitCookies = Schema.Struct({ visits: Schema.optional(Schema.NumberFromString) })
+const THIRTY_DAYS = 60 * 60 * 24 * 30;
 
-const visit = Effect.gen(function*() {
-  const cookies = yield* HttpServerRequest.schemaCookies(VisitCookies).pipe(
-    Effect.orElseSucceed(() => ({ visits: undefined })),
-  )
-  const visits = Option.getOrElse(Option.fromNullishOr(cookies.visits), () => 0) + 1
-  const body = visits === 1 ? "Welcome, first visit!" : `Welcome back, visit number ${visits}`
-  return yield* HttpServerResponse.text(body).pipe(
-    HttpServerResponse.setCookie("visits", String(visits), { httpOnly: true, path: "/", maxAge: "30 days" }),
-  )
-})
+function visit(request: Request): Response {
+  // getCookies parses the Cookie header into a plain object. A missing
+  // cookie is undefined.
+  const cookies = getCookies(request.headers);
 
-const logout = HttpServerResponse.text("Logged out").pipe(HttpServerResponse.expireCookie("visits", { path: "/" }))
+  // A cookie is just text the client sent, so validate it. Anything that is
+  // not a whole number counts as a first visit.
+  const previous = Number(cookies.visits ?? 0);
+  const visits = (Number.isInteger(previous) && previous >= 0 ? previous : 0) +
+    1;
 
-export default Worker.make({
-  fetch: Layer.mergeAll(HttpRouter.add("GET", "/visit", visit), HttpRouter.add("GET", "/logout", Effect.orDie(logout))),
-})
+  const body = visits === 1
+    ? "Welcome, first visit!"
+    : `Welcome back, visit number ${visits}`;
+
+  // setCookie appends a Set-Cookie header with the given attributes.
+  const headers = new Headers({ "content-type": "text/plain" });
+  setCookie(headers, {
+    name: "visits",
+    value: String(visits),
+    path: "/",
+    httpOnly: true,
+    maxAge: THIRTY_DAYS,
+  });
+  return new Response(body, { headers });
+}
+
+function logout(): Response {
+  // deleteCookie sets the cookie to an empty value that expired in 1970.
+  // The path must match the one the cookie was set with.
+  const headers = new Headers({ "content-type": "text/plain" });
+  deleteCookie(headers, "visits", { path: "/" });
+  return new Response("Logged out", { headers });
+}
+
+export default {
+  fetch(request: Request): Response {
+    const { pathname } = new URL(request.url);
+    if (pathname === "/visit") return visit(request);
+    if (pathname === "/logout") return logout();
+    return new Response("Not found", { status: 404 });
+  },
+} satisfies ExportedHandler;

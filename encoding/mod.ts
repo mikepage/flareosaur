@@ -1,53 +1,101 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
+// This module is browser compatible.
 
 /**
- * Binary-to-text encodings and varints, in the style of `effect/encoding`.
+ * Utilities for encoding and decoding common formats like hex, base64, and varint.
  *
- * Base64, Base64Url and Hex are Effect's own modules; the others come from
- * `@std/encoding` with the same shape: `encode` returns a string, `decode`
- * and `decodeString` return a `Result` that fails with Effect's
- * `EncodingError`. The block-aligned encodings also have `encodeStream` and
- * `decodeStream`, which transform an Effect `Stream` of chunks of any size.
- *
- * | Module | Alphabet | Streams |
- * | --- | --- | --- |
- * | {@linkcode Base64} | RFC 4648 §4 | yes |
- * | {@linkcode Base64Url} | RFC 4648 §5, unpadded | yes |
- * | {@linkcode Hex} | lowercase base16 | yes |
- * | {@linkcode Base32} | RFC 4648 §6 | yes |
- * | {@linkcode Base32Hex} | RFC 4648 §7 | yes |
- * | {@linkcode Base32Crockford} | Crockford | yes |
- * | {@linkcode Base58} | Bitcoin | no |
- * | {@linkcode Ascii85} | Adobe, btoa, RFC 1924, Z85 | no |
- * | {@linkcode Varint} | unsigned LEB128 | no |
+ * ## Basic Usage
  *
  * ```ts
- * import { Result, Stream } from "effect"
- * import { Base32, Base58, Base64, EncodingError } from "@mikepage/flareosaur/encoding"
+ * import { encodeBase64, decodeBase64 } from "@mikepage/flareosaur/encoding";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
- * Base32.encode("Hello world!") // "JBSWY3DPEB3W64TMMQQQ===="
- * Base58.encode("Hello world!") // "2NEpo7TZRhna7vSvL"
- * Base64.decodeString("SGVsbG8gd29ybGQh") // Result.succeed("Hello world!")
+ * const foobar = new TextEncoder().encode("foobar");
+ * assertEquals(encodeBase64(foobar), "Zm9vYmFy");
+ * assertEquals(decodeBase64("Zm9vYmFy"), foobar);
+ * ```
  *
- * const result = Base32.decode("not base32!")
- * Result.isFailure(result) && EncodingError.isEncodingError(result.failure) // true
+ * ## Various Encoding Formats
  *
- * const text = Stream.make(new TextEncoder().encode("Hello world!")).pipe(Base32.encodeStream, Stream.mkString)
+ * ```ts
+ * import {
+ *   encodeHex,
+ *   encodeBase32,
+ *   encodeBase58,
+ *   encodeBase64,
+ *   encodeAscii85,
+ *   decodeHex,
+ *   decodeBase32,
+ *   decodeBase58,
+ *   decodeBase64,
+ *   decodeAscii85,
+ * } from "@mikepage/flareosaur/encoding";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * // Many different encodings for different character sets
+ * assertEquals(encodeHex("Hello world!"), "48656c6c6f20776f726c6421");
+ * assertEquals(encodeBase32("Hello world!"), "JBSWY3DPEB3W64TMMQQQ====");
+ * assertEquals(encodeBase58("Hello world!"), "2NEpo7TZRhna7vSvL");
+ * assertEquals(encodeBase64("Hello world!"), "SGVsbG8gd29ybGQh");
+ * assertEquals(encodeAscii85("Hello world!"), "87cURD]j7BEbo80");
+ *
+ * // Decoding
+ * assertEquals(new TextDecoder().decode(decodeHex("48656c6c6f20776f726c6421")), "Hello world!");
+ * assertEquals(new TextDecoder().decode(decodeBase32("JBSWY3DPEB3W64TMMQQQ====")), "Hello world!");
+ * assertEquals(new TextDecoder().decode(decodeBase58("2NEpo7TZRhna7vSvL")), "Hello world!");
+ * assertEquals(new TextDecoder().decode(decodeBase64("SGVsbG8gd29ybGQh")), "Hello world!");
+ * assertEquals(new TextDecoder().decode(decodeAscii85("87cURD]j7BEbo80")), "Hello world!");
+ * ```
+ *
+ * ## URL-Safe Base64
+ *
+ * ```ts
+ * import { encodeBase64, encodeBase64Url } from "@mikepage/flareosaur/encoding";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * assertEquals(encodeBase64("ice creams"), "aWNlIGNyZWFtcw=="); // Not url-safe because of `=`
+ * assertEquals(encodeBase64Url("ice creams"), "aWNlIGNyZWFtcw"); // URL-safe!
+ *
+ * // Base64Url replaces + with - and / with _
+ * assertEquals(encodeBase64("subjects?"), "c3ViamVjdHM/"); // slash is not URL-safe
+ * assertEquals(encodeBase64Url("subjects?"), "c3ViamVjdHM_"); // _ is URL-safe
+ * ```
+ *
+ * ## Binary Data Encoding
+ *
+ * ```ts
+ * import { encodeHex, encodeBase64 } from "@mikepage/flareosaur/encoding";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * // Working with binary data
+ * const binaryData = new Uint8Array([0xDE, 0xAD, 0xBE, 0xEF]);
+ * assertEquals(encodeHex(binaryData), "deadbeef");
+ * assertEquals(encodeBase64(binaryData), "3q2+7w==");
+ * ```
+ *
+ * ## Varint Encoding
+ *
+ * Learn more from the [protobuf Varint encoding docs](https://protobuf.dev/programming-guides/encoding/#varints).
+ *
+ * ```ts
+ * import { encodeVarint, decodeVarint } from "@mikepage/flareosaur/encoding";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * // Varint encoding support
+ * assertEquals(encodeVarint(9601n), [new Uint8Array([129, 75]), 2]);
+ *
+ * // Decode a varint
+ * const bytes = new Uint8Array([129, 75]);
+ * assertEquals(decodeVarint(bytes), [9601n, 2]);
  * ```
  *
  * @module
  */
 
-export * as Ascii85 from "./Ascii85.ts"
-export * as Base32 from "./Base32.ts"
-export * as Base32Crockford from "./Base32Crockford.ts"
-export * as Base32Hex from "./Base32Hex.ts"
-export * as Base58 from "./Base58.ts"
-export * as Base64 from "./Base64.ts"
-export * as Base64Url from "./Base64Url.ts"
-export * as Hex from "./Hex.ts"
-export * as Varint from "./Varint.ts"
-
-/** Effect's `EncodingError` module, the error every decoder here reports. */
-export * as EncodingError from "effect/encoding/EncodingError"
+export * from "./ascii85.ts";
+export * from "./base32.ts";
+export * from "./base58.ts";
+export * from "./base64.ts";
+export * from "./base64url.ts";
+export * from "./hex.ts";
+export * from "./varint.ts";

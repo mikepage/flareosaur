@@ -3,43 +3,67 @@
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP
- * @resource {https://effect.website/docs/platform/http-server/} Effect: HttpRouter
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/API/URLPattern} MDN: URLPattern
+ * @resource {https://jsr.io/@std/http/doc/unstable-route} @std/http: route
  * @check GET / -> 200 "Welcome"
  * @check GET /books/42 -> 200 "\"id\":42" "Book 42"
- * @check GET /books/abc -> 400
+ * @check GET /books/abc -> 400 "Bad id"
  * @check POST /books -> 201 "created"
+ * @check DELETE /books -> 405
  * @check GET /missing -> 404
  *
- * `HttpRouter` maps methods and paths to handlers. Path parameters are
- * decoded with a Schema, so `/books/abc` is rejected before the handler
- * runs. `Worker.make` serves the router as the Worker's fetch handler.
+ * `URLPattern` is the web's route matcher: it matches a URL against a
+ * pattern such as `/books/:id` and hands back the named groups. std's
+ * `route` turns a list of patterns, methods and handlers into a fetch
+ * handler.
  */
 
-import { Effect, Layer, Schema } from "effect"
-import { HttpRouter, HttpServerResponse } from "effect/http"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+import { type Route, route } from "@mikepage/flareosaur/http/unstable-route";
 
-// Path parameters arrive as strings; the schema turns `id` into an integer
-// and rejects anything else.
-const BookParams = Schema.Struct({ id: Schema.FiniteFromString.check(Schema.isInt()) })
+// Every route is a pattern, an optional method and a handler. The handler
+// gets the request, the URLPattern match, and whatever the router was
+// called with (here env and ctx).
+const routes: Route[] = [
+  {
+    pattern: new URLPattern({ pathname: "/" }),
+    method: "GET",
+    handler: () => new Response("Welcome to the library"),
+  },
+  {
+    // Groups arrive as strings, so check and convert them. A pattern can
+    // also carry a regular expression (`/books/:id(\\d+)`), but then
+    // `/books/abc` is a plain 404 instead of a helpful 400.
+    pattern: new URLPattern({ pathname: "/books/:id" }),
+    method: "GET",
+    handler: (_request, match) => {
+      const id = Number(match.pathname.groups.id);
+      if (!Number.isSafeInteger(id) || id < 0) {
+        return new Response("Bad id", { status: 400 });
+      }
+      return Response.json({ id, title: `Book ${id}` });
+    },
+  },
+  {
+    pattern: new URLPattern({ pathname: "/books" }),
+    method: "POST",
+    handler: () => new Response("created", { status: 201 }),
+  },
+  {
+    // Any other method on /books: say which ones are allowed.
+    pattern: new URLPattern({ pathname: "/books" }),
+    handler: () =>
+      new Response("Method not allowed", {
+        status: 405,
+        headers: { allow: "POST" },
+      }),
+  },
+];
 
-const routes = Layer.mergeAll(
-  HttpRouter.add("GET", "/", HttpServerResponse.text("Welcome to the library")),
+// Routes are tried in order; the default handler gets everything else.
+const notFound = () => new Response("Not found", { status: 404 });
 
-  HttpRouter.add(
-    "GET",
-    "/books/:id",
-    Effect.gen(function*() {
-      const { id } = yield* HttpRouter.schemaPathParams(BookParams)
-      return HttpServerResponse.jsonUnsafe({ id, title: `Book ${id}` })
-    }).pipe(
-      // A param that does not decode is a client error.
-      Effect.catchTag("SchemaError", () => Effect.succeed(HttpServerResponse.text("Bad id", { status: 400 }))),
-    ),
-  ),
-
-  HttpRouter.add("POST", "/books", HttpServerResponse.text("created", { status: 201 })),
-)
-
-// Unmatched routes get a 404 from the router.
-export default Worker.make({ fetch: routes })
+// Building the URLPatterns once per isolate is fine: they are immutable
+// values. route returns a function with the fetch handler's signature.
+export default {
+  fetch: route(routes, notFound),
+} satisfies ExportedHandler;

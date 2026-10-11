@@ -4,33 +4,64 @@
  * @tags workers, crypto
  * @group Cryptography
  * @resource {https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt} MDN: SubtleCrypto.encrypt
- * @check GET / -> 200 "ciphertext: 42 bytes" "decrypted: attack at dawn" "tampered: CryptoError"
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/API/AesGcmParams} MDN: AesGcmParams
+ * @check GET / -> 200 "ciphertext: 42 bytes" "decrypted: attack at dawn" "tampered: OperationError"
  *
  * AES-GCM encrypts and authenticates in one step: a ciphertext that was
- * changed fails to decrypt. The helpers generate a fresh nonce from the
- * Effect `Crypto` service for every message and put it in front of the
- * ciphertext, so the nonce never has to be stored separately.
+ * changed fails to decrypt. Every message needs a fresh 12-byte nonce (the
+ * "iv"). Put it in front of the ciphertext, so it never has to be stored
+ * separately.
  */
 
-import { Console, Effect } from "effect"
-import { decryptAesGcm, encryptAesGcm, generateAesGcmKey, WebCrypto } from "@mikepage/flareosaur/crypto"
-import { script } from "./_lib/script.ts"
+import { script } from "./_lib/script.ts";
 
-const program = Effect.gen(function*() {
-  const key = yield* generateAesGcmKey(256)
+const IV_LENGTH = 12;
 
-  const ciphertext = yield* encryptAesGcm(key, "attack at dawn")
-  // 12-byte nonce + 14-byte message + 16-byte authentication tag = 42 bytes
-  yield* Console.log(`ciphertext: ${ciphertext.length} bytes`)
+// Encrypts text and returns nonce + ciphertext + tag in one array.
+async function encrypt(key: CryptoKey, text: string): Promise<Uint8Array> {
+  const iv = crypto.getRandomValues(new Uint8Array(IV_LENGTH));
+  const ciphertext = await crypto.subtle.encrypt(
+    { name: "AES-GCM", iv },
+    key,
+    new TextEncoder().encode(text),
+  );
+  const out = new Uint8Array(IV_LENGTH + ciphertext.byteLength);
+  out.set(iv);
+  out.set(new Uint8Array(ciphertext), IV_LENGTH);
+  return out;
+}
 
-  const plaintext = yield* decryptAesGcm(key, ciphertext)
-  yield* Console.log(`decrypted: ${new TextDecoder().decode(plaintext)}`)
+// Splits the nonce off again and decrypts. Throws if anything was changed.
+async function decrypt(key: CryptoKey, data: Uint8Array): Promise<string> {
+  const plaintext = await crypto.subtle.decrypt(
+    { name: "AES-GCM", iv: data.subarray(0, IV_LENGTH) },
+    key,
+    data.subarray(IV_LENGTH),
+  );
+  return new TextDecoder().decode(plaintext);
+}
 
-  // Flip one byte: authentication fails with a typed error.
-  const tampered = ciphertext.slice()
-  tampered[tampered.length - 1]! ^= 1
-  const error = yield* Effect.flip(decryptAesGcm(key, tampered))
-  yield* Console.log(`tampered: ${error._tag}`)
-}).pipe(Effect.provide(WebCrypto.layer))
+export default script(async (print) => {
+  // A random 256-bit key. In production, import a key from a secret with
+  // crypto.subtle.importKey("raw", ...) instead.
+  const key = await crypto.subtle.generateKey(
+    { name: "AES-GCM", length: 256 },
+    false,
+    ["encrypt", "decrypt"],
+  ) as CryptoKey;
 
-export default script(program)
+  // 12-byte nonce + 14-byte message + 16-byte authentication tag = 42 bytes.
+  const ciphertext = await encrypt(key, "attack at dawn");
+  print(`ciphertext: ${ciphertext.length} bytes`);
+  print("decrypted:", await decrypt(key, ciphertext));
+
+  // Flip one bit of the tag: authentication fails.
+  const tampered = ciphertext.slice();
+  tampered[tampered.length - 1]! ^= 1;
+  try {
+    await decrypt(key, tampered);
+    print("tampered: decrypted?!");
+  } catch (error) {
+    print("tampered:", error instanceof Error ? error.name : String(error));
+  }
+});

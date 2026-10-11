@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
+    "types": [],
+    "allowImportingTsExtensions": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noCheck": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "node_modules/.flareosaur-types"
+  },
+  "files": ["types/web.d.ts", "types/wasm.d.ts"],
+  "include": ["*/**/*.ts"],
+  "exclude": ["node_modules", "scripts", "examples", "types", "**/*_test.ts", "**/test.ts", "**/testdata/**", "**/_test_util*.ts", "**/_testing.ts"]
+}

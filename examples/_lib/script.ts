@@ -1,46 +1,34 @@
 // Copyright 2026 the flareosaur authors. MIT license.
-// Turns a script-style example into a Worker. The program prints with
-// `Console.log`, like a Deno script printing to the terminal; the Worker
-// runs it per request and responds with the printed lines as text/plain.
+// Turns a script-style example into a Worker. A Deno example prints to the
+// terminal; here the script gets a `print` function, and the Worker
+// responds with the printed lines as text/plain. Nothing is shared between
+// requests: every request gets its own lines.
 
-import { Cause, Console, Effect, Exit } from "effect"
-import { inspect } from "@mikepage/flareosaur/internal"
-import type { WorkerHandler } from "@mikepage/flareosaur/workers/worker"
+import { inspect } from "@mikepage/flareosaur/internal/inspect";
 
-const show = (value: unknown): string => typeof value === "string" ? value : inspect(value)
+/** Prints values on one line, strings as-is and anything else inspected. */
+export type Print = (...values: unknown[]) => void;
 
-const recordingConsole = (lines: Array<string>): Console.Console => {
-  const push = (...args: ReadonlyArray<unknown>) => {
-    lines.push(args.map(show).join(" "))
-  }
+/** A Worker that runs `main` on every request and returns what it printed. */
+export function script<Env = unknown>(
+  main: (print: Print, env: Env) => unknown,
+): ExportedHandler<Env> {
   return {
-    ...globalThis.console,
-    assert: (condition, ...args) => condition ? undefined : push("Assertion failed:", ...args),
-    debug: push,
-    error: push,
-    info: push,
-    log: push,
-    trace: push,
-    warn: push,
-    table: (data) => push(data),
-  } as Console.Console
+    async fetch(_request, env) {
+      const lines: string[] = [];
+      const print: Print = (...values) =>
+        lines.push(values.map((v) => typeof v === "string" ? v : inspect(v)).join(" "));
+      let status = 200;
+      try {
+        await main(print, env);
+      } catch (error) {
+        status = 500;
+        lines.push(error instanceof Error ? error.stack ?? error.message : String(error));
+      }
+      return new Response(lines.join("\n") + "\n", {
+        status,
+        headers: { "content-type": "text/plain; charset=utf-8" },
+      });
+    },
+  };
 }
-
-/** Runs `program`, capturing everything it prints. */
-export const capture = async <E>(program: Effect.Effect<unknown, E, never>): Promise<{ lines: Array<string>; ok: boolean }> => {
-  const lines: Array<string> = []
-  const exit = await Effect.runPromiseExit(program.pipe(Effect.provideService(Console.Console, recordingConsole(lines))))
-  if (Exit.isFailure(exit)) lines.push(Cause.pretty(exit.cause))
-  return { lines, ok: Exit.isSuccess(exit) }
-}
-
-/** A Worker that runs `program` on every request and returns what it printed. */
-export const script = <E>(program: Effect.Effect<unknown, E, never>): WorkerHandler => ({
-  async fetch() {
-    const { lines, ok } = await capture(program)
-    return new Response(lines.join("\n") + "\n", {
-      status: ok ? 200 : 500,
-      headers: { "content-type": "text/plain; charset=utf-8" },
-    })
-  },
-})

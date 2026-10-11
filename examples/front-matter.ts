@@ -3,49 +3,71 @@
  * @difficulty beginner
  * @tags workers, encoding, markdown
  * @group Data formats
+ * @resource {https://jsr.io/@std/front-matter} @std/front-matter
  * @resource {https://jekyllrb.com/docs/front-matter/} Front matter
- * @check GET / -> 200 "title: Hello, Workers" "tags: effect, deno" "body starts: # Hello" "invalid date: SchemaError"
+ * @check GET / -> 200 "title: Hello, Workers" "tags: workers, deno" "date: 2026-10-11" "body starts: # Hello" "toml title: From TOML" "invalid date: TypeError"
  *
  * Front matter is a metadata block at the top of a Markdown file, in YAML,
- * TOML or JSON. `extract` finds the format, parses the block and returns
- * the rest of the document; with a Schema the attributes come out typed.
+ * TOML or JSON. std's `extract` finds the format, parses the block and
+ * returns the rest of the document. The attributes are untyped, so check
+ * them before use.
  */
 
-import { Console, Effect, Schema } from "effect"
-import * as FrontMatter from "@mikepage/flareosaur/front-matter"
-import { script } from "./_lib/script.ts"
+import { extract } from "@mikepage/flareosaur/front-matter/any";
+import { script } from "./_lib/script.ts";
 
-const Post = Schema.Struct({
-  title: Schema.String,
-  date: Schema.Date,
-  tags: Schema.Array(Schema.String),
-})
+interface Post {
+  title: string;
+  date: Date;
+  tags: string[];
+}
+
+// Front matter is input like any other. Check the shape and throw on
+// anything unexpected.
+function toPost(attrs: Record<string, unknown>): Post {
+  const { title, date, tags } = attrs;
+  if (typeof title !== "string") throw new TypeError("title must be text");
+  if (!(date instanceof Date)) throw new TypeError("date must be a date");
+  if (!Array.isArray(tags) || !tags.every((t) => typeof t === "string")) {
+    throw new TypeError("tags must be a list of text");
+  }
+  return { title, date, tags };
+}
 
 const markdown = `---
 title: Hello, Workers
 date: 2026-10-11
-tags: [effect, deno]
+tags: [workers, deno]
 ---
 # Hello
 
 This post was parsed by a Worker.
-`
+`;
 
-const program = Effect.gen(function*() {
-  const { attrs, body } = yield* FrontMatter.extract(markdown)
-  yield* Console.log(`raw attrs: ${JSON.stringify(attrs)}`)
+export default script((print) => {
+  // YAML front matter sits between --- lines. YAML turns the date into a
+  // Date object.
+  const { attrs, body } = extract<Record<string, unknown>>(markdown);
+  const post = toPost(attrs);
+  print(`title: ${post.title}`);
+  print(`date: ${post.date.toISOString().slice(0, 10)}`);
+  print(`tags: ${post.tags.join(", ")}`);
+  print(`body starts: ${body.split("\n")[0]}`);
 
-  // Decode the attributes into a typed post.
-  const post = yield* Schema.decodeUnknownEffect(Post)(attrs)
-  yield* Console.log(`title: ${post.title}`)
-  yield* Console.log(`tags: ${post.tags.join(", ")}`)
-  yield* Console.log(`body starts: ${body.split("\n")[0]}`)
+  // TOML front matter uses +++ (or ---toml).
+  const toml = extract<{ title: string }>(
+    `+++\ntitle = "From TOML"\n+++\nBody`,
+  );
+  print(`toml title: ${toml.attrs.title}`);
 
-  const broken = markdown.replace("2026-10-11", "someday")
-  const error = yield* Effect.flip(
-    Effect.flatMap(FrontMatter.extract(broken), ({ attrs }) => Schema.decodeUnknownEffect(Post)(attrs)),
-  )
-  yield* Console.log(`invalid date: ${error._tag}`)
-})
-
-export default script(program)
+  // A date that is not a date fails the check.
+  try {
+    toPost(
+      extract<Record<string, unknown>>(
+        markdown.replace("2026-10-11", "someday"),
+      ).attrs,
+    );
+  } catch (error) {
+    print(`invalid date: ${error instanceof Error ? error.name : error}`);
+  }
+});

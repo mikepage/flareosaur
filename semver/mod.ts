@@ -1,323 +1,301 @@
+// Copyright Isaac Z. Schlueter and Contributors. All rights reserved. ISC license.
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
+// This module is browser compatible.
 
 /**
- * Semantic versioning (https://semver.org) as Effect data: a {@linkcode SemVer}
- * Schema class with `Order` and `Equivalence` instances, npm-style ranges,
- * and a Schema codec from version strings.
+ * The Semantic Version parser.
  *
- * Effect has no semver support. This module wraps `@std/semver`'s parser,
- * comparator and range logic: parsing returns a `Result` failing with a
- * {@linkcode SemVerError}, queries that may find nothing return `Option`,
- * comparisons are an `Order`, and binary operations are pipeable.
+ * Adapted directly from {@link https://github.com/npm/node-semver | semver}.
  *
  * ```ts
- * import { Array, Result } from "effect"
- * import * as SemVer from "@mikepage/flareosaur/semver"
+ * import {
+ *   parse,
+ *   parseRange,
+ *   greaterThan,
+ *   lessThan,
+ *   format
+ * } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
- * const version = Result.getOrThrow(SemVer.parse("1.2.3"))
- * const range = Result.getOrThrow(SemVer.parseRange(">=1.0.0 <2.0.0"))
+ * const semver = parse("1.2.3");
+ * assertEquals(semver, {
+ *   major: 1,
+ *   minor: 2,
+ *   patch: 3,
+ *   prerelease: [],
+ *   build: []
+ * });
  *
- * SemVer.satisfies(version, range) // true
- * SemVer.format(Result.getOrThrow(SemVer.increment(version, "minor"))) // "1.3.0"
- * Array.sort(["2.0.0", "1.0.0"].map((s) => Result.getOrThrow(SemVer.parse(s))), SemVer.Order)
+ * assertEquals(format(semver), "1.2.3");
+ *
+ * const range = parseRange("1.x || >=2.5.0 || 5.0.0 - 7.2.3");
+ *
+ * const s0 = parse("1.2.3");
+ * const s1 = parse("9.8.7");
+ *
+ * assertEquals(greaterThan(s0, s1), false);
+ * assertEquals(lessThan(s0, s1), true);
  * ```
+ *
+ * ## Versions
+ *
+ * A "version" is described by the `v2.0.0` specification found at
+ * <https://semver.org>.
+ *
+ * A leading `"="` or `"v"` character is stripped off and ignored.
+ *
+ * ## Format
+ *
+ * Semantic versions can be formatted as strings, by default they
+ * are formatted as `full`. Below is a diagram showing the various
+ * formatting options.
+ *
+ * ```
+ *           full
+ *        ┌───┴───┐
+ *     release    │
+ *    ┌───┴───┐   │
+ * primary    │   │
+ *  ┌─┴─┐     │   │
+ *  1.2.3-pre.1+b.1
+ *  │ │ │ └─┬─┘ └┬┘
+ *  │ │ │   │    └── build
+ *  │ │ │   └─────── pre
+ *  │ │ └─────────── patch
+ *  │ └───────────── minor
+ *  └─────────────── major
+ * ```
+ *
+ * ## Ranges
+ *
+ * A version {@linkcode Range} is a set of {@linkcode Comparator}s which specify
+ * versions that satisfy the range.
+ *
+ * A {@linkcode Comparator} is composed of an {@linkcode Operator} and a
+ * {@link SemVer}. The set of primitive `operators` is:
+ *
+ * - `<` Less than
+ * - `<=` Less than or equal to
+ * - `>` Greater than
+ * - `>=` Greater than or equal to
+ * - `=` Equal. If no operator is specified, then equality is assumed, so this
+ *   operator is optional, but MAY be included.
+ *
+ * For example, the comparator `>=1.2.7` would match the versions `1.2.7`, `1.2.8`,
+ * `2.5.3`, and `1.3.9`, but not the versions `1.2.6` or `1.1.0`.
+ *
+ * Comparators can be joined by whitespace to form a `comparator set`, which is
+ * satisfied by the **intersection** of all of the comparators it includes.
+ *
+ * A range is composed of one or more comparator sets, joined by `||`. A version
+ * matches a range if and only if every comparator in at least one of the
+ * `||`-separated comparator sets is satisfied by the version.
+ *
+ * For example, the range `>=1.2.7 <1.3.0` would match the versions `1.2.7`,
+ * `1.2.8`, and `1.2.99`, but not the versions `1.2.6`, `1.3.0`, or `1.1.0`.
+ *
+ * The range `1.2.7 || >=1.2.9 <2.0.0` would match the versions `1.2.7`, `1.2.9`,
+ * and `1.4.6`, but not the versions `1.2.8` or `2.0.0`.
+ *
+ * ### Prerelease Tags
+ *
+ * If a version has a prerelease tag (for example, `1.2.3-alpha.3`) then it will
+ * only be allowed to satisfy comparator sets if at least one comparator with the
+ * same `[major, minor, patch]` tuple also has a prerelease tag.
+ *
+ * For example, the range `>1.2.3-alpha.3` would be allowed to match the version
+ * `1.2.3-alpha.7`, but it would _not_ be satisfied by `3.4.5-alpha.9`, even though
+ * `3.4.5-alpha.9` is technically "greater than" `1.2.3-alpha.3` according to the
+ * SemVer sort rules. The version range only accepts prerelease tags on the `1.2.3`
+ * version. The version `3.4.5` _would_ satisfy the range, because it does not have
+ * a prerelease flag, and `3.4.5` is greater than `1.2.3-alpha.7`.
+ *
+ * The purpose for this behavior is twofold. First, prerelease versions frequently
+ * are updated very quickly, and contain many breaking changes that are (by the
+ * author"s design) not yet fit for public consumption. Therefore, by default, they
+ * are excluded from range matching semantics.
+ *
+ * Second, a user who has opted into using a prerelease version has clearly
+ * indicated the intent to use _that specific_ set of alpha/beta/rc versions. By
+ * including a prerelease tag in the range, the user is indicating that they are
+ * aware of the risk. However, it is still not appropriate to assume that they have
+ * opted into taking a similar risk on the _next_ set of prerelease versions.
+ *
+ * #### Prerelease Identifiers
+ *
+ * The method {@linkcode increment} takes an additional `identifier` string
+ * argument that will append the value of the string as a prerelease identifier:
+ *
+ * ```ts
+ * import { increment, parse } from "@mikepage/flareosaur/semver";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * assertEquals(increment(parse("1.2.3"), "prerelease", { prerelease: "alpha" }), parse("1.2.4-alpha.0"));
+ * ```
+ *
+ * ### Build Metadata
+ *
+ * Build metadata is `.` delimited alpha-numeric string.
+ * When parsing a version it is retained on the `build: string[]` field
+ * of the SemVer instance. When incrementing there is an additional parameter that
+ * can set the build metadata on the SemVer instance.
+ *
+ * ### Advanced Range Syntax
+ *
+ * Advanced range syntax desugars to primitive comparators in deterministic ways.
+ *
+ * Advanced ranges may be combined in the same way as primitive comparators using
+ * white space or `||`.
+ *
+ * #### Hyphen Ranges `X.Y.Z - A.B.C`
+ *
+ * Specifies an inclusive set.
+ *
+ * - `1.2.3 - 2.3.4` := `>=1.2.3 <=2.3.4`
+ *
+ * If a partial version is provided as the first version in the inclusive range,
+ * then the missing pieces are replaced with zeroes.
+ *
+ * - `1.2 - 2.3.4` := `>=1.2.0 <=2.3.4`
+ *
+ * If a partial version is provided as the second version in the inclusive range,
+ * then all versions that start with the supplied parts of the tuple are accepted,
+ * but nothing that would be greater than the provided tuple parts.
+ *
+ * - `1.2.3 - 2.3` := `>=1.2.3 <2.4.0`
+ * - `1.2.3 - 2` := `>=1.2.3 <3.0.0`
+ *
+ * #### X-Ranges `1.2.x` `1.X` `1.2.*` `*`
+ *
+ * Any of `X`, `x`, or `*` may be used to "stand in" for one of the numeric values
+ * in the `[major, minor, patch]` tuple.
+ *
+ * - `*` := `>=0.0.0` (Any version satisfies)
+ * - `1.x` := `>=1.0.0 <2.0.0` (Matching major version)
+ * - `1.2.x` := `>=1.2.0 <1.3.0` (Matching major and minor versions)
+ *
+ * A partial version range is treated as an X-Range, so the special character is in
+ * fact optional.
+ *
+ * - `""` (empty string) := `*` := `>=0.0.0`
+ * - `1` := `1.x.x` := `>=1.0.0 <2.0.0`
+ * - `1.2` := `1.2.x` := `>=1.2.0 <1.3.0`
+ *
+ * #### Tilde Ranges `~1.2.3` `~1.2` `~1`
+ *
+ * Allows patch-level changes if a minor version is specified on the comparator.
+ * Allows minor-level changes if not.
+ *
+ * - `~1.2.3` := `>=1.2.3 <1.(2+1).0` := `>=1.2.3 <1.3.0`
+ * - `~1.2` := `>=1.2.0 <1.(2+1).0` := `>=1.2.0 <1.3.0` (Same as `1.2.x`)
+ * - `~1` := `>=1.0.0 <(1+1).0.0` := `>=1.0.0 <2.0.0` (Same as `1.x`)
+ * - `~0.2.3` := `>=0.2.3 <0.(2+1).0` := `>=0.2.3 <0.3.0`
+ * - `~0.2` := `>=0.2.0 <0.(2+1).0` := `>=0.2.0 <0.3.0` (Same as `0.2.x`)
+ * - `~0` := `>=0.0.0 <(0+1).0.0` := `>=0.0.0 <1.0.0` (Same as `0.x`)
+ * - `~1.2.3-beta.2` := `>=1.2.3-beta.2 <1.3.0` Note that prereleases in the
+ *   `1.2.3` version will be allowed, if they are greater than or equal to
+ *   `beta.2`. So, `1.2.3-beta.4` would be allowed, but `1.2.4-beta.2` would not,
+ *   because it is a prerelease of a different `[major, minor, patch]` tuple.
+ *
+ * #### Caret Ranges `^1.2.3` `^0.2.5` `^0.0.4`
+ *
+ * Allows changes that do not modify the left-most non-zero element in the
+ * `[major, minor, patch]` tuple. In other words, this allows patch and minor
+ * updates for versions `1.0.0` and above, patch updates for versions
+ * `0.X >=0.1.0`, and _no_ updates for versions `0.0.X`.
+ *
+ * Many authors treat a `0.x` version as if the `x` were the major
+ * "breaking-change" indicator.
+ *
+ * Caret ranges are ideal when an author may make breaking changes between `0.2.4`
+ * and `0.3.0` releases, which is a common practice. However, it presumes that
+ * there will _not_ be breaking changes between `0.2.4` and `0.2.5`. It allows for
+ * changes that are presumed to be additive (but non-breaking), according to
+ * commonly observed practices.
+ *
+ * - `^1.2.3` := `>=1.2.3 <2.0.0`
+ * - `^0.2.3` := `>=0.2.3 <0.3.0`
+ * - `^0.0.3` := `>=0.0.3 <0.0.4`
+ * - `^1.2.3-beta.2` := `>=1.2.3-beta.2 <2.0.0` Note that prereleases in the
+ *   `1.2.3` version will be allowed, if they are greater than or equal to
+ *   `beta.2`. So, `1.2.3-beta.4` would be allowed, but `1.2.4-beta.2` would not,
+ *   because it is a prerelease of a different `[major, minor, patch]` tuple.
+ * - `^0.0.3-beta` := `>=0.0.3-beta <0.0.4` Note that prereleases in the `0.0.3`
+ *   version _only_ will be allowed, if they are greater than or equal to `beta`.
+ *   So, `0.0.3-pr.2` would be allowed.
+ *
+ * When parsing caret ranges, a missing `patch` value desugars to the number `0`,
+ * but will allow flexibility within that value, even if the major and minor
+ * versions are both `0`.
+ *
+ * - `^1.2.x` := `>=1.2.0 <2.0.0`
+ * - `^0.0.x` := `>=0.0.0 <0.1.0`
+ * - `^0.0` := `>=0.0.0 <0.1.0`
+ *
+ * A missing `minor` and `patch` values will desugar to zero, but also allow
+ * flexibility within those values, even if the major version is zero.
+ *
+ * - `^1.x` := `>=1.0.0 <2.0.0`
+ * - `^0.x` := `>=0.0.0 <1.0.0`
+ *
+ * ### Range Grammar
+ *
+ * Putting all this together, here is a Backus-Naur grammar for ranges, for the
+ * benefit of parser authors:
+ *
+ * ```bnf
+ * range-set  ::= range ( logical-or range ) *
+ * logical-or ::= ( " " ) * "||" ( " " ) *
+ * range      ::= hyphen | simple ( " " simple ) * | ""
+ * hyphen     ::= partial " - " partial
+ * simple     ::= primitive | partial | tilde | caret
+ * primitive  ::= ( "<" | ">" | ">=" | "<=" | "=" ) partial
+ * partial    ::= xr ( "." xr ( "." xr qualifier ? )? )?
+ * xr         ::= "x" | "X" | "*" | nr
+ * nr         ::= "0" | ["1"-"9"] ( ["0"-"9"] ) *
+ * tilde      ::= "~" partial
+ * caret      ::= "^" partial
+ * qualifier  ::= ( "-" pre )? ( "+" build )?
+ * pre        ::= parts
+ * build      ::= parts
+ * parts      ::= part ( "." part ) *
+ * part       ::= nr | [-0-9A-Za-z]+
+ * ```
+ *
+ * Note that, since ranges may be non-contiguous, a version might not be greater
+ * than a range, less than a range, _or_ satisfy a range! For example, the range
+ * `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so the
+ * version `1.2.10` would not be greater than the range (because `2.0.1` satisfies,
+ * which is higher), nor less than the range (since `1.2.8` satisfies, which is
+ * lower), and it also does not satisfy the range.
+ *
+ * If you want to know if a version satisfies or does not satisfy a range, use the
+ * {@linkcode satisfies} function.
  *
  * @module
  */
-
-import { type Cause, Effect, Equivalence as Eq, Function, Option, Order as Ord, Result, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
-import { compare as stdCompare } from "./_std/compare.ts"
-import { difference as stdDifference } from "./_std/difference.ts"
-import { format as stdFormat } from "./_std/format.ts"
-import { formatRange as stdFormatRange } from "./_std/format_range.ts"
-import { greaterThanRange as stdGreaterThanRange } from "./_std/greater_than_range.ts"
-import { increment as stdIncrement, type IncrementOptions } from "./_std/increment.ts"
-import { isRange as stdIsRange } from "./_std/is_range.ts"
-import { lessThanRange as stdLessThanRange } from "./_std/less_than_range.ts"
-import { parse as stdParse } from "./_std/parse.ts"
-import { parseRange as stdParseRange } from "./_std/parse_range.ts"
-import { rangeIntersects as stdRangeIntersects } from "./_std/range_intersects.ts"
-import { satisfies as stdSatisfies } from "./_std/satisfies.ts"
-import type * as Std from "./_std/types.ts"
-
-export type { IncrementOptions }
-
-/** A release type, as used by {@linkcode increment} and {@linkcode difference}. */
-export type ReleaseType = Std.ReleaseType
-
-/** A comparator operator. `undefined` means equality. */
-export type Operator = Std.Operator
-
-/** One comparator of a range: a version bound with an operator. */
-export type Comparator = Readonly<Std.Comparator>
-
-/** A range: a union (outer array) of intersections (inner arrays) of comparators. */
-export type Range = ReadonlyArray<ReadonlyArray<Comparator>>
-
-const SemVerErrorBase: Schema.Class<
-  SemVerError,
-  Schema.TaggedStruct<"SemVerError", {
-    readonly kind: Schema.Literals<readonly ["Parse", "ParseRange", "Increment"]>
-    readonly message: Schema.String
-    readonly input: Schema.String
-    readonly cause: Schema.optional<Schema.Defect>
-  }>,
-  Cause.YieldableError
-> = Schema.TaggedError<SemVerError>()("SemVerError", {
-  kind: Schema.Literals(["Parse", "ParseRange", "Increment"]),
-  message: Schema.String,
-  input: Schema.String,
-  cause: Schema.optional(Schema.Defect()),
-})
-
-/** A version or range could not be parsed, or a version could not be incremented. */
-export class SemVerError extends SemVerErrorBase {}
-
-const NonNegativeInt: Schema.Int = Schema.Int.check(Schema.isGreaterThanOrEqualTo(0))
-
-const SemVerBase: Schema.Class<
-  SemVer,
-  Schema.Struct<{
-    readonly major: Schema.Int
-    readonly minor: Schema.Int
-    readonly patch: Schema.Int
-    readonly prerelease: Schema.$Array<Schema.Union<readonly [Schema.String, Schema.Int]>>
-    readonly build: Schema.$Array<Schema.String>
-  }>,
-  {}
-> = Schema.Class<SemVer>("flareosaur/semver/SemVer")({
-  major: NonNegativeInt,
-  minor: NonNegativeInt,
-  patch: NonNegativeInt,
-  prerelease: Schema.Array(Schema.Union([Schema.String, NonNegativeInt])),
-  build: Schema.Array(Schema.String),
-})
-
-/**
- * A semantic version. Build metadata does not take part in
- * {@linkcode Order} or {@linkcode Equivalence}.
- */
-export class SemVer extends SemVerBase {
-  /** The version as a string, e.g. `"1.2.3-beta.1+build"`. */
-  override toString(): string {
-    return format(this)
-  }
-}
-
-// std's functions take mutable arrays but do not mutate them.
-const std = (version: SemVer): Std.SemVer => version as unknown as Std.SemVer
-const stdRange = (range: Range): Std.Range => range as Std.Range
-
-const fromStd = (version: Std.SemVer): SemVer =>
-  new SemVer({
-    major: version.major,
-    minor: version.minor,
-    patch: version.patch,
-    prerelease: version.prerelease ?? [],
-    build: version.build ?? [],
-  })
-
-const message = (cause: unknown): string => (cause instanceof Error ? cause.message : String(cause))
-
-/** The parts of a version. */
-export interface SemVerParts {
-  readonly major: number
-  readonly minor: number
-  readonly patch: number
-  readonly prerelease: ReadonlyArray<string | number>
-  readonly build: ReadonlyArray<string>
-}
-
-/** Makes a version from its parts. Throws on negative or fractional numbers. */
-export const make = (parts: {
-  readonly major: number
-  readonly minor: number
-  readonly patch: number
-  readonly prerelease?: ReadonlyArray<string | number> | undefined
-  readonly build?: ReadonlyArray<string> | undefined
-}): SemVer =>
-  new SemVer({
-    major: parts.major,
-    minor: parts.minor,
-    patch: parts.patch,
-    prerelease: parts.prerelease ?? [],
-    build: parts.build ?? [],
-  })
-
-/** Parses a version string, e.g. `"1.2.3-beta.1+build"`. Surrounding whitespace is ignored. */
-export const parse = (input: string): Result.Result<SemVer, SemVerError> =>
-  Result.try({
-    try: () => fromStd(stdParse(input)),
-    catch: (cause) => new SemVerError({ kind: "Parse", message: message(cause), input, cause }),
-  })
-
-/** Parses an npm-style range, e.g. `"^1.2.3 || >=2.0.0 <3.0.0-0"`, `"~1.2"` or `"1.x"`. */
-export const parseRange = (input: string): Result.Result<Range, SemVerError> =>
-  Result.try({
-    try: (): Range => stdParseRange(input),
-    catch: (cause) => new SemVerError({ kind: "ParseRange", message: message(cause), input, cause }),
-  })
-
-/** Whether a string is a valid version. */
-export const canParse = (input: string): boolean => Result.isSuccess(parse(input))
-
-/** Whether a value is a {@linkcode SemVer}. */
-export const isSemVer = (input: unknown): input is SemVer => input instanceof SemVer
-
-/** Whether a value is a valid {@linkcode Range}. */
-export const isRange = (input: unknown): input is Range => stdIsRange(input)
-
-/** Formats a version as a string. */
-export const format = (version: SemVer): string => stdFormat(std(version))
-
-/** Formats a range as a string. */
-export const formatRange = (range: Range): string => stdFormatRange(stdRange(range))
-
-/** Orders versions by precedence (semver section 11); build metadata is ignored. */
-export const Order: Ord.Order<SemVer> = Ord.make((self, that) => stdCompare(std(self), std(that)))
-
-/** Versions of equal precedence; build metadata is ignored. */
-export const Equivalence: Eq.Equivalence<SemVer> = Eq.make((self, that) => Order(self, that) === 0)
-
-/** Whether `self` has higher precedence than `that`. */
-export const greaterThan: {
-  (that: SemVer): (self: SemVer) => boolean
-  (self: SemVer, that: SemVer): boolean
-} = Ord.isGreaterThan(Order)
-
-/** Whether `self` has higher or equal precedence than `that`. */
-export const greaterOrEqual: {
-  (that: SemVer): (self: SemVer) => boolean
-  (self: SemVer, that: SemVer): boolean
-} = Ord.isGreaterThanOrEqualTo(Order)
-
-/** Whether `self` has lower precedence than `that`. */
-export const lessThan: {
-  (that: SemVer): (self: SemVer) => boolean
-  (self: SemVer, that: SemVer): boolean
-} = Ord.isLessThan(Order)
-
-/** Whether `self` has lower or equal precedence than `that`. */
-export const lessOrEqual: {
-  (that: SemVer): (self: SemVer) => boolean
-  (self: SemVer, that: SemVer): boolean
-} = Ord.isLessThanOrEqualTo(Order)
-
-/** Whether two versions have equal precedence. */
-export const equals: {
-  (that: SemVer): (self: SemVer) => boolean
-  (self: SemVer, that: SemVer): boolean
-} = Function.dual(2, (self: SemVer, that: SemVer): boolean => Equivalence(self, that))
-
-/** The greater of two versions. */
-export const max: {
-  (that: SemVer): (self: SemVer) => SemVer
-  (self: SemVer, that: SemVer): SemVer
-} = Ord.max(Order)
-
-/** The lesser of two versions. */
-export const min: {
-  (that: SemVer): (self: SemVer) => SemVer
-  (self: SemVer, that: SemVer): SemVer
-} = Ord.min(Order)
-
-/** The most significant part in which two versions differ; `None` when they are equal. */
-export const difference: {
-  (that: SemVer): (self: SemVer) => Option.Option<ReleaseType>
-  (self: SemVer, that: SemVer): Option.Option<ReleaseType>
-} = Function.dual(2, (self: SemVer, that: SemVer) => Option.fromNullishOr(stdDifference(std(self), std(that))))
-
-/**
- * Increments a version by a release type. `pre*` types bump or set the
- * prerelease (`options.prerelease`, e.g. `"beta"`); `options.build` sets the
- * build metadata.
- */
-export const increment: {
-  (release: ReleaseType, options?: IncrementOptions): (self: SemVer) => Result.Result<SemVer, SemVerError>
-  (self: SemVer, release: ReleaseType, options?: IncrementOptions): Result.Result<SemVer, SemVerError>
-} = Function.dual(
-  (args) => isSemVer(args[0]),
-  (self: SemVer, release: ReleaseType, options?: IncrementOptions): Result.Result<SemVer, SemVerError> =>
-    Result.try({
-      try: () => fromStd(stdIncrement(std(self), release, options)),
-      catch: (cause) => new SemVerError({ kind: "Increment", message: message(cause), input: format(self), cause }),
-    }),
-)
-
-/** Whether a version satisfies a range. */
-export const satisfies: {
-  (range: Range): (self: SemVer) => boolean
-  (self: SemVer, range: Range): boolean
-} = Function.dual(2, (self: SemVer, range: Range): boolean => stdSatisfies(std(self), stdRange(range)))
-
-/** Whether a version is greater than every version the range allows. */
-export const greaterThanRange: {
-  (range: Range): (self: SemVer) => boolean
-  (self: SemVer, range: Range): boolean
-} = Function.dual(2, (self: SemVer, range: Range): boolean => stdGreaterThanRange(std(self), stdRange(range)))
-
-/** Whether a version is less than every version the range allows. */
-export const lessThanRange: {
-  (range: Range): (self: SemVer) => boolean
-  (self: SemVer, range: Range): boolean
-} = Function.dual(2, (self: SemVer, range: Range): boolean => stdLessThanRange(std(self), stdRange(range)))
-
-/** The highest version that satisfies the range. */
-export const maxSatisfying: {
-  (range: Range): (versions: Iterable<SemVer>) => Option.Option<SemVer>
-  (versions: Iterable<SemVer>, range: Range): Option.Option<SemVer>
-} = Function.dual(2, (versions: Iterable<SemVer>, range: Range): Option.Option<SemVer> => {
-  let best: SemVer | undefined
-  for (const version of versions) {
-    if (satisfies(version, range) && (best === undefined || greaterThan(version, best))) best = version
-  }
-  return Option.fromNullishOr(best)
-})
-
-/** The lowest version that satisfies the range. */
-export const minSatisfying: {
-  (range: Range): (versions: Iterable<SemVer>) => Option.Option<SemVer>
-  (versions: Iterable<SemVer>, range: Range): Option.Option<SemVer>
-} = Function.dual(2, (versions: Iterable<SemVer>, range: Range): Option.Option<SemVer> => {
-  let best: SemVer | undefined
-  for (const version of versions) {
-    if (satisfies(version, range) && (best === undefined || lessThan(version, best))) best = version
-  }
-  return Option.fromNullishOr(best)
-})
-
-/** Whether two ranges overlap: some version satisfies both. */
-export const rangeIntersects: {
-  (that: Range): (self: Range) => boolean
-  (self: Range, that: Range): boolean
-} = Function.dual(2, (self: Range, that: Range): boolean => stdRangeIntersects(stdRange(self), stdRange(that)))
-
-/** A transformation between a version string and the parts of a {@linkcode SemVer}. */
-const versionTransformation: SchemaTransformation.Transformation<SemVerParts, string> = new SchemaTransformation.Transformation<SemVerParts, string>(
-  SchemaGetter.transformEffect((input: string) =>
-    Effect.try({
-      try: () => {
-        const v = stdParse(input)
-        return { major: v.major, minor: v.minor, patch: v.patch, prerelease: v.prerelease ?? [], build: v.build ?? [] }
-      },
-      catch: (cause) => new SchemaIssue.InvalidValue({ message: message(cause) }, input),
-    })
-  ),
-  SchemaGetter.transform((parts: SemVerParts) => stdFormat(parts as Std.SemVer)),
-)
-
-/**
- * A Schema that decodes a version string into a {@linkcode SemVer} and
- * encodes it back.
- *
- * ```ts
- * import { Schema } from "effect"
- * import * as SemVer from "@mikepage/flareosaur/semver"
- *
- * const Manifest = Schema.Struct({ version: SemVer.SemVerFromString })
- * Schema.decodeUnknownSync(Manifest)({ version: "1.2.3" }).version.minor // 2
- * ```
- */
-export const SemVerFromString: Schema.decodeTo<typeof SemVer, Schema.String> =
-  Schema.String.pipe(Schema.decodeTo(SemVer, versionTransformation))
+export * from "./compare.ts";
+export * from "./difference.ts";
+export * from "./format.ts";
+export * from "./satisfies.ts";
+export * from "./increment.ts";
+export * from "./is_semver.ts";
+export * from "./max_satisfying.ts";
+export * from "./min_satisfying.ts";
+export * from "./parse_range.ts";
+export * from "./parse.ts";
+export * from "./range_intersects.ts";
+export * from "./types.ts";
+export * from "./try_parse_range.ts";
+export * from "./is_range.ts";
+export * from "./can_parse.ts";
+export * from "./try_parse.ts";
+export * from "./format_range.ts";
+export * from "./equals.ts";
+export * from "./not_equals.ts";
+export * from "./greater_than.ts";
+export * from "./greater_than_range.ts";
+export * from "./greater_or_equal.ts";
+export * from "./less_than.ts";
+export * from "./less_than_range.ts";
+export * from "./less_or_equal.ts";

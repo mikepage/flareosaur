@@ -2,17 +2,17 @@
   {
     "reason": "Opens fixtures with Deno.open, or fetch() on a file: URL",
     "tests": {
-      "csv/_std/parse_stream_test.ts": [
+      "csv/parse_stream_test.ts": [
         "CsvParseStream should work with Deno.FsFile's readable",
         "CsvParseStream.cancel() does not leak file when called in the middle of iteration"
       ],
-      "encoding/_std/unstable_base32_stream_test.ts": "*",
-      "encoding/_std/unstable_base64_stream_test.ts": "*",
-      "encoding/_std/unstable_hex_stream_test.ts": "*",
-      "json/_std/concatenated_json_parse_stream_test.ts": [
+      "encoding/unstable_base32_stream_test.ts": "*",
+      "encoding/unstable_base64_stream_test.ts": "*",
+      "encoding/unstable_hex_stream_test.ts": "*",
+      "json/concatenated_json_parse_stream_test.ts": [
         "parse() handles concatenated-json testdata"
       ],
-      "json/_std/parse_stream_test.ts": [
+      "json/parse_stream_test.ts": [
         "parse() handles jsonl testdata",
         "parse() handles ndjson testdata",
         "parse() handles json-seq testdata"
@@ -22,29 +22,29 @@
   {
     "reason": "Spawns a subprocess with Deno.Command or a Worker",
     "tests": {
-      "assert/_std/unstable_equals_test.ts": [
+      "assert/unstable_equals_test.ts": [
         "assertEquals() truncates unchanged lines of large diffs when \"DIFF_CONTEXT_LENGTH\" is set"
       ],
-      "fmt/_std/printf_test.ts": [
+      "fmt/printf_test.ts": [
         "printf() prints the result synchronously"
       ],
-      "internal/_std/assertion_state_test.ts": "*",
-      "internal/_std/styles_test.ts": [
+      "internal/assertion_state_test.ts": "*",
+      "internal/styles_test.ts": [
         "noColor"
       ],
-      "jsonc/_std/parse_test.ts": [
+      "jsonc/parse_test.ts": [
         "parse() uses Object.defineProperty when setting object property"
       ],
-      "toml/_std/parse_test.ts": [
+      "toml/parse_test.ts": [
         "parse() doesn't pollute prototype with __proto__"
       ],
-      "yaml/_std/parse_test.ts": [
+      "yaml/parse_test.ts": [
         "parse() handles __proto__"
       ],
-      "uuid/_std/v1_test.ts": [
+      "uuid/v1_test.ts": [
         "generate() uses random bytes from rng option"
       ],
-      "path/_std/is_glob_test.ts": [
+      "path/is_glob_test.ts": [
         "isGlob works with the input that includes large number of open brackets"
       ]
     }
@@ -52,49 +52,49 @@
   {
     "reason": "Tests a Deno-only API (Deno.unrefTimer, Deno.memoryUsage, Deno.inspect, Deno.env)",
     "tests": {
-      "async/_std/delay_test.ts": [
+      "async/delay_test.ts": [
         "delay() handles persistent option",
         "delay() handles persistent option with reference error",
         "delay() handles persistent option with error"
       ],
-      "crypto/_std/crypto_test.ts": [
+      "crypto/crypto_test.ts": [
         "digest() keeps memory usage reasonable with large inputs",
         "digest() keeps memory usage reasonable with many calls"
       ],
-      "data_structures/_std/unstable_multimap_test.ts": [
+      "data_structures/unstable_multimap_test.ts": [
         "MultiMap is inspected as 'MultiMap(size) { key => [values], ... }'",
         "MultiMap is inspected as 'MultiMap(0) {}' when empty",
         "MultiMap inspect does not alias internal state"
       ],
-      "http/_std/user_agent_test.ts": [
+      "http/user_agent_test.ts": [
         "UserAgent supports custom inspect in Deno"
       ],
-      "semver/_std/is_semver_test.ts": "*",
-      "streams/_std/unstable_abort_stream_test.ts": "*"
+      "semver/is_semver_test.ts": "*",
+      "streams/unstable_abort_stream_test.ts": "*"
     }
   },
   {
     "reason": "Compares against Node built-ins (process.cwd, node:util), which workerd lacks without nodejs_compat",
     "tests": {
-      "http/_std/user_agent_test.ts": [
+      "http/user_agent_test.ts": [
         "UserAgent supports custom inspect in Node.js"
       ],
-      "internal/_std/format_test.ts": [
+      "internal/format_test.ts": [
         "format() has fallback if Deno.inspect is not available"
       ],
-      "path/_std/join_test.ts": [
+      "path/join_test.ts": [
         "join() returns \".\" if input is empty"
       ],
-      "path/_std/relative_test.ts": [
+      "path/relative_test.ts": [
         "relative() returns current working directory if input is empty"
       ],
-      "path/_std/resolve_test.ts": "*"
+      "path/resolve_test.ts": "*"
     }
   },
   {
     "reason": "Uses eval(), which Workers forbid",
     "tests": {
-      "text/_std/unstable_dedent_test.ts": [
+      "text/unstable_dedent_test.ts": [
         "dedent() handles mixed tabs and spaces",
         "dedent() handles blank lines correctly"
       ]
@@ -103,7 +103,7 @@
   {
     "reason": "Compares Function.prototype.toString() output, which bundling reformats",
     "tests": {
-      "csv/_std/stringify_test.ts": [
+      "csv/stringify_test.ts": [
         "stringify() handles various inputs"
       ]
     }
@@ -111,7 +111,7 @@
   {
     "reason": "workerd fills in the default reason phrase for Response.statusText",
     "tests": {
-      "http/_std/unstable_problem_details_test.ts": [
+      "http/unstable_problem_details_test.ts": [
         "createProblemDetailsResponse() leaves statusText empty when not provided"
       ]
     }
@@ -119,7 +119,7 @@
   {
     "reason": "workerd does not pull before a synchronous cancel(), so the generator has not started yet",
     "tests": {
-      "streams/_std/to_transform_stream_test.ts": [
+      "streams/to_transform_stream_test.ts": [
         "toTransformStream() propagates cancellation from readable 2"
       ]
     }

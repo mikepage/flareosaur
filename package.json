@@ -2,33 +2,25 @@
   "name": "flareosaur",
   "private": true,
   "type": "module",
-  "description": "The Deno standard library, ported to run on Cloudflare Workers without nodejs_compat.",
+  "description": "The Deno standard library, ported to run on Cloudflare Workers without nodejs_compat. Plus the Deno examples as plain Workers.",
   "license": "MIT",
   "scripts": {
-    "cli": "node scripts/cli.ts",
-    "port": "node scripts/cli.ts port",
-    "patch": "node scripts/cli.ts patch",
-    "exports": "node scripts/cli.ts exports",
-    "check": "node scripts/cli.ts check",
-    "test": "node scripts/cli.ts test",
-    "examples": "node scripts/cli.ts examples"
+    "port": "node scripts/port.mjs",
+    "patch": "node scripts/make_patch.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node scripts/test.mjs",
+    "examples": "node scripts/examples.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "5.20261010.1",
-    "@effect/ai-anthropic": "4.0.2",
-    "@effect/ai-cloudflare": "4.0.2",
-    "@effect/platform-node": "4.0.2",
-    "@effect/sql-d1": "4.0.2",
-    "@effect/sql-sqlite-do": "4.0.2",
+    "deno": "2.9.6",
     "esbuild": "0.28.2",
     "miniflare": "4.20260730.0",
     "typescript": "6.0.3"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
-    "workerd@1.20260730.1": true
-  },
-  "dependencies": {
-    "effect": "4.0.2"
+    "workerd@1.20260730.1": true,
+    "deno@2.9.6": true
   }
 }

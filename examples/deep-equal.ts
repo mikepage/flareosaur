@@ -1,37 +1,44 @@
 /**
  * @title Check if two values are deeply equal
  * @difficulty beginner
- * @tags workers, effect
+ * @tags workers, assert
  * @group Basics
- * @resource {https://effect.website/docs/trait/equal/} Effect: Equal
- * @check GET / -> 200 "=== false" "Equal.equals: true" "Data classes: true" "HashSet: true"
+ * @resource {https://jsr.io/@std/assert/doc/equal/~/equal} @std/assert: equal
+ * @resource {https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness} MDN: equality comparisons
+ * @check GET / -> 200 "=== false" "equal: true" "Maps: true" "Sets: true" "Dates: true" "different values: false"
  *
- * Two objects with the same contents are not equal with `===`. Effect's
- * `Equal.equals` compares structurally: plain objects, arrays, Maps, Sets
- * and Dates by value, and Effect data types (Data classes, Option, HashMap,
- * ...) by their own equality.
+ * Two objects with the same contents are not equal with `===`, which
+ * compares references. std's `equal` compares structurally: plain objects,
+ * arrays, Maps, Sets, Dates, typed arrays and URLs by value, and it handles
+ * cycles.
  */
 
-import { Console, Data, Effect, Equal, HashSet, Option } from "effect"
-import { script } from "./_lib/script.ts"
+import { equal } from "@mikepage/flareosaur/assert/equal";
+import { script } from "./_lib/script.ts";
 
-const a = { name: "Ada", languages: ["en", "fr"] }
-const b = { name: "Ada", languages: ["en", "fr"] }
+export default script((print) => {
+  const a = { name: "Ada", languages: ["en", "fr"] };
+  const b = { name: "Ada", languages: ["en", "fr"] };
 
-// Data.Class gives a class value equality and a hash.
-class Point extends Data.Class<{ readonly x: number; readonly y: number }> {}
+  // === compares references: these are two different objects.
+  print("===", a === b);
 
-const program = Effect.gen(function*() {
-  yield* Console.log(`=== ${a === b}`) // === false
-  yield* Console.log(`Equal.equals: ${Equal.equals(a, b)}`) // Equal.equals: true
+  // equal walks both values and compares what is inside.
+  print("equal:", equal(a, b));
 
-  // Data classes and Option compare by value, so they can be used as keys.
-  yield* Console.log(`Data classes: ${Equal.equals(new Point({ x: 1, y: 2 }), new Point({ x: 1, y: 2 }))}`)
-  yield* Console.log(`Option: ${Equal.equals(Option.some([1, 2]), Option.some([1, 2]))}`)
+  // Maps and Sets compare by their entries, in any order.
+  print(
+    "Maps:",
+    equal(new Map([["x", 1], ["y", 2]]), new Map([["y", 2], ["x", 1]])),
+  );
+  print("Sets:", equal(new Set([1, 2, 3]), new Set([3, 2, 1])));
 
-  // A HashSet uses that equality, so the second point is a duplicate.
-  const set = HashSet.make(new Point({ x: 1, y: 2 }), new Point({ x: 1, y: 2 }))
-  yield* Console.log(`HashSet: ${HashSet.size(set) === 1}`)
-})
+  // Dates compare by the time they hold.
+  print("Dates:", equal(new Date("2026-01-01"), new Date(1767225600000)));
 
-export default script(program)
+  // Bytes compare by content, handy for comparing digests.
+  print("bytes:", equal(new Uint8Array([1, 2]), new Uint8Array([1, 2])));
+
+  // One differing field is enough to make them unequal.
+  print("different values:", equal(a, { ...a, name: "Grace" }));
+});

@@ -1,379 +1,187 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// Copyright 2026 the flareosaur authors. MIT license.
+// This module is browser compatible.
 
 /**
- * CSV parsing and stringifying, as Effects, Streams and Schema codecs.
+ * Reads and writes comma-separated values (CSV) files.
  *
- * Effect has no CSV support. This module wraps `@std/csv` (a port of Go's
- * `encoding/csv`: quoted fields, multi-line values, custom separators,
- * comments, lazy quotes) for Effect:
- *
- * - {@linkcode parse} and {@linkcode stringify} return Effects that fail with
- *   a typed {@linkcode CsvError}.
- * - {@linkcode parseStream} turns a `Stream` of text chunks into a `Stream`
- *   of rows or records, and {@linkcode stringifyStream} goes the other way,
- *   so large files never have to be held in memory.
- * - {@linkcode schema} decodes CSV text with a header row into an array of
- *   typed values, and {@linkcode decodeStream} does the same row by row.
+ * ## Parsing CSV
  *
  * ```ts
- * import { Effect, Schema, Stream } from "effect"
- * import * as Csv from "@mikepage/flareosaur/csv"
+ * import { parse } from "@mikepage/flareosaur/csv/parse";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
  *
- * const Person = Schema.Struct({ name: Schema.String, age: Schema.FiniteFromString })
+ * const string = "a,b,c\nd,e,f";
  *
- * const program = Effect.gen(function*() {
- *   const people = yield* Schema.decodeEffect(Csv.schema(Person))("name,age\nRick,70\nMorty,14\n")
- *   // [{ name: "Rick", age: 70 }, { name: "Morty", age: 14 }]
- *   const rows = yield* Stream.make("a,b\n1,", "2\n").pipe(Csv.parseStream(), Stream.runCollect)
- *   // [["a", "b"], ["1", "2"]]
- *   return yield* Csv.stringify(people) // "name,age\r\nRick,70\r\nMorty,14\r\n"
- * })
+ * // Parse as array of arrays (default)
+ * assertEquals(parse(string, { skipFirstRow: false }), [["a", "b", "c"], ["d", "e", "f"]]);
+ *
+ * // Parse csv file with headers into array of objects
+ * assertEquals(parse(string, { skipFirstRow: true }), [{ a: "d", b: "e", c: "f" }]);
+ *
+ * // Parse with custom column names
+ * assertEquals(parse(string, { columns: ["x", "y", "z"] }), [
+ *   { x: "a", y: "b", z: "c" },
+ *   { x: "d", y: "e", z: "f" }
+ * ]);
+ *
+ * // Parse tab-separated values
+ * const tsvString = "name\tage\tcity\njohn\t30\tnew york\nmary\t25\tlos angeles";
+ * assertEquals(parse(tsvString, { separator: "\t", skipFirstRow: true }), [
+ *   { name: "john", age: "30", city: "new york" },
+ *   { name: "mary", age: "25", city: "los angeles" }
+ * ]);
+ *
+ * // Parse a CSV file which has comments
+ * const csvWithComments = "# This is a comment\nname,age,city\n# Another comment\njohn,30,new york\nmary,25,los angeles";
+ * assertEquals(parse(csvWithComments, { comment: "#", skipFirstRow: true }), [
+ *   { name: "john", age: "30", city: "new york" },
+ *   { name: "mary", age: "25", city: "los angeles" }
+ * ]);
+ * ```
+ * ## Parsing CSV from a Stream
+ *
+ * ```ts
+ * import { CsvParseStream } from "@mikepage/flareosaur/csv/parse-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * // Parse from a stream (useful for large files)
+ * const source = ReadableStream.from([
+ *   "name,age,city\n",
+ *   "john,30,new york\n",
+ *   "mary,25,los angeles\n"
+ * ]);
+ *
+ * const csvStream = source
+ *   .pipeThrough(new CsvParseStream({ skipFirstRow: true }));
+ *
+ * const records = await Array.fromAsync(csvStream);
+ * assertEquals(records, [
+ *   { name: "john", age: "30", city: "new york" },
+ *   { name: "mary", age: "25", city: "los angeles" }
+ * ]);
+ *
+ * // Or process records one by one
+ * // for await (const record of csvStream) {
+ * //   console.log(record);
+ * // }
+ * ```
+ *
+ * ## Stringifying Data to CSV
+ *
+ * ```ts
+ * import { stringify } from "@mikepage/flareosaur/csv/stringify";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * // Convert array of arrays to CSV
+ * const arrayData = [["name", "age", "city"], ["john", "30", "new york"], ["mary", "25", "los angeles"]];
+ * const csvString = stringify(arrayData);
+ * assertEquals(csvString, "name,age,city\r\njohn,30,new york\r\nmary,25,los angeles\r\n");
+ *
+ * // Convert array of objects to CSV
+ * const objectData = [
+ *   { name: "john", age: "30", city: "new york" },
+ *   { name: "mary", age: "25", city: "los angeles" }
+ * ];
+ *
+ * // When using an array of objects, you must specify columns to use
+ * const customColumns = stringify(objectData, { columns: ["city", "name", "age"] });
+ * assertEquals(customColumns, "city,name,age\r\nnew york,john,30\r\nlos angeles,mary,25\r\n");
+ * ```
+ *
+ * ## Streaming Stringify Data to CSV
+ *
+ * ```ts
+ * import { CsvStringifyStream } from "@mikepage/flareosaur/csv/stringify-stream";
+ * import { assertEquals } from "@mikepage/flareosaur/assert";
+ *
+ * async function writeCsvToTempFile(): Promise<string> {
+ *   const path = await Deno.makeTempFile();
+ *   using file = await Deno.open(path, { write: true });
+ *
+ *   const readable = ReadableStream.from([
+ *     { id: 1, name: "one" },
+ *     { id: 2, name: "two" },
+ *     { id: 3, name: "three" },
+ *   ]);
+ *
+ *   await readable
+ *     .pipeThrough(new CsvStringifyStream({ columns: ["id", "name"] }))
+ *     .pipeThrough(new TextEncoderStream())
+ *     .pipeTo(file.writable);
+ *
+ *   return path;
+ * }
+ *
+ * const path = await writeCsvToTempFile();
+ * const content = await Deno.readTextFile(path);
+ * assertEquals(content, "id,name\r\n1,one\r\n2,two\r\n3,three\r\n");
+ * ```
+ *
+ * ## CSV Format Information
+ *
+ * There are many kinds of CSV files; this module supports the format described
+ * in {@link https://www.rfc-editor.org/rfc/rfc4180.html | RFC 4180}.
+ *
+ * A csv file contains zero or more records of one or more fields per record.
+ * Each record is separated by the newline character. The final record may
+ * optionally be followed by a newline character.
+ *
+ * ```csv
+ * field1,field2,field3
+ * ```
+ *
+ * White space is considered part of a field.
+ *
+ * Carriage returns before newline characters are silently removed.
+ *
+ * Blank lines are ignored. A line with only whitespace characters (excluding
+ * the ending newline character) is not considered a blank line.
+ *
+ * Fields which start and stop with the quote character " are called
+ * quoted-fields. The beginning and ending quote are not part of the field.
+ *
+ * The source:
+ *
+ * ```csv
+ * normal string,"quoted-field"
+ * ```
+ *
+ * results in the fields
+ *
+ * ```ts no-assert
+ * [`normal string`, `quoted-field`]
+ * ```
+ *
+ * Within a quoted-field a quote character followed by a second quote character is considered a single quote.
+ *
+ * ```csv
+ * "the ""word"" is true","a ""quoted-field"""
+ * ```
+ *
+ * results in
+ *
+ * ```ts no-assert
+ * [`the "word" is true`, `a "quoted-field"`]
+ * ```
+ *
+ * Newlines and commas may be included in a quoted-field
+ *
+ * ```csv
+ * "Multi-line
+ * field","comma is ,"
+ * ```
+ *
+ * results in
+ *
+ * ```ts no-assert
+ * [`Multi-line
+ * field`, `comma is ,`]
  * ```
  *
  * @module
  */
 
-import { type Cause, Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation, Stream } from "effect"
-import { convertRowToObject, type LineReader, parseRecord, type ParseResult } from "./_std/_io.ts"
-import { parse as stdParse, type ParseOptions, type RecordWithColumn } from "./_std/parse.ts"
-import type { Column, ColumnDetails, DataItem, PropertyAccessor } from "./_std/stringify.ts"
-import { stringify as stdStringify, type StringifyOptions } from "./_std/unstable_stringify.ts"
-
-export type {
-  Column,
-  ColumnDetails,
-  DataItem,
-  ParseOptions,
-  ParseResult,
-  PropertyAccessor,
-  RecordWithColumn,
-  StringifyOptions,
-}
-
-const CsvErrorBase: Schema.Class<
-  CsvError,
-  Schema.TaggedStruct<"CsvError", {
-    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
-    readonly message: Schema.String
-    readonly cause: Schema.Defect
-  }>,
-  Cause.YieldableError
-> = Schema.TaggedError<CsvError>()("CsvError", {
-  kind: Schema.Literals(["Parse", "Stringify"]),
-  message: Schema.String,
-  cause: Schema.Defect(),
-})
-
-/** CSV text could not be parsed, or rows could not be stringified. */
-export class CsvError extends CsvErrorBase {}
-
-const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
-
-const parseError = (cause: unknown) => new CsvError({ kind: "Parse", message: messageOf(cause), cause })
-
-const stringifyError = (cause: unknown) => new CsvError({ kind: "Stringify", message: messageOf(cause), cause })
-
-/**
- * Parses CSV text. Without options it returns rows as string arrays. With
- * `skipFirstRow: true` the first row names the columns and each row becomes
- * a record; `columns` names them explicitly. Errors name the line and
- * column.
- */
-export const parse = <const T extends ParseOptions = {}>(
-  text: string,
-  options?: T,
-): Effect.Effect<ParseResult<ParseOptions, T>, CsvError> =>
-  Effect.try({ try: () => stdParse(text, options ?? ({} as T)), catch: parseError })
-
-/**
- * Stringifies rows as CSV, with CRLF line endings. Rows may be arrays, or
- * objects whose columns come from `columns` or, by default, from the keys
- * of the first object, written as a header row unless `headers: false`.
- * Objects and arrays inside fields are written as JSON.
- */
-export const stringify = (
-  data: ReadonlyArray<DataItem>,
-  options?: StringifyOptions,
-): Effect.Effect<string, CsvError> => Effect.try({ try: () => stdStringify(data, options), catch: stringifyError })
-
-// ---------------------------------------------------------------------------
-// Streams
-// ---------------------------------------------------------------------------
-
-/** Options for {@linkcode parseStream}. */
-export interface ParseStreamOptions {
-  /** Character which separates values. @default {","} */
-  readonly separator?: string | undefined
-  /** Character that starts a comment line. */
-  readonly comment?: string | undefined
-  /** Trim leading whitespace of each field. @default {false} */
-  readonly trimLeadingSpace?: boolean | undefined
-  /** Allow quotes inside unquoted fields and bare quotes in quoted fields. */
-  readonly lazyQuotes?: boolean | undefined
-  /**
-   * The number of fields each record must have: unchecked when negative or
-   * absent, taken from the first record when 0.
-   */
-  readonly fieldsPerRecord?: number | undefined
-  /** Use the first row as column names and emit records. */
-  readonly skipFirstRow?: boolean | undefined
-  /** Column names; records are emitted with these keys. */
-  readonly columns?: ReadonlyArray<string> | undefined
-}
-
-/** The element type of {@linkcode parseStream}: rows, or records when columns are named. */
-export type RowType<T> = T extends undefined ? Array<string>
-  : T extends { readonly columns: ReadonlyArray<infer C extends string> } ? RecordWithColumn<C>
-  : T extends { readonly skipFirstRow: true } ? Record<string, string>
-  : Array<string>
-
-const NEED_MORE = Symbol("NeedMore")
-
-// Serves the buffered lines that follow the first line of a record. When
-// the buffer runs dry before the input ends, it aborts the attempt so the
-// record is parsed again once more lines arrive.
-class BufferReader implements LineReader {
-  index = 0
-  private done = false
-  constructor(private readonly lines: ReadonlyArray<string>, private readonly eof: boolean) {}
-  readLine(): Promise<string | null> {
-    if (this.index < this.lines.length) return Promise.resolve(this.lines[this.index++]!)
-    if (this.eof) {
-      this.done = true
-      return Promise.resolve(null)
-    }
-    return Promise.reject(NEED_MORE)
-  }
-  isEOF(): boolean {
-    return this.done
-  }
-}
-
-interface ParserState {
-  readonly pending: Array<string>
-  lineIndex: number
-  first: boolean
-  headers: ReadonlyArray<string>
-  fieldsPerRecord: "ANY" | "UNINITIALIZED" | number
-}
-
-const stripLastCR = (line: string): string => line.endsWith("\r") ? line.slice(0, -1) : line
-
-// Splits text chunks on "\n" (dropping a trailing "\r"), then appends an
-// end marker so the record parser can tell the input is over.
-const lines = <E, R>(self: Stream.Stream<string, E, R>): Stream.Stream<string | typeof NEED_MORE, E, R> =>
-  self.pipe(
-    Stream.mapAccum(
-      () => ({ buffer: "", first: true }),
-      (state, chunk: string) => {
-        let text = state.buffer + chunk
-        if (state.first && text.length > 0) {
-          state.first = false
-          if (text.startsWith("﻿")) text = text.slice(1)
-        }
-        const parts = text.split("\n")
-        state.buffer = parts.pop()!
-        return [state, parts.map(stripLastCR)] as const
-      },
-      { onHalt: (state): Array<string | typeof NEED_MORE> => [stripLastCR(state.buffer), NEED_MORE] },
-    ),
-  )
-
-/**
- * Parses a stream of CSV text chunks into a stream of rows (string arrays),
- * or records when `skipFirstRow` or `columns` is set. Fields may span chunks
- * and lines. Blank lines are skipped. Fails with a {@linkcode CsvError} on
- * the first malformed record.
- */
-export const parseStream = <const T extends ParseStreamOptions | undefined = undefined>(options?: T) =>
-<E, R>(self: Stream.Stream<string, E, R>): Stream.Stream<RowType<T>, E | CsvError, R> => {
-  const readOptions = { ...options, separator: options?.separator ?? ",", trimLeadingSpace: options?.trimLeadingSpace ?? false }
-  const named = options?.skipFirstRow === true || options?.columns !== undefined
-
-  const step = Effect.fnUntraced(function*(state: ParserState, line: string | typeof NEED_MORE) {
-    const eof = line === NEED_MORE
-    if (!eof) state.pending.push(line)
-    const out: Array<RowType<T>> = []
-    while (state.pending.length > 0) {
-      if (state.pending[0] === "") {
-        state.pending.shift()
-        state.lineIndex++
-        continue
-      }
-      const reader = new BufferReader(state.pending.slice(1), eof)
-      const record = yield* Effect.tryPromise({
-        try: () =>
-          parseRecord(state.pending[0]!, reader, readOptions, state.lineIndex).catch((cause: unknown) =>
-            cause === NEED_MORE ? undefined : Promise.reject(cause)
-          ),
-        catch: parseError,
-      })
-      if (record === undefined) break
-      state.pending.splice(0, 1 + reader.index)
-
-      if (state.first) {
-        state.first = false
-        if (options?.skipFirstRow) state.headers = record
-        if (options?.columns) state.headers = options.columns
-        if (options?.skipFirstRow) continue
-        if (state.fieldsPerRecord === "UNINITIALIZED") state.fieldsPerRecord = record.length
-      }
-      if (typeof state.fieldsPerRecord === "number" && record.length !== state.fieldsPerRecord) {
-        return yield* parseError(
-          new SyntaxError(
-            `Syntax error on line ${state.lineIndex + 1}: expected ${state.fieldsPerRecord} fields but got ${record.length}`,
-          ),
-        )
-      }
-      state.lineIndex++
-      if (record.length === 0) continue
-      if (named) {
-        out.push(yield* Effect.try({
-          try: () => convertRowToObject(record, state.headers, state.lineIndex) as RowType<T>,
-          catch: parseError,
-        }))
-      } else {
-        out.push(record as RowType<T>)
-      }
-    }
-    return [state, out] as const
-  })
-
-  return self.pipe(
-    lines,
-    Stream.mapAccumEffect((): ParserState => ({
-      pending: [],
-      lineIndex: 0,
-      first: true,
-      headers: [],
-      fieldsPerRecord: options?.fieldsPerRecord === undefined || options.fieldsPerRecord < 0
-        ? "ANY"
-        : options.fieldsPerRecord === 0
-        ? "UNINITIALIZED"
-        : options.fieldsPerRecord,
-    }), step),
-  )
-}
-
-/** Options for {@linkcode stringifyStream}. */
-export interface StringifyStreamOptions {
-  /** Character which separates values. @default {","} */
-  readonly separator?: string | undefined
-  /**
-   * The columns to write, and a header row naming them. Without columns,
-   * array rows are written as they are, and object rows take their columns
-   * from the keys of the first row.
-   */
-  readonly columns?: ReadonlyArray<Column> | undefined
-  /** Write a header row when columns are known. @default {true} */
-  readonly headers?: boolean | undefined
-}
-
-/**
- * Stringifies a stream of rows (arrays or objects) into a stream of CSV
- * lines, one string per row with a CRLF line ending, preceded by a header
- * row when columns are known.
- */
-export const stringifyStream = (options?: StringifyStreamOptions) =>
-<E, R>(self: Stream.Stream<DataItem, E, R>): Stream.Stream<string, E | CsvError, R> =>
-  self.pipe(
-    Stream.mapAccumEffect(
-      () => ({ columns: options?.columns, started: false }),
-      (state, row: DataItem) =>
-        Effect.try({
-          try: () => {
-            const out: Array<string> = []
-            if (!state.started) {
-              state.started = true
-              if (state.columns === undefined && !Array.isArray(row)) state.columns = Object.keys(row)
-              if (options?.headers !== false && state.columns !== undefined && state.columns.length > 0) {
-                out.push(stdStringify([], { separator: options?.separator ?? ",", columns: state.columns }))
-              }
-            }
-            out.push(
-              stdStringify([row], { separator: options?.separator ?? ",", columns: state.columns ?? [], headers: false }),
-            )
-            return [state, out] as const
-          },
-          catch: stringifyError,
-        }),
-    ),
-  )
-
-// ---------------------------------------------------------------------------
-// Schema
-// ---------------------------------------------------------------------------
-
-/** Options for {@linkcode schema} and {@linkcode decodeStream}. */
-export interface SchemaOptions {
-  /** Character which separates values. @default {","} */
-  readonly separator?: string | undefined
-  /** Character that starts a comment line. */
-  readonly comment?: string | undefined
-  /** Trim leading whitespace of each field. @default {false} */
-  readonly trimLeadingSpace?: boolean | undefined
-  /** Allow bare quotes. */
-  readonly lazyQuotes?: boolean | undefined
-}
-
-const issue = (error: unknown, input: unknown) => new SchemaIssue.InvalidValue({ message: messageOf(error) }, input)
-
-/**
- * A transformation between CSV text with a header row and the array of
- * records it holds.
- */
-export const transformation = (
-  options?: SchemaOptions,
-): SchemaTransformation.Transformation<ReadonlyArray<unknown>, string> =>
-  new SchemaTransformation.Transformation(
-    SchemaGetter.transformEffect((text: string) =>
-      Effect.try({
-        try: (): ReadonlyArray<unknown> => stdParse(text, { ...(options as ParseOptions), skipFirstRow: true }),
-        catch: (e) => issue(e, text),
-      })
-    ),
-    SchemaGetter.transformEffect((rows: ReadonlyArray<unknown>) =>
-      Effect.try({
-        try: () => stdStringify(rows as ReadonlyArray<DataItem>, { separator: options?.separator ?? "," }),
-        catch: (e) => issue(e, rows),
-      })
-    ),
-  )
-
-/**
- * A Schema that decodes CSV text with a header row into `Array<S>` and
- * encodes it back. Each record has string fields keyed by the header, so
- * `S` uses string codecs such as `Schema.FiniteFromString` for other types.
- *
- * ```ts
- * import { Schema } from "effect"
- * import * as Csv from "@mikepage/flareosaur/csv"
- *
- * const decode = Schema.decodeUnknownSync(Csv.schema(Schema.Struct({ id: Schema.FiniteFromString })))
- * decode("id\n1\n2\n") // [{ id: 1 }, { id: 2 }]
- * ```
- */
-export const schema = <S extends Schema.Top>(
-  target: S,
-  options?: SchemaOptions,
-): Schema.decodeTo<Schema.$Array<S>, Schema.String> =>
-  Schema.String.pipe(Schema.decodeTo(Schema.Array(target), transformation(options)))
-
-/**
- * Parses a stream of CSV text chunks with a header row and decodes each
- * record with `S`, failing with a `SchemaError` on the first record that
- * does not match.
- */
-export const decodeStream = <S extends Schema.Top>(
-  target: S,
-  options?: SchemaOptions,
-): <E, R>(
-  self: Stream.Stream<string, E, R>,
-) => Stream.Stream<S["Type"], E | CsvError | Schema.SchemaError, R | S["DecodingServices"]> => {
-  const decode = Schema.decodeUnknownEffect(target)
-  return <E, R>(
-    self: Stream.Stream<string, E, R>,
-  ): Stream.Stream<S["Type"], E | CsvError | Schema.SchemaError, R | S["DecodingServices"]> =>
-    self.pipe(parseStream({ ...options, skipFirstRow: true }), Stream.mapEffect((record) => decode(record)))
-}
+export * from "./parse.ts";
+export * from "./parse_stream.ts";
+export * from "./stringify.ts";
+export * from "./stringify_stream.ts";

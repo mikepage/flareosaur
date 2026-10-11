@@ -5,70 +5,93 @@
  * @group Cloudflare
  * @bindings kv:CACHE
  * @resource {https://developers.cloudflare.com/kv/} Cloudflare: Workers KV
- * @resource {https://effect.website/docs/platform/key-value-store/} Effect: KeyValueStore
+ * @resource {https://developers.cloudflare.com/kv/api/} Cloudflare: KV API
  * @check PUT /prefs/ada h:content-type=application/json {"theme":"dark","fontSize":14} -> 200 "saved"
- * @check GET /prefs/ada -> 200 "\"theme\":\"dark\""
- * @check PUT /prefs/bob h:content-type=application/json {"theme":"neon"} -> 400
+ * @check GET /prefs/ada -> 200 "\"theme\":\"dark\"" header:x-saved-at~"20"
+ * @check PUT /prefs/bob h:content-type=application/json {"theme":"neon"} -> 400 "theme"
+ * @check PUT /prefs/bob h:content-type=application/json not json -> 400
  * @check GET /prefs/carol -> 404
  * @check GET /visits -> 200 "visit 1"
  * @check GET /visits -> 200 "visit 2"
  *
- * Deno has Deno KV built in; a Worker gets Workers KV through a binding.
- * `Kv.layer` provides it as Effect's `KeyValueStore`, so a Schema-validated
- * store is one call away: values are checked when they are written and
- * when they are read back.
+ * Deno has Deno KV built in; a Worker gets Workers KV through a binding. KV
+ * stores strings, streams or buffers under string keys, reads JSON with
+ * `get(key, "json")`, and keeps a small metadata object and an optional
+ * expiry next to each value. It is eventually consistent and made for many
+ * reads and few writes; for exact counts use a Durable Object.
  */
 
-import { Effect, Layer, Option, Schema } from "effect"
-import { HttpRouter, HttpServerRequest, HttpServerResponse } from "effect/http"
-import * as KeyValueStore from "effect/persistence/KeyValueStore"
-import * as Kv from "@mikepage/flareosaur/workers/kv"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
+interface Env {
+  CACHE: KVNamespace;
+}
 
-const Preferences = Schema.Struct({
-  theme: Schema.Literals(["light", "dark"]),
-  fontSize: Schema.optional(Schema.Int),
-})
+interface Preferences {
+  theme: "light" | "dark";
+  fontSize?: number;
+}
 
-// A typed view of the store: values are JSON-encoded Preferences, under a
-// "prefs:" prefix.
-const preferences = Effect.map(Effect.service(KeyValueStore.KeyValueStore), (store) =>
-  KeyValueStore.toSchemaStore(KeyValueStore.prefix(store, "prefs:"), Preferences))
+// KV holds whatever it is given, so check values coming in from a request.
+// Returns the preferences, or a message saying what is wrong.
+function parsePreferences(value: unknown): Preferences | string {
+  if (typeof value !== "object" || value === null) return "expected an object";
+  const { theme, fontSize } = value as Record<string, unknown>;
+  if (theme !== "light" && theme !== "dark") {
+    return "theme must be light or dark";
+  }
+  if (fontSize !== undefined && !Number.isInteger(fontSize)) {
+    return "fontSize must be an integer";
+  }
+  return fontSize === undefined
+    ? { theme }
+    : { theme, fontSize: fontSize as number };
+}
 
-const routes = Layer.mergeAll(
-  HttpRouter.add(
-    "PUT",
-    "/prefs/:user",
-    Effect.gen(function*() {
-      const { user } = yield* HttpRouter.params
-      const prefs = yield* HttpServerRequest.schemaBodyJson(Preferences)
-      yield* (yield* preferences).set(user!, prefs)
-      return HttpServerResponse.text("saved")
-    }).pipe(Effect.catchTag("SchemaError", () => Effect.succeed(HttpServerResponse.text("invalid", { status: 400 })))),
-  ),
-  HttpRouter.add(
-    "GET",
-    "/prefs/:user",
-    Effect.gen(function*() {
-      const { user } = yield* HttpRouter.params
-      const prefs = yield* (yield* preferences).get(user!)
-      return Option.match(prefs, {
-        onNone: () => HttpServerResponse.text("not found", { status: 404 }),
-        onSome: (p) => HttpServerResponse.jsonUnsafe(p),
-      })
-    }),
-  ),
-  // The untyped store works too, e.g. for a counter.
-  HttpRouter.add(
-    "GET",
-    "/visits",
-    Effect.gen(function*() {
-      const store = yield* KeyValueStore.KeyValueStore
-      const visits = Number((yield* store.get("visits")) ?? "0") + 1
-      yield* store.set("visits", String(visits))
-      return HttpServerResponse.text(`visit ${visits}`)
-    }),
-  ),
-)
+const prefs = new URLPattern({ pathname: "/prefs/:user" });
 
-export default Worker.make({ layer: Kv.layer("CACHE"), fetch: routes })
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    const user = prefs.exec(url)?.pathname.groups.user;
+
+    if (user && request.method === "PUT") {
+      const body = await request.json().catch(() => undefined);
+      const result = parsePreferences(body);
+      if (typeof result === "string") {
+        return new Response(result, { status: 400 });
+      }
+      // Keys share one namespace, so prefix them. Metadata travels with the
+      // value; expirationTtl (seconds, at least 60) deletes it after 30 days.
+      await env.CACHE.put(`prefs:${user}`, JSON.stringify(result), {
+        metadata: { savedAt: new Date().toISOString() },
+        expirationTtl: 60 * 60 * 24 * 30,
+      });
+      return new Response("saved");
+    }
+
+    if (user && request.method === "GET") {
+      // getWithMetadata parses the JSON and returns the metadata with it.
+      const { value, metadata } = await env.CACHE.getWithMetadata<
+        Preferences,
+        { savedAt: string }
+      >(
+        `prefs:${user}`,
+        "json",
+      );
+      if (value === null) return new Response("not found", { status: 404 });
+      return Response.json(value, {
+        headers: { "x-saved-at": metadata?.savedAt ?? "" },
+      });
+    }
+
+    // A plain string value works for a rough counter. Two requests at the
+    // same moment can both read 1 and write 2: fine for a demo, not for
+    // billing.
+    if (url.pathname === "/visits") {
+      const visits = Number(await env.CACHE.get("visits") ?? "0") + 1;
+      await env.CACHE.put("visits", String(visits));
+      return new Response(`visit ${visits}`);
+    }
+
+    return new Response("not found", { status: 404 });
+  },
+} satisfies ExportedHandler<Env>;

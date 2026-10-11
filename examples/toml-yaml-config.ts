@@ -3,46 +3,69 @@
  * @difficulty beginner
  * @tags workers, encoding, config
  * @group Data formats
+ * @resource {https://jsr.io/@std/toml} @std/toml
+ * @resource {https://jsr.io/@std/yaml} @std/yaml
  * @resource {https://toml.io} TOML
  * @resource {https://yaml.org/spec/1.2.2/} YAML 1.2
- * @check GET / -> 200 "toml: api on port 8080" "yaml: api on port 8080" "as yaml:" "port: 8080" "bad port: SchemaError"
+ * @check GET / -> 200 "toml: api on port 8080" "yaml: api on port 8080" "as yaml:" "port: 8080" "as toml:" "bad port: RangeError" "bad toml: SyntaxError"
  *
- * Configuration files map to typed values with a Schema codec: TOML or
- * YAML text in, a validated config object out, and back again. Both
- * parsers are std's complete implementations (the full TOML spec, YAML 1.2
- * with multiple documents and tags), behind typed errors.
+ * Configuration files map to plain objects. std has complete parsers and
+ * stringifiers for both: the full TOML spec, and YAML 1.2 with multiple
+ * documents and tags. Parsing gives you untyped data, so check the values
+ * you rely on.
  */
 
-import { Console, Effect, Schema } from "effect"
-import * as Toml from "@mikepage/flareosaur/toml"
-import * as Yaml from "@mikepage/flareosaur/yaml"
-import { script } from "./_lib/script.ts"
+import * as toml from "@mikepage/flareosaur/toml";
+import * as yaml from "@mikepage/flareosaur/yaml";
+import { script } from "./_lib/script.ts";
 
-const Config = Schema.Struct({
-  name: Schema.String,
-  server: Schema.Struct({ port: Schema.Int.check(Schema.isBetween({ minimum: 1, maximum: 65535 })) }),
-})
+interface Config {
+  name: string;
+  server: { port: number };
+}
 
-const toml = `
+// Checks the parsed value and returns it typed.
+function toConfig(value: unknown): Config {
+  const config = value as Partial<Config> | null;
+  if (typeof config?.name !== "string") throw new TypeError("name required");
+  const port = config.server?.port;
+  if (!Number.isInteger(port) || port! < 1 || port! > 65535) {
+    throw new RangeError(`invalid port: ${port}`);
+  }
+  return { name: config.name, server: { port: port! } };
+}
+
+const source = `
 name = "api"
 
 [server]
 port = 8080
-`
+`;
 
-const program = Effect.gen(function*() {
-  const fromToml = yield* Schema.decodeEffect(Toml.schema(Config))(toml)
-  yield* Console.log(`toml: ${fromToml.name} on port ${fromToml.server.port}`)
+export default script((print) => {
+  const fromToml = toConfig(toml.parse(source));
+  print(`toml: ${fromToml.name} on port ${fromToml.server.port}`);
 
-  // The same value, through YAML.
-  const yaml = yield* Yaml.stringify(fromToml)
-  const fromYaml = yield* Schema.decodeEffect(Yaml.schema(Config))(yaml)
-  yield* Console.log(`yaml: ${fromYaml.name} on port ${fromYaml.server.port}`)
-  yield* Console.log(`as yaml:\n${yaml}`)
+  // The same value, through YAML and back.
+  const asYaml = yaml.stringify(fromToml);
+  const fromYaml = toConfig(yaml.parse(asYaml));
+  print(`yaml: ${fromYaml.name} on port ${fromYaml.server.port}`);
+  print(`as yaml:\n${asYaml}`);
 
-  // Values that parse but do not fit the schema fail with a SchemaError.
-  const bad = yield* Effect.flip(Schema.decodeEffect(Toml.schema(Config))(`name = "x"\n[server]\nport = 99999\n`))
-  yield* Console.log(`bad port: ${bad._tag}`)
-})
+  // And back to TOML text.
+  print(`as toml:\n${toml.stringify({ ...fromYaml })}`);
 
-export default script(program)
+  // Text that parses but holds a bad value fails the check.
+  try {
+    toConfig(toml.parse(`name = "x"\n[server]\nport = 99999\n`));
+  } catch (error) {
+    print(`bad port: ${error instanceof Error ? error.name : error}`);
+  }
+
+  // Text that does not parse throws a SyntaxError.
+  try {
+    toml.parse(`name = `);
+  } catch (error) {
+    print(`bad toml: ${error instanceof Error ? error.name : error}`);
+  }
+});

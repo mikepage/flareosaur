@@ -2,241 +2,1171 @@
   "compilerOptions": {
     "paths": {
       "@mikepage/flareosaur/assert": [
-        "./assert/mod.ts"
+        "./node_modules/.flareosaur-types/assert/mod.d.ts"
       ],
-      "@mikepage/flareosaur/async/circuit-breaker": [
-        "./async/CircuitBreaker.ts"
+      "@mikepage/flareosaur/assert/assert": [
+        "./node_modules/.flareosaur-types/assert/assert.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/almost-equals": [
+        "./node_modules/.flareosaur-types/assert/almost_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/array-includes": [
+        "./node_modules/.flareosaur-types/assert/array_includes.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/equals": [
+        "./node_modules/.flareosaur-types/assert/equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/unstable-equals": [
+        "./node_modules/.flareosaur-types/assert/unstable_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/exists": [
+        "./node_modules/.flareosaur-types/assert/exists.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/false": [
+        "./node_modules/.flareosaur-types/assert/false.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/greater": [
+        "./node_modules/.flareosaur-types/assert/greater.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/greater-or-equal": [
+        "./node_modules/.flareosaur-types/assert/greater_or_equal.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/instance-of": [
+        "./node_modules/.flareosaur-types/assert/instance_of.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/is-error": [
+        "./node_modules/.flareosaur-types/assert/is_error.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/less": [
+        "./node_modules/.flareosaur-types/assert/less.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/less-or-equal": [
+        "./node_modules/.flareosaur-types/assert/less_or_equal.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/match": [
+        "./node_modules/.flareosaur-types/assert/match.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/unstable-never": [
+        "./node_modules/.flareosaur-types/assert/unstable_never.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/not-equals": [
+        "./node_modules/.flareosaur-types/assert/not_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/not-instance-of": [
+        "./node_modules/.flareosaur-types/assert/not_instance_of.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/not-match": [
+        "./node_modules/.flareosaur-types/assert/not_match.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/not-strict-equals": [
+        "./node_modules/.flareosaur-types/assert/not_strict_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/object-match": [
+        "./node_modules/.flareosaur-types/assert/object_match.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/rejects": [
+        "./node_modules/.flareosaur-types/assert/rejects.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/strict-equals": [
+        "./node_modules/.flareosaur-types/assert/strict_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/unstable-strict-equals": [
+        "./node_modules/.flareosaur-types/assert/unstable_strict_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/string-includes": [
+        "./node_modules/.flareosaur-types/assert/string_includes.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/throws": [
+        "./node_modules/.flareosaur-types/assert/throws.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/assertion-error": [
+        "./node_modules/.flareosaur-types/assert/assertion_error.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/equal": [
+        "./node_modules/.flareosaur-types/assert/equal.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/fail": [
+        "./node_modules/.flareosaur-types/assert/fail.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/unimplemented": [
+        "./node_modules/.flareosaur-types/assert/unimplemented.d.ts"
+      ],
+      "@mikepage/flareosaur/assert/unreachable": [
+        "./node_modules/.flareosaur-types/assert/unreachable.d.ts"
       ],
       "@mikepage/flareosaur/async": [
-        "./async/mod.ts"
+        "./node_modules/.flareosaur-types/async/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/async/abortable": [
+        "./node_modules/.flareosaur-types/async/abortable.d.ts"
+      ],
+      "@mikepage/flareosaur/async/channel": [
+        "./node_modules/.flareosaur-types/async/channel.d.ts"
+      ],
+      "@mikepage/flareosaur/async/deadline": [
+        "./node_modules/.flareosaur-types/async/deadline.d.ts"
+      ],
+      "@mikepage/flareosaur/async/debounce": [
+        "./node_modules/.flareosaur-types/async/debounce.d.ts"
+      ],
+      "@mikepage/flareosaur/async/delay": [
+        "./node_modules/.flareosaur-types/async/delay.d.ts"
+      ],
+      "@mikepage/flareosaur/async/mux-async-iterator": [
+        "./node_modules/.flareosaur-types/async/mux_async_iterator.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-mux-async-iterator": [
+        "./node_modules/.flareosaur-types/async/unstable_mux_async_iterator.d.ts"
+      ],
+      "@mikepage/flareosaur/async/poll": [
+        "./node_modules/.flareosaur-types/async/poll.d.ts"
+      ],
+      "@mikepage/flareosaur/async/pool": [
+        "./node_modules/.flareosaur-types/async/pool.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-pool": [
+        "./node_modules/.flareosaur-types/async/unstable_pool.d.ts"
+      ],
+      "@mikepage/flareosaur/async/retry": [
+        "./node_modules/.flareosaur-types/async/retry.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-retry": [
+        "./node_modules/.flareosaur-types/async/unstable_retry.d.ts"
+      ],
+      "@mikepage/flareosaur/async/tee": [
+        "./node_modules/.flareosaur-types/async/tee.d.ts"
+      ],
+      "@mikepage/flareosaur/async/all-keyed": [
+        "./node_modules/.flareosaur-types/async/all_keyed.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-abortable": [
+        "./node_modules/.flareosaur-types/async/unstable_abortable.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-throttle": [
+        "./node_modules/.flareosaur-types/async/unstable_throttle.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-wait-for": [
+        "./node_modules/.flareosaur-types/async/unstable_wait_for.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-semaphore": [
+        "./node_modules/.flareosaur-types/async/unstable_semaphore.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-circuit-breaker": [
+        "./node_modules/.flareosaur-types/async/unstable_circuit_breaker.d.ts"
+      ],
+      "@mikepage/flareosaur/async/lazy": [
+        "./node_modules/.flareosaur-types/async/lazy.d.ts"
+      ],
+      "@mikepage/flareosaur/async/unstable-pool-settled": [
+        "./node_modules/.flareosaur-types/async/unstable_pool_settled.d.ts"
       ],
       "@mikepage/flareosaur/bytes": [
-        "./bytes/mod.ts"
+        "./node_modules/.flareosaur-types/bytes/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/concat": [
+        "./node_modules/.flareosaur-types/bytes/concat.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/copy": [
+        "./node_modules/.flareosaur-types/bytes/copy.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/ends-with": [
+        "./node_modules/.flareosaur-types/bytes/ends_with.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/equals": [
+        "./node_modules/.flareosaur-types/bytes/equals.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/includes-needle": [
+        "./node_modules/.flareosaur-types/bytes/includes_needle.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/index-of-needle": [
+        "./node_modules/.flareosaur-types/bytes/index_of_needle.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/last-index-of-needle": [
+        "./node_modules/.flareosaur-types/bytes/last_index_of_needle.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/repeat": [
+        "./node_modules/.flareosaur-types/bytes/repeat.d.ts"
+      ],
+      "@mikepage/flareosaur/bytes/starts-with": [
+        "./node_modules/.flareosaur-types/bytes/starts_with.d.ts"
       ],
       "@mikepage/flareosaur/cache": [
-        "./cache/mod.ts"
+        "./node_modules/.flareosaur-types/cache/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/cache/lru-cache": [
+        "./node_modules/.flareosaur-types/cache/lru_cache.d.ts"
+      ],
+      "@mikepage/flareosaur/cache/memoize": [
+        "./node_modules/.flareosaur-types/cache/memoize.d.ts"
+      ],
+      "@mikepage/flareosaur/cache/ttl-cache": [
+        "./node_modules/.flareosaur-types/cache/ttl_cache.d.ts"
       ],
       "@mikepage/flareosaur/collections": [
-        "./collections/mod.ts"
+        "./node_modules/.flareosaur-types/collections/mod.d.ts"
       ],
-      "@mikepage/flareosaur/crypto/web-crypto": [
-        "./crypto/WebCrypto.ts"
+      "@mikepage/flareosaur/collections/aggregate-groups": [
+        "./node_modules/.flareosaur-types/collections/aggregate_groups.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/associate-by": [
+        "./node_modules/.flareosaur-types/collections/associate_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/associate-with": [
+        "./node_modules/.flareosaur-types/collections/associate_with.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/chunk": [
+        "./node_modules/.flareosaur-types/collections/chunk.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/deep-merge": [
+        "./node_modules/.flareosaur-types/collections/deep_merge.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/distinct": [
+        "./node_modules/.flareosaur-types/collections/distinct.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/distinct-by": [
+        "./node_modules/.flareosaur-types/collections/distinct_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/drop-last-while": [
+        "./node_modules/.flareosaur-types/collections/drop_last_while.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/drop-while": [
+        "./node_modules/.flareosaur-types/collections/drop_while.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/filter-entries": [
+        "./node_modules/.flareosaur-types/collections/filter_entries.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/filter-keys": [
+        "./node_modules/.flareosaur-types/collections/filter_keys.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/filter-values": [
+        "./node_modules/.flareosaur-types/collections/filter_values.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/find-single": [
+        "./node_modules/.flareosaur-types/collections/find_single.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/first-not-nullish-of": [
+        "./node_modules/.flareosaur-types/collections/first_not_nullish_of.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/includes-value": [
+        "./node_modules/.flareosaur-types/collections/includes_value.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/interleave": [
+        "./node_modules/.flareosaur-types/collections/interleave.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/intersect": [
+        "./node_modules/.flareosaur-types/collections/intersect.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/invert-by": [
+        "./node_modules/.flareosaur-types/collections/invert_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/invert": [
+        "./node_modules/.flareosaur-types/collections/invert.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/join-to-string": [
+        "./node_modules/.flareosaur-types/collections/join_to_string.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/map-entries": [
+        "./node_modules/.flareosaur-types/collections/map_entries.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/map-keys": [
+        "./node_modules/.flareosaur-types/collections/map_keys.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/map-not-nullish": [
+        "./node_modules/.flareosaur-types/collections/map_not_nullish.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/map-values": [
+        "./node_modules/.flareosaur-types/collections/map_values.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/max-by": [
+        "./node_modules/.flareosaur-types/collections/max_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/max-of": [
+        "./node_modules/.flareosaur-types/collections/max_of.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/max-with": [
+        "./node_modules/.flareosaur-types/collections/max_with.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/min-by": [
+        "./node_modules/.flareosaur-types/collections/min_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/min-of": [
+        "./node_modules/.flareosaur-types/collections/min_of.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/min-with": [
+        "./node_modules/.flareosaur-types/collections/min_with.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/omit": [
+        "./node_modules/.flareosaur-types/collections/omit.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/partition": [
+        "./node_modules/.flareosaur-types/collections/partition.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/partition-entries": [
+        "./node_modules/.flareosaur-types/collections/partition_entries.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/permutations": [
+        "./node_modules/.flareosaur-types/collections/permutations.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/pick": [
+        "./node_modules/.flareosaur-types/collections/pick.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/reduce-groups": [
+        "./node_modules/.flareosaur-types/collections/reduce_groups.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/running-reduce": [
+        "./node_modules/.flareosaur-types/collections/running_reduce.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/sample": [
+        "./node_modules/.flareosaur-types/collections/sample.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/sliding-windows": [
+        "./node_modules/.flareosaur-types/collections/sliding_windows.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/sort-by": [
+        "./node_modules/.flareosaur-types/collections/sort_by.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/sum-of": [
+        "./node_modules/.flareosaur-types/collections/sum_of.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/take-last-while": [
+        "./node_modules/.flareosaur-types/collections/take_last_while.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/take-while": [
+        "./node_modules/.flareosaur-types/collections/take_while.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/union": [
+        "./node_modules/.flareosaur-types/collections/union.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/unstable-binary-search": [
+        "./node_modules/.flareosaur-types/collections/unstable_binary_search.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/unstable-cycle": [
+        "./node_modules/.flareosaur-types/collections/unstable_cycle.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/unzip": [
+        "./node_modules/.flareosaur-types/collections/unzip.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/without-all": [
+        "./node_modules/.flareosaur-types/collections/without_all.d.ts"
+      ],
+      "@mikepage/flareosaur/collections/zip": [
+        "./node_modules/.flareosaur-types/collections/zip.d.ts"
       ],
       "@mikepage/flareosaur/crypto": [
-        "./crypto/mod.ts"
+        "./node_modules/.flareosaur-types/crypto/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/crypto/crypto": [
+        "./node_modules/.flareosaur-types/crypto/crypto.d.ts"
+      ],
+      "@mikepage/flareosaur/crypto/timing-safe-equal": [
+        "./node_modules/.flareosaur-types/crypto/timing_safe_equal.d.ts"
+      ],
+      "@mikepage/flareosaur/crypto/aes-gcm": [
+        "./node_modules/.flareosaur-types/crypto/aes_gcm.d.ts"
       ],
       "@mikepage/flareosaur/csv": [
-        "./csv/mod.ts"
+        "./node_modules/.flareosaur-types/csv/mod.d.ts"
       ],
-      "@mikepage/flareosaur/data-structures/bidirectional-map": [
-        "./data_structures/BidirectionalMap.ts"
+      "@mikepage/flareosaur/csv/parse": [
+        "./node_modules/.flareosaur-types/csv/parse.d.ts"
       ],
-      "@mikepage/flareosaur/data-structures/binary-heap": [
-        "./data_structures/BinaryHeap.ts"
+      "@mikepage/flareosaur/csv/parse-stream": [
+        "./node_modules/.flareosaur-types/csv/parse_stream.d.ts"
       ],
-      "@mikepage/flareosaur/data-structures/binary-search-tree": [
-        "./data_structures/BinarySearchTree.ts"
+      "@mikepage/flareosaur/csv/stringify": [
+        "./node_modules/.flareosaur-types/csv/stringify.d.ts"
       ],
-      "@mikepage/flareosaur/data-structures/comparators": [
-        "./data_structures/Comparators.ts"
+      "@mikepage/flareosaur/csv/stringify-stream": [
+        "./node_modules/.flareosaur-types/csv/stringify_stream.d.ts"
       ],
-      "@mikepage/flareosaur/data-structures/d2-array": [
-        "./data_structures/D2Array.ts"
-      ],
-      "@mikepage/flareosaur/data-structures/deque": [
-        "./data_structures/Deque.ts"
-      ],
-      "@mikepage/flareosaur/data-structures/indexed-heap": [
-        "./data_structures/IndexedHeap.ts"
-      ],
-      "@mikepage/flareosaur/data-structures/multi-map": [
-        "./data_structures/MultiMap.ts"
-      ],
-      "@mikepage/flareosaur/data-structures/red-black-tree": [
-        "./data_structures/RedBlackTree.ts"
-      ],
-      "@mikepage/flareosaur/data-structures/rolling-counter": [
-        "./data_structures/RollingCounter.ts"
+      "@mikepage/flareosaur/csv/unstable-stringify": [
+        "./node_modules/.flareosaur-types/csv/unstable_stringify.d.ts"
       ],
       "@mikepage/flareosaur/data-structures": [
-        "./data_structures/mod.ts"
+        "./node_modules/.flareosaur-types/data_structures/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-bidirectional-map": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_bidirectional_map.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/binary-heap": [
+        "./node_modules/.flareosaur-types/data_structures/binary_heap.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/binary-search-tree": [
+        "./node_modules/.flareosaur-types/data_structures/binary_search_tree.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-binary-search-tree": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_binary_search_tree.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/comparators": [
+        "./node_modules/.flareosaur-types/data_structures/comparators.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/deque": [
+        "./node_modules/.flareosaur-types/data_structures/deque.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/red-black-tree": [
+        "./node_modules/.flareosaur-types/data_structures/red_black_tree.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-2d-array": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_2d_array.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-rolling-counter": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_rolling_counter.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-indexed-heap": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_indexed_heap.d.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/unstable-multimap": [
+        "./node_modules/.flareosaur-types/data_structures/unstable_multimap.d.ts"
       ],
       "@mikepage/flareosaur/datetime": [
-        "./datetime/mod.ts"
+        "./node_modules/.flareosaur-types/datetime/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/constants": [
+        "./node_modules/.flareosaur-types/datetime/constants.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/day-of-year": [
+        "./node_modules/.flareosaur-types/datetime/day_of_year.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/difference": [
+        "./node_modules/.flareosaur-types/datetime/difference.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/format": [
+        "./node_modules/.flareosaur-types/datetime/format.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/is-leap": [
+        "./node_modules/.flareosaur-types/datetime/is_leap.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/parse": [
+        "./node_modules/.flareosaur-types/datetime/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/datetime/week-of-year": [
+        "./node_modules/.flareosaur-types/datetime/week_of_year.d.ts"
       ],
       "@mikepage/flareosaur/dotenv": [
-        "./dotenv/mod.ts"
+        "./node_modules/.flareosaur-types/dotenv/mod.d.ts"
       ],
-      "@mikepage/flareosaur/encoding/ascii85": [
-        "./encoding/Ascii85.ts"
+      "@mikepage/flareosaur/dotenv/parse": [
+        "./node_modules/.flareosaur-types/dotenv/parse.d.ts"
       ],
-      "@mikepage/flareosaur/encoding/base32": [
-        "./encoding/Base32.ts"
-      ],
-      "@mikepage/flareosaur/encoding/base32-crockford": [
-        "./encoding/Base32Crockford.ts"
-      ],
-      "@mikepage/flareosaur/encoding/base32-hex": [
-        "./encoding/Base32Hex.ts"
-      ],
-      "@mikepage/flareosaur/encoding/base58": [
-        "./encoding/Base58.ts"
-      ],
-      "@mikepage/flareosaur/encoding/base64": [
-        "./encoding/Base64.ts"
-      ],
-      "@mikepage/flareosaur/encoding/base64-url": [
-        "./encoding/Base64Url.ts"
-      ],
-      "@mikepage/flareosaur/encoding/hex": [
-        "./encoding/Hex.ts"
-      ],
-      "@mikepage/flareosaur/encoding/varint": [
-        "./encoding/Varint.ts"
+      "@mikepage/flareosaur/dotenv/stringify": [
+        "./node_modules/.flareosaur-types/dotenv/stringify.d.ts"
       ],
       "@mikepage/flareosaur/encoding": [
-        "./encoding/mod.ts"
+        "./node_modules/.flareosaur-types/encoding/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/ascii85": [
+        "./node_modules/.flareosaur-types/encoding/ascii85.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base32": [
+        "./node_modules/.flareosaur-types/encoding/base32.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-base32": [
+        "./node_modules/.flareosaur-types/encoding/unstable_base32.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-base32-stream": [
+        "./node_modules/.flareosaur-types/encoding/unstable_base32_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base58": [
+        "./node_modules/.flareosaur-types/encoding/base58.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base64": [
+        "./node_modules/.flareosaur-types/encoding/base64.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-base64": [
+        "./node_modules/.flareosaur-types/encoding/unstable_base64.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-base64-stream": [
+        "./node_modules/.flareosaur-types/encoding/unstable_base64_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base64url": [
+        "./node_modules/.flareosaur-types/encoding/base64url.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/hex": [
+        "./node_modules/.flareosaur-types/encoding/hex.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-hex": [
+        "./node_modules/.flareosaur-types/encoding/unstable_hex.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/unstable-hex-stream": [
+        "./node_modules/.flareosaur-types/encoding/unstable_hex_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/encoding/varint": [
+        "./node_modules/.flareosaur-types/encoding/varint.d.ts"
+      ],
+      "@mikepage/flareosaur/fmt/bytes": [
+        "./node_modules/.flareosaur-types/fmt/bytes.d.ts"
       ],
       "@mikepage/flareosaur/fmt/colors": [
-        "./fmt/Colors.ts"
+        "./node_modules/.flareosaur-types/fmt/colors.d.ts"
       ],
-      "@mikepage/flareosaur/fmt": [
-        "./fmt/mod.ts"
+      "@mikepage/flareosaur/fmt/duration": [
+        "./node_modules/.flareosaur-types/fmt/duration.d.ts"
+      ],
+      "@mikepage/flareosaur/fmt/printf": [
+        "./node_modules/.flareosaur-types/fmt/printf.d.ts"
       ],
       "@mikepage/flareosaur/front-matter": [
-        "./front_matter/mod.ts"
+        "./node_modules/.flareosaur-types/front_matter/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/any": [
+        "./node_modules/.flareosaur-types/front_matter/any.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/json": [
+        "./node_modules/.flareosaur-types/front_matter/json.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/test": [
+        "./node_modules/.flareosaur-types/front_matter/test.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/toml": [
+        "./node_modules/.flareosaur-types/front_matter/toml.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/yaml": [
+        "./node_modules/.flareosaur-types/front_matter/yaml.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/unstable-yaml": [
+        "./node_modules/.flareosaur-types/front_matter/unstable_yaml.d.ts"
+      ],
+      "@mikepage/flareosaur/front-matter/types": [
+        "./node_modules/.flareosaur-types/front_matter/types.d.ts"
       ],
       "@mikepage/flareosaur/html": [
-        "./html/mod.ts"
+        "./node_modules/.flareosaur-types/html/mod.d.ts"
       ],
-      "@mikepage/flareosaur/http/cache-control": [
-        "./http/CacheControl.ts"
+      "@mikepage/flareosaur/html/entities": [
+        "./node_modules/.flareosaur-types/html/entities.d.ts"
       ],
-      "@mikepage/flareosaur/http/etag": [
-        "./http/Etag.ts"
+      "@mikepage/flareosaur/html/unstable-escape-css": [
+        "./node_modules/.flareosaur-types/html/unstable_escape_css.d.ts"
       ],
-      "@mikepage/flareosaur/http/form-data": [
-        "./http/FormData.ts"
+      "@mikepage/flareosaur/html/unstable-escape-js": [
+        "./node_modules/.flareosaur-types/html/unstable_escape_js.d.ts"
       ],
-      "@mikepage/flareosaur/http/header": [
-        "./http/Header.ts"
+      "@mikepage/flareosaur/html/unstable-is-valid-custom-element-name": [
+        "./node_modules/.flareosaur-types/html/unstable_is_valid_custom_element_name.d.ts"
       ],
-      "@mikepage/flareosaur/http/message-signatures": [
-        "./http/MessageSignatures.ts"
+      "@mikepage/flareosaur/html/named-entity-list.json": [
+        "./node_modules/.flareosaur-types/html/named_entity_list.json"
       ],
-      "@mikepage/flareosaur/http/method": [
-        "./http/Method.ts"
-      ],
-      "@mikepage/flareosaur/http/negotiation": [
-        "./http/Negotiation.ts"
-      ],
-      "@mikepage/flareosaur/http/problem-details": [
-        "./http/ProblemDetails.ts"
-      ],
-      "@mikepage/flareosaur/http/route": [
-        "./http/Route.ts"
-      ],
-      "@mikepage/flareosaur/http/server-sent-events": [
-        "./http/ServerSentEvents.ts"
-      ],
-      "@mikepage/flareosaur/http/signed-cookie": [
-        "./http/SignedCookie.ts"
-      ],
-      "@mikepage/flareosaur/http/status": [
-        "./http/Status.ts"
-      ],
-      "@mikepage/flareosaur/http/structured-fields": [
-        "./http/StructuredFields.ts"
-      ],
-      "@mikepage/flareosaur/http/user-agent": [
-        "./http/UserAgent.ts"
+      "@mikepage/flareosaur/html/unstable-html": [
+        "./node_modules/.flareosaur-types/html/unstable_html.d.ts"
       ],
       "@mikepage/flareosaur/http": [
-        "./http/mod.ts"
+        "./node_modules/.flareosaur-types/http/mod.d.ts"
       ],
-      "@mikepage/flareosaur/internal/inspect": [
-        "./internal/Inspect.ts"
+      "@mikepage/flareosaur/http/cookie": [
+        "./node_modules/.flareosaur-types/http/cookie.d.ts"
+      ],
+      "@mikepage/flareosaur/http/etag": [
+        "./node_modules/.flareosaur-types/http/etag.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-formdata-decoder-stream": [
+        "./node_modules/.flareosaur-types/http/unstable_formdata_decoder_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-formdata-encoder-stream": [
+        "./node_modules/.flareosaur-types/http/unstable_formdata_encoder_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-header": [
+        "./node_modules/.flareosaur-types/http/unstable_header.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-method": [
+        "./node_modules/.flareosaur-types/http/unstable_method.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-problem-details": [
+        "./node_modules/.flareosaur-types/http/unstable_problem_details.d.ts"
+      ],
+      "@mikepage/flareosaur/http/negotiation": [
+        "./node_modules/.flareosaur-types/http/negotiation.d.ts"
+      ],
+      "@mikepage/flareosaur/http/server-sent-event-stream": [
+        "./node_modules/.flareosaur-types/http/server_sent_event_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/http/server-sent-event-parse-stream": [
+        "./node_modules/.flareosaur-types/http/server_sent_event_parse_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/http/status": [
+        "./node_modules/.flareosaur-types/http/status.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-signed-cookie": [
+        "./node_modules/.flareosaur-types/http/unstable_signed_cookie.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-structured-fields": [
+        "./node_modules/.flareosaur-types/http/unstable_structured_fields.d.ts"
+      ],
+      "@mikepage/flareosaur/http/user-agent": [
+        "./node_modules/.flareosaur-types/http/user_agent.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-route": [
+        "./node_modules/.flareosaur-types/http/unstable_route.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-cache-control": [
+        "./node_modules/.flareosaur-types/http/unstable_cache_control.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-message-signatures": [
+        "./node_modules/.flareosaur-types/http/unstable_message_signatures.d.ts"
+      ],
+      "@mikepage/flareosaur/http/unstable-error": [
+        "./node_modules/.flareosaur-types/http/unstable_error.d.ts"
       ],
       "@mikepage/flareosaur/internal": [
-        "./internal/mod.ts"
+        "./node_modules/.flareosaur-types/internal/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/assertion-state": [
+        "./node_modules/.flareosaur-types/internal/assertion_state.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/build-message": [
+        "./node_modules/.flareosaur-types/internal/build_message.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/diff-str": [
+        "./node_modules/.flareosaur-types/internal/diff_str.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/diff": [
+        "./node_modules/.flareosaur-types/internal/diff.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/format": [
+        "./node_modules/.flareosaur-types/internal/format.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/os": [
+        "./node_modules/.flareosaur-types/internal/os.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/styles": [
+        "./node_modules/.flareosaur-types/internal/styles.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/truncate-build-message": [
+        "./node_modules/.flareosaur-types/internal/truncate_build_message.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/types": [
+        "./node_modules/.flareosaur-types/internal/types.d.ts"
+      ],
+      "@mikepage/flareosaur/internal/inspect": [
+        "./node_modules/.flareosaur-types/internal/inspect.d.ts"
       ],
       "@mikepage/flareosaur/json": [
-        "./json/mod.ts"
+        "./node_modules/.flareosaur-types/json/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/json/types": [
+        "./node_modules/.flareosaur-types/json/types.d.ts"
+      ],
+      "@mikepage/flareosaur/json/concatenated-json-parse-stream": [
+        "./node_modules/.flareosaur-types/json/concatenated_json_parse_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/json/parse-stream": [
+        "./node_modules/.flareosaur-types/json/parse_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/json/stringify-stream": [
+        "./node_modules/.flareosaur-types/json/stringify_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/json/canonicalize": [
+        "./node_modules/.flareosaur-types/json/canonicalize.d.ts"
       ],
       "@mikepage/flareosaur/jsonc": [
-        "./jsonc/mod.ts"
+        "./node_modules/.flareosaur-types/jsonc/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/jsonc/parse": [
+        "./node_modules/.flareosaur-types/jsonc/parse.d.ts"
       ],
       "@mikepage/flareosaur/media-types": [
-        "./media_types/mod.ts"
+        "./node_modules/.flareosaur-types/media_types/mod.d.ts"
       ],
-      "@mikepage/flareosaur/path/posix": [
-        "./path/Posix.ts"
+      "@mikepage/flareosaur/media-types/content-type": [
+        "./node_modules/.flareosaur-types/media_types/content_type.d.ts"
       ],
-      "@mikepage/flareosaur/path/windows": [
-        "./path/Windows.ts"
+      "@mikepage/flareosaur/media-types/extension": [
+        "./node_modules/.flareosaur-types/media_types/extension.d.ts"
+      ],
+      "@mikepage/flareosaur/media-types/all-extensions": [
+        "./node_modules/.flareosaur-types/media_types/all_extensions.d.ts"
+      ],
+      "@mikepage/flareosaur/media-types/format-media-type": [
+        "./node_modules/.flareosaur-types/media_types/format_media_type.d.ts"
+      ],
+      "@mikepage/flareosaur/media-types/get-charset": [
+        "./node_modules/.flareosaur-types/media_types/get_charset.d.ts"
+      ],
+      "@mikepage/flareosaur/media-types/parse-media-type": [
+        "./node_modules/.flareosaur-types/media_types/parse_media_type.d.ts"
+      ],
+      "@mikepage/flareosaur/media-types/type-by-extension": [
+        "./node_modules/.flareosaur-types/media_types/type_by_extension.d.ts"
       ],
       "@mikepage/flareosaur/path": [
-        "./path/mod.ts"
+        "./node_modules/.flareosaur-types/path/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/path/basename": [
+        "./node_modules/.flareosaur-types/path/basename.d.ts"
+      ],
+      "@mikepage/flareosaur/path/common": [
+        "./node_modules/.flareosaur-types/path/common.d.ts"
+      ],
+      "@mikepage/flareosaur/path/constants": [
+        "./node_modules/.flareosaur-types/path/constants.d.ts"
+      ],
+      "@mikepage/flareosaur/path/dirname": [
+        "./node_modules/.flareosaur-types/path/dirname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/extname": [
+        "./node_modules/.flareosaur-types/path/extname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/format": [
+        "./node_modules/.flareosaur-types/path/format.d.ts"
+      ],
+      "@mikepage/flareosaur/path/from-file-url": [
+        "./node_modules/.flareosaur-types/path/from_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/glob-to-regexp": [
+        "./node_modules/.flareosaur-types/path/glob_to_regexp.d.ts"
+      ],
+      "@mikepage/flareosaur/path/is-absolute": [
+        "./node_modules/.flareosaur-types/path/is_absolute.d.ts"
+      ],
+      "@mikepage/flareosaur/path/is-glob": [
+        "./node_modules/.flareosaur-types/path/is_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/join": [
+        "./node_modules/.flareosaur-types/path/join.d.ts"
+      ],
+      "@mikepage/flareosaur/path/join-globs": [
+        "./node_modules/.flareosaur-types/path/join_globs.d.ts"
+      ],
+      "@mikepage/flareosaur/path/normalize": [
+        "./node_modules/.flareosaur-types/path/normalize.d.ts"
+      ],
+      "@mikepage/flareosaur/path/normalize-glob": [
+        "./node_modules/.flareosaur-types/path/normalize_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/parse": [
+        "./node_modules/.flareosaur-types/path/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix": [
+        "./node_modules/.flareosaur-types/path/posix/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/basename": [
+        "./node_modules/.flareosaur-types/path/posix/basename.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/common": [
+        "./node_modules/.flareosaur-types/path/posix/common.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/constants": [
+        "./node_modules/.flareosaur-types/path/posix/constants.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/dirname": [
+        "./node_modules/.flareosaur-types/path/posix/dirname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/extname": [
+        "./node_modules/.flareosaur-types/path/posix/extname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/format": [
+        "./node_modules/.flareosaur-types/path/posix/format.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/from-file-url": [
+        "./node_modules/.flareosaur-types/path/posix/from_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/glob-to-regexp": [
+        "./node_modules/.flareosaur-types/path/posix/glob_to_regexp.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/is-absolute": [
+        "./node_modules/.flareosaur-types/path/posix/is_absolute.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/is-glob": [
+        "./node_modules/.flareosaur-types/path/posix/is_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/join": [
+        "./node_modules/.flareosaur-types/path/posix/join.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/join-globs": [
+        "./node_modules/.flareosaur-types/path/posix/join_globs.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/normalize": [
+        "./node_modules/.flareosaur-types/path/posix/normalize.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/normalize-glob": [
+        "./node_modules/.flareosaur-types/path/posix/normalize_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/parse": [
+        "./node_modules/.flareosaur-types/path/posix/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/relative": [
+        "./node_modules/.flareosaur-types/path/posix/relative.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/resolve": [
+        "./node_modules/.flareosaur-types/path/posix/resolve.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/to-file-url": [
+        "./node_modules/.flareosaur-types/path/posix/to_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/posix/to-namespaced-path": [
+        "./node_modules/.flareosaur-types/path/posix/to_namespaced_path.d.ts"
+      ],
+      "@mikepage/flareosaur/path/relative": [
+        "./node_modules/.flareosaur-types/path/relative.d.ts"
+      ],
+      "@mikepage/flareosaur/path/resolve": [
+        "./node_modules/.flareosaur-types/path/resolve.d.ts"
+      ],
+      "@mikepage/flareosaur/path/to-file-url": [
+        "./node_modules/.flareosaur-types/path/to_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/to-namespaced-path": [
+        "./node_modules/.flareosaur-types/path/to_namespaced_path.d.ts"
+      ],
+      "@mikepage/flareosaur/path/types": [
+        "./node_modules/.flareosaur-types/path/types.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows": [
+        "./node_modules/.flareosaur-types/path/windows/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/basename": [
+        "./node_modules/.flareosaur-types/path/windows/basename.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/common": [
+        "./node_modules/.flareosaur-types/path/windows/common.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/constants": [
+        "./node_modules/.flareosaur-types/path/windows/constants.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/dirname": [
+        "./node_modules/.flareosaur-types/path/windows/dirname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/extname": [
+        "./node_modules/.flareosaur-types/path/windows/extname.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/format": [
+        "./node_modules/.flareosaur-types/path/windows/format.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/from-file-url": [
+        "./node_modules/.flareosaur-types/path/windows/from_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/glob-to-regexp": [
+        "./node_modules/.flareosaur-types/path/windows/glob_to_regexp.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/is-absolute": [
+        "./node_modules/.flareosaur-types/path/windows/is_absolute.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/is-glob": [
+        "./node_modules/.flareosaur-types/path/windows/is_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/join": [
+        "./node_modules/.flareosaur-types/path/windows/join.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/join-globs": [
+        "./node_modules/.flareosaur-types/path/windows/join_globs.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/normalize": [
+        "./node_modules/.flareosaur-types/path/windows/normalize.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/normalize-glob": [
+        "./node_modules/.flareosaur-types/path/windows/normalize_glob.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/parse": [
+        "./node_modules/.flareosaur-types/path/windows/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/relative": [
+        "./node_modules/.flareosaur-types/path/windows/relative.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/resolve": [
+        "./node_modules/.flareosaur-types/path/windows/resolve.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/to-file-url": [
+        "./node_modules/.flareosaur-types/path/windows/to_file_url.d.ts"
+      ],
+      "@mikepage/flareosaur/path/windows/to-namespaced-path": [
+        "./node_modules/.flareosaur-types/path/windows/to_namespaced_path.d.ts"
       ],
       "@mikepage/flareosaur/regexp": [
-        "./regexp/mod.ts"
+        "./node_modules/.flareosaur-types/regexp/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/regexp/escape": [
+        "./node_modules/.flareosaur-types/regexp/escape.d.ts"
+      ],
+      "@mikepage/flareosaur/regexp/unstable-replace-all-async": [
+        "./node_modules/.flareosaur-types/regexp/unstable_replace_all_async.d.ts"
       ],
       "@mikepage/flareosaur/semver": [
-        "./semver/mod.ts"
+        "./node_modules/.flareosaur-types/semver/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/can-parse": [
+        "./node_modules/.flareosaur-types/semver/can_parse.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/compare": [
+        "./node_modules/.flareosaur-types/semver/compare.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/difference": [
+        "./node_modules/.flareosaur-types/semver/difference.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/equals": [
+        "./node_modules/.flareosaur-types/semver/equals.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/format": [
+        "./node_modules/.flareosaur-types/semver/format.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/format-range": [
+        "./node_modules/.flareosaur-types/semver/format_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/greater-or-equal": [
+        "./node_modules/.flareosaur-types/semver/greater_or_equal.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/greater-than": [
+        "./node_modules/.flareosaur-types/semver/greater_than.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/greater-than-range": [
+        "./node_modules/.flareosaur-types/semver/greater_than_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/increment": [
+        "./node_modules/.flareosaur-types/semver/increment.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/is-range": [
+        "./node_modules/.flareosaur-types/semver/is_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/is-semver": [
+        "./node_modules/.flareosaur-types/semver/is_semver.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/less-or-equal": [
+        "./node_modules/.flareosaur-types/semver/less_or_equal.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/less-than": [
+        "./node_modules/.flareosaur-types/semver/less_than.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/less-than-range": [
+        "./node_modules/.flareosaur-types/semver/less_than_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/max-satisfying": [
+        "./node_modules/.flareosaur-types/semver/max_satisfying.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/min-satisfying": [
+        "./node_modules/.flareosaur-types/semver/min_satisfying.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/not-equals": [
+        "./node_modules/.flareosaur-types/semver/not_equals.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/parse": [
+        "./node_modules/.flareosaur-types/semver/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/parse-range": [
+        "./node_modules/.flareosaur-types/semver/parse_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/range-intersects": [
+        "./node_modules/.flareosaur-types/semver/range_intersects.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/satisfies": [
+        "./node_modules/.flareosaur-types/semver/satisfies.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/try-parse": [
+        "./node_modules/.flareosaur-types/semver/try_parse.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/try-parse-range": [
+        "./node_modules/.flareosaur-types/semver/try_parse_range.d.ts"
+      ],
+      "@mikepage/flareosaur/semver/types": [
+        "./node_modules/.flareosaur-types/semver/types.d.ts"
       ],
       "@mikepage/flareosaur/streams": [
-        "./streams/mod.ts"
+        "./node_modules/.flareosaur-types/streams/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/unstable-abort-stream": [
+        "./node_modules/.flareosaur-types/streams/unstable_abort_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/batch-stream": [
+        "./node_modules/.flareosaur-types/streams/batch_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/buffer": [
+        "./node_modules/.flareosaur-types/streams/buffer.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/byte-slice-stream": [
+        "./node_modules/.flareosaur-types/streams/byte_slice_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/unstable-capped-delimiter-stream": [
+        "./node_modules/.flareosaur-types/streams/unstable_capped_delimiter_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/concat-readable-streams": [
+        "./node_modules/.flareosaur-types/streams/concat_readable_streams.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/delimiter-stream": [
+        "./node_modules/.flareosaur-types/streams/delimiter_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/early-zip-readable-streams": [
+        "./node_modules/.flareosaur-types/streams/early_zip_readable_streams.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/limited-bytes-transform-stream": [
+        "./node_modules/.flareosaur-types/streams/limited_bytes_transform_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/limited-transform-stream": [
+        "./node_modules/.flareosaur-types/streams/limited_transform_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/merge-readable-streams": [
+        "./node_modules/.flareosaur-types/streams/merge_readable_streams.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/unstable-fixed-chunk-stream": [
+        "./node_modules/.flareosaur-types/streams/unstable_fixed_chunk_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/text-delimiter-stream": [
+        "./node_modules/.flareosaur-types/streams/text_delimiter_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/text-line-stream": [
+        "./node_modules/.flareosaur-types/streams/text_line_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-array-buffer": [
+        "./node_modules/.flareosaur-types/streams/to_array_buffer.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-blob": [
+        "./node_modules/.flareosaur-types/streams/to_blob.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/unstable-to-byte-stream": [
+        "./node_modules/.flareosaur-types/streams/unstable_to_byte_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-bytes": [
+        "./node_modules/.flareosaur-types/streams/to_bytes.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-json": [
+        "./node_modules/.flareosaur-types/streams/to_json.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/unstable-to-lines": [
+        "./node_modules/.flareosaur-types/streams/unstable_to_lines.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-text": [
+        "./node_modules/.flareosaur-types/streams/to_text.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/to-transform-stream": [
+        "./node_modules/.flareosaur-types/streams/to_transform_stream.d.ts"
+      ],
+      "@mikepage/flareosaur/streams/zip-readable-streams": [
+        "./node_modules/.flareosaur-types/streams/zip_readable_streams.d.ts"
       ],
       "@mikepage/flareosaur/testing/mock": [
-        "./testing/Mock.ts"
-      ],
-      "@mikepage/flareosaur/testing/test": [
-        "./testing/Test.ts"
+        "./node_modules/.flareosaur-types/testing/mock.d.ts"
       ],
       "@mikepage/flareosaur/testing/time": [
-        "./testing/Time.ts"
+        "./node_modules/.flareosaur-types/testing/time.d.ts"
       ],
-      "@mikepage/flareosaur/testing": [
-        "./testing/mod.ts"
+      "@mikepage/flareosaur/testing/types": [
+        "./node_modules/.flareosaur-types/testing/types.d.ts"
+      ],
+      "@mikepage/flareosaur/testing/unstable-stub": [
+        "./node_modules/.flareosaur-types/testing/unstable_stub.d.ts"
+      ],
+      "@mikepage/flareosaur/testing/unstable-stub-property": [
+        "./node_modules/.flareosaur-types/testing/unstable_stub_property.d.ts"
+      ],
+      "@mikepage/flareosaur/testing/unstable-types": [
+        "./node_modules/.flareosaur-types/testing/unstable_types.d.ts"
       ],
       "@mikepage/flareosaur/text": [
-        "./text/mod.ts"
+        "./node_modules/.flareosaur-types/text/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/text/closest-string": [
+        "./node_modules/.flareosaur-types/text/closest_string.d.ts"
+      ],
+      "@mikepage/flareosaur/text/compare-similarity": [
+        "./node_modules/.flareosaur-types/text/compare_similarity.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-dedent": [
+        "./node_modules/.flareosaur-types/text/unstable_dedent.d.ts"
+      ],
+      "@mikepage/flareosaur/text/levenshtein-distance": [
+        "./node_modules/.flareosaur-types/text/levenshtein_distance.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-longest-common-prefix": [
+        "./node_modules/.flareosaur-types/text/unstable_longest_common_prefix.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-reverse": [
+        "./node_modules/.flareosaur-types/text/unstable_reverse.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-slugify": [
+        "./node_modules/.flareosaur-types/text/unstable_slugify.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-trim-by": [
+        "./node_modules/.flareosaur-types/text/unstable_trim_by.d.ts"
+      ],
+      "@mikepage/flareosaur/text/to-camel-case": [
+        "./node_modules/.flareosaur-types/text/to_camel_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-to-constant-case": [
+        "./node_modules/.flareosaur-types/text/unstable_to_constant_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/to-kebab-case": [
+        "./node_modules/.flareosaur-types/text/to_kebab_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/to-pascal-case": [
+        "./node_modules/.flareosaur-types/text/to_pascal_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-to-sentence-case": [
+        "./node_modules/.flareosaur-types/text/unstable_to_sentence_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/to-snake-case": [
+        "./node_modules/.flareosaur-types/text/to_snake_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/unstable-to-title-case": [
+        "./node_modules/.flareosaur-types/text/unstable_to_title_case.d.ts"
+      ],
+      "@mikepage/flareosaur/text/truncate": [
+        "./node_modules/.flareosaur-types/text/truncate.d.ts"
+      ],
+      "@mikepage/flareosaur/text/word-similarity-sort": [
+        "./node_modules/.flareosaur-types/text/word_similarity_sort.d.ts"
       ],
       "@mikepage/flareosaur/toml": [
-        "./toml/mod.ts"
+        "./node_modules/.flareosaur-types/toml/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/toml/parse": [
+        "./node_modules/.flareosaur-types/toml/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/toml/stringify": [
+        "./node_modules/.flareosaur-types/toml/stringify.d.ts"
       ],
       "@mikepage/flareosaur/ulid": [
-        "./ulid/mod.ts"
+        "./node_modules/.flareosaur-types/ulid/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/ulid/decode-time": [
+        "./node_modules/.flareosaur-types/ulid/decode_time.d.ts"
+      ],
+      "@mikepage/flareosaur/ulid/monotonic-ulid": [
+        "./node_modules/.flareosaur-types/ulid/monotonic_ulid.d.ts"
+      ],
+      "@mikepage/flareosaur/ulid/ulid": [
+        "./node_modules/.flareosaur-types/ulid/ulid.d.ts"
       ],
       "@mikepage/flareosaur/uuid": [
-        "./uuid/mod.ts"
+        "./node_modules/.flareosaur-types/uuid/mod.d.ts"
       ],
-      "@mikepage/flareosaur/workers/cache": [
-        "./workers/Cache.ts"
+      "@mikepage/flareosaur/uuid/common": [
+        "./node_modules/.flareosaur-types/uuid/common.d.ts"
       ],
-      "@mikepage/flareosaur/workers/durable-object": [
-        "./workers/DurableObject.ts"
+      "@mikepage/flareosaur/uuid/constants": [
+        "./node_modules/.flareosaur-types/uuid/constants.d.ts"
       ],
-      "@mikepage/flareosaur/workers/kv": [
-        "./workers/Kv.ts"
+      "@mikepage/flareosaur/uuid/v1": [
+        "./node_modules/.flareosaur-types/uuid/v1.d.ts"
       ],
-      "@mikepage/flareosaur/workers/queue": [
-        "./workers/Queue.ts"
+      "@mikepage/flareosaur/uuid/v3": [
+        "./node_modules/.flareosaur-types/uuid/v3.d.ts"
       ],
-      "@mikepage/flareosaur/workers/r2": [
-        "./workers/R2.ts"
+      "@mikepage/flareosaur/uuid/v4": [
+        "./node_modules/.flareosaur-types/uuid/v4.d.ts"
       ],
-      "@mikepage/flareosaur/workers/scheduled": [
-        "./workers/Scheduled.ts"
+      "@mikepage/flareosaur/uuid/v5": [
+        "./node_modules/.flareosaur-types/uuid/v5.d.ts"
       ],
-      "@mikepage/flareosaur/workers/worker": [
-        "./workers/Worker.ts"
+      "@mikepage/flareosaur/uuid/v7": [
+        "./node_modules/.flareosaur-types/uuid/v7.d.ts"
       ],
-      "@mikepage/flareosaur/workers": [
-        "./workers/mod.ts"
+      "@mikepage/flareosaur/uuid/unstable-v6": [
+        "./node_modules/.flareosaur-types/uuid/unstable_v6.d.ts"
       ],
       "@mikepage/flareosaur/yaml": [
-        "./yaml/mod.ts"
+        "./node_modules/.flareosaur-types/yaml/mod.d.ts"
+      ],
+      "@mikepage/flareosaur/yaml/parse": [
+        "./node_modules/.flareosaur-types/yaml/parse.d.ts"
+      ],
+      "@mikepage/flareosaur/yaml/stringify": [
+        "./node_modules/.flareosaur-types/yaml/stringify.d.ts"
+      ],
+      "@mikepage/flareosaur/yaml/types": [
+        "./node_modules/.flareosaur-types/yaml/types.d.ts"
+      ],
+      "@mikepage/flareosaur/yaml/unstable-stringify": [
+        "./node_modules/.flareosaur-types/yaml/unstable_stringify.d.ts"
+      ],
+      "@mikepage/flareosaur/yaml/unstable-parse": [
+        "./node_modules/.flareosaur-types/yaml/unstable_parse.d.ts"
       ]
     }
   }

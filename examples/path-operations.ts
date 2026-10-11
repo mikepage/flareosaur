@@ -3,32 +3,48 @@
  * @difficulty beginner
  * @tags workers, path
  * @group Standard library
- * @resource {https://effect.website/docs/platform/path/} Effect: Path
- * @check GET / -> 200 "join: /assets/img/logo.png" "basename: logo.png" "extname: .png" "relative: ../css/site.css" "glob matches: true, false" "windows: C:\\Users\\ada\\notes.txt"
+ * @resource {https://jsr.io/@std/path} @std/path
+ * @check GET / -> 200 "join: /assets/img/logo.png" "basename: logo.png" "extname: .png" "dirname: /assets/img" "relative: ../css/site.css" "glob matches: true, false" "windows: C:\\Users\\ada\\notes.txt"
  *
  * Object keys in R2, routes and asset manifests are all paths, even on a
- * runtime without a filesystem. The path module has std's POSIX and Windows
- * implementations as pure functions and as layers for Effect's `Path`
- * service. On Workers there is no working directory, so relative paths
- * resolve against `/`.
+ * runtime without a filesystem. std's path module has POSIX and Windows
+ * implementations as pure functions. Import the POSIX ones directly: on
+ * Workers there is no working directory, so relative paths resolve
+ * against `/`.
  */
 
-import { Console, Effect, Path } from "effect"
-import * as Paths from "@mikepage/flareosaur/path"
-import { script } from "./_lib/script.ts"
+import {
+  basename,
+  dirname,
+  extname,
+  globToRegExp,
+  join,
+  normalize,
+  relative,
+} from "@mikepage/flareosaur/path/posix";
+import { join as windowsJoin } from "@mikepage/flareosaur/path/windows";
+import { script } from "./_lib/script.ts";
 
-const program = Effect.gen(function*() {
-  yield* Console.log(`join: ${Paths.join("/assets", "img", "../img/logo.png")}`)
-  yield* Console.log(`basename: ${Paths.basename("/assets/img/logo.png")}`)
-  yield* Console.log(`extname: ${Paths.extname("logo.png")}`)
-  yield* Console.log(`relative: ${Paths.relative("/assets/js", "/assets/css/site.css")}`)
+export default script((print) => {
+  // join adds separators and resolves "." and "..".
+  print(`join: ${join("/assets", "img", "../img/logo.png")}`);
+  print(`basename: ${basename("/assets/img/logo.png")}`);
+  print(`extname: ${extname("logo.png")}`);
+  print(`dirname: ${dirname("/assets/img/logo.png")}`);
+  print(`relative: ${relative("/assets/js", "/assets/css/site.css")}`);
 
-  const images = Paths.globToRegExp("assets/**/*.{png,jpg}")
-  yield* Console.log(`glob matches: ${images.test("assets/img/a.png")}, ${images.test("assets/img/a.svg")}`)
+  // normalize cleans up a key before it reaches R2. Leading ".." cannot
+  // climb above the root.
+  print(`normalized: ${normalize("/uploads/../../etc//passwd")}`);
 
-  // Through Effect's Path service, here with the Windows layer.
-  const windows = yield* Effect.service(Path.Path).pipe(Effect.provide(Paths.layerWindows))
-  yield* Console.log(`windows: ${windows.join("C:\\Users", "ada", "notes.txt")}`)
-})
+  // globToRegExp turns a glob into a RegExp, handy for matching keys.
+  const images = globToRegExp("assets/**/*.{png,jpg}");
+  print(
+    `glob matches: ${images.test("assets/img/a.png")}, ${
+      images.test("assets/img/a.svg")
+    }`,
+  );
 
-export default script(program)
+  // The Windows flavour, for paths that come from Windows clients.
+  print(`windows: ${windowsJoin("C:\\Users", "ada", "notes.txt")}`);
+});

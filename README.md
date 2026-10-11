@@ -4,119 +4,224 @@
 
 # flareosaur
 
-The Deno standard library's surface, rebuilt on [Effect](https://effect.website)
-v4, plus the Cloudflare Workers runtime as Effect services, plus the
-[Deno examples](https://docs.deno.com/examples/) ported to Workers. Everything
-runs on workerd with no `nodejs_compat`.
+The most used parts of the
+[Deno standard library](https://github.com/denoland/std), ported to run on
+Cloudflare Workers without `nodejs_compat`. Plus the
+[Deno examples](https://docs.deno.com/examples/), rewritten as plain Workers.
 
 ## Why
 
 On 9 October 2026 the Deno team
 [joined Cloudflare](https://blog.cloudflare.com/deno-joins-cloudflare/). Deno
-is easy to build with because of three layers: a runtime with a server, KV,
-cron and queues built in; a reviewed standard library; and hundreds of small,
-runnable examples. Workers has the runtime, with better primitives, but no
-standard library and no examples that tie it together, so the default is npm
-and `nodejs_compat`.
+was easy to build with because it came with batteries: a reviewed standard
+library and hundreds of small, runnable examples. Workers has a better runtime
+but ships neither, so the default is npm and `nodejs_compat`.
 
-Effect already is most of a standard library, in one package with no
-dependencies. flareosaur fills in the rest:
+Most of what a Worker needs is already in the platform, as web APIs and
+bindings:
 
-- **std on Effect.** Each `@std` package's API, built on Effect: where Effect
-  covers a feature (retries, caching, cron, Base64, HTTP, streams, paths), the
-  package uses Effect; where it doesn't (YAML 1.2, TOML, streaming CSV,
-  semver, negotiation, signed cookies, ...), std's code stays and gets an
-  Effect API with typed errors and Schema codecs.
-- **The Workers runtime as Effect services.** `workers` does for Workers what
-  `Deno.serve`, Deno KV, `Deno.cron` and Deno Queues do for Deno.
-- **Examples.** [`examples/`](examples/README.md): the Deno examples as
-  Workers, each checked in workerd.
+| Job              | Platform API                                                      |
+| ---------------- | ----------------------------------------------------------------- |
+| Routing          | `URLPattern`                                                      |
+| HTTP             | `fetch`, `AbortSignal.timeout`                                    |
+| HTML             | `HTMLRewriter`                                                    |
+| TCP              | `cloudflare:sockets`                                              |
+| Crypto           | `crypto.subtle`                                                   |
+| Formatting       | `Intl`                                                            |
+| Streams          | Web Streams, `CompressionStream`, `TextDecoderStream`             |
+| Storage and jobs | KV, R2, D1, Queues, Cron Triggers, rate limiting, Durable Objects |
+
+flareosaur adds the rest from Deno's std: YAML, TOML, CSV, semver, cookies,
+negotiation, retries, BLAKE3, and so on. Most of `@std` is plain web-standard
+TypeScript that already fits workerd, but it falls back to `Deno.*` or `node:*`
+in places and is only tested on Deno, Node and Bun. This repo collects the
+packages that make sense on the edge into one JSR package, fixes what breaks on
+workerd, and runs std's own tests inside workerd with no compatibility flags.
+
+An earlier version rebuilt all of this on [Effect](https://effect.website) v4.
+It is kept on the
+[`effect-v4`](https://github.com/mikepage/flareosaur/tree/effect-v4) branch.
+Effect is not built or tested for workerd: its scheduler yields with
+`setTimeout(0)`, a fiber that outlives its request hangs the isolate
+([Effect-TS/effect#9025](https://github.com/Effect-TS/effect/issues/9025)), and
+it needed patches and rules to run well.
+
+Ported from the std commit in [`UPSTREAM`](UPSTREAM).
 
 ## Packages
 
-Published as [`@mikepage/flareosaur`](https://jsr.io/@mikepage/flareosaur), one
-package with a subpath per std package: `@std/yaml` becomes
-`@mikepage/flareosaur/yaml`. Every public module imports `effect`.
+Published as [`@mikepage/flareosaur`](https://jsr.io/@mikepage/flareosaur). Each
+std package is a subpath with its upstream API and exports: `@std/http/cookie`
+becomes `@mikepage/flareosaur/http/cookie`. The docs on
+[jsr.io/@std](https://jsr.io/@std) apply after swapping the prefix.
 
-| Subpath | What it is |
-| --- | --- |
-| `workers` | `Worker.make` (fetch, scheduled, queue), `Env` and `Config` from bindings, KV as `KeyValueStore`, R2 as `Stream`s, Schema-typed Queues, Cron dispatch, Cache API, Durable Objects runner |
-| `assert` | std's assertions throwing a `Schema.TaggedError`, Deno-style diffs, `Equal` support, and Effect assertions (`assertSucceeds`, `assertFailsWithTag`, ...) |
-| `testing` | `describe` / `it.effect` tests that run inside workerd, mocks, test clock helpers |
-| `async` | std's helpers (retry, deadline, debounce, pooledMap, ...) on `Schedule`, fibers and `Semaphore` |
-| `bytes`, `collections`, `data-structures`, `text`, `regexp` | std's utilities with `Option`, `Order` and pipeable APIs, delegating to Effect's `Array`, `Record`, `String` where they match |
-| `cache` | LRU and TTL caches and `memoize` on Effect's `Cache` |
-| `crypto` | A Web Crypto layer for Effect's `Crypto`, std's WebAssembly digests (BLAKE3, SHA-3, ...), AES-GCM, HMAC, PBKDF2, HKDF |
-| `uuid`, `ulid` | Generation from `Clock` and `Crypto` (deterministic in tests), branded Schemas |
-| `datetime` | Pattern-based `format` and `parse` on Effect's `DateTime` |
-| `encoding` | Effect's Base64/Hex plus Base32, Base58, Ascii85, Varint, with streams |
-| `yaml`, `toml`, `jsonc`, `csv`, `json`, `front-matter`, `dotenv` | Parsers and stringifiers as Effects, Schema codecs, streaming CSV and JSON, `.env` text as a `ConfigProvider` |
-| `http`, `media-types` | Negotiation, user agents, cache control, structured fields, signed cookies, message signatures, problem details, ETags, SSE, on `effect/http` |
-| `semver` | `SemVer` with `Order`, ranges, `Result`-returning parsers |
-| `streams`, `path`, `html`, `fmt` | Stream operators and Web Streams interop, POSIX/Windows paths, escaping, formatting |
-| `internal` | Deno-style `inspect` for any runtime, with `Redacted` support |
+| Subpath           | Notes                                                     |
+| ----------------- | --------------------------------------------------------- |
+| `assert`          | Failure diffs render as in Deno                           |
+| `async`           | `delay({ persistent: false })` is Deno-only               |
+| `bytes`           |                                                           |
+| `cache`           |                                                           |
+| `collections`     |                                                           |
+| `crypto`          | Wasm is loaded as a `.wasm` module import                 |
+| `csv`             |                                                           |
+| `data-structures` |                                                           |
+| `datetime`        |                                                           |
+| `dotenv`          | No `load()`; parse a string instead                       |
+| `encoding`        |                                                           |
+| `fmt`             | `printf` writes to `console.log`                          |
+| `front-matter`    |                                                           |
+| `html`            |                                                           |
+| `http`            | No file server; the router passes `env` and `ctx` through |
+| `json`            |                                                           |
+| `jsonc`           |                                                           |
+| `media-types`     |                                                           |
+| `path`            | `resolve()` of a relative path throws: there is no cwd    |
+| `regexp`          |                                                           |
+| `semver`          |                                                           |
+| `streams`         |                                                           |
+| `testing`         | `mock`, `time` and `types` only; no `bdd`/`snapshot`      |
+| `text`            |                                                           |
+| `toml`            |                                                           |
+| `ulid`            |                                                           |
+| `uuid`            |                                                           |
+| `yaml`            |                                                           |
 
-std's original code lives in `<pkg>/_std/`, vendored from the std commit in
-[`UPSTREAM`](UPSTREAM), with the edits in
-[`patches/edge.patch`](patches/edge.patch).
+`internal` comes along as a dependency and adds `internal/inspect`.
+
+Left out: `fs`, `io`, `cli`, `net`, `tar` and `log` (filesystem, stdio,
+sockets), `expect` and `webgpu`, and the less used `cbor`, `ini`, `math`,
+`msgpack`, `random` and `xml`.
+
+There are no wrappers for KV, R2, Queues, Cron or Durable Objects. The bindings
+are already small, typed, promise-based APIs. The [examples](examples/README.md)
+show them directly.
 
 ## Usage
 
 ```sh
-npx jsr add @mikepage/flareosaur effect
+npx jsr add @mikepage/flareosaur
 ```
 
 ```ts
-import { Effect, Option, Schema } from "effect"
-import * as Kv from "@mikepage/flareosaur/workers/kv"
-import * as Worker from "@mikepage/flareosaur/workers/worker"
-import * as Yaml from "@mikepage/flareosaur/yaml"
+import { encodeBase64 } from "@mikepage/flareosaur/encoding";
+import { crypto } from "@mikepage/flareosaur/crypto";
 
-const Config = Schema.Struct({ name: Schema.String, port: Schema.Int })
+export default {
+  async fetch(req: Request) {
+    const body = new Uint8Array(await req.arrayBuffer());
+    const digest = await crypto.subtle.digest("BLAKE3", body);
+    return new Response(encodeBase64(digest));
+  },
+};
+```
 
-export default Worker.make({
-  layer: Kv.layer("CONFIG"),
-  fetch: () =>
-    Effect.gen(function*() {
-      const kv = yield* Kv.Kv
-      const text = yield* kv.get("config.yaml")
-      const config = yield* Schema.decodeEffect(Yaml.schema(Config))(Option.getOrElse(text, () => ""))
-      return Response.json(config)
-    }),
-})
+The router hands the rest of the `fetch` arguments to each handler:
+
+```ts
+import { route } from "@mikepage/flareosaur/http/unstable-route";
+
+export default {
+  fetch: route<[Env, ExecutionContext]>([
+    {
+      pattern: new URLPattern({ pathname: "/hello/:name" }),
+      handler: (_req, params, env) =>
+        new Response(`${env.GREETING}, ${params.pathname.groups.name}`),
+    },
+  ], () => new Response("Not found", { status: 404 })),
+};
 ```
 
 `crypto` imports a `.wasm` file. Wrangler and `@cloudflare/vite-plugin` handle
-that out of the box. For TypeScript, include [`types/wasm.d.ts`](types/wasm.d.ts).
+that out of the box. For TypeScript, include
+[`types/wasm.d.ts`](types/wasm.d.ts) or an equivalent `declare module "*.wasm"`.
+
+Imports inside the package are relative paths, so it bundles with no import map
+or aliases. Doc comments are std's, so some examples still show `Deno.serve` or
+`Deno.readTextFile`.
+
+## Examples
+
+[`examples/`](examples/README.md) has the Deno examples as Workers: timeouts,
+retries, routing, cookies, streaming, WebSockets, KV, R2, D1, Queues, Cron,
+Durable Objects, CSV, YAML, hashing, an MCP server and more. Each is one file
+with a commented walkthrough. They use web APIs, the bindings and this package,
+and nothing else.
+
+```sh
+npx wrangler dev examples/hello-world.ts
+```
+
+## Changes from std
+
+The port is mechanical, plus the edits in
+[`patches/edge.patch`](patches/edge.patch):
+
+- **crypto**: std inlines the wasm as base64 and compiles it with
+  `new WebAssembly.Module(bytes)`, which Workers forbid. The port writes it out
+  as `deno_std_wasm_crypto.wasm` and imports it as a module.
+- **internal/format**: without `Deno.inspect` or `node:util`, std printed values
+  as JSON, so `assertEquals` failures were hard to read.
+  [`internal/inspect.ts`](internal/inspect.ts) ports Deno's layout rules and is
+  the fallback. `fmt/printf` uses it for `%v`, `%i` and `%I`.
+- **http**: no `file-server`. `unstable-route` handlers take
+  `(request, params, ...args)` instead of `Deno.ServeHandlerInfo`.
+- **dotenv**: no `load()`, `loadSync()` or `./load`. `parse()` no longer falls
+  back to `Deno.env` when expanding `${VAR}`.
+- **streams, http**: workarounds for four workerd stream bugs that std's tests
+  turned up (BYOB reads and `TransformStream` start errors). See the comments in
+  the patch.
 
 ## Development
 
 ```sh
 npm install
-npm run check      # exports, public-module lint (Effect-only, no Deno/Node), tsc
-npm test           # every package's tests inside workerd (Miniflare)
-npm run examples   # every example against its documented responses
+npm run check      # deno check the packages against web libs, tsc the examples against workers-types
+npm test           # std's own tests inside workerd (Miniflare)
+npm run examples   # every example against the checks in its header
 ```
 
-The tooling is an `effect/cli` app in [`scripts/cli.ts`](scripts/cli.ts). Run
-one package with `npm test -- yaml`, one file with
-`npm test -- yaml/yaml.test.ts`, one example with
-`npm run examples -- kv`. See [`CLAUDE.md`](CLAUDE.md) for the conventions a
-package follows.
+`check` leaves the Deno namespace out, so any `Deno.*` reference fails to
+compile. It then type-checks the examples the way a Worker sees the package:
+through emitted declarations and `@cloudflare/workers-types`.
 
-### Syncing with upstream std
+`test` bundles each package's std tests with esbuild and runs them in workerd
+with no compatibility flags. `Deno.test` and `Deno` reads of a package's own
+`testdata/` map to a small shim. Tests that need a real filesystem, subprocesses
+or Node are listed with a reason in [`scripts/skip.json`](scripts/skip.json).
+Run one package with `npm test -- http`, one file with
+`npm test -- http/cookie_test.ts`.
+
+Current result: 3485 passed, 0 failed, 49 skipped, 111 ignored upstream.
+
+`examples` bundles each example, loads it into Miniflare with the bindings its
+header lists, and runs the header's `@check` requests. Run one with
+`npm run examples -- kv`. With no arguments it also regenerates
+[`examples/README.md`](examples/README.md).
+
+### Syncing with upstream
 
 ```sh
-npm run port -- ../std    # re-vendor std into <pkg>/_std and apply the patch
-npm run patch -- ../std   # after editing _std: regenerate patches/edge.patch
+git clone https://github.com/denoland/std ../std
+npm run port            # or: node scripts/port.mjs path/to/std
 ```
+
+[`scripts/port.mjs`](scripts/port.mjs) copies the selected packages, drops files
+that need Deno or Node APIs, rewrites imports between packages to relative
+paths, generates the `exports` in `deno.json`, externalizes the crypto wasm and
+applies `patches/*.patch`. The upstream commit it was ported from is recorded in
+[`UPSTREAM`](UPSTREAM).
+
+To change an edge fix, edit the ported files, then run `npm run patch` to
+regenerate `patches/edge.patch` from a fresh unpatched port. If the patch stops
+applying after an upstream bump, port with `--no-patches`, redo the edits and
+regenerate.
 
 ### Releasing
 
-Versions are CalVer, `YYYYMMDD.0.N`, with N counting releases that day from
-1. Set `version` in `deno.json` and push to `main`. CI runs the checks, tests
-and examples, then publishes to JSR with GitHub OIDC. Pushes without a version
-bump publish nothing.
+Versions are CalVer, `YYYYMMDD.0.N`, with N counting releases that day from 1
+(`20261010.0.1`, `20261010.0.2`, …). Set `version` in `deno.json` and push to
+`main`. CI runs the checks, tests and examples, then publishes to JSR with
+GitHub OIDC. Pushes without a version bump publish nothing.
 
 ## License
 
