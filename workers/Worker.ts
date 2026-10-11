@@ -15,7 +15,9 @@
  *   `ConfigProvider.fromEnvRecord`, so `Config.String("API_URL")` works
  * - the services of `layer`, built once per isolate with access to `Env`
  *
- * Failures and defects are logged and become a 500 response.
+ * Failures and defects are logged and become a 500 response. A body stream
+ * that fails after the response started can't become a 500 on workerd, so
+ * set `buffer` where a truncated 200 would be worse than losing streaming.
  *
  * ```ts no-assert
  * import { Config, Effect } from "effect"
@@ -154,6 +156,14 @@ export interface Handlers<R, LE> {
     | ((request: Request) => Effect.Effect<Response, unknown, Services<R>>)
     | Layer.Layer<never, any, any>
     | undefined
+  /**
+   * Reads response bodies in full before sending them, for all responses
+   * (`true`) or those the predicate picks. workerd ends a streamed body that
+   * errors with a clean final chunk, so the client gets a truncated 200
+   * (cloudflare/workerd#6818). Buffered, the failure becomes a logged 500.
+   * Leave streams that must stay streams, such as SSE, unbuffered.
+   */
+  readonly buffer?: boolean | ((request: Request, response: Response) => boolean) | undefined
   /** Handles Cron Triggers. */
   readonly scheduled?: ((controller: ScheduledControllerLike) => Effect.Effect<void, unknown, Services<R>>) | undefined
   /** Handles a batch of Queues messages. */
@@ -177,6 +187,14 @@ const internalError = (cause: Cause.Cause<unknown>) =>
     Effect.as(new Response("Internal Server Error", { status: 500 })),
   )
 
+const bufferBody = (response: Response): Effect.Effect<Response, unknown> =>
+  response.body === null
+    ? Effect.succeed(response)
+    : Effect.map(
+      Effect.tryPromise(() => response.arrayBuffer()),
+      (bytes) => new Response(bytes, { status: response.status, statusText: response.statusText, headers: response.headers }),
+    )
+
 /** Builds the default export of a Worker from Effect handlers. */
 export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHandler => {
   let runtime: ManagedRuntime.ManagedRuntime<any, any> | undefined
@@ -189,6 +207,12 @@ export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHa
     ctx: ExecutionContextLike,
     effect: Effect.Effect<A, unknown, any>,
   ): Promise<A> => runtimeFor(env).runPromise(effect.pipe(Effect.provideService(ExecutionContext, ctx)))
+
+  const buffer = handlers.buffer
+  const respond = (request: Request) => (response: Response): Effect.Effect<Response, unknown> =>
+    buffer === true || (Predicate.isFunction(buffer) && buffer(request, response))
+      ? bufferBody(response)
+      : Effect.succeed(response)
 
   const worker: WorkerHandler = {}
   const fetch = handlers.fetch
@@ -216,12 +240,17 @@ export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHa
     }
     worker.fetch = async (request, env, ctx) => {
       router ??= await (routerPromise ??= buildRouter(env))
-      return router(request, Context.make(ExecutionContext, ctx))
+      const response = await router(request, Context.make(ExecutionContext, ctx))
+      return buffer ? run(env, ctx, respond(request)(response).pipe(Effect.catchCause(internalError))) : response
     }
   } else if (fetch) {
     const handler = fetch as (request: Request) => Effect.Effect<Response, unknown, Services<R>>
     worker.fetch = (request, env, ctx) =>
-      run(env, ctx, Effect.suspend(() => handler(request)).pipe(Effect.catchCause(internalError)))
+      run(
+        env,
+        ctx,
+        Effect.suspend(() => handler(request)).pipe(Effect.flatMap(respond(request)), Effect.catchCause(internalError)),
+      )
   }
   if (handlers.scheduled) {
     const scheduled = handlers.scheduled

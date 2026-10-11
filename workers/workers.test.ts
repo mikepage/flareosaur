@@ -76,6 +76,51 @@ describe("Worker", () => {
       assertEquals(yield* Effect.promise(() => response.text()), "hi bob")
     }))
 
+  const failingBody = () =>
+    new ReadableStream<Uint8Array>({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode("<html>"))
+        controller.error(new Error("boom mid-stream"))
+      },
+    })
+
+  it.live("buffers bodies so a failing stream becomes a 500", () =>
+    Effect.gen(function*() {
+      const worker = Worker.make({ buffer: true, fetch: () => Effect.succeed(new Response(failingBody())) })
+      const response = yield* Effect.promise(() => worker.fetch!(new Request("http://x/"), {}, ctx))
+      assertEquals(response.status, 500)
+      const ok = Worker.make({ buffer: true, fetch: () => Effect.succeed(new Response("hi", { status: 201 })) })
+      const okResponse = yield* Effect.promise(() => ok.fetch!(new Request("http://x/"), {}, ctx))
+      assertEquals([okResponse.status, yield* Effect.promise(() => okResponse.text())], [201, "hi"])
+    }))
+
+  it.live("buffers only the responses the predicate picks", () =>
+    Effect.gen(function*() {
+      const worker = Worker.make({
+        buffer: (request) => new URL(request.url).pathname !== "/stream",
+        fetch: () => Effect.succeed(new Response(failingBody())),
+      })
+      const buffered = yield* Effect.promise(() => worker.fetch!(new Request("http://x/page"), {}, ctx))
+      assertEquals(buffered.status, 500)
+      const streamed = yield* Effect.promise(() => worker.fetch!(new Request("http://x/stream"), {}, ctx))
+      assertEquals(streamed.status, 200)
+      yield* Effect.promise(() => streamed.body!.cancel().catch(() => {}))
+    }))
+
+  it.live("buffers HttpRouter responses", () =>
+    Effect.gen(function*() {
+      const worker = Worker.make({
+        buffer: true,
+        fetch: HttpRouter.add(
+          "GET",
+          "/",
+          Effect.succeed(HttpServerResponse.stream(Stream.concat(Stream.make(new Uint8Array([1])), Stream.fail("boom")))),
+        ),
+      })
+      const response = yield* Effect.promise(() => worker.fetch!(new Request("http://x/"), {}, ctx))
+      assertEquals(response.status, 500)
+    }))
+
   it.effect("reports a missing binding", () =>
     Effect.gen(function*() {
       const error = yield* assertFailsWithTag(
