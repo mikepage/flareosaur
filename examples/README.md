@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-35 examples in 6 groups.
+40 examples in 7 groups.
 
 ## Basics
 
@@ -36,6 +36,16 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | [R2: reading and writing files](r2-files.ts) | A Worker has no disk; files go to an R2 bucket. The `R2.Bucket` service covers what the Deno examples do with `Deno.readFile`, `Deno.writeFile`, `Deno.remove` and walking a directory, with typed errors and `Option` for missing files. Object bodies are Effect `Stream`s, so large files never have to fit in memory. |
 | [WebSocket chat with Durable Objects](websocket-chat.ts) | A chat room needs one place that knows every connected socket. Each room is a Durable Object: the Worker forwards the WebSocket upgrade to the room's object, which accepts the socket with the hibernation API and broadcasts every message to the sockets of that room. The room keeps its last messages in storage, so new visitors can read the history. |
 | [Workers KV: key/value storage](kv.ts) | Deno has Deno KV built in; a Worker gets Workers KV through a binding. `Kv.layer` provides it as Effect's `KeyValueStore`, so a Schema-validated store is one call away: values are checked when they are written and when they are read back. |
+
+## Cryptography
+
+| Example | What it shows |
+| --- | --- |
+| [AES encryption and decryption](aes-encryption.ts) | AES-GCM encrypts and authenticates in one step: a ciphertext that was changed fails to decrypt. The helpers generate a fresh nonce from the Effect `Crypto` service for every message and put it in front of the ciphertext, so the nonce never has to be stored separately. |
+| [Generate and validate UUIDs and ULIDs](uuids-and-ulids.ts) | UUID v4 is random, v7 starts with a timestamp so new ids sort last, and v5 is the same for the same name every time. ULIDs are sortable too, in a shorter alphabet. Generation reads time and randomness from Effect services (`Clock`, `Crypto`), so tests can pin both. |
+| [Hashing](hashing.ts) | Web Crypto covers the SHA family. `@mikepage/flareosaur/crypto` adds the rest of std's algorithms (BLAKE3, SHA-3, Keccak, MD5, FNV, ...), running as WebAssembly that Workers load as a module, and `digestStream` hashes a `Stream` chunk by chunk, so a large R2 object never has to be in memory. |
+| [Hashing and verifying passwords](password-hashing.ts) | Passwords must never be stored in plain text, or hashed with a fast hash. PBKDF2 (available in Web Crypto on Workers) stretches a password with a random salt and many iterations. Store the salt and iteration count with the hash, and compare in constant time when a user logs in. |
+| [HTTP server: verifying webhook signatures](webhook-signatures.ts) | Webhook senders sign each delivery with a shared secret so the receiver can reject forgeries. Verify the HMAC of the raw body before parsing it, with a constant-time comparison, and keep the secret in `Config.Redacted`. |
 
 ## Encoding
 
