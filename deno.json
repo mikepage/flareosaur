@@ -10,6 +10,7 @@
     "./internal": "./internal/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
+    "./uuid": "./uuid/mod.ts",
     "./yaml": "./yaml/mod.ts"
   },
   "imports": {
