@@ -4,6 +4,21 @@
       "@mikepage/flareosaur/assert": [
         "./assert/mod.ts"
       ],
+      "@mikepage/flareosaur/async/circuit-breaker": [
+        "./async/CircuitBreaker.ts"
+      ],
+      "@mikepage/flareosaur/async": [
+        "./async/mod.ts"
+      ],
+      "@mikepage/flareosaur/bytes": [
+        "./bytes/mod.ts"
+      ],
+      "@mikepage/flareosaur/cache": [
+        "./cache/mod.ts"
+      ],
+      "@mikepage/flareosaur/collections": [
+        "./collections/mod.ts"
+      ],
       "@mikepage/flareosaur/crypto/web-crypto": [
         "./crypto/WebCrypto.ts"
       ],
@@ -12,6 +27,39 @@
       ],
       "@mikepage/flareosaur/csv": [
         "./csv/mod.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/bidirectional-map": [
+        "./data_structures/BidirectionalMap.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/binary-heap": [
+        "./data_structures/BinaryHeap.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/binary-search-tree": [
+        "./data_structures/BinarySearchTree.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/comparators": [
+        "./data_structures/Comparators.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/d2-array": [
+        "./data_structures/D2Array.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/deque": [
+        "./data_structures/Deque.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/indexed-heap": [
+        "./data_structures/IndexedHeap.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/multi-map": [
+        "./data_structures/MultiMap.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/red-black-tree": [
+        "./data_structures/RedBlackTree.ts"
+      ],
+      "@mikepage/flareosaur/data-structures/rolling-counter": [
+        "./data_structures/RollingCounter.ts"
+      ],
+      "@mikepage/flareosaur/data-structures": [
+        "./data_structures/mod.ts"
       ],
       "@mikepage/flareosaur/datetime": [
         "./datetime/mod.ts"
@@ -130,17 +178,29 @@
       "@mikepage/flareosaur/path": [
         "./path/mod.ts"
       ],
+      "@mikepage/flareosaur/regexp": [
+        "./regexp/mod.ts"
+      ],
       "@mikepage/flareosaur/semver": [
         "./semver/mod.ts"
       ],
       "@mikepage/flareosaur/streams": [
         "./streams/mod.ts"
       ],
+      "@mikepage/flareosaur/testing/mock": [
+        "./testing/Mock.ts"
+      ],
       "@mikepage/flareosaur/testing/test": [
         "./testing/Test.ts"
       ],
+      "@mikepage/flareosaur/testing/time": [
+        "./testing/Time.ts"
+      ],
       "@mikepage/flareosaur/testing": [
         "./testing/mod.ts"
+      ],
+      "@mikepage/flareosaur/text": [
+        "./text/mod.ts"
       ],
       "@mikepage/flareosaur/toml": [
         "./toml/mod.ts"
