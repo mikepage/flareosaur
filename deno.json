@@ -2,7 +2,14 @@
   "name": "@mikepage/flareosaur",
   "version": "20261010.0.2",
   "license": "MIT",
-  "exports": {},
+  "exports": {
+    "./assert": "./assert/mod.ts",
+    "./internal/inspect": "./internal/Inspect.ts",
+    "./internal": "./internal/mod.ts",
+    "./testing/test": "./testing/Test.ts",
+    "./testing": "./testing/mod.ts",
+    "./yaml": "./yaml/mod.ts"
+  },
   "imports": {
     "effect": "npm:effect@^4.0.2"
   },
