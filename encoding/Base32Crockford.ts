@@ -21,7 +21,7 @@
  * @module
  */
 
-import type { Result } from "effect"
+import type { Result, Stream } from "effect"
 import type { EncodingError } from "effect/encoding/EncodingError"
 import { decoder32, encoder, stringDecoder } from "./_base32.ts"
 import { decodeStream as decodeBlocks, encodeStream as encodeBlocks } from "./_shared.ts"
@@ -39,7 +39,9 @@ export const decode: (str: string) => Result.Result<Uint8Array, EncodingError> =
 export const decodeString: (str: string) => Result.Result<string, EncodingError> = stringDecoder(decode)
 
 /** Encodes a stream of bytes as a stream of Crockford Base32 text. */
-export const encodeStream = encodeBlocks(5, encode)
+export const encodeStream: <E, R>(self: Stream.Stream<Uint8Array, E, R>) => Stream.Stream<string, E, R> =
+  encodeBlocks(5, encode)
 
 /** Decodes a stream of Crockford Base32 text into a stream of bytes. Fails with an `EncodingError` on invalid input. */
-export const decodeStream = decodeBlocks(8, decode)
+export const decodeStream: <E, R>(self: Stream.Stream<string, E, R>) => Stream.Stream<Uint8Array, E | EncodingError, R> =
+  decodeBlocks(8, decode)

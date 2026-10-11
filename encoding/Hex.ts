@@ -21,13 +21,17 @@
  * @module
  */
 
+import type { Stream } from "effect"
 import * as Hex from "effect/encoding/Hex"
+import type { EncodingError } from "effect/encoding/EncodingError"
 import { decodeStream as decodeBlocks, encodeStream as encodeBlocks } from "./_shared.ts"
 
 export * from "effect/encoding/Hex"
 
 /** Encodes a stream of bytes as a stream of lowercase hex text. */
-export const encodeStream = encodeBlocks(1, Hex.encode)
+export const encodeStream: <E, R>(self: Stream.Stream<Uint8Array, E, R>) => Stream.Stream<string, E, R> =
+  encodeBlocks(1, Hex.encode)
 
 /** Decodes a stream of hex text into a stream of bytes. Fails with an `EncodingError` on invalid input. */
-export const decodeStream = decodeBlocks(2, Hex.decode)
+export const decodeStream: <E, R>(self: Stream.Stream<string, E, R>) => Stream.Stream<Uint8Array, E | EncodingError, R> =
+  decodeBlocks(2, Hex.decode)

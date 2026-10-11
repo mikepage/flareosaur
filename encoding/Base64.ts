@@ -25,16 +25,20 @@
  * @module
  */
 
+import type { Stream } from "effect"
 import * as Base64 from "effect/encoding/Base64"
+import type { EncodingError } from "effect/encoding/EncodingError"
 import { decodeStream as decodeBlocks, encodeStream as encodeBlocks } from "./_shared.ts"
 
 export * from "effect/encoding/Base64"
 
 /** Encodes a stream of bytes as a stream of Base64 text. */
-export const encodeStream = encodeBlocks(3, Base64.encode)
+export const encodeStream: <E, R>(self: Stream.Stream<Uint8Array, E, R>) => Stream.Stream<string, E, R> =
+  encodeBlocks(3, Base64.encode)
 
 /**
  * Decodes a stream of Base64 text into a stream of bytes. Line breaks are
  * ignored. Fails with an `EncodingError` on invalid input.
  */
-export const decodeStream = decodeBlocks(4, Base64.decode, /[\r\n]/g)
+export const decodeStream: <E, R>(self: Stream.Stream<string, E, R>) => Stream.Stream<Uint8Array, E | EncodingError, R> =
+  decodeBlocks(4, Base64.decode, /[\r\n]/g)
