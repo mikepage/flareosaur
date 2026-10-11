@@ -28,7 +28,7 @@
  * @module
  */
 
-import { Context, Effect, Layer, Option, Predicate, Schema, Stream } from "effect"
+import { type Cause, Context, Effect, Layer, Option, Predicate, Schema, Stream } from "effect"
 import { binding, type Env, type MissingBindingError } from "./Worker.ts"
 
 /** The parts of an R2 object (metadata) this module uses. */
@@ -70,13 +70,24 @@ export interface R2BucketLike {
 export const isR2Bucket = (u: unknown): u is R2BucketLike =>
   Predicate.hasProperty(u, "head") && Predicate.hasProperty(u, "put") && Predicate.hasProperty(u, "list")
 
-/** An R2 operation failed. */
-export class R2Error extends Schema.TaggedError<R2Error>()("R2Error", {
+const R2ErrorBase: Schema.Class<
+  R2Error,
+  Schema.TaggedStruct<"R2Error", {
+    readonly method: Schema.String
+    readonly key: Schema.optional<Schema.String>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<R2Error>()("R2Error", {
   method: Schema.String,
   key: Schema.optional(Schema.String),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** An R2 operation failed. */
+export class R2Error extends R2ErrorBase {}
 
 /** Metadata to store with an object. */
 export interface PutOptions {
@@ -115,8 +126,14 @@ export interface BucketService {
   readonly list: (options?: { readonly prefix?: string }) => Effect.Effect<Array<R2ObjectLike>, R2Error>
 }
 
+const BucketBase: Context.ServiceClass<
+  Bucket,
+  "@mikepage/flareosaur/workers/R2/Bucket",
+  BucketService
+> = Context.Service<Bucket, BucketService>()("@mikepage/flareosaur/workers/R2/Bucket")
+
 /** The bucket service; see {@linkcode BucketService}. */
-export class Bucket extends Context.Service<Bucket, BucketService>()("@mikepage/flareosaur/workers/R2/Bucket") {}
+export class Bucket extends BucketBase {}
 
 const tryR2 = <A>(method: string, key: string | undefined, f: () => Promise<A>) =>
   Effect.tryPromise({

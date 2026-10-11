@@ -81,10 +81,16 @@ export const stub = (
 ): Effect.Effect<DurableObjectStubLike, MissingBindingError, Env> =>
   Effect.map(binding(bindingName, isDurableObjectNamespace), (ns) => ns.get(ns.idFromName(name)))
 
-/** The state of the current Durable Object. */
-export class State extends Context.Service<State, DurableObjectStateLike>()(
+const StateBase: Context.ServiceClass<
+  State,
   "@mikepage/flareosaur/workers/DurableObject/State",
-) {}
+  DurableObjectStateLike
+> = Context.Service<State, DurableObjectStateLike>()(
+  "@mikepage/flareosaur/workers/DurableObject/State",
+)
+
+/** The state of the current Durable Object. */
+export class State extends StateBase {}
 
 const storageError = (method: string, key: string | undefined, cause: unknown) =>
   new KeyValueStore.KeyValueStoreError({

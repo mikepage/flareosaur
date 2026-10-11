@@ -22,7 +22,7 @@
  * @module
  */
 
-import { Context, Duration, Effect, Layer, Option, Schema } from "effect"
+import { type Cause, Context, Duration, Effect, Layer, Option, Schema } from "effect"
 import { ExecutionContext, waitUntil } from "./Worker.ts"
 
 /** The parts of a Workers `Cache` this module uses. */
@@ -32,14 +32,29 @@ export interface CacheLike {
   delete(request: Request | string): Promise<boolean>
 }
 
-/** A cache operation failed. */
-export class CacheError extends Schema.TaggedError<CacheError>()("CacheError", {
+const CacheErrorBase: Schema.Class<
+  CacheError,
+  Schema.TaggedStruct<"CacheError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CacheError>()("CacheError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A cache operation failed. */
+export class CacheError extends CacheErrorBase {}
+
+const HttpCacheBase: Context.ServiceClass<
+  HttpCache,
+  "@mikepage/flareosaur/workers/Cache/HttpCache",
+  CacheLike
+> = Context.Service<HttpCache, CacheLike>()("@mikepage/flareosaur/workers/Cache/HttpCache")
 
 /** The cache to use; defaults to `caches.default`. */
-export class HttpCache extends Context.Service<HttpCache, CacheLike>()("@mikepage/flareosaur/workers/Cache/HttpCache") {
+export class HttpCache extends HttpCacheBase {
   /** Uses `caches.default`, the cache of the zone the Worker runs on. */
   static readonly layerDefault: Layer.Layer<HttpCache> = Layer.sync(
     HttpCache,

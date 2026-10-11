@@ -28,7 +28,7 @@
  * @module
  */
 
-import { Context, Duration, Effect, Layer, Predicate, Schema } from "effect"
+import { type Cause, Context, Duration, Effect, Layer, Predicate, Schema } from "effect"
 import { binding, type Env, type MessageBatchLike, type MissingBindingError } from "./Worker.ts"
 
 /** The parts of a queue producer binding this module uses. */
@@ -41,11 +41,20 @@ export interface QueueLike {
 export const isQueue = (u: unknown): u is QueueLike =>
   Predicate.hasProperty(u, "send") && Predicate.hasProperty(u, "sendBatch")
 
-/** Sending to a queue failed, or a value did not encode. */
-export class QueueError extends Schema.TaggedError<QueueError>()("QueueError", {
+const QueueErrorBase: Schema.Class<
+  QueueError,
+  Schema.TaggedStruct<"QueueError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<QueueError>()("QueueError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** Sending to a queue failed, or a value did not encode. */
+export class QueueError extends QueueErrorBase {}
 
 /** Sends values of type `A` to one queue. */
 export interface ProducerService<A> {
@@ -56,7 +65,8 @@ export interface ProducerService<A> {
 /** Defines producer services; create a typed key with `Producer.of<typeof Schema>("Jobs")`. */
 export const Producer = {
   /** A service key, named `key`, for a producer of the Schema's type. */
-  of: <S extends Schema.Top>(key: string) => Context.Service<ProducerService<S["Type"]>>(key),
+  of: <S extends Schema.Top>(key: string): Context.Service<ProducerService<S["Type"]>, ProducerService<S["Type"]>> =>
+    Context.Service<ProducerService<S["Type"]>>(key),
 }
 
 const delaySeconds = (delay: Duration.Input | undefined) =>

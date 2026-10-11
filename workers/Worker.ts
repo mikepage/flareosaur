@@ -68,21 +68,42 @@ export interface MessageBatchLike<Body = unknown> {
   retryAll(options?: { delaySeconds?: number }): void
 }
 
-/** The Worker's bindings: vars, secrets, KV namespaces, R2 buckets, queues, ... */
-export class Env extends Context.Service<Env, Readonly<Record<string, unknown>>>()(
+const EnvBase: Context.ServiceClass<
+  Env,
   "@mikepage/flareosaur/workers/Env",
-) {}
+  Readonly<Record<string, unknown>>
+> = Context.Service<Env, Readonly<Record<string, unknown>>>()(
+  "@mikepage/flareosaur/workers/Env",
+)
+
+/** The Worker's bindings: vars, secrets, KV namespaces, R2 buckets, queues, ... */
+export class Env extends EnvBase {}
+
+const ExecutionContextBase: Context.ServiceClass<
+  ExecutionContext,
+  "@mikepage/flareosaur/workers/ExecutionContext",
+  ExecutionContextLike
+> = Context.Service<ExecutionContext, ExecutionContextLike>()(
+  "@mikepage/flareosaur/workers/ExecutionContext",
+)
 
 /** The `ExecutionContext` of the current event. */
-export class ExecutionContext extends Context.Service<ExecutionContext, ExecutionContextLike>()(
-  "@mikepage/flareosaur/workers/ExecutionContext",
-) {}
+export class ExecutionContext extends ExecutionContextBase {}
 
-/** A binding the code expects is not configured for the Worker. */
-export class MissingBindingError extends Schema.TaggedError<MissingBindingError>()("MissingBindingError", {
+const MissingBindingErrorBase: Schema.Class<
+  MissingBindingError,
+  Schema.TaggedStruct<"MissingBindingError", {
+    readonly name: Schema.String
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<MissingBindingError>()("MissingBindingError", {
   name: Schema.String,
   message: Schema.String,
-}) {}
+})
+
+/** A binding the code expects is not configured for the Worker. */
+export class MissingBindingError extends MissingBindingErrorBase {}
 
 /**
  * Looks up a binding by name. Pass a guard to check its shape, e.g.

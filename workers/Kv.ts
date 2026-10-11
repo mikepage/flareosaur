@@ -30,7 +30,7 @@
  * @module
  */
 
-import { Context, Effect, Layer, Option, Predicate, Schema } from "effect"
+import { type Cause, Context, Effect, Layer, Option, Predicate, Schema } from "effect"
 import * as KeyValueStore from "effect/persistence/KeyValueStore"
 import { binding, type Env, type MissingBindingError } from "./Worker.ts"
 
@@ -56,13 +56,24 @@ export interface KVNamespaceLike {
 export const isKVNamespace = (u: unknown): u is KVNamespaceLike =>
   Predicate.hasProperty(u, "get") && Predicate.hasProperty(u, "put") && Predicate.hasProperty(u, "list")
 
-/** A KV operation failed. */
-export class KvError extends Schema.TaggedError<KvError>()("KvError", {
+const KvErrorBase: Schema.Class<
+  KvError,
+  Schema.TaggedStruct<"KvError", {
+    readonly method: Schema.String
+    readonly key: Schema.optional<Schema.String>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<KvError>()("KvError", {
   method: Schema.String,
   key: Schema.optional(Schema.String),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A KV operation failed. */
+export class KvError extends KvErrorBase {}
 
 /** One key from {@linkcode Kv.list}. */
 export interface KvKey {
@@ -99,8 +110,11 @@ export interface KvService {
   readonly list: (options?: { readonly prefix?: string }) => Effect.Effect<Array<KvKey>, KvError>
 }
 
+const KvBase: Context.ServiceClass<Kv, "@mikepage/flareosaur/workers/Kv", KvService> =
+  Context.Service<Kv, KvService>()("@mikepage/flareosaur/workers/Kv")
+
 /** The KV namespace service; see {@linkcode KvService}. */
-export class Kv extends Context.Service<Kv, KvService>()("@mikepage/flareosaur/workers/Kv") {}
+export class Kv extends KvBase {}
 
 /** Builds the {@linkcode Kv} service for a namespace. */
 export const make = (namespace: KVNamespaceLike): KvService => {

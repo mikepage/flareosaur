@@ -22,17 +22,28 @@
  * @module
  */
 
-import { Cron, DateTime, Effect, Result, Schema } from "effect"
+import { type Cause, Cron, DateTime, Effect, Result, Schema } from "effect"
 import type { ScheduledControllerLike } from "./Worker.ts"
 
-/** A cron expression in `dispatch` does not parse. */
-export class CronExpressionError extends Schema.TaggedError<CronExpressionError>()("CronExpressionError", {
+const CronExpressionErrorBase: Schema.Class<
+  CronExpressionError,
+  Schema.TaggedStruct<"CronExpressionError", {
+    readonly expression: Schema.String
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CronExpressionError>()("CronExpressionError", {
   expression: Schema.String,
   message: Schema.String,
-}) {}
+})
+
+/** A cron expression in `dispatch` does not parse. */
+export class CronExpressionError extends CronExpressionErrorBase {}
 
 /** A `scheduled` handler running the effect registered for the trigger's cron expression. */
-export const dispatch = <E, R>(schedules: Readonly<Record<string, Effect.Effect<unknown, E, R>>>) => {
+export const dispatch = <E, R>(
+  schedules: Readonly<Record<string, Effect.Effect<unknown, E, R>>>,
+): (controller: ScheduledControllerLike) => Effect.Effect<void, E, R> => {
   for (const expression of Object.keys(schedules)) {
     const parsed = Cron.parse(expression)
     if (Result.isFailure(parsed)) {
