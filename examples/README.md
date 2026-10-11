@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-50 examples in 8 groups.
+55 examples in 9 groups.
 
 ## Basics
 
@@ -53,6 +53,7 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | --- | --- |
 | [Compress and decompress data](compress-decompress.ts) | Workers implement `CompressionStream` and `DecompressionStream`. Wrapped as Effect `Stream` steps, compression is one more stage in a pipeline, whether the data is a string in memory or a large R2 object. |
 | [Extract front matter from Markdown](front-matter.ts) | Front matter is a metadata block at the top of a Markdown file, in YAML, TOML or JSON. `extract` finds the format, parses the block and returns the rest of the document; with a Schema the attributes come out typed. |
+| [Hex, base64, base32 and base58 encoding](hex-base64-encoding.ts) | Binary data often has to travel as text: in URLs, JSON or headers. Effect ships hex and base64; flareosaur adds std's base32, base58 and ascii85 with the same shape. Encoding cannot fail; decoding returns a `Result`, so bad input is a value to handle, not an exception. |
 | [Parse and serialize CSV, also as streams](csv.ts) | CSV is still how data moves between spreadsheets and systems. A Schema codec decodes CSV with a header row into typed records, numbers included, and `parseStream` handles files too big for memory one row at a time, whatever the chunk boundaries are. |
 | [Parse and serialize TOML and YAML](toml-yaml-config.ts) | Configuration files map to typed values with a Schema codec: TOML or YAML text in, a validated config object out, and back again. Both parsers are std's complete implementations (the full TOML spec, YAML 1.2 with multiple documents and tags), behind typed errors. |
 | [Stream JSON Lines data](json-lines.ts) | JSON Lines (NDJSON) puts one JSON value per line, so a reader can process records as they arrive. Request and response bodies are Effect streams: parse an upload line by line, and produce a download one record at a time, without holding either in memory. |
@@ -89,8 +90,17 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 
 | Example | What it shows |
 | --- | --- |
+| [Escape HTML, CSS and JavaScript](escape-html.ts) | Putting user input into HTML without escaping it opens the door to cross-site scripting. `safeHtml` is a template tag that escapes every interpolated value, so the safe way is also the short way. |
 | [Parse and compare semver versions](semver-versions.ts) | Version strings cannot be compared as text: "1.10.0" sorts before "1.2.0". A parsed `SemVer` comes with an Effect `Order`, so arrays sort correctly with `Array.sort`, and ranges, increments and comparisons follow the semver spec. Parsing returns a `Result` instead of throwing. |
 | [Parse, format and compute with dates](dates.ts) | Effect's `DateTime` is an immutable instant (optionally with a time zone) and reads "now" from the `Clock`, so code that uses the current time stays testable. `@mikepage/flareosaur/datetime` adds std's pattern-based `format` and `parse`, and calendar helpers. |
+| [Path operations](path-operations.ts) | Object keys in R2, routes and asset manifests are all paths, even on a runtime without a filesystem. The path module has std's POSIX and Windows implementations as pure functions and as layers for Effect's `Path` service. On Workers there is no working directory, so relative paths resolve against `/`. |
+| [Read configuration from .env text](dotenv-config.ts) | Workers have no filesystem to load a `.env` file from, but .env text can still be a config source: bundled with the Worker, stored in KV, or kept in a test. `Dotenv.layer` turns it into an Effect `ConfigProvider`, with std's variable expansion (`${BASE}/v2`), so `Config` reads from it. |
+
+## Streams
+
+| Example | What it shows |
+| --- | --- |
+| [Read a stream line by line](read-lines.ts) | Command line tools read input line by line; a Worker does the same with a request body or an R2 object. `toLines` decodes bytes and splits lines across chunk boundaries, and the rest is ordinary stream code: filter, take, count, without buffering the whole input. |
 
 ## Web standard APIs
 
