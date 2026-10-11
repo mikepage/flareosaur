@@ -1,8 +1,8 @@
 /**
- * @title Cache responses with the Cache API
+ * @title Cache API
  * @difficulty intermediate
  * @tags workers, cache, http
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings outbound:echo
  * @resource {https://developers.cloudflare.com/workers/runtime-apis/cache/} Cloudflare: Cache API
  * @check GET /weather/amsterdam -> 200 "amsterdam" header:x-cache~"MISS"

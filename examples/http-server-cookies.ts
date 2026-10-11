@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: cookies
+ * @title Cookies
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP

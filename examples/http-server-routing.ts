@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: routing
+ * @title Routing
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP

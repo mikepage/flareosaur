@@ -2,7 +2,7 @@
  * @title Read a stream line by line
  * @difficulty beginner
  * @tags workers, streams
- * @group Streams
+ * @group Data formats
  * @resource {https://effect.website/docs/stream/introduction/} Effect: Stream
  * @check POST /log h:content-type=text/plain "INFO start\nERROR disk full\nINFO retry\nERROR timeout\n" -> 200 "2 errors" "ERROR disk full" "ERROR timeout"
  *

@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: verifying webhook signatures
+ * @title Verify webhook signatures
  * @difficulty intermediate
  * @tags workers, http, crypto, security
  * @group Cryptography

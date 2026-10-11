@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: sessions with signed cookies
+ * @title Sessions with signed cookies
  * @difficulty intermediate
  * @tags workers, http, security
  * @group HTTP

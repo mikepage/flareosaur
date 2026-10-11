@@ -1,5 +1,5 @@
 /**
- * @title Hashing
+ * @title Hash data
  * @difficulty beginner
  * @tags workers, crypto
  * @group Cryptography

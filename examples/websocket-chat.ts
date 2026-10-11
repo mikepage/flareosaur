@@ -2,7 +2,7 @@
  * @title WebSocket chat with Durable Objects
  * @difficulty advanced
  * @tags workers, websockets, durable-objects
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings do:ROOMS=ChatRoom
  * @resource {https://developers.cloudflare.com/durable-objects/best-practices/websockets/} Cloudflare: WebSocket hibernation
  * @check ws /rooms/lobby send "hello everyone" -> "hello everyone"

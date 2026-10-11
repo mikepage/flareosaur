@@ -2,7 +2,7 @@
  * @title Parse and serialize TOML and YAML
  * @difficulty beginner
  * @tags workers, encoding, config
- * @group Encoding
+ * @group Data formats
  * @resource {https://toml.io} TOML
  * @resource {https://yaml.org/spec/1.2.2/} YAML 1.2
  * @check GET / -> 200 "toml: api on port 8080" "yaml: api on port 8080" "as yaml:" "port: 8080" "bad port: SchemaError"

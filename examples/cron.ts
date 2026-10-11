@@ -2,7 +2,7 @@
  * @title Cron Triggers
  * @difficulty beginner
  * @tags workers, cron
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings kv:STATE
  * @resource {https://developers.cloudflare.com/workers/configuration/cron-triggers/} Cloudflare: Cron Triggers
  * @resource {https://effect.website/docs/scheduling/cron/} Effect: Cron

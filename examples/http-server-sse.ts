@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: server-sent events
+ * @title Server-sent events
  * @difficulty intermediate
  * @tags workers, http, streaming
  * @group HTTP

@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: content negotiation
+ * @title Content negotiation
  * @difficulty intermediate
  * @tags workers, http
  * @group HTTP

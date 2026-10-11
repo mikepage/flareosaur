@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: rate limiting
+ * @title Rate limiting
  * @difficulty advanced
  * @tags workers, http, durable-objects
  * @group HTTP

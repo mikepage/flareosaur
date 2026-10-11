@@ -1,8 +1,8 @@
 /**
- * @title Queues: offload work to a consumer
+ * @title Queues: offload work
  * @difficulty intermediate
  * @tags workers, queues
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings queue:EMAILS, kv:LOG
  * @resource {https://developers.cloudflare.com/queues/} Cloudflare: Queues
  * @check POST /signup h:content-type=application/json {"email":"ada@example.com"} -> 202 "queued"

@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: validate JSON bodies
+ * @title Validate JSON bodies
  * @difficulty beginner
  * @tags workers, http, schema
  * @group HTTP

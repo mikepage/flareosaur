@@ -382,29 +382,35 @@ export const runExamples = Effect.fnUntraced(function*(slugs: ReadonlyArray<stri
   return failed
 })
 
-/** Generates examples/README.md: every example, by group. */
+/** Group order in the index; groups not listed come last, alphabetically. */
+const GROUP_ORDER = ["Basics", "HTTP", "Cloudflare", "Data formats", "Standard library", "Cryptography", "AI"]
+const LEVELS = ["beginner", "intermediate", "advanced"]
+
+/** Generates examples/README.md: every example by group, easiest first. */
 export const generateIndex = Effect.fnUntraced(function*() {
   const fs = yield* FileSystem.FileSystem
   const examples = yield* loadExamples()
+  const rank = (group: string) => (GROUP_ORDER.indexOf(group) + 1 || GROUP_ORDER.length + 1)
   const groups = new Map<string, Array<Example>>()
   for (const e of examples) groups.set(e.group, [...(groups.get(e.group) ?? []), e])
+  const ordered = [...groups].sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b))
   const lines = [
     "# flareosaur examples",
     "",
-    "Effect v4 versions of the [Deno examples](https://docs.deno.com/examples/), as Cloudflare Workers.",
-    "Each file is a Worker with a commented walkthrough. They run in workerd with no `nodejs_compat`,",
-    "and `npm run examples` checks every one of them in Miniflare.",
+    "The [Deno examples](https://docs.deno.com/examples/), rewritten with Effect for Cloudflare Workers.",
+    "Each file is a Worker with a commented walkthrough. No `nodejs_compat`.",
     "",
-    "Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).",
-    "",
-    `${examples.length} examples in ${groups.size} groups.`,
+    "Run one with `npx wrangler dev examples/<name>.ts`. `npm run examples` checks them all in workerd.",
     "",
   ]
-  for (const [group, list] of groups) {
-    lines.push(`## ${group}`, "", "| Example | What it shows |", "| --- | --- |")
-    for (const e of list) {
-      const summary = e.description.split("\n\n")[0]!.replace(/\s+/g, " ").replaceAll("|", "\\|")
-      lines.push(`| [${e.title}](${e.slug}.ts) | ${summary} |`)
+  for (const [group, list] of ordered) {
+    lines.push(`## ${group}`, "")
+    const sorted = [...list].sort((a, b) =>
+      LEVELS.indexOf(a.difficulty) - LEVELS.indexOf(b.difficulty) || a.title.localeCompare(b.title)
+    )
+    for (const e of sorted) {
+      const level = e.difficulty === "beginner" ? "" : ` · ${e.difficulty}`
+      lines.push(`- [${e.title}](${e.slug}.ts)${level}`)
     }
     lines.push("")
   }

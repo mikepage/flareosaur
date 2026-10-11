@@ -2,7 +2,7 @@
  * @title Environment variables and secrets
  * @difficulty beginner
  * @tags workers, config
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings var:APP_NAME=flareosaur, var:MAX_ITEMS=25, var:API_TOKEN=s3cr3t-token
  * @resource {https://developers.cloudflare.com/workers/configuration/environment-variables/} Cloudflare: environment variables
  * @resource {https://effect.website/docs/configuration/} Effect: Config

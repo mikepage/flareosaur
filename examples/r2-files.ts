@@ -1,8 +1,8 @@
 /**
- * @title R2: reading and writing files
+ * @title R2: read and write files
  * @difficulty beginner
  * @tags workers, r2, storage
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings r2:BUCKET
  * @resource {https://developers.cloudflare.com/r2/api/workers/workers-api-reference/} Cloudflare: R2 Workers API
  * @check PUT /files/notes/todo.txt buy milk -> 201 "notes/todo.txt"

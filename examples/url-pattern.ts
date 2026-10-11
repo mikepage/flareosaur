@@ -2,7 +2,7 @@
  * @title Parse URLs and match routes with URLPattern
  * @difficulty beginner
  * @tags workers, web
- * @group Web standard APIs
+ * @group Standard library
  * @resource {https://developer.mozilla.org/en-US/docs/Web/API/URLPattern} MDN: URLPattern
  * @resource {https://effect.website/docs/schema/introduction/} Effect: Schema
  * @check GET / -> 200 "host: example.com" "q=effect" "user 42 / post hello-world" "no match: Option.none" "decoded: {\"id\":42,\"slug\":\"hello-world\"}"

@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: caching headers and ETags
+ * @title Caching headers and ETags
  * @difficulty intermediate
  * @tags workers, http, cache
  * @group HTTP

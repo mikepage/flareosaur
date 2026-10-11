@@ -2,7 +2,7 @@
  * @title Structured logging
  * @difficulty beginner
  * @tags workers, logging, observability
- * @group Observability
+ * @group Basics
  * @resource {https://effect.website/docs/observability/logging/} Effect: logging
  * @resource {https://developers.cloudflare.com/workers/observability/logs/workers-logs/} Cloudflare: Workers Logs
  * @check GET /orders/42 -> 200 "order 42"

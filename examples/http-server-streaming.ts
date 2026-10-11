@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: streaming responses
+ * @title Streaming responses
  * @difficulty beginner
  * @tags workers, http, streaming
  * @group HTTP

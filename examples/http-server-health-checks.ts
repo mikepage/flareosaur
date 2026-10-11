@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: health checks
+ * @title Health checks
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP

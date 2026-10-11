@@ -2,7 +2,7 @@
  * @title Compress and decompress data
  * @difficulty beginner
  * @tags workers, streams, encoding
- * @group Encoding
+ * @group Data formats
  * @resource {https://developer.mozilla.org/en-US/docs/Web/API/CompressionStream} MDN: CompressionStream
  * @check GET / -> 200 "original: 4240 bytes" "gzip:" "round trip ok: true"
  *

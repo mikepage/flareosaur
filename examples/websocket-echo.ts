@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: WebSockets
+ * @title WebSockets
  * @difficulty intermediate
  * @tags workers, websockets
  * @group HTTP

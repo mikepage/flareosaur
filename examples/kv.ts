@@ -1,8 +1,8 @@
 /**
- * @title Workers KV: key/value storage
+ * @title Workers KV
  * @difficulty beginner
  * @tags workers, kv, storage
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings kv:CACHE
  * @resource {https://developers.cloudflare.com/kv/} Cloudflare: Workers KV
  * @resource {https://effect.website/docs/platform/key-value-store/} Effect: KeyValueStore

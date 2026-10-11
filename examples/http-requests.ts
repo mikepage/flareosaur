@@ -1,5 +1,5 @@
 /**
- * @title HTTP requests
+ * @title Make HTTP requests
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP

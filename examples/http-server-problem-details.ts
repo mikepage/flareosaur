@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: errors as problem details
+ * @title Errors as problem details
  * @difficulty intermediate
  * @tags workers, http
  * @group HTTP

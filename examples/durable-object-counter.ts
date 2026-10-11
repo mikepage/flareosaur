@@ -1,8 +1,8 @@
 /**
- * @title Durable Objects: a consistent counter
+ * @title Durable Objects: a counter
  * @difficulty intermediate
  * @tags workers, durable-objects
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings do:COUNTERS=Counter
  * @resource {https://developers.cloudflare.com/durable-objects/} Cloudflare: Durable Objects
  * @check POST /counters/likes -> 200 "likes: 1"

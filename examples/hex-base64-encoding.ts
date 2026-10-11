@@ -2,7 +2,7 @@
  * @title Hex, base64, base32 and base58 encoding
  * @difficulty beginner
  * @tags workers, encoding
- * @group Encoding
+ * @group Data formats
  * @resource {https://www.rfc-editor.org/rfc/rfc4648} RFC 4648: base16, base32, base64
  * @check GET / -> 200 "hex: 48656c6c6f" "base64: SGVsbG8=" "base64url: SGVsbG8" "base32: JBSWY3DP" "base58: 9Ajdvzr" "decoded: Hello" "bad input: EncodingError"
  *

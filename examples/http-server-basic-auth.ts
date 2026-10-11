@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: basic authentication
+ * @title Basic authentication
  * @difficulty intermediate
  * @tags workers, http, security
  * @group HTTP

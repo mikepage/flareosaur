@@ -2,7 +2,7 @@
  * @title Extract front matter from Markdown
  * @difficulty beginner
  * @tags workers, encoding, markdown
- * @group Encoding
+ * @group Data formats
  * @resource {https://jekyllrb.com/docs/front-matter/} Front matter
  * @check GET / -> 200 "title: Hello, Workers" "tags: effect, deno" "body starts: # Hello" "invalid date: SchemaError"
  *

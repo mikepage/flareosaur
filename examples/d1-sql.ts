@@ -1,8 +1,8 @@
 /**
- * @title D1: SQL with Effect
+ * @title D1: SQL
  * @difficulty intermediate
  * @tags workers, d1, sql
- * @group Cloudflare runtime
+ * @group Cloudflare
  * @bindings d1:DB
  * @resource {https://developers.cloudflare.com/d1/} Cloudflare: D1
  * @resource {https://effect.website/docs/sql/} Effect: SQL

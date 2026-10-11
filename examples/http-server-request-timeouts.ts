@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: request timeouts
+ * @title Request timeouts
  * @difficulty intermediate
  * @tags workers, http
  * @group HTTP

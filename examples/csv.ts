@@ -2,7 +2,7 @@
  * @title Parse and serialize CSV, also as streams
  * @difficulty intermediate
  * @tags workers, encoding, streams
- * @group Encoding
+ * @group Data formats
  * @resource {https://www.rfc-editor.org/rfc/rfc4180} RFC 4180: CSV
  * @check GET / -> 200 "Ada (36) and Grace (85)" "total age: 121" "streamed 3 rows" "name,age"
  *

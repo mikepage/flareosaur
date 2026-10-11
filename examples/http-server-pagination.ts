@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: paginating results
+ * @title Paginating results
  * @difficulty intermediate
  * @tags workers, http, schema
  * @group HTTP

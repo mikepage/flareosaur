@@ -1,5 +1,5 @@
 /**
- * @title Exponential backoff
+ * @title Retry with exponential backoff
  * @difficulty intermediate
  * @tags workers, effect
  * @group Basics

@@ -2,7 +2,7 @@
  * @title Stream JSON Lines data
  * @difficulty intermediate
  * @tags workers, encoding, streams
- * @group Encoding
+ * @group Data formats
  * @resource {https://jsonlines.org} JSON Lines
  * @check POST /events h:content-type=application/x-ndjson "{\"type\":\"click\",\"x\":1}\n{\"type\":\"view\"}\n{\"type\":\"click\",\"x\":2}" -> 200 "clicks: 2" "views: 1"
  * @check GET /export -> 200 "{\"id\":1" "{\"id\":3" header:content-type~"application/x-ndjson"

@@ -1,5 +1,5 @@
 /**
- * @title HTTP server: CORS
+ * @title CORS
  * @difficulty beginner
  * @tags workers, http
  * @group HTTP
