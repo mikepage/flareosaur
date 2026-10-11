@@ -4,6 +4,7 @@
   "license": "MIT",
   "exports": {
     "./assert": "./assert/mod.ts",
+    "./dotenv": "./dotenv/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
     "./jsonc": "./jsonc/mod.ts",
