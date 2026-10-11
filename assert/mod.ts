@@ -37,10 +37,18 @@ import * as std from "./_std/mod.ts"
 import { AssertionError as StdAssertionError } from "./_std/assertion_error.ts"
 import { format } from "../internal/Inspect.ts"
 
-/** The error every failed assertion throws or fails with. */
-export class AssertionError extends Schema.TaggedError<AssertionError>()("AssertionError", {
+const AssertionErrorBase: Schema.Class<
+  AssertionError,
+  Schema.TaggedStruct<"AssertionError", {
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<AssertionError>()("AssertionError", {
   message: Schema.String,
-}) {}
+})
+
+/** The error every failed assertion throws or fails with. */
+export class AssertionError extends AssertionErrorBase {}
 
 // Runs a std assertion and rethrows its error as this module's AssertionError.
 const guard = <A>(f: () => A): A => {

@@ -35,15 +35,24 @@
  * @module
  */
 
-import { type Brand, Context, Crypto, DateTime, Effect, Layer, Ref, Result, Schema } from "effect"
+import { type Brand, type Cause, Context, Crypto, DateTime, Effect, Layer, Ref, Result, Schema } from "effect"
 import { decodeTime as stdDecodeTime } from "./_std/decode_time.ts"
 import { ENCODING, ENCODING_LEN, encodeTime, incrementBase32, RANDOM_LEN } from "./_std/_util.ts"
 
-/** A ULID could not be generated or decoded. */
-export class UlidError extends Schema.TaggedError<UlidError>()("UlidError", {
+const UlidErrorBase: Schema.Class<
+  UlidError,
+  Schema.TaggedStruct<"UlidError", {
+    readonly message: Schema.String
+    readonly cause: Schema.optional<Schema.Defect>
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<UlidError>()("UlidError", {
   message: Schema.String,
   cause: Schema.optional(Schema.Defect()),
-}) {}
+})
+
+/** A ULID could not be generated or decoded. */
+export class UlidError extends UlidErrorBase {}
 
 const ulidError = (cause: unknown) =>
   new UlidError({ message: cause instanceof Error ? cause.message : String(cause), cause })
@@ -52,7 +61,8 @@ const ulidError = (cause: unknown) =>
 export type Ulid = string & Brand.Brand<"Ulid">
 
 /** A ULID string: 26 Crockford base32 characters. Built on Effect's `Schema.isULID`. */
-export const Ulid = Schema.String.pipe(Schema.check(Schema.isULID()), Schema.brand("Ulid"))
+export const Ulid: Schema.brand<Schema.String, "Ulid"> =
+  Schema.String.pipe(Schema.check(Schema.isULID()), Schema.brand("Ulid"))
 
 const isUlidSchema = Schema.is(Ulid)
 
@@ -131,10 +141,16 @@ export const makeMonotonic: Effect.Effect<MonotonicGenerator, never, Crypto.Cryp
     })
 })
 
-/** The service holding the state of {@linkcode monotonicUlid}. */
-export class MonotonicUlid extends Context.Service<MonotonicUlid, { readonly next: MonotonicGenerator }>()(
+const MonotonicUlidBase: Context.ServiceClass<
+  MonotonicUlid,
   "flareosaur/ulid/MonotonicUlid",
-) {
+  { readonly next: MonotonicGenerator }
+> = Context.Service<MonotonicUlid, { readonly next: MonotonicGenerator }>()(
+  "flareosaur/ulid/MonotonicUlid",
+)
+
+/** The service holding the state of {@linkcode monotonicUlid}. */
+export class MonotonicUlid extends MonotonicUlidBase {
   /** A fresh monotonic generator, with randomness from Effect's `Crypto` service. */
   static readonly layer: Layer.Layer<MonotonicUlid, never, Crypto.Crypto> = Layer.effect(
     MonotonicUlid,

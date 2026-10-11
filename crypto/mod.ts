@@ -38,19 +38,29 @@
  * @module
  */
 
-import { type Crypto as EffectCrypto, Crypto as CryptoService, Effect, Function, Redacted, Schema, Stream } from "effect"
+import { type Cause, type Crypto as EffectCrypto, Crypto as CryptoService, Effect, Function, Redacted, Schema, Stream } from "effect"
 import { decryptAesGcm as stdDecryptAesGcm } from "./_std/aes_gcm.ts"
 import { DIGEST_ALGORITHM_NAMES, type DigestAlgorithmName, DigestContext, digest as wasmDigest } from "./_std/_wasm/mod.ts"
 import * as WebCrypto from "./WebCrypto.ts"
 
 export { WebCrypto }
 
-/** A cryptographic operation failed: bad input, an unsupported algorithm, or a rejected key or tag. */
-export class CryptoError extends Schema.TaggedError<CryptoError>()("CryptoError", {
+const CryptoErrorBase: Schema.Class<
+  CryptoError,
+  Schema.TaggedStruct<"CryptoError", {
+    readonly operation: Schema.String
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CryptoError>()("CryptoError", {
   operation: Schema.String,
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A cryptographic operation failed: bad input, an unsupported algorithm, or a rejected key or tag. */
+export class CryptoError extends CryptoErrorBase {}
 
 const cryptoError = (operation: string) => (cause: unknown) =>
   new CryptoError({

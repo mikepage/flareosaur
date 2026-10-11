@@ -38,12 +38,22 @@ import { RollingCounter } from "../data_structures/mod.ts"
 /** The state of a {@linkcode CircuitBreaker}. */
 export type CircuitState = "closed" | "open" | "half_open"
 
-/** The breaker is open (or its half-open trial slots are taken); the effect did not run. */
-export class CircuitBreakerOpenError extends Schema.TaggedError<CircuitBreakerOpenError>()("CircuitBreakerOpenError", {
+const CircuitBreakerOpenErrorBase: Schema.Class<
+  CircuitBreakerOpenError,
+  Schema.TaggedStruct<"CircuitBreakerOpenError", {
+    readonly message: Schema.String
+    /** Milliseconds until the breaker becomes half-open; 0 when half-open but full. */
+    readonly remainingCooldownMillis: Schema.Number
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CircuitBreakerOpenError>()("CircuitBreakerOpenError", {
   message: Schema.String,
   /** Milliseconds until the breaker becomes half-open; 0 when half-open but full. */
   remainingCooldownMillis: Schema.Number,
-}) {}
+})
+
+/** The breaker is open (or its half-open trial slots are taken); the effect did not run. */
+export class CircuitBreakerOpenError extends CircuitBreakerOpenErrorBase {}
 
 /** Options for {@linkcode CircuitBreaker.make}. All callbacks run synchronously. */
 export interface CircuitBreakerOptions<A = unknown, E = unknown> {

@@ -50,6 +50,7 @@
 
 import {
   Cache,
+  type Cause,
   Clock,
   Duration,
   Effect,
@@ -74,29 +75,65 @@ export * from "./CircuitBreaker.ts"
 // Errors
 // ---------------------------------------------------------------------------
 
-/** {@linkcode retry} ran out of attempts. `cause` is the last error. */
-export class RetryError extends Schema.TaggedError<RetryError>()("RetryError", {
+const RetryErrorBase: Schema.Class<
+  RetryError,
+  Schema.TaggedStruct<"RetryError", {
+    readonly message: Schema.String
+    readonly attempts: Schema.Number
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<RetryError>()("RetryError", {
   message: Schema.String,
   attempts: Schema.Number,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** {@linkcode retry} ran out of attempts. `cause` is the last error. */
+export class RetryError extends RetryErrorBase {}
+
+const DeadlineErrorBase: Schema.Class<
+  DeadlineError,
+  Schema.TaggedStruct<"DeadlineError", {
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<DeadlineError>()("DeadlineError", {
+  message: Schema.String,
+})
 
 /** An effect did not finish before its {@linkcode deadline}. */
-export class DeadlineError extends Schema.TaggedError<DeadlineError>()("DeadlineError", {
-  message: Schema.String,
-}) {}
+export class DeadlineError extends DeadlineErrorBase {}
 
-/** An effect or stream was stopped by an `AbortSignal` (see {@linkcode abortable}). */
-export class AbortedError extends Schema.TaggedError<AbortedError>()("AbortedError", {
+const AbortedErrorBase: Schema.Class<
+  AbortedError,
+  Schema.TaggedStruct<"AbortedError", {
+    readonly message: Schema.String
+    readonly reason: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<AbortedError>()("AbortedError", {
   message: Schema.String,
   reason: Schema.Defect(),
-}) {}
+})
 
-/** An `AsyncIterable` given to {@linkcode mux}, {@linkcode tee} or {@linkcode pooledMap} threw. */
-export class AsyncIterableError extends Schema.TaggedError<AsyncIterableError>()("AsyncIterableError", {
+/** An effect or stream was stopped by an `AbortSignal` (see {@linkcode abortable}). */
+export class AbortedError extends AbortedErrorBase {}
+
+const AsyncIterableErrorBase: Schema.Class<
+  AsyncIterableError,
+  Schema.TaggedStruct<"AsyncIterableError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<AsyncIterableError>()("AsyncIterableError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** An `AsyncIterable` given to {@linkcode mux}, {@linkcode tee} or {@linkcode pooledMap} threw. */
+export class AsyncIterableError extends AsyncIterableErrorBase {}
 
 // ---------------------------------------------------------------------------
 // delay, deadline, abortable
@@ -583,14 +620,18 @@ export const lazy = <A, E = never, R = never>(init: Effect.Effect<A, E, R>): Eff
  * Runs a record of effects concurrently and succeeds with a record of their
  * values; fails with the first error. `Effect.all(record, { concurrency: "unbounded" })`.
  */
-export const allKeyed = <const T extends Record<string, Effect.Effect<any, any, any>>>(record: T) =>
+export const allKeyed = <const T extends Record<string, Effect.Effect<any, any, any>>>(
+  record: T,
+): Effect.All.Return<T, { concurrency: "unbounded" }> =>
   Effect.all(record, { concurrency: "unbounded" })
 
 /**
  * Runs a record of effects concurrently and succeeds with a record of their
  * `Result`s. `Effect.all(record, { concurrency: "unbounded", mode: "result" })`.
  */
-export const allSettledKeyed = <const T extends Record<string, Effect.Effect<any, any, any>>>(record: T) =>
+export const allSettledKeyed = <const T extends Record<string, Effect.Effect<any, any, any>>>(
+  record: T,
+): Effect.All.Return<T, { concurrency: "unbounded"; mode: "result" }> =>
   Effect.all(record, { concurrency: "unbounded", mode: "result" })
 
 /**

@@ -33,6 +33,7 @@
  */
 
 import {
+  type Cause,
   DateTime,
   Duration,
   Effect,
@@ -45,13 +46,24 @@ import {
 } from "effect"
 import { DateTimeFormatter } from "./_std/_date_time_formatter.ts"
 
-/** A string did not match a date/time pattern, or named an impossible date. */
-export class DateTimeParseError extends Schema.TaggedError<DateTimeParseError>()("DateTimeParseError", {
+const DateTimeParseErrorBase: Schema.Class<
+  DateTimeParseError,
+  Schema.TaggedStruct<"DateTimeParseError", {
+    readonly message: Schema.String
+    readonly input: Schema.String
+    readonly pattern: Schema.String
+    readonly cause: Schema.optional<Schema.Defect>
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<DateTimeParseError>()("DateTimeParseError", {
   message: Schema.String,
   input: Schema.String,
   pattern: Schema.String,
   cause: Schema.optional(Schema.Defect()),
-}) {}
+})
+
+/** A string did not match a date/time pattern, or named an impossible date. */
+export class DateTimeParseError extends DateTimeParseErrorBase {}
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -290,7 +302,8 @@ export const transformation = (pattern: string): SchemaTransformation.Transforma
  * decode("2019-01-20") // DateTime.Utc 2019-01-20T00:00:00.000Z
  * ```
  */
-export const schema = (pattern: string) => Schema.String.pipe(Schema.decodeTo(Schema.DateTimeUtc, transformation(pattern)))
+export const schema = (pattern: string): Schema.decodeTo<Schema.DateTimeUtc, Schema.String> =>
+  Schema.String.pipe(Schema.decodeTo(Schema.DateTimeUtc, transformation(pattern)))
 
 // ---------------------------------------------------------------------------
 // Calendar helpers

@@ -35,13 +35,21 @@
  * @module
  */
 
-import { Effect, Exit, Option, Result, Schema, type Scope } from "effect"
+import { type Cause, Effect, Exit, Option, Result, Schema, type Scope } from "effect"
 import { AssertionError, assertEquals, assertIsError } from "../assert/mod.ts"
 
-/** A mock was misused: a method that cannot be stubbed, or a `returnsNext` that ran out. */
-export class MockError extends Schema.TaggedError<MockError>()("MockError", {
+const MockErrorBase: Schema.Class<
+  MockError,
+  Schema.TaggedStruct<"MockError", {
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<MockError>()("MockError", {
   message: Schema.String,
-}) {}
+})
+
+/** A mock was misused: a method that cannot be stubbed, or a `returnsNext` that ran out. */
+export class MockError extends MockErrorBase {}
 
 /** One recorded call of a {@linkcode Spy}. */
 export interface SpyCall<Args extends ReadonlyArray<unknown> = Array<any>, Return = any> {
@@ -288,7 +296,7 @@ export const returnsArgs = <Args extends ReadonlyArray<unknown>>(start = 0, end?
  * instead. Called once more than there are values, it throws a
  * {@linkcode MockError}.
  */
-export const returnsNext = <A>(values: Iterable<A | Error>) => {
+export const returnsNext = <A>(values: Iterable<A | Error>): (..._args: ReadonlyArray<unknown>) => A => {
   const iterator = values[Symbol.iterator]()
   let calls = 0
   return (..._args: ReadonlyArray<unknown>): A => {
@@ -307,7 +315,7 @@ export const returnsNext = <A>(values: Iterable<A | Error>) => {
  */
 export const succeedsNext = <A, E = Error>(values: Iterable<A | E>, isError: (value: A | E) => value is E = (
   value,
-): value is E => value instanceof Error) => {
+): value is E => value instanceof Error): (..._args: ReadonlyArray<unknown>) => Effect.Effect<A, E | MockError> => {
   const iterator = values[Symbol.iterator]()
   let calls = 0
   return (..._args: ReadonlyArray<unknown>): Effect.Effect<A, E | MockError> =>

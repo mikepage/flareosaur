@@ -32,17 +32,26 @@
  * @module
  */
 
-import { type Brand, Crypto, DateTime, Effect, Option, Result, Schema } from "effect"
+import { type Brand, type Cause, Crypto, DateTime, Effect, Option, Result, Schema } from "effect"
 import { digest } from "../crypto/mod.ts"
 import { bytesToUuid, uuidToBytes } from "./_std/_common.ts"
 import { generate as stdV1 } from "./_std/v1.ts"
 import { generate as stdV6 } from "./_std/unstable_v6.ts"
 
-/** A UUID could not be generated, or a string is not a valid UUID. */
-export class UuidError extends Schema.TaggedError<UuidError>()("UuidError", {
+const UuidErrorBase: Schema.Class<
+  UuidError,
+  Schema.TaggedStruct<"UuidError", {
+    readonly message: Schema.String
+    readonly cause: Schema.optional<Schema.Defect>
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<UuidError>()("UuidError", {
   message: Schema.String,
   cause: Schema.optional(Schema.Defect()),
-}) {}
+})
+
+/** A UUID could not be generated, or a string is not a valid UUID. */
+export class UuidError extends UuidErrorBase {}
 
 const uuidError = (cause: unknown) =>
   new UuidError({ message: cause instanceof Error ? cause.message : String(cause), cause })
@@ -58,27 +67,28 @@ export type Uuid = string & Brand.Brand<"Uuid">
  * A UUID string: versions 1 to 8 in the RFC 9562 variant, or the nil or max
  * UUID. Built on Effect's `Schema.isUUID`; case-insensitive.
  */
-export const Uuid = Schema.String.pipe(Schema.check(Schema.isUUID()), Schema.brand("Uuid"))
+export const Uuid: Schema.brand<Schema.String, "Uuid"> =
+  Schema.String.pipe(Schema.check(Schema.isUUID()), Schema.brand("Uuid"))
 
 /** A UUID version that {@linkcode schemaVersion} accepts. */
 export type Version = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
 /** A UUID Schema accepting only the given version (nil and max excluded). */
-export const schemaVersion = (version: Version) =>
+export const schemaVersion = (version: Version): Schema.brand<Schema.String, "Uuid"> =>
   Schema.String.pipe(Schema.check(Schema.isUUID(version)), Schema.brand("Uuid"))
 
 /** A version 1 UUID (time-based). */
-export const UuidV1 = schemaVersion(1)
+export const UuidV1: Schema.brand<Schema.String, "Uuid"> = schemaVersion(1)
 /** A version 3 UUID (name-based, MD5). */
-export const UuidV3 = schemaVersion(3)
+export const UuidV3: Schema.brand<Schema.String, "Uuid"> = schemaVersion(3)
 /** A version 4 UUID (random). */
-export const UuidV4 = schemaVersion(4)
+export const UuidV4: Schema.brand<Schema.String, "Uuid"> = schemaVersion(4)
 /** A version 5 UUID (name-based, SHA-1). */
-export const UuidV5 = schemaVersion(5)
+export const UuidV5: Schema.brand<Schema.String, "Uuid"> = schemaVersion(5)
 /** A version 6 UUID (time-based, sortable). */
-export const UuidV6 = schemaVersion(6)
+export const UuidV6: Schema.brand<Schema.String, "Uuid"> = schemaVersion(6)
 /** A version 7 UUID (Unix time-based, sortable). */
-export const UuidV7 = schemaVersion(7)
+export const UuidV7: Schema.brand<Schema.String, "Uuid"> = schemaVersion(7)
 
 /** The nil UUID: all bits zero. */
 export const NIL = "00000000-0000-0000-0000-000000000000" as Uuid

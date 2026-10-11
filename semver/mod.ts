@@ -26,7 +26,7 @@
  * @module
  */
 
-import { Effect, Equivalence as Eq, Function, Option, Order as Ord, Result, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Equivalence as Eq, Function, Option, Order as Ord, Result, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
 import { compare as stdCompare } from "./_std/compare.ts"
 import { difference as stdDifference } from "./_std/difference.ts"
 import { format as stdFormat } from "./_std/format.ts"
@@ -55,27 +55,50 @@ export type Comparator = Readonly<Std.Comparator>
 /** A range: a union (outer array) of intersections (inner arrays) of comparators. */
 export type Range = ReadonlyArray<ReadonlyArray<Comparator>>
 
-/** A version or range could not be parsed, or a version could not be incremented. */
-export class SemVerError extends Schema.TaggedError<SemVerError>()("SemVerError", {
+const SemVerErrorBase: Schema.Class<
+  SemVerError,
+  Schema.TaggedStruct<"SemVerError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "ParseRange", "Increment"]>
+    readonly message: Schema.String
+    readonly input: Schema.String
+    readonly cause: Schema.optional<Schema.Defect>
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<SemVerError>()("SemVerError", {
   kind: Schema.Literals(["Parse", "ParseRange", "Increment"]),
   message: Schema.String,
   input: Schema.String,
   cause: Schema.optional(Schema.Defect()),
-}) {}
+})
 
-const NonNegativeInt = Schema.Int.check(Schema.isGreaterThanOrEqualTo(0))
+/** A version or range could not be parsed, or a version could not be incremented. */
+export class SemVerError extends SemVerErrorBase {}
 
-/**
- * A semantic version. Build metadata does not take part in
- * {@linkcode Order} or {@linkcode Equivalence}.
- */
-export class SemVer extends Schema.Class<SemVer>("flareosaur/semver/SemVer")({
+const NonNegativeInt: Schema.Int = Schema.Int.check(Schema.isGreaterThanOrEqualTo(0))
+
+const SemVerBase: Schema.Class<
+  SemVer,
+  Schema.Struct<{
+    readonly major: Schema.Int
+    readonly minor: Schema.Int
+    readonly patch: Schema.Int
+    readonly prerelease: Schema.$Array<Schema.Union<readonly [Schema.String, Schema.Int]>>
+    readonly build: Schema.$Array<Schema.String>
+  }>,
+  {}
+> = Schema.Class<SemVer>("flareosaur/semver/SemVer")({
   major: NonNegativeInt,
   minor: NonNegativeInt,
   patch: NonNegativeInt,
   prerelease: Schema.Array(Schema.Union([Schema.String, NonNegativeInt])),
   build: Schema.Array(Schema.String),
-}) {
+})
+
+/**
+ * A semantic version. Build metadata does not take part in
+ * {@linkcode Order} or {@linkcode Equivalence}.
+ */
+export class SemVer extends SemVerBase {
   /** The version as a string, e.g. `"1.2.3-beta.1+build"`. */
   override toString(): string {
     return format(this)
@@ -95,7 +118,7 @@ const fromStd = (version: Std.SemVer): SemVer =>
     build: version.build ?? [],
   })
 
-const message = (cause: unknown) => (cause instanceof Error ? cause.message : String(cause))
+const message = (cause: unknown): string => (cause instanceof Error ? cause.message : String(cause))
 
 /** The parts of a version. */
 export interface SemVerParts {
@@ -271,7 +294,7 @@ export const rangeIntersects: {
 } = Function.dual(2, (self: Range, that: Range): boolean => stdRangeIntersects(stdRange(self), stdRange(that)))
 
 /** A transformation between a version string and the parts of a {@linkcode SemVer}. */
-const versionTransformation = new SchemaTransformation.Transformation<SemVerParts, string>(
+const versionTransformation: SchemaTransformation.Transformation<SemVerParts, string> = new SchemaTransformation.Transformation<SemVerParts, string>(
   SchemaGetter.transformEffect((input: string) =>
     Effect.try({
       try: () => {
@@ -296,4 +319,5 @@ const versionTransformation = new SchemaTransformation.Transformation<SemVerPart
  * Schema.decodeUnknownSync(Manifest)({ version: "1.2.3" }).version.minor // 2
  * ```
  */
-export const SemVerFromString = Schema.String.pipe(Schema.decodeTo(SemVer, versionTransformation))
+export const SemVerFromString: Schema.decodeTo<typeof SemVer, Schema.String> =
+  Schema.String.pipe(Schema.decodeTo(SemVer, versionTransformation))

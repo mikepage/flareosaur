@@ -64,29 +64,65 @@ import { createLPS } from "./_std/_common.ts"
 // Errors
 // ---------------------------------------------------------------------------
 
-/** Reading from or writing to a Web stream failed. */
-export class StreamError extends Schema.TaggedError<StreamError>()("StreamError", {
+const StreamErrorBase: Schema.Class<
+  StreamError,
+  Schema.TaggedStruct<"StreamError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<StreamError>()("StreamError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
 
-/** A stream produced more bytes or elements than its limit allows. */
-export class LimitExceededError extends Schema.TaggedError<LimitExceededError>()("LimitExceededError", {
+/** Reading from or writing to a Web stream failed. */
+export class StreamError extends StreamErrorBase {}
+
+const LimitExceededErrorBase: Schema.Class<
+  LimitExceededError,
+  Schema.TaggedStruct<"LimitExceededError", {
+    readonly unit: Schema.Literals<readonly ["bytes", "elements"]>
+    readonly limit: Schema.Number
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<LimitExceededError>()("LimitExceededError", {
   unit: Schema.Literals(["bytes", "elements"]),
   limit: Schema.Number,
   message: Schema.String,
-}) {}
+})
 
-/** A stream was aborted through an `AbortSignal`; `cause` is the signal's reason. */
-export class AbortError extends Schema.TaggedError<AbortError>()("AbortError", {
+/** A stream produced more bytes or elements than its limit allows. */
+export class LimitExceededError extends LimitExceededErrorBase {}
+
+const AbortErrorBase: Schema.Class<
+  AbortError,
+  Schema.TaggedStruct<"AbortError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<AbortError>()("AbortError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A stream was aborted through an `AbortSignal`; `cause` is the signal's reason. */
+export class AbortError extends AbortErrorBase {}
+
+const BufferErrorBase: Schema.Class<
+  BufferError,
+  Schema.TaggedStruct<"BufferError", {
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<BufferError>()("BufferError", {
+  message: Schema.String,
+})
 
 /** A {@linkcode Buffer} operation was out of range. */
-export class BufferError extends Schema.TaggedError<BufferError>()("BufferError", {
-  message: Schema.String,
-}) {}
+export class BufferError extends BufferErrorBase {}
 
 const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 
