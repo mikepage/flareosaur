@@ -1,14 +1,14 @@
-diff --git a/dotenv/mod.ts b/dotenv/mod.ts
-index 509a675..3be2e75 100644
---- a/dotenv/mod.ts
-+++ b/dotenv/mod.ts
+diff --git a/dotenv/_std/mod.ts b/dotenv/_std/mod.ts
+index 30bd527..7f7f965 100644
+--- a/dotenv/_std/mod.ts
++++ b/dotenv/_std/mod.ts
 @@ -13,296 +13,13 @@
   * assertEquals(stringify({ GREETING: "hello world" }), "GREETING='hello world'");
   * ```
   *
 - * ## Migrating from `load()`
 - *
-- * {@linkcode load}, {@linkcode loadSync} and the `@mikepage/flareosaur/dotenv/load` side-effect
+- * {@linkcode load}, {@linkcode loadSync} and the `@std/dotenv/load` side-effect
 - * module are deprecated in favor of the runtime's
 - * {@link https://docs.deno.com/runtime/reference/env_variables/ | --env-file}
 - * flag, which Node.js and Bun also support:
@@ -20,7 +20,7 @@ index 509a675..3be2e75 100644
 - *
 - * | Deprecated API | Replacement |
 - * | -------------- | ----------- |
-- * | `import "@mikepage/flareosaur/dotenv/load"` | `deno run --env-file app.ts` |
+- * | `import "@std/dotenv/load"` | `deno run --env-file app.ts` |
 - * | `load({ export: true })` / `loadSync({ export: true })` | `--env-file` |
 - * | `load({ envPath: "./.env_prod" })` | `--env-file=.env_prod` |
 - * | `load()` (read into an object, no export) | `parse(await Deno.readTextFile(".env"))` |
@@ -32,7 +32,7 @@ index 509a675..3be2e75 100644
 - *   optional:
 - *
 - * ```ts ignore
-- * import { parse } from "@mikepage/flareosaur/dotenv";
+- * import { parse } from "@std/dotenv";
 - *
 - * let env: Record<string, string> = {};
 - * try {
@@ -95,7 +95,7 @@ index 509a675..3be2e75 100644
 - *
 - * @example Usage
 - * ```ts ignore
-- * import { loadSync } from "@mikepage/flareosaur/dotenv";
+- * import { loadSync } from "@std/dotenv";
 - *
 - * const conf = loadSync();
 - * ```
@@ -149,7 +149,7 @@ index 509a675..3be2e75 100644
 - * @example Basic usage
 - * ```ts ignore
 - * // app.ts
-- * import { load } from "@mikepage/flareosaur/dotenv";
+- * import { load } from "@std/dotenv";
 - *
 - * console.log(await load({ export: true })); // { GREETING: "hello world" }
 - * console.log(Deno.env.get("GREETING")); // hello world
@@ -167,7 +167,7 @@ index 509a675..3be2e75 100644
 - * @example Auto-loading
 - * ```ts ignore
 - * // app.ts
-- * import "@mikepage/flareosaur/dotenv/load";
+- * import "@std/dotenv/load";
 - *
 - * console.log(Deno.env.get("GREETING")); // hello world
 - * ```
@@ -196,7 +196,7 @@ index 509a675..3be2e75 100644
 - *
 - * @example Using with options
 - * ```ts ignore
-- * import { load } from "@mikepage/flareosaur/dotenv";
+- * import { load } from "@std/dotenv";
 - *
 - * const conf = await load({
 - *   envPath: "./.env_prod", // Uses .env_prod instead of .env
@@ -303,11 +303,11 @@ index 509a675..3be2e75 100644
 -    throw e;
 -  }
 -}
-diff --git a/dotenv/parse.ts b/dotenv/parse.ts
-index 0f49dee..be3e5df 100644
---- a/dotenv/parse.ts
-+++ b/dotenv/parse.ts
-@@ -55,7 +55,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
+diff --git a/dotenv/_std/parse.ts b/dotenv/_std/parse.ts
+index 95d335e..ce7148a 100644
+--- a/dotenv/_std/parse.ts
++++ b/dotenv/_std/parse.ts
+@@ -47,7 +47,7 @@ function expand(str: string, variablesMap: Record<string, string>): string {
        const defaultValue = inBracketsDefault ?? notInBracketsDefault;
  
        return (
@@ -316,15 +316,15 @@ index 0f49dee..be3e5df 100644
        );
      });
    }
-diff --git a/fmt/printf.ts b/fmt/printf.ts
-index 60d7d06..0a07ca2 100644
---- a/fmt/printf.ts
-+++ b/fmt/printf.ts
+diff --git a/fmt/_std/printf.ts b/fmt/_std/printf.ts
+index 696da18..dab480e 100644
+--- a/fmt/_std/printf.ts
++++ b/fmt/_std/printf.ts
 @@ -162,6 +162,19 @@
   */
  
  import { stripAnsiCode } from "./colors.ts";
-+import { inspect as fallbackInspect } from "../internal/inspect.ts";
++import { inspect as fallbackInspect } from "../../internal/_std/inspect.ts";
 +
 +// deno-lint-ignore no-explicit-any
 +const { Deno } = globalThis as any;
@@ -396,28 +396,40 @@ index 60d7d06..0a07ca2 100644
 +    console.log(s.endsWith("\n") ? s.slice(0, -1) : s);
 +  }
  }
-diff --git a/http/mod.ts b/http/mod.ts
-index fb2e661..0de3ed9 100644
---- a/http/mod.ts
-+++ b/http/mod.ts
+diff --git a/http/_std/mod.ts b/http/_std/mod.ts
+index 67203f6..55102d4 100644
+--- a/http/_std/mod.ts
++++ b/http/_std/mod.ts
 @@ -104,4 +104,3 @@ export * from "./negotiation.ts";
  export * from "./server_sent_event_stream.ts";
  export * from "./server_sent_event_parse_stream.ts";
  export * from "./user_agent.ts";
 -export * from "./file_server.ts";
-diff --git a/http/unstable_formdata_encoder_stream.ts b/http/unstable_formdata_encoder_stream.ts
-index d8d6ed1..b1f8bba 100644
---- a/http/unstable_formdata_encoder_stream.ts
-+++ b/http/unstable_formdata_encoder_stream.ts
-@@ -9,7 +9,6 @@
-  */
+diff --git a/http/_std/unstable_formdata_decoder_stream.ts b/http/_std/unstable_formdata_decoder_stream.ts
+index 63ee351..1a386ad 100644
+--- a/http/_std/unstable_formdata_decoder_stream.ts
++++ b/http/_std/unstable_formdata_decoder_stream.ts
+@@ -92,6 +92,7 @@ export class FormDataDecoderStream {
+           )
+           .read
+     ) throw new SyntaxError("Boundary has invalid characters within it");
++    // @ts-ignore: ReadableStream.from is missing from TypeScript's DOM lib
+     this.#readable = ReadableStream.from(this.#handle(readable, boundary));
+   }
  
- import { encodeBase64 } from "../encoding/unstable_base64.ts";
--import { toByteStream } from "../streams/unstable_to_byte_stream.ts";
+diff --git a/http/_std/unstable_formdata_encoder_stream.ts b/http/_std/unstable_formdata_encoder_stream.ts
+index 43f58ff..792b2bd 100644
+--- a/http/_std/unstable_formdata_encoder_stream.ts
++++ b/http/_std/unstable_formdata_encoder_stream.ts
+@@ -1,7 +1,6 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
+ 
+ import { encodeBase64 } from "../../encoding/_std/unstable_base64.ts";
+-import { toByteStream } from "../../streams/_std/unstable_to_byte_stream.ts";
  
  /**
   * The input that can be passed to a {@linkcode FormDataEncoderStream}.
-@@ -118,11 +117,17 @@ export class FormDataEncoderStream {
+@@ -110,11 +109,17 @@ export class FormDataEncoderStream {
          );
  
          try {
@@ -437,7 +449,7 @@ index d8d6ed1..b1f8bba 100644
  
            // deno-lint-ignore no-explicit-any
            if ((buffer.buffer as any).detached) {
-@@ -130,9 +135,10 @@ export class FormDataEncoderStream {
+@@ -122,9 +127,10 @@ export class FormDataEncoderStream {
            } else if (buffer.buffer === value.buffer) {
              controller.byobRequest!.respond(value.length);
            } else {
@@ -451,7 +463,7 @@ index d8d6ed1..b1f8bba 100644
            }
          } catch (error) {
            controller.error(error);
-@@ -184,13 +190,15 @@ export class FormDataEncoderStream {
+@@ -176,13 +182,15 @@ export class FormDataEncoderStream {
          buffer = yield this.#setString(buffer, input.value);
        } else {
          if (input.value instanceof Blob) input.value = input.value.stream();
@@ -471,12 +483,12 @@ index d8d6ed1..b1f8bba 100644
            }
          } catch (reason) {
            await reader.cancel(reason);
-diff --git a/http/unstable_route.ts b/http/unstable_route.ts
-index 56e2cad..57a7123 100644
---- a/http/unstable_route.ts
-+++ b/http/unstable_route.ts
-@@ -9,13 +9,17 @@
-  */
+diff --git a/http/_std/unstable_route.ts b/http/_std/unstable_route.ts
+index 78cab05..85f1adc 100644
+--- a/http/_std/unstable_route.ts
++++ b/http/_std/unstable_route.ts
+@@ -1,13 +1,17 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
  
  /**
 - * A handler for HTTP requests.
@@ -496,7 +508,7 @@ index 56e2cad..57a7123 100644
  ) => Response | Promise<Response>;
  
  /**
-@@ -23,16 +27,18 @@ export type RequestHandler = (
+@@ -15,16 +19,18 @@ export type RequestHandler = (
   *
   * @experimental **UNSTABLE**: New API, yet to be vetted.
   *
@@ -519,7 +531,7 @@ index 56e2cad..57a7123 100644
  ) => Response | Promise<Response>;
  
  /**
-@@ -40,7 +46,8 @@ export type Handler = (
+@@ -32,7 +38,8 @@ export type Handler = (
   *
   * @experimental **UNSTABLE**: New API, yet to be vetted.
   */
@@ -529,7 +541,7 @@ index 56e2cad..57a7123 100644
    /**
     * Request URL pattern.
     */
-@@ -55,7 +62,7 @@ export interface Route {
+@@ -47,7 +54,7 @@ export interface Route {
    /**
     * Request handler.
     */
@@ -538,7 +550,7 @@ index 56e2cad..57a7123 100644
  }
  
  function methodMatches(
-@@ -97,25 +104,26 @@ function methodMatches(
+@@ -89,25 +96,26 @@ function methodMatches(
   *   return new Response("Not found", { status: 404 });
   * }
   *
@@ -573,7 +585,7 @@ index 56e2cad..57a7123 100644
    };
  }
  
-@@ -272,7 +280,7 @@ function createNode(): RouteNode {
+@@ -264,7 +272,7 @@ function createNode(): RouteNode {
   *   return new Response("Not found", { status: 404 });
   * }
   *
@@ -582,7 +594,7 @@ index 56e2cad..57a7123 100644
   * ```
   *
   * @param routes Route configurations
-@@ -281,10 +289,11 @@ function createNode(): RouteNode {
+@@ -273,10 +281,11 @@ function createNode(): RouteNode {
   * Allowed response can be done in this function.
   * @returns Request handler
   */
@@ -598,7 +610,7 @@ index 56e2cad..57a7123 100644
    const root = createNode();
    const fallbackRoutes: IndexedRoute[] = [];
    let insertionCounter = 0;
-@@ -429,7 +438,7 @@ export function routeRadix(
+@@ -421,7 +430,7 @@ export function routeRadix(
    // and let pruning skip the rest of the tree if one matches.
    const radixMinIndex = root.minIndex;
  
@@ -607,7 +619,7 @@ index 56e2cad..57a7123 100644
      const state: MatchState = {
        request,
        pathname: parsePathname(request.url),
-@@ -461,9 +470,9 @@ export function routeRadix(
+@@ -453,9 +462,9 @@ export function routeRadix(
      }
  
      if (state.bestRoute !== null) {
@@ -619,20 +631,20 @@ index 56e2cad..57a7123 100644
    };
  }
  
-diff --git a/internal/format.ts b/internal/format.ts
-index f48f7d3..0480000 100644
---- a/internal/format.ts
-+++ b/internal/format.ts
-@@ -9,6 +9,8 @@
-  * @module
-  */
+diff --git a/internal/_std/format.ts b/internal/_std/format.ts
+index 33fdd89..6ef6bca 100644
+--- a/internal/_std/format.ts
++++ b/internal/_std/format.ts
+@@ -1,6 +1,8 @@
+ // Copyright 2018-2026 the Deno authors. MIT license.
+ // This module is browser compatible.
  
 +import { inspect as fallbackInspect } from "./inspect.ts";
 +
  /** An inspect function conforming to the shape of `Deno.inspect` and `node:util`'s `inspect` */
  export type InspectFn = (
    v: unknown,
-@@ -48,48 +50,20 @@ export function format(v: unknown): string {
+@@ -40,48 +42,20 @@ export function format(v: unknown): string {
    const inspect: InspectFn | undefined = Deno?.inspect ??
      process?.getBuiltinModule?.("node:util")?.inspect;
  
@@ -696,10 +708,10 @@ index f48f7d3..0480000 100644
 -
 -  return "[[Unable to format value]]";
  }
-diff --git a/internal/format_test.ts b/internal/format_test.ts
-index 9319022..63b96c0 100644
---- a/internal/format_test.ts
-+++ b/internal/format_test.ts
+diff --git a/internal/_std/format_test.ts b/internal/_std/format_test.ts
+index 8434344..9bc2873 100644
+--- a/internal/_std/format_test.ts
++++ b/internal/_std/format_test.ts
 @@ -133,8 +133,9 @@ Deno.test("format() has fallback if Deno.inspect is not available", async (t) =>
      stack.use(stubProperty(global, "Deno", undefined));
      stack.use(stubProperty(global, "process", undefined));
@@ -738,11 +750,11 @@ index 9319022..63b96c0 100644
  
      assertThrows(
        // @ts-expect-error different types
-diff --git a/internal/inspect.ts b/internal/inspect.ts
+diff --git a/internal/_std/inspect.ts b/internal/_std/inspect.ts
 new file mode 100644
 index 0000000..228263a
 --- /dev/null
-+++ b/internal/inspect.ts
++++ b/internal/_std/inspect.ts
 @@ -0,0 +1,525 @@
 +// Copyright 2026 the flareosaur authors. MIT license.
 +// This module is browser compatible.
@@ -1269,13 +1281,13 @@ index 0000000..228263a
 +  };
 +  return formatValue(value, ctx, 0, false);
 +}
-diff --git a/jsonc/parse_test.ts b/jsonc/parse_test.ts
-index 113900a..b1b067c 100644
---- a/jsonc/parse_test.ts
-+++ b/jsonc/parse_test.ts
+diff --git a/jsonc/_std/parse_test.ts b/jsonc/_std/parse_test.ts
+index 4a28b29..230ed28 100644
+--- a/jsonc/_std/parse_test.ts
++++ b/jsonc/_std/parse_test.ts
 @@ -8,9 +8,6 @@ import {
    assertThrows,
- } from "../assert/mod.ts";
+ } from "../../assert/_std/mod.ts";
  
 -import "./testdata/JSONTestSuite/test.ts";
 -import "./testdata/test262/test.ts";
@@ -1283,11 +1295,11 @@ index 113900a..b1b067c 100644
  // The test code for the jsonc module can also be found in the testcode directory.
  
  function assertValidParse(text: string, expected: unknown) {
-diff --git a/streams/byte_slice_stream.ts b/streams/byte_slice_stream.ts
-index 5d52723..d41f113 100644
---- a/streams/byte_slice_stream.ts
-+++ b/streams/byte_slice_stream.ts
-@@ -53,13 +53,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
+diff --git a/streams/_std/byte_slice_stream.ts b/streams/_std/byte_slice_stream.ts
+index 4a59739..1958373 100644
+--- a/streams/_std/byte_slice_stream.ts
++++ b/streams/_std/byte_slice_stream.ts
+@@ -45,13 +45,15 @@ export class ByteSliceStream extends TransformStream<Uint8Array, Uint8Array> {
     * @param end The zero-indexed byte index to stop reading at. Inclusive.
     */
    constructor(start = 0, end: number = Infinity) {
@@ -1308,11 +1320,11 @@ index 5d52723..d41f113 100644
          end += 1;
        },
        transform: (chunk, controller) => {
-diff --git a/streams/concat_readable_streams.ts b/streams/concat_readable_streams.ts
-index 92c4dbb..2949fcd 100644
---- a/streams/concat_readable_streams.ts
-+++ b/streams/concat_readable_streams.ts
-@@ -38,21 +38,28 @@ export function concatReadableStreams<T>(
+diff --git a/streams/_std/concat_readable_streams.ts b/streams/_std/concat_readable_streams.ts
+index 4ae98f2..356d82f 100644
+--- a/streams/_std/concat_readable_streams.ts
++++ b/streams/_std/concat_readable_streams.ts
+@@ -30,21 +30,28 @@ export function concatReadableStreams<T>(
    ...streams: ReadableStream<T>[]
  ): ReadableStream<T> {
    let i = 0;
@@ -1344,11 +1356,19 @@ index 92c4dbb..2949fcd 100644
        await Promise.allSettled(promises);
      },
    });
-diff --git a/streams/unstable_capped_delimiter_stream.ts b/streams/unstable_capped_delimiter_stream.ts
-index 79aca5c..87c2e4c 100644
---- a/streams/unstable_capped_delimiter_stream.ts
-+++ b/streams/unstable_capped_delimiter_stream.ts
-@@ -120,6 +120,16 @@ export class CappedDelimiterStream
+diff --git a/streams/_std/unstable_capped_delimiter_stream.ts b/streams/_std/unstable_capped_delimiter_stream.ts
+index c3cf48f..aabffd1 100644
+--- a/streams/_std/unstable_capped_delimiter_stream.ts
++++ b/streams/_std/unstable_capped_delimiter_stream.ts
+@@ -104,6 +104,7 @@ export class CappedDelimiterStream
+       Uint8Array
+     >();
+     this.#writable = writable;
++    // @ts-ignore: ReadableStream.from is missing from TypeScript's DOM lib
+     this.#readable = ReadableStream.from(this.#handle(readable, options));
+   }
+ 
+@@ -112,6 +113,16 @@ export class CappedDelimiterStream
      { delimiter, limit }: CappedDelimiterOptions,
    ): AsyncGenerator<CappedDelimiterEntry> {
      const reader = toByteStream(readable).getReader({ mode: "byob" });
@@ -1365,7 +1385,7 @@ index 79aca5c..87c2e4c 100644
      let buffer = (await reader.read(
        new Uint8Array(limit + delimiter.length),
        { min: limit + delimiter.length },
-@@ -134,12 +144,7 @@ export class CappedDelimiterStream
+@@ -126,12 +137,7 @@ export class CappedDelimiterStream
          yield { match: true, value: buffer.slice(0, i) };
          buffer.set(buffer.subarray(i + delimiter.length));
          buffer = buffer.subarray(-i - delimiter.length);
@@ -1379,7 +1399,7 @@ index 79aca5c..87c2e4c 100644
          continue a;
        }
        if (buffer.byteLength < buffer.buffer.byteLength) {
-@@ -153,12 +158,7 @@ export class CappedDelimiterStream
+@@ -145,12 +151,7 @@ export class CappedDelimiterStream
        yield { match: false, value: buffer.slice(0, -delimiter.length) };
        buffer.set(buffer.subarray(-delimiter.length));
        buffer = buffer.subarray(delimiter.length);

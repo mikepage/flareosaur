@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "DOM.AsyncIterable"],
+    "types": [],
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["*/**/*.ts", "types/*.d.ts"],
+  "exclude": [
+    "node_modules",
+    "scripts",
+    "**/_std/**/*_test.ts",
+    "**/_std/**/test.ts",
+    "**/_std/**/testdata/**",
+    "**/_std/**/_test_utils.ts",
+    "**/_std/**/_test_util.ts",
+    "**/_std/**/_testing.ts",
+    "**/_std/**/_test_comparator_set.ts"
+  ]
+}

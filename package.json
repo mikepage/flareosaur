@@ -5,19 +5,25 @@
   "description": "The Deno standard library, ported to run on Cloudflare Workers without nodejs_compat.",
   "license": "MIT",
   "scripts": {
-    "port": "node scripts/port.mjs",
-    "patch": "node scripts/make_patch.mjs",
-    "check": "node scripts/check.mjs",
-    "test": "node scripts/test.mjs"
+    "cli": "node scripts/cli.ts",
+    "port": "node scripts/cli.ts port",
+    "patch": "node scripts/cli.ts patch",
+    "exports": "node scripts/cli.ts exports",
+    "check": "node scripts/cli.ts check",
+    "test": "node scripts/cli.ts test"
   },
   "devDependencies": {
-    "deno": "2.9.6",
+    "@cloudflare/workers-types": "5.20261010.1",
+    "@effect/platform-node": "4.0.2",
     "esbuild": "0.28.2",
-    "miniflare": "4.20260730.0"
+    "miniflare": "4.20260730.0",
+    "typescript": "6.0.3"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
-    "workerd@1.20260730.1": true,
-    "deno@2.9.6": true
+    "workerd@1.20260730.1": true
+  },
+  "dependencies": {
+    "effect": "4.0.2"
   }
 }
