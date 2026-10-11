@@ -195,18 +195,35 @@ const bufferBody = (response: Response): Effect.Effect<Response, unknown> =>
       (bytes) => new Response(bytes, { status: response.status, statusText: response.statusText, headers: response.headers }),
     )
 
+type Router = (request: Request, context: Context.Context<ExecutionContext>) => Promise<Response>
+
 /** Builds the default export of a Worker from Effect handlers. */
 export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHandler => {
-  let runtime: ManagedRuntime.ManagedRuntime<any, any> | undefined
-  let router: ((request: Request, context: Context.Context<ExecutionContext>) => Promise<Response>) | undefined
-  const runtimeFor = (env: Record<string, unknown>) =>
-    (runtime ??= ManagedRuntime.make(servicesLayer(env, handlers.layer) as Layer.Layer<any, any, never>))
+  // Per isolate, only what is built: never a build in progress. A Workers
+  // request can't settle a promise another request started, so when the
+  // request that started a shared build is cancelled, every request
+  // awaiting it hangs until the isolate is recycled. A request that finds
+  // nothing built builds its own; the first to finish is kept.
+  let built: { readonly runtime: ManagedRuntime.ManagedRuntime<any, any>; readonly context: Context.Context<any> } | undefined
+  let router: Router | undefined
 
-  const run = <A>(
+  const runtimeFor = async (env: Record<string, unknown>) => {
+    if (built) return built
+    const runtime = ManagedRuntime.make(servicesLayer(env, handlers.layer) as Layer.Layer<any, any, never>)
+    const context = await runtime.context()
+    if (built) {
+      // Another request finished first: keep its services, drop ours.
+      await runtime.dispose()
+      return built
+    }
+    return (built = { runtime, context })
+  }
+
+  const run = async <A>(
     env: Record<string, unknown>,
     ctx: ExecutionContextLike,
     effect: Effect.Effect<A, unknown, any>,
-  ): Promise<A> => runtimeFor(env).runPromise(effect.pipe(Effect.provideService(ExecutionContext, ctx)))
+  ): Promise<A> => (await runtimeFor(env)).runtime.runPromise(effect.pipe(Effect.provideService(ExecutionContext, ctx)))
 
   const buffer = handlers.buffer
   const respond = (request: Request) => (response: Response): Effect.Effect<Response, unknown> =>
@@ -219,10 +236,8 @@ export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHa
   if (fetch && Layer.isLayer(fetch)) {
     // Services are built once per isolate in the runtime, and handed to the
     // routes as request-level dependencies.
-    let routerPromise: Promise<NonNullable<typeof router>> | undefined
-    const buildRouter = async (env: Record<string, unknown>) => {
-      const rt = runtimeFor(env)
-      const context = await rt.context()
+    const buildRouter = async (env: Record<string, unknown>): Promise<Router> => {
+      const { runtime: rt, context } = await runtimeFor(env)
       const app = (fetch as Layer.Layer<never, any, any>).pipe(HttpRouter.provideRequest(Layer.succeedContext(context)))
       return HttpRouter.toWebHandler(app as Layer.Layer<never, any, any>, {
         memoMap: rt.memoMap,
@@ -236,11 +251,20 @@ export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHa
               ? Effect.logError("Unhandled defect in route", cause)
               : Effect.void
           }),
-      } as any).handler as unknown as NonNullable<typeof router>
+      } as any).handler as unknown as Router
     }
     worker.fetch = async (request, env, ctx) => {
-      router ??= await (routerPromise ??= buildRouter(env))
-      const response = await router(request, Context.make(ExecutionContext, ctx))
+      let response: Response
+      if (router) {
+        response = await router(request, Context.make(ExecutionContext, ctx))
+      } else {
+        // toWebHandler builds the app in the background and its handler
+        // waits for that build. The router is kept only once it has answered
+        // this request, so a build whose request was cancelled is never kept.
+        const own = await buildRouter(env)
+        response = await own(request, Context.make(ExecutionContext, ctx))
+        router ??= own
+      }
       return buffer ? run(env, ctx, respond(request)(response).pipe(Effect.catchCause(internalError))) : response
     }
   } else if (fetch) {

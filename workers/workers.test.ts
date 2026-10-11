@@ -121,6 +121,38 @@ describe("Worker", () => {
       assertEquals(response.status, 500)
     }))
 
+  // A Workers request can't settle a promise another request started: when
+  // the first request's build is cancelled, it never finishes. Here the first
+  // build never settles, as one started by a cancelled request.
+  const stuckFirstBuild = () => {
+    let builds = 0
+    return Layer.effectDiscard(Effect.suspend(() => builds++ === 0 ? Effect.never : Effect.void))
+  }
+  const answersWithin = (response: Promise<Response>) =>
+    Effect.promise(() => response).pipe(
+      Effect.flatMap((r) => Effect.promise(() => r.text())),
+      Effect.timeoutOption("2 seconds"),
+    )
+
+  it.live("doesn't hold up later requests on a first request's build that never finishes", () =>
+    Effect.gen(function*() {
+      const worker = Worker.make({ layer: stuckFirstBuild(), fetch: () => Effect.succeed(new Response("ok")) })
+      void worker.fetch!(new Request("http://x/"), {}, ctx)
+      assertEquals(yield* answersWithin(worker.fetch!(new Request("http://x/"), {}, ctx)), Option.some("ok"))
+    }))
+
+  it.live("doesn't hold up later HttpRouter requests on a first request's build that never finishes", () =>
+    Effect.gen(function*() {
+      const worker = Worker.make({
+        layer: stuckFirstBuild(),
+        fetch: HttpRouter.add("GET", "/", Effect.succeed(HttpServerResponse.text("ok"))),
+      })
+      void worker.fetch!(new Request("http://x/"), {}, ctx)
+      assertEquals(yield* answersWithin(worker.fetch!(new Request("http://x/"), {}, ctx)), Option.some("ok"))
+      // The router that answered is kept for the requests after it.
+      assertEquals(yield* answersWithin(worker.fetch!(new Request("http://x/"), {}, ctx)), Option.some("ok"))
+    }))
+
   it.effect("reports a missing binding", () =>
     Effect.gen(function*() {
       const error = yield* assertFailsWithTag(

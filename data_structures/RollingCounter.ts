@@ -66,6 +66,11 @@ export class RollingCounter extends Structure implements Iterable<number> {
   /**
    * Rotates one segment every `interval`, in a fiber that stops when the
    * current scope closes.
+   *
+   * On Workers, keep that scope inside one request, or run it in a Durable
+   * Object. Its sleep is a timer of the request that started it: in a scope
+   * that outlives the request, such as a Worker's shared layer, the fiber
+   * stops when that request ends.
    */
   rotateEvery(interval: Duration.Input): Effect.Effect<void, never, Scope.Scope> {
     return Effect.sleep(interval).pipe(
