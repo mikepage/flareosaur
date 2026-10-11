@@ -6,6 +6,7 @@
 //   node scripts/cli.ts exports         regenerate the deno.json exports
 //   node scripts/cli.ts check [--jsr]   tsc + public module lint (+ JSR dry run)
 //   node scripts/cli.ts test [target]   run the tests in workerd
+//   node scripts/cli.ts site            generate site/examples.generated.ts
 
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as NodeServices from "@effect/platform-node/NodeServices"
@@ -17,6 +18,7 @@ import { makePatch } from "./Patch.ts"
 import { port, ROOT } from "./Port.ts"
 import { runTests, TestRunError } from "./Test.ts"
 import { generateIndex, runExamples, ExampleError } from "./Examples.ts"
+import { generateSite } from "./Site.ts"
 
 const std = Argument.String("std").pipe(
   Argument.withDescription("Path to a denoland/std checkout"),
@@ -105,9 +107,18 @@ const examplesCommand = Command.make(
   }),
 ).pipe(Command.withDescription("Check the Workers examples in Miniflare and regenerate their index"))
 
+const siteCommand = Command.make(
+  "site",
+  {},
+  Effect.fn(function*() {
+    const { served, total } = yield* generateSite()
+    yield* Console.log(`wrote site/examples.generated.ts (${served} of ${total} examples served)`)
+  }),
+).pipe(Command.withDescription("Generate the example list for the flareosaur.mikepage.nl Worker (site/)"))
+
 Command.make("flareosaur").pipe(
   Command.withDescription("Tooling for flareosaur"),
-  Command.withSubcommands([portCommand, patchCommand, exportsCommand, checkCommand, testCommand, examplesCommand]),
+  Command.withSubcommands([portCommand, patchCommand, exportsCommand, checkCommand, testCommand, examplesCommand, siteCommand]),
   Command.run({ version: "1.0.0" }),
   Effect.provide(NodeServices.layer),
   NodeRuntime.runMain,

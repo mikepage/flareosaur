@@ -1,0 +1,5 @@
+{
+  // Wrangler bundles with this file: it resolves @mikepage/flareosaur/* to the repo.
+  "extends": "../tsconfig.json",
+  "include": ["*.ts", "../examples/**/*.ts", "../types/*.d.ts"]
+}

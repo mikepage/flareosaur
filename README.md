@@ -30,7 +30,9 @@ dependencies. flareosaur fills in the rest:
 - **The Workers runtime as Effect services.** `workers` does for Workers what
   `Deno.serve`, Deno KV, `Deno.cron` and Deno Queues do for Deno.
 - **Examples.** [`examples/`](examples/README.md): the Deno examples as
-  Workers, each checked in workerd.
+  Workers, plus network and email tools (DNS, DMARC, SPF, RDAP, SMTP, IPv6,
+  ...), each checked in workerd. Live at
+  [flareosaur.mikepage.nl](https://flareosaur.mikepage.nl).
 
 ## Packages
 
@@ -121,6 +123,14 @@ one package with `npm test -- yaml`, one file with
 `npm test -- yaml/yaml.test.ts`, one example with
 `npm run examples -- kv`. See [`CLAUDE.md`](CLAUDE.md) for the conventions a
 package follows.
+
+### The examples site
+
+[`site/worker.ts`](site/worker.ts) serves every example that needs no storage
+bindings at `/<example>/` on flareosaur.mikepage.nl, with an index at `/` and a
+per-IP rate limit. `npm run site` regenerates the list
+(`site/examples.generated.ts`), `npm run site:dev` runs it locally and
+`npm run site:deploy` deploys it.
 
 ### Syncing with upstream std
 

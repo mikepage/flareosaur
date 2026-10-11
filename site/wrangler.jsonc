@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "flareosaur",
+  "main": "worker.ts",
+  "compatibility_date": "2026-07-30",
+  // No compatibility flags: the site runs on web standards alone, like the examples.
+  "compatibility_flags": [],
+  "ratelimits": [
+    { "name": "RATE_LIMIT", "namespace_id": "1003", "simple": { "limit": 120, "period": 60 } }
+  ],
+  "routes": [{ "pattern": "flareosaur.mikepage.nl", "custom_domain": true }],
+  "observability": { "enabled": true }
+}
