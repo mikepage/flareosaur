@@ -11,7 +11,7 @@
 import { build, type Plugin } from "esbuild"
 import { Miniflare } from "miniflare"
 import { Console, Effect, FileSystem, Path, Schema } from "effect"
-import { STD_PACKAGES, kebab } from "./Packages.ts"
+import { ALL_PACKAGES, kebab } from "./Packages.ts"
 import { ROOT, walk } from "./Port.ts"
 
 const OUT = `${ROOT}/node_modules/.flareosaur-test`
@@ -227,7 +227,7 @@ export const runTests = Effect.fnUntraced(function*(options: TestOptions) {
   const config = JSON.parse(yield* fs.readFileString(`${ROOT}/deno.json`))
   const exportTargets = Object.values(config.exports as Record<string, string>)
   const packages: Array<string> = []
-  for (const dir of Object.keys(STD_PACKAGES)) {
+  for (const dir of ALL_PACKAGES) {
     if (yield* fs.exists(`${ROOT}/${dir}`)) packages.push(dir)
   }
   const { targets } = options

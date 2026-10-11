@@ -8,6 +8,14 @@
     "./internal": "./internal/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
+    "./workers/cache": "./workers/Cache.ts",
+    "./workers/durable-object": "./workers/DurableObject.ts",
+    "./workers/kv": "./workers/Kv.ts",
+    "./workers/queue": "./workers/Queue.ts",
+    "./workers/r-2": "./workers/R2.ts",
+    "./workers/scheduled": "./workers/Scheduled.ts",
+    "./workers/worker": "./workers/Worker.ts",
+    "./workers": "./workers/mod.ts",
     "./yaml": "./yaml/mod.ts"
   },
   "imports": {

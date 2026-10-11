@@ -4,7 +4,7 @@
 // private (leading underscore) or a test is `./<dir>/<name>`.
 
 import { Effect, FileSystem, Path, String } from "effect"
-import { STD_PACKAGES, kebab } from "./Packages.ts"
+import { ALL_PACKAGES, kebab } from "./Packages.ts"
 import { ROOT } from "./Port.ts"
 
 export const isPublicModule = (file: string): boolean =>
@@ -15,7 +15,7 @@ export const packageDirs = Effect.fnUntraced(function*() {
   const fs = yield* FileSystem.FileSystem
   const path = yield* Path.Path
   const dirs: Array<string> = []
-  for (const dir of Object.keys(STD_PACKAGES)) {
+  for (const dir of ALL_PACKAGES) {
     if (yield* fs.exists(path.join(ROOT, dir, "mod.ts"))) dirs.push(dir)
   }
   return dirs

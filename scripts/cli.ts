@@ -16,6 +16,7 @@ import { generateExports } from "./Exports.ts"
 import { makePatch } from "./Patch.ts"
 import { port, ROOT } from "./Port.ts"
 import { runTests, TestRunError } from "./Test.ts"
+import { generateIndex, runExamples, ExampleError } from "./Examples.ts"
 
 const std = Argument.String("std").pipe(
   Argument.withDescription("Path to a denoland/std checkout"),
@@ -84,9 +85,21 @@ const testCommand = Command.make(
   }),
 ).pipe(Command.withDescription("Run the tests in workerd"))
 
+const examplesCommand = Command.make(
+  "examples",
+  {
+    slugs: Argument.String("example").pipe(Argument.withDescription("Examples to run (default: all)"), Argument.variadic()),
+  },
+  Effect.fn(function*({ slugs }) {
+    yield* Console.log(`wrote examples/README.md (${yield* generateIndex()} examples)`)
+    const failed = yield* runExamples(slugs)
+    if (failed) return yield* new ExampleError({ example: "*", message: `${failed} examples failed` })
+  }),
+).pipe(Command.withDescription("Check the Workers examples in Miniflare and regenerate their index"))
+
 Command.make("flareosaur").pipe(
   Command.withDescription("Tooling for flareosaur"),
-  Command.withSubcommands([portCommand, patchCommand, exportsCommand, checkCommand, testCommand]),
+  Command.withSubcommands([portCommand, patchCommand, exportsCommand, checkCommand, testCommand, examplesCommand]),
   Command.run({ version: "1.0.0" }),
   Effect.provide(NodeServices.layer),
   NodeRuntime.runMain,

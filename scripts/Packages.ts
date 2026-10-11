@@ -102,5 +102,11 @@ export const STD_PACKAGES: Readonly<Record<string, StdPackage>> = {
   yaml: {},
 }
 
+/** Packages of this repo that do not come from std. */
+export const OWN_PACKAGES: ReadonlyArray<string> = ["workers"]
+
+/** Every package directory: the std ones and this repo's own. */
+export const ALL_PACKAGES: ReadonlyArray<string> = [...Object.keys(STD_PACKAGES), ...OWN_PACKAGES].sort()
+
 /** Directory name -> JSR subpath segment, e.g. data_structures -> data-structures. */
 export const kebab = (dir: string): string => dir.replaceAll("_", "-")
