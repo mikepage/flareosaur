@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-40 examples in 7 groups.
+46 examples in 8 groups.
 
 ## Basics
 
@@ -52,6 +52,10 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | Example | What it shows |
 | --- | --- |
 | [Compress and decompress data](compress-decompress.ts) | Workers implement `CompressionStream` and `DecompressionStream`. Wrapped as Effect `Stream` steps, compression is one more stage in a pipeline, whether the data is a string in memory or a large R2 object. |
+| [Extract front matter from Markdown](front-matter.ts) | Front matter is a metadata block at the top of a Markdown file, in YAML, TOML or JSON. `extract` finds the format, parses the block and returns the rest of the document; with a Schema the attributes come out typed. |
+| [Parse and serialize CSV, also as streams](csv.ts) | CSV is still how data moves between spreadsheets and systems. A Schema codec decodes CSV with a header row into typed records, numbers included, and `parseStream` handles files too big for memory one row at a time, whatever the chunk boundaries are. |
+| [Parse and serialize TOML and YAML](toml-yaml-config.ts) | Configuration files map to typed values with a Schema codec: TOML or YAML text in, a validated config object out, and back again. Both parsers are std's complete implementations (the full TOML spec, YAML 1.2 with multiple documents and tags), behind typed errors. |
+| [Stream JSON Lines data](json-lines.ts) | JSON Lines (NDJSON) puts one JSON value per line, so a reader can process records as they arrive. Request and response bodies are Effect streams: parse an upload line by line, and produce a download one record at a time, without holding either in memory. |
 
 ## HTTP
 
@@ -76,6 +80,13 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | Example | What it shows |
 | --- | --- |
 | [Structured logging](structured-logging.ts) | Workers Logs index JSON log lines, so structured logs are searchable by field. Effect's logger writes one JSON object per line when the layer swaps in `Logger.consoleJson`; annotations and spans become fields, so every line of a request carries its request id without passing it around. |
+
+## Standard library
+
+| Example | What it shows |
+| --- | --- |
+| [Parse and compare semver versions](semver-versions.ts) | Version strings cannot be compared as text: "1.10.0" sorts before "1.2.0". A parsed `SemVer` comes with an Effect `Order`, so arrays sort correctly with `Array.sort`, and ranges, increments and comparisons follow the semver spec. Parsing returns a `Result` instead of throwing. |
+| [Parse, format and compute with dates](dates.ts) | Effect's `DateTime` is an immutable instant (optionally with a time zone) and reads "now" from the `Clock`, so code that uses the current time stays testable. `@mikepage/flareosaur/datetime` adds std's pattern-based `format` and `parse`, and calendar helpers. |
 
 ## Web standard APIs
 

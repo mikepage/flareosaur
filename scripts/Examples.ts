@@ -175,7 +175,13 @@ const parseHttpCheck = (check: string): HttpCheck => {
     method: method!,
     path: path!,
     headers,
-    body: bodyParts.length ? bodyParts.join(" ") : undefined,
+    // A quoted body may use JSON escapes such as \n.
+    body: bodyParts.length
+      ? (() => {
+        const raw = bodyParts.join(" ")
+        return raw.startsWith('"') && raw.endsWith('"') ? unquote(raw.slice(1, -1)) : raw
+      })()
+      : undefined,
     status,
     contains,
     absent,
