@@ -26,18 +26,28 @@
  * @module
  */
 
-import { Effect, Predicate, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Predicate, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
 import { parse as stdParse } from "./_std/parse.ts"
 import { stringify as stdStringify, type StringifyOptions } from "./_std/stringify.ts"
 
 export type { StringifyOptions }
 
-/** A TOML document could not be parsed, or a value could not be stringified. */
-export class TomlError extends Schema.TaggedError<TomlError>()("TomlError", {
+const TomlErrorBase: Schema.Class<
+  TomlError,
+  Schema.TaggedStruct<"TomlError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<TomlError>()("TomlError", {
   kind: Schema.Literals(["Parse", "Stringify"]),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A TOML document could not be parsed, or a value could not be stringified. */
+export class TomlError extends TomlErrorBase {}
 
 const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 
@@ -97,8 +107,8 @@ export const transformation = (options?: SchemaOptions): SchemaTransformation.Tr
  * decode("a = 1") // { a: 1 }
  * ```
  */
-export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions) =>
+export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions): Schema.decodeTo<S, Schema.String> =>
   Schema.String.pipe(Schema.decodeTo(target, transformation(options)))
 
 /** TOML text decoded to an unknown value. */
-export const UnknownFromToml = schema(Schema.Unknown)
+export const UnknownFromToml: Schema.decodeTo<Schema.Unknown, Schema.String> = schema(Schema.Unknown)

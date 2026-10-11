@@ -37,7 +37,7 @@
  * @module
  */
 
-import { Effect, Option, Result, Schema, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Option, Result, Schema, SchemaIssue, SchemaTransformation } from "effect"
 import { db, extensions as extensionDb, type KeyOfDb, types as typeDb } from "./_std/_db.ts"
 import type { DBEntry } from "./_std/_util.ts"
 import { formatMediaType as stdFormat } from "./_std/format_media_type.ts"
@@ -46,15 +46,28 @@ import type { KnownExtensionOrType } from "./_std/content_type.ts"
 
 export type { KnownExtensionOrType }
 
-/** A media type could not be parsed or formatted. */
-export class MediaTypeError extends Schema.TaggedError<MediaTypeError>()("MediaTypeError", {
+const MediaTypeErrorBase: Schema.Class<
+  MediaTypeError,
+  Schema.TaggedStruct<"MediaTypeError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Format"]>
+    readonly input: Schema.String
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<MediaTypeError>()("MediaTypeError", {
   kind: Schema.Literals(["Parse", "Format"]),
   input: Schema.String,
   message: Schema.String,
-}) {}
+})
+
+/** A media type could not be parsed or formatted. */
+export class MediaTypeError extends MediaTypeErrorBase {}
 
 /** A parsed media type: the lowercased `type/subtype` and its parameters. */
-export const MediaType = Schema.Struct({
+export const MediaType: Schema.Struct<{
+  readonly type: Schema.String
+  readonly parameters: Schema.$Record<Schema.String, Schema.String>
+}> = Schema.Struct({
   type: Schema.String,
   parameters: Schema.Record(Schema.String, Schema.String),
 })
@@ -120,7 +133,7 @@ const toIssue = (input: unknown) => (error: MediaTypeError): SchemaIssue.Issue =
  * A Schema that decodes a header value into a {@linkcode MediaType} and
  * encodes it back with {@linkcode formatMediaType}.
  */
-export const MediaTypeFromString = Schema.String.pipe(
+export const MediaTypeFromString: Schema.decodeTo<typeof MediaType, Schema.String> = Schema.String.pipe(
   Schema.decodeTo(
     MediaType,
     SchemaTransformation.transformEffect({

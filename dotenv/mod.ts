@@ -30,16 +30,26 @@
  * @module
  */
 
-import { ConfigProvider, Effect, Layer, Schema } from "effect"
+import { type Cause, ConfigProvider, Effect, Layer, Schema } from "effect"
 import { parse as stdParse } from "./_std/parse.ts"
 import { stringify as stdStringify } from "./_std/stringify.ts"
 
-/** A key is not a valid identifier, or a value is not a string. */
-export class DotenvError extends Schema.TaggedError<DotenvError>()("DotenvError", {
+const DotenvErrorBase: Schema.Class<
+  DotenvError,
+  Schema.TaggedStruct<"DotenvError", {
+    readonly kind: Schema.Literals<readonly ["InvalidKey", "InvalidValue"]>
+    readonly key: Schema.String
+    readonly message: Schema.String
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<DotenvError>()("DotenvError", {
   kind: Schema.Literals(["InvalidKey", "InvalidValue"]),
   key: Schema.String,
   message: Schema.String,
-}) {}
+})
+
+/** A key is not a valid identifier, or a value is not a string. */
+export class DotenvError extends DotenvErrorBase {}
 
 // The line pattern of std's parser (./_std/parse.ts), used to find the keys
 // it would reject before handing the text over.

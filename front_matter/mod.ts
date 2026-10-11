@@ -35,7 +35,7 @@
  * @module
  */
 
-import { Effect, Option, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Option, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
 import * as Toml from "../toml/mod.ts"
 import * as Yaml from "../yaml/mod.ts"
 import { EXTRACT_REGEXP_MAP, type Format, RECOGNIZE_REGEXP_MAP } from "./_std/_formats.ts"
@@ -46,13 +46,24 @@ export type { Format }
 /** The formats this module understands, in the order they are tried. */
 export const formats: ReadonlyArray<Format> = ["yaml", "toml", "json"]
 
-/** A document has no front matter in a supported format, or its front matter could not be parsed. */
-export class FrontMatterError extends Schema.TaggedError<FrontMatterError>()("FrontMatterError", {
+const FrontMatterErrorBase: Schema.Class<
+  FrontMatterError,
+  Schema.TaggedStruct<"FrontMatterError", {
+    readonly kind: Schema.Literals<readonly ["Unsupported", "Malformed", "Parse", "Stringify"]>
+    readonly format: Schema.optional<Schema.Literals<readonly ["yaml", "toml", "json"]>>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<FrontMatterError>()("FrontMatterError", {
   kind: Schema.Literals(["Unsupported", "Malformed", "Parse", "Stringify"]),
   format: Schema.optional(Schema.Literals(["yaml", "toml", "json"])),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A document has no front matter in a supported format, or its front matter could not be parsed. */
+export class FrontMatterError extends FrontMatterErrorBase {}
 
 /** The result of {@linkcode extract}. */
 export interface Extract<A = unknown> {
@@ -116,7 +127,10 @@ const parseAttrs = (
  * there is no front matter in one of the accepted formats, when it is not
  * closed, or when it does not parse.
  */
-export const extract = Effect.fnUntraced(function*(
+export const extract: (
+  text: string,
+  options?: ExtractOptions,
+) => Effect.Effect<Extract<unknown>, FrontMatterError> = Effect.fnUntraced(function*(
   text: string,
   options?: ExtractOptions,
 ): Effect.fn.Return<Extract, FrontMatterError> {
@@ -148,7 +162,11 @@ export interface StringifyOptions {
  * default) between delimiters that {@linkcode extract} recognizes, then the
  * body.
  */
-export const stringify = Effect.fnUntraced(function*(
+export const stringify: (
+  attrs: unknown,
+  body: string,
+  options?: StringifyOptions,
+) => Effect.Effect<string, FrontMatterError> = Effect.fnUntraced(function*(
   attrs: unknown,
   body: string,
   options?: StringifyOptions,
@@ -211,7 +229,10 @@ export const transformation = <A = { readonly attrs: unknown; readonly body: str
  * decode("+++\ntitle = 'Hi'\n+++\nbody") // { attrs: { title: "Hi" }, body: "body" }
  * ```
  */
-export const schema = <S extends Schema.Top>(attrs: S, options?: SchemaOptions) => {
+export const schema = <S extends Schema.Top>(
+  attrs: S,
+  options?: SchemaOptions,
+): Schema.decodeTo<Schema.Struct<{ readonly attrs: S; readonly body: Schema.String }>, Schema.String> => {
   const target = Schema.Struct({ attrs, body: Schema.String })
   return Schema.String.pipe(Schema.decodeTo(target, transformation<typeof target["Encoded"]>(options)))
 }

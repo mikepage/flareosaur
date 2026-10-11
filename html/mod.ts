@@ -26,7 +26,7 @@
  * @module
  */
 
-import { Function, Predicate, Result, Schema, SchemaTransformation } from "effect"
+import { type Cause, Function, Predicate, Result, Schema, type SchemaAST, SchemaTransformation } from "effect"
 import { escape as stdEscape, type EntityList, unescape as stdUnescape } from "./_std/entities.ts"
 import { escapeCss as stdEscapeCss } from "./_std/unstable_escape_css.ts"
 import { escapeJs as stdEscapeJs, type EscapeJsOptions } from "./_std/unstable_escape_js.ts"
@@ -89,7 +89,7 @@ export const unescape: {
  * Schema.encodeSync(Html.StringFromHtml)("a < b") // "a &lt; b"
  * ```
  */
-export const StringFromHtml = Schema.String.pipe(
+export const StringFromHtml: Schema.decodeTo<Schema.String, Schema.String> = Schema.String.pipe(
   Schema.decodeTo(
     Schema.String,
     SchemaTransformation.transform({ decode: (text: string) => unescape(text), encode: escape }),
@@ -108,11 +108,20 @@ export const StringFromHtml = Schema.String.pipe(
  */
 export const escapeCss = (text: string): string => stdEscapeCss(text)
 
-/** A value could not be serialized for a `<script>` element. */
-export class EscapeJsError extends Schema.TaggedError<EscapeJsError>()("EscapeJsError", {
+const EscapeJsErrorBase: Schema.Class<
+  EscapeJsError,
+  Schema.TaggedStruct<"EscapeJsError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<EscapeJsError>()("EscapeJsError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A value could not be serialized for a `<script>` element. */
+export class EscapeJsError extends EscapeJsErrorBase {}
 
 /**
  * Serializes a value as JSON that is safe to place inside a `<script>`
@@ -157,7 +166,7 @@ export const isValidCustomElementName = (name: string): boolean => stdIsValidCus
  * A Schema check that a string is a valid custom element name, for use with
  * `Schema.String.check(...)`.
  */
-export const isCustomElementName = (annotations?: Schema.Annotations.Filter) =>
+export const isCustomElementName = (annotations?: Schema.Annotations.Filter): SchemaAST.Filter<string> =>
   Schema.makeFilter<string>((name) => isValidCustomElementName(name), {
     expected: "a valid custom element name",
     ...annotations,
@@ -174,7 +183,8 @@ export const isCustomElementName = (annotations?: Schema.Annotations.Filter) =>
  * Schema.is(Html.CustomElementName)("div") // false
  * ```
  */
-export const CustomElementName = Schema.String.check(isCustomElementName()).pipe(Schema.brand("CustomElementName"))
+export const CustomElementName: Schema.brand<Schema.String, "CustomElementName"> =
+  Schema.String.check(isCustomElementName()).pipe(Schema.brand("CustomElementName"))
 
 /** A valid custom element name. */
 export type CustomElementName = typeof CustomElementName.Type

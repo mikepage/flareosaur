@@ -29,14 +29,23 @@
  * @module
  */
 
-import { Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
 import { parse as stdParse } from "./_std/parse.ts"
 
-/** A JSONC document could not be parsed. */
-export class JsoncError extends Schema.TaggedError<JsoncError>()("JsoncError", {
+const JsoncErrorBase: Schema.Class<
+  JsoncError,
+  Schema.TaggedStruct<"JsoncError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<JsoncError>()("JsoncError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A JSONC document could not be parsed. */
+export class JsoncError extends JsoncErrorBase {}
 
 const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 
@@ -90,8 +99,8 @@ export const transformation = (options?: SchemaOptions): SchemaTransformation.Tr
  * decode('{ "a": 1, }') // { a: 1 }
  * ```
  */
-export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions) =>
+export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions): Schema.decodeTo<S, Schema.String> =>
   Schema.String.pipe(Schema.decodeTo(target, transformation(options)))
 
 /** JSONC text decoded to an unknown value. */
-export const UnknownFromJsonc = schema(Schema.Unknown)
+export const UnknownFromJsonc: Schema.decodeTo<Schema.Unknown, Schema.String> = schema(Schema.Unknown)

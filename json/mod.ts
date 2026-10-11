@@ -33,16 +33,26 @@
  * @module
  */
 
-import { Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation, Stream } from "effect"
+import { type Cause, Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation, Stream } from "effect"
 import * as Ndjson from "effect/encoding/Ndjson"
 import { canonicalize as stdCanonicalize } from "./_std/canonicalize.ts"
 
-/** JSON text could not be parsed, or a value could not be serialized. */
-export class JsonError extends Schema.TaggedError<JsonError>()("JsonError", {
+const JsonErrorBase: Schema.Class<
+  JsonError,
+  Schema.TaggedStruct<"JsonError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<JsonError>()("JsonError", {
   kind: Schema.Literals(["Parse", "Stringify"]),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** JSON text could not be parsed, or a value could not be serialized. */
+export class JsonError extends JsonErrorBase {}
 
 const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 
@@ -131,7 +141,7 @@ export const canonicalTransformation: SchemaTransformation.Transformation<unknow
  * encode({ b: 2, a: 1 }) // '{"a":1,"b":2}'
  * ```
  */
-export const canonicalSchema = <S extends Schema.Top>(target: S) =>
+export const canonicalSchema = <S extends Schema.Top>(target: S): Schema.decodeTo<S, Schema.String> =>
   Schema.String.pipe(Schema.decodeTo(target, canonicalTransformation))
 
 // ---------------------------------------------------------------------------

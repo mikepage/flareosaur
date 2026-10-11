@@ -34,7 +34,7 @@
  * @module
  */
 
-import { Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation, Stream } from "effect"
+import { type Cause, Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation, Stream } from "effect"
 import { convertRowToObject, type LineReader, parseRecord, type ParseResult } from "./_std/_io.ts"
 import { parse as stdParse, type ParseOptions, type RecordWithColumn } from "./_std/parse.ts"
 import type { Column, ColumnDetails, DataItem, PropertyAccessor } from "./_std/stringify.ts"
@@ -51,12 +51,22 @@ export type {
   StringifyOptions,
 }
 
-/** CSV text could not be parsed, or rows could not be stringified. */
-export class CsvError extends Schema.TaggedError<CsvError>()("CsvError", {
+const CsvErrorBase: Schema.Class<
+  CsvError,
+  Schema.TaggedStruct<"CsvError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CsvError>()("CsvError", {
   kind: Schema.Literals(["Parse", "Stringify"]),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** CSV text could not be parsed, or rows could not be stringified. */
+export class CsvError extends CsvErrorBase {}
 
 const messageOf = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 
@@ -344,7 +354,10 @@ export const transformation = (
  * decode("id\n1\n2\n") // [{ id: 1 }, { id: 2 }]
  * ```
  */
-export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions) =>
+export const schema = <S extends Schema.Top>(
+  target: S,
+  options?: SchemaOptions,
+): Schema.decodeTo<Schema.$Array<S>, Schema.String> =>
   Schema.String.pipe(Schema.decodeTo(Schema.Array(target), transformation(options)))
 
 /**
@@ -352,7 +365,12 @@ export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions)
  * record with `S`, failing with a `SchemaError` on the first record that
  * does not match.
  */
-export const decodeStream = <S extends Schema.Top>(target: S, options?: SchemaOptions) => {
+export const decodeStream = <S extends Schema.Top>(
+  target: S,
+  options?: SchemaOptions,
+): <E, R>(
+  self: Stream.Stream<string, E, R>,
+) => Stream.Stream<S["Type"], E | CsvError | Schema.SchemaError, R | S["DecodingServices"]> => {
   const decode = Schema.decodeUnknownEffect(target)
   return <E, R>(
     self: Stream.Stream<string, E, R>,
