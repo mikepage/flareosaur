@@ -5,6 +5,7 @@
   "exports": {
     "./assert": "./assert/mod.ts",
     "./bytes": "./bytes/mod.ts",
+    "./cache": "./cache/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
     "./regexp": "./regexp/mod.ts",
