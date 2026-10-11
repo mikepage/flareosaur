@@ -89,24 +89,6 @@ export default Worker.make({
 `crypto` imports a `.wasm` file. Wrangler and `@cloudflare/vite-plugin` handle
 that out of the box. For TypeScript, include [`types/wasm.d.ts`](types/wasm.d.ts).
 
-## Things we found on workerd
-
-- **Stream bugs in workerd**, worked around in the vendored std code:
-  1. When a BYOB read ends because the stream closed, the empty view comes back
-     at `byteOffset = offset + length` instead of `offset`.
-  2. After a BYOB read transfers a pull request's buffer, `byobRequest.view` is
-     a detached 0-byte view, and `respondWithNewView()` rejects the filled view.
-  3. An error thrown in a transformer's `start()` is not rethrown from the
-     `TransformStream` constructor.
-  4. A stream starts pulling before a synchronous `cancel()`, so the source is
-     still locked when it gets cancelled.
-- **Effect on Workers without `nodejs_compat`** works, with two exceptions: the
-  `effect/testing` barrel imports `node:util` (import `effect/testing/TestClock`
-  directly), and Effect's default `Path.layer` reads `process.cwd()` (use
-  `path`'s `layer`).
-- **No randomness, timers or I/O in global scope.** Generate ids inside
-  handlers, not when the module loads.
-
 ## Development
 
 ```sh
