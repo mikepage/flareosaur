@@ -64,9 +64,47 @@ Cloudflare Workers with no `nodejs_compat`. Published to JSR as
   Cover every public function; port the meaningful cases from std's tests.
 - Keep std's tests in `_std/` passing while `_std/` exists.
 
+## JSR: no slow types
+
+JSR rejects "slow types" (public API whose type must be inferred) and, with
+`--allow-slow-types`, turns them into `any` in the npm declarations Workers
+users get through `npx jsr add`. So every export has an explicit type
+(`npm run check -- --jsr` runs the publish dry run and fails on them):
+
+1. Classes may not extend a call. Give the call a typed base constant named
+   `<Name>Base`, then extend it. The type is the call's return type:
+   `Schema.Class<Self, Schema.TaggedStruct<"Tag", { ...fields }>,
+   Cause.YieldableError>` for `Schema.TaggedError`, `Schema.Class<Self,
+   Schema.Struct<{ ...fields }>, {}>` for `Schema.Class`, and
+   `Context.ServiceClass<Self, "key", Shape>` for `Context.Service`. Field
+   types are the Schema interfaces (`Schema.String`, `Schema.Defect`,
+   `Schema.optional<Schema.String>`, `typeof OtherSchema`, ...):
+
+   ```ts
+   const YamlErrorBase: Schema.Class<
+     YamlError,
+     Schema.TaggedStruct<"YamlError", {
+       readonly message: Schema.String
+       readonly cause: Schema.Defect
+     }>,
+     Cause.YieldableError
+   > = Schema.TaggedError<YamlError>()("YamlError", { message: Schema.String, cause: Schema.Defect() })
+
+   /** doc */
+   export class YamlError extends YamlErrorBase {}
+   ```
+
+2. Exported constants and functions carry their types: Schemas as
+   `Schema.Struct<{...}>`, `Schema.brand<Schema.String, "Uuid">`, codecs as
+   `Schema.decodeTo<S, Schema.String>`; `Effect.fnUntraced(...)` and
+   point-free values (`encodeBlocks(5, encode)`) as a function type; every
+   function with a return type. Refer to other schemas with `typeof X` rather
+   than repeating their types. Never `any` in a public signature.
+
 ## Commands
 
-- `npm run check`: regenerate exports, lint public modules, `tsc`.
+- `npm run check`: regenerate exports, lint public modules, `tsc`. Add
+  `-- --jsr` to also run `jsr publish --dry-run` (slow types).
 - `npm test [-- <pkg>[/<file>]]`: run tests in workerd (Miniflare).
 - `npm run port -- ../std`, `npm run patch -- ../std`: vendor std, regenerate
   the patch.

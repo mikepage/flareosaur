@@ -4,14 +4,14 @@
 //   node scripts/cli.ts port [std]      vendor std code into <dir>/_std
 //   node scripts/cli.ts patch [std]     regenerate patches/edge.patch
 //   node scripts/cli.ts exports         regenerate the deno.json exports
-//   node scripts/cli.ts check           tsc + public module lint
+//   node scripts/cli.ts check [--jsr]   tsc + public module lint (+ JSR dry run)
 //   node scripts/cli.ts test [target]   run the tests in workerd
 
 import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as NodeServices from "@effect/platform-node/NodeServices"
 import { Console, Effect } from "effect"
 import { Argument, Command, Flag } from "effect/cli"
-import { lint, typecheck, CheckError } from "./Check.ts"
+import { jsrDryRun, lint, typecheck, CheckError } from "./Check.ts"
 import { generateExports } from "./Exports.ts"
 import { makePatch } from "./Patch.ts"
 import { port, ROOT } from "./Port.ts"
@@ -56,18 +56,26 @@ const exportsCommand = Command.make(
 
 const checkCommand = Command.make(
   "check",
-  {},
-  Effect.fn(function*() {
+  {
+    jsr: Flag.Boolean("jsr").pipe(
+      Flag.withDescription("Also run `jsr publish --dry-run` and fail on its errors (slow types)"),
+      Flag.withDefault(false),
+    ),
+  },
+  Effect.fn(function*({ jsr }) {
     yield* generateExports()
     const problems = yield* lint()
     for (const { file, problem } of problems) yield* Console.error(`${file}: ${problem}`)
     const typesOk = yield* typecheck()
-    if (problems.length || !typesOk) {
-      return yield* new CheckError({ message: `${problems.length} lint problems, types ${typesOk ? "ok" : "failed"}` })
+    const jsrOk = jsr ? yield* jsrDryRun() : true
+    if (problems.length || !typesOk || !jsrOk) {
+      const parts = [`${problems.length} lint problems`, `types ${typesOk ? "ok" : "failed"}`]
+      if (jsr) parts.push(`jsr dry run ${jsrOk ? "ok" : "failed"}`)
+      return yield* new CheckError({ message: parts.join(", ") })
     }
     yield* Console.log("check ok")
   }),
-).pipe(Command.withDescription("Type-check and lint the public modules"))
+).pipe(Command.withDescription("Type-check and lint the public modules (--jsr: also the JSR publish dry run)"))
 
 const testCommand = Command.make(
   "test",
