@@ -4,8 +4,17 @@
       "@mikepage/flareosaur/assert": [
         "./assert/mod.ts"
       ],
+      "@mikepage/flareosaur/crypto/web-crypto": [
+        "./crypto/WebCrypto.ts"
+      ],
+      "@mikepage/flareosaur/crypto": [
+        "./crypto/mod.ts"
+      ],
       "@mikepage/flareosaur/csv": [
         "./csv/mod.ts"
+      ],
+      "@mikepage/flareosaur/datetime": [
+        "./datetime/mod.ts"
       ],
       "@mikepage/flareosaur/dotenv": [
         "./dotenv/mod.ts"
@@ -39,6 +48,12 @@
       ],
       "@mikepage/flareosaur/encoding": [
         "./encoding/mod.ts"
+      ],
+      "@mikepage/flareosaur/fmt/colors": [
+        "./fmt/Colors.ts"
+      ],
+      "@mikepage/flareosaur/fmt": [
+        "./fmt/mod.ts"
       ],
       "@mikepage/flareosaur/front-matter": [
         "./front_matter/mod.ts"
@@ -103,6 +118,9 @@
       "@mikepage/flareosaur/media-types": [
         "./media_types/mod.ts"
       ],
+      "@mikepage/flareosaur/semver": [
+        "./semver/mod.ts"
+      ],
       "@mikepage/flareosaur/testing/test": [
         "./testing/Test.ts"
       ],
@@ -111,6 +129,12 @@
       ],
       "@mikepage/flareosaur/toml": [
         "./toml/mod.ts"
+      ],
+      "@mikepage/flareosaur/ulid": [
+        "./ulid/mod.ts"
+      ],
+      "@mikepage/flareosaur/uuid": [
+        "./uuid/mod.ts"
       ],
       "@mikepage/flareosaur/workers/cache": [
         "./workers/Cache.ts"
