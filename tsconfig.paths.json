@@ -4,17 +4,65 @@
       "@mikepage/flareosaur/assert": [
         "./assert/mod.ts"
       ],
+      "@mikepage/flareosaur/csv": [
+        "./csv/mod.ts"
+      ],
+      "@mikepage/flareosaur/dotenv": [
+        "./dotenv/mod.ts"
+      ],
+      "@mikepage/flareosaur/encoding/ascii85": [
+        "./encoding/Ascii85.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base32": [
+        "./encoding/Base32.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base32-crockford": [
+        "./encoding/Base32Crockford.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base32-hex": [
+        "./encoding/Base32Hex.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base58": [
+        "./encoding/Base58.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base64": [
+        "./encoding/Base64.ts"
+      ],
+      "@mikepage/flareosaur/encoding/base64-url": [
+        "./encoding/Base64Url.ts"
+      ],
+      "@mikepage/flareosaur/encoding/hex": [
+        "./encoding/Hex.ts"
+      ],
+      "@mikepage/flareosaur/encoding/varint": [
+        "./encoding/Varint.ts"
+      ],
+      "@mikepage/flareosaur/encoding": [
+        "./encoding/mod.ts"
+      ],
+      "@mikepage/flareosaur/front-matter": [
+        "./front_matter/mod.ts"
+      ],
       "@mikepage/flareosaur/internal/inspect": [
         "./internal/Inspect.ts"
       ],
       "@mikepage/flareosaur/internal": [
         "./internal/mod.ts"
       ],
+      "@mikepage/flareosaur/json": [
+        "./json/mod.ts"
+      ],
+      "@mikepage/flareosaur/jsonc": [
+        "./jsonc/mod.ts"
+      ],
       "@mikepage/flareosaur/testing/test": [
         "./testing/Test.ts"
       ],
       "@mikepage/flareosaur/testing": [
         "./testing/mod.ts"
+      ],
+      "@mikepage/flareosaur/toml": [
+        "./toml/mod.ts"
       ],
       "@mikepage/flareosaur/workers/cache": [
         "./workers/Cache.ts"
