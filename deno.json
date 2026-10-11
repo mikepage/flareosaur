@@ -10,6 +10,7 @@
     "./regexp": "./regexp/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
+    "./text": "./text/mod.ts",
     "./yaml": "./yaml/mod.ts"
   },
   "imports": {
