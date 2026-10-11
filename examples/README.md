@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-23 examples in 3 groups.
+29 examples in 3 groups.
 
 ## Basics
 
@@ -41,7 +41,13 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | Example | What it shows |
 | --- | --- |
 | [HTTP requests](http-requests.ts) | Effect's `HttpClient` wraps `fetch` with typed errors, Schema-decoded responses, retries and timeouts. On Workers it runs on the runtime's own `fetch` through `FetchHttpClient.layer`. |
+| [HTTP server: basic authentication](http-server-basic-auth.ts) | Basic authentication sends a username and password with every request. The password is a secret, so it comes from `Config.Redacted`, and the comparison takes the same time whatever the input, so the response time leaks nothing about the password. |
 | [HTTP server: cookies](http-server-cookies.ts) | Cookies carry state between requests. Read them from the request with a Schema (so a tampered value is rejected), and set or expire them on the response; Effect checks names, values and options when it serializes them. |
 | [HTTP server: CORS](http-server-cors.ts) | Browsers block cross-origin requests unless the server opts in. Add `HttpRouter.cors` to the routes and the router answers preflight requests and adds the CORS headers to every response. |
+| [HTTP server: health checks](http-server-health-checks.ts) | A liveness endpoint answers as long as the Worker runs; a readiness endpoint checks the dependencies. The checks run concurrently, each with a timeout, and a failing check is reported instead of failing the endpoint. |
+| [HTTP server: paginating results](http-server-pagination.ts) | APIs that return lists need pagination. Query parameters are decoded with a Schema (with defaults and limits), and the cursor is opaque to the client: a base64url offset it hands back to get the next page. |
+| [HTTP server: request timeouts](http-server-request-timeouts.ts) | A handler that waits on a slow upstream can hold a request open far too long. Give the handler a budget with `Effect.timeout`: when it runs out the work is interrupted, not left running, and the client gets a 504. |
 | [HTTP server: routing](http-server-routing.ts) | `HttpRouter` maps methods and paths to handlers. Path parameters are decoded with a Schema, so `/books/abc` is rejected before the handler runs. `Worker.make` serves the router as the Worker's fetch handler. |
+| [HTTP server: server-sent events](http-server-sse.ts) | Server-sent events push updates from the server over one long-lived response. The events are an Effect `Stream`, and `Sse.encode` turns it into the `text/event-stream` wire format, so the producer is ordinary stream code: here, a tick every 10ms, three times, then a final event. |
+| [HTTP server: streaming responses](http-server-streaming.ts) | A response body can be an Effect `Stream`: bytes go out as they are produced, so the Worker never holds the whole body in memory. Request bodies are streams too, which makes a streaming transform a pipeline. |
 | [HTTP server: validate JSON bodies](http-server-validate-json.ts) | Never trust a request body. `HttpServerRequest.schemaBodyJson` parses the body and decodes it with a Schema in one step; a body that does not match fails with a `SchemaError` that says exactly what is wrong. |

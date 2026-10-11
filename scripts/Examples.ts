@@ -11,7 +11,7 @@
 //   @resource    {https://...} Label
 //   @bindings    kv:CACHE, d1:DB, r2:BUCKET, queue:JOBS, do:ROOMS=ChatRoom, var:NAME=value,
 //                outbound:echo (outgoing fetches get a JSON echo of the request)
-//   @check       GET /path [h:Name=Value] [body] -> 200 "contains" !"absent" header:name~"value"
+//   @check       GET /path [h:Name=Value | h:Name="quoted value"] [body] -> 200 "contains" !"absent" header:name~"value"
 //   @check       scheduled [cron]
 //   @check       queue JOBS {"json":"body"}
 //   @check       ws /path send "message" -> "reply"
@@ -150,12 +150,15 @@ const unquote = (s: string) => JSON.parse(`"${s}"`) as string
 
 const parseHttpCheck = (check: string): HttpCheck => {
   const [request, expectation = ""] = check.split(/\s->\s/)
-  const [method, path, ...rest] = request!.trim().split(/\s+/)
+  // Tokens are separated by spaces; a header value may be quoted:
+  // h:authorization="Basic dXNlcjpwYXNz"
+  const tokens = request!.trim().match(/h:[^=\s]+="(?:[^"\\]|\\.)*"|\S+/g) ?? []
+  const [method, path, ...rest] = tokens
   const headers: Record<string, string> = {}
   const bodyParts: Array<string> = []
   for (const part of rest) {
     const h = part.match(/^h:([^=]+)=(.*)$/)
-    if (h && !bodyParts.length) headers[h[1]!] = h[2]!
+    if (h && !bodyParts.length) headers[h[1]!] = h[2]!.startsWith('"') ? unquote(h[2]!.slice(1, -1)) : h[2]!
     else bodyParts.push(part)
   }
   const status = Number(expectation.trim().match(/^(\d{3})/)?.[1] ?? 200)
