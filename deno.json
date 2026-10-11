@@ -10,6 +10,7 @@
     "./path/posix": "./path/Posix.ts",
     "./path/windows": "./path/Windows.ts",
     "./path": "./path/mod.ts",
+    "./streams": "./streams/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
     "./yaml": "./yaml/mod.ts"
