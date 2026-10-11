@@ -4,6 +4,8 @@
   "license": "MIT",
   "exports": {
     "./assert": "./assert/mod.ts",
+    "./async/circuit-breaker": "./async/CircuitBreaker.ts",
+    "./async": "./async/mod.ts",
     "./bytes": "./bytes/mod.ts",
     "./cache": "./cache/mod.ts",
     "./collections": "./collections/mod.ts",
