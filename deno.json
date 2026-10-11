@@ -4,6 +4,8 @@
   "license": "MIT",
   "exports": {
     "./assert": "./assert/mod.ts",
+    "./crypto/web-crypto": "./crypto/WebCrypto.ts",
+    "./crypto": "./crypto/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
     "./testing/test": "./testing/Test.ts",
