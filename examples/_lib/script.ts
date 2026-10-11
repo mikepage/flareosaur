@@ -4,8 +4,8 @@
 // runs it per request and responds with the printed lines as text/plain.
 
 import { Cause, Console, Effect, Exit } from "effect"
-import { inspect } from "../../internal/mod.ts"
-import type { WorkerHandler } from "../../workers/Worker.ts"
+import { inspect } from "@mikepage/flareosaur/internal"
+import type { WorkerHandler } from "@mikepage/flareosaur/workers/worker"
 
 const show = (value: unknown): string => typeof value === "string" ? value : inspect(value)
 

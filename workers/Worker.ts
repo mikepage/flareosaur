@@ -33,8 +33,9 @@
  * @module
  */
 
-import { Cause, ConfigProvider, Context, Effect, Layer, ManagedRuntime, Predicate, Schema } from "effect"
+import { Cause, ConfigProvider, Context, Effect, Layer, ManagedRuntime, Predicate, Result, Schema } from "effect"
 import * as HttpRouter from "effect/http/HttpRouter"
+import * as HttpServerResponse from "effect/http/HttpServerResponse"
 
 /** The parts of the Workers `ExecutionContext` this module uses. */
 export interface ExecutionContextLike {
@@ -171,12 +172,30 @@ export const make = <R = never, LE = never>(handlers: Handlers<R, LE>): WorkerHa
   const worker: WorkerHandler = {}
   const fetch = handlers.fetch
   if (fetch && Layer.isLayer(fetch)) {
-    worker.fetch = (request, env, ctx) => {
-      router ??= HttpRouter.toWebHandler(
-        Layer.provide(fetch as Layer.Layer<any, any, any>, servicesLayer(env, handlers.layer) as Layer.Layer<any, any, never>),
-        { disableLogger: true },
-      ).handler as any
-      return router!(request, Context.make(ExecutionContext, ctx))
+    // Services are built once per isolate in the runtime, and handed to the
+    // routes as request-level dependencies.
+    let routerPromise: Promise<NonNullable<typeof router>> | undefined
+    const buildRouter = async (env: Record<string, unknown>) => {
+      const rt = runtimeFor(env)
+      const context = await rt.context()
+      const app = (fetch as Layer.Layer<never, any, any>).pipe(HttpRouter.provideRequest(Layer.succeedContext(context)))
+      return HttpRouter.toWebHandler(app as Layer.Layer<never, any, any>, {
+        memoMap: rt.memoMap,
+        disableLogger: true,
+        middleware: (effect: Effect.Effect<any, any, any>) =>
+          // Typed failures become responses; log defects, which are bugs.
+          // The router short-circuits with a response as the defect (e.g. 404).
+          Effect.tapCause(effect, (cause) => {
+            const defect = Cause.findDefect(cause)
+            return Result.isSuccess(defect) && !HttpServerResponse.isHttpServerResponse(defect.success)
+              ? Effect.logError("Unhandled defect in route", cause)
+              : Effect.void
+          }),
+      } as any).handler as unknown as NonNullable<typeof router>
+    }
+    worker.fetch = async (request, env, ctx) => {
+      router ??= await (routerPromise ??= buildRouter(env))
+      return router(request, Context.make(ExecutionContext, ctx))
     }
   } else if (fetch) {
     const handler = fetch as (request: Request) => Effect.Effect<Response, unknown, Services<R>>

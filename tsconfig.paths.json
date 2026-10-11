@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@mikepage/flareosaur/assert": [
+        "./assert/mod.ts"
+      ],
+      "@mikepage/flareosaur/internal/inspect": [
+        "./internal/Inspect.ts"
+      ],
+      "@mikepage/flareosaur/internal": [
+        "./internal/mod.ts"
+      ],
+      "@mikepage/flareosaur/testing/test": [
+        "./testing/Test.ts"
+      ],
+      "@mikepage/flareosaur/testing": [
+        "./testing/mod.ts"
+      ],
+      "@mikepage/flareosaur/workers/cache": [
+        "./workers/Cache.ts"
+      ],
+      "@mikepage/flareosaur/workers/durable-object": [
+        "./workers/DurableObject.ts"
+      ],
+      "@mikepage/flareosaur/workers/kv": [
+        "./workers/Kv.ts"
+      ],
+      "@mikepage/flareosaur/workers/queue": [
+        "./workers/Queue.ts"
+      ],
+      "@mikepage/flareosaur/workers/r2": [
+        "./workers/R2.ts"
+      ],
+      "@mikepage/flareosaur/workers/scheduled": [
+        "./workers/Scheduled.ts"
+      ],
+      "@mikepage/flareosaur/workers/worker": [
+        "./workers/Worker.ts"
+      ],
+      "@mikepage/flareosaur/workers": [
+        "./workers/mod.ts"
+      ],
+      "@mikepage/flareosaur/yaml": [
+        "./yaml/mod.ts"
+      ]
+    }
+  }
+}

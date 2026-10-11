@@ -9,7 +9,8 @@
 //   @tags        workers, http
 //   @group       Basics
 //   @resource    {https://...} Label
-//   @bindings    kv:CACHE, d1:DB, r2:BUCKET, queue:JOBS, do:ROOMS=ChatRoom, var:NAME=value
+//   @bindings    kv:CACHE, d1:DB, r2:BUCKET, queue:JOBS, do:ROOMS=ChatRoom, var:NAME=value,
+//                outbound:echo (outgoing fetches get a JSON echo of the request)
 //   @check       GET /path [h:Name=Value] [body] -> 200 "contains" !"absent" header:name~"value"
 //   @check       scheduled [cron]
 //   @check       queue JOBS {"json":"body"}
@@ -19,7 +20,7 @@
 // `examples` bundles each one with esbuild, loads it into Miniflare with its
 // bindings (no compatibility flags) and runs the checks in order.
 
-import { build } from "esbuild"
+import { build, type Plugin } from "esbuild"
 import { Miniflare, type MiniflareOptions } from "miniflare"
 import { Console, Effect, FileSystem, Path, Schema } from "effect"
 import { ROOT } from "./Port.ts"
@@ -87,6 +88,7 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
   const queues: Record<string, string> = {}
   const durableObjects: Record<string, string> = {}
   const vars: Record<string, string> = {}
+  let outbound = false
   for (const binding of example.bindings) {
     const [kind, rest = ""] = binding.split(/:(.*)/s)
     if (kind === "kv") kv.push(rest)
@@ -96,6 +98,8 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
     else if (kind === "do") {
       const [name, className] = rest.split("=")
       durableObjects[name!] = className!
+    } else if (kind === "outbound") {
+      outbound = true
     } else if (kind === "var") {
       const [name, ...value] = rest.split("=")
       vars[name!] = value.join("=")
@@ -109,6 +113,24 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
     queueConsumers: Object.fromEntries(Object.values(queues).map((q) => [q, { maxBatchTimeout: 0 }])),
     durableObjects,
     bindings: vars,
+    // outbound:echo answers every outgoing fetch with a description of the
+    // request as JSON, standing in for an upstream API.
+    ...(outbound
+      ? {
+        outboundService: async (request: Request) => {
+          const url = new URL(request.url)
+          const body = request.body ? await request.text() : null
+          if (url.pathname.startsWith("/status/")) return new Response(null, { status: Number(url.pathname.slice(8)) })
+          if (url.pathname.startsWith("/slow")) await new Promise((r) => setTimeout(r, 2000))
+          return Response.json({
+            method: request.method,
+            url: request.url,
+            headers: Object.fromEntries(request.headers),
+            body,
+          })
+        },
+      }
+      : {}),
   }
 }
 
@@ -235,9 +257,22 @@ export const loadExamples = Effect.fnUntraced(function*() {
   return examples.sort((a, b) => a.group.localeCompare(b.group) || a.title.localeCompare(b.title))
 })
 
+// Resolves the published specifiers (@mikepage/flareosaur/...) to this repo.
+const selfResolver = (name: string, exports: Record<string, string>): Plugin => ({
+  name: "self",
+  setup(b) {
+    b.onResolve({ filter: new RegExp(`^${name.replace("/", "\\/")}(/|$)`) }, (args) => {
+      const key = `.${args.path.slice(name.length)}`
+      const file = exports[key]
+      return file ? { path: `${ROOT}/${file.slice(2)}` } : { errors: [{ text: `No export ${args.path}` }] }
+    })
+  },
+})
+
 const runExample = Effect.fnUntraced(function*(example: Example) {
   const fs = yield* FileSystem.FileSystem
   const path = yield* Path.Path
+  const config = JSON.parse(yield* fs.readFileString(`${ROOT}/deno.json`))
   const out = path.join(OUT, example.slug)
   yield* fs.remove(out, { recursive: true, force: true })
   yield* Effect.tryPromise({
@@ -253,6 +288,7 @@ const runExample = Effect.fnUntraced(function*(example: Example) {
         mainFields: ["module", "main"],
         loader: { ".wasm": "copy" },
         external: ["cloudflare:*"],
+        plugins: [selfResolver(config.name, config.exports)],
         logLevel: "silent",
       }),
     catch: (e) => new ExampleError({ example: example.slug, message: `bundle: ${e instanceof Error ? e.message : String(e)}` }),

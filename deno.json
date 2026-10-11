@@ -12,7 +12,7 @@
     "./workers/durable-object": "./workers/DurableObject.ts",
     "./workers/kv": "./workers/Kv.ts",
     "./workers/queue": "./workers/Queue.ts",
-    "./workers/r-2": "./workers/R2.ts",
+    "./workers/r2": "./workers/R2.ts",
     "./workers/scheduled": "./workers/Scheduled.ts",
     "./workers/worker": "./workers/Worker.ts",
     "./workers": "./workers/mod.ts",
