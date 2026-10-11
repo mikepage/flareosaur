@@ -11,6 +11,7 @@
     "./fmt": "./fmt/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
+    "./semver": "./semver/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
     "./ulid": "./ulid/mod.ts",
