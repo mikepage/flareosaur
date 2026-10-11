@@ -58,6 +58,9 @@
       "@mikepage/flareosaur/front-matter": [
         "./front_matter/mod.ts"
       ],
+      "@mikepage/flareosaur/html": [
+        "./html/mod.ts"
+      ],
       "@mikepage/flareosaur/http/cache-control": [
         "./http/CacheControl.ts"
       ],
@@ -118,8 +121,20 @@
       "@mikepage/flareosaur/media-types": [
         "./media_types/mod.ts"
       ],
+      "@mikepage/flareosaur/path/posix": [
+        "./path/Posix.ts"
+      ],
+      "@mikepage/flareosaur/path/windows": [
+        "./path/Windows.ts"
+      ],
+      "@mikepage/flareosaur/path": [
+        "./path/mod.ts"
+      ],
       "@mikepage/flareosaur/semver": [
         "./semver/mod.ts"
+      ],
+      "@mikepage/flareosaur/streams": [
+        "./streams/mod.ts"
       ],
       "@mikepage/flareosaur/testing/test": [
         "./testing/Test.ts"
