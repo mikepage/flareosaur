@@ -15,6 +15,7 @@
 //   @check       scheduled [cron]
 //   @check       queue JOBS {"json":"body"}
 //   @check       ws /path send "message" -> "reply"
+//   {{prev:<header>}} in a check is replaced by that header of the previous response
 //   @check       none (needs a remote binding, e.g. Workers AI)
 //
 // `examples` bundles each one with esbuild, loads it into Miniflare with its
@@ -189,9 +190,14 @@ const parseHttpCheck = (check: string): HttpCheck => {
   }
 }
 
-const runCheck = (mf: Miniflare, example: Example, check: string) =>
+// Response headers of the previous HTTP check, for {{prev:<header>}}.
+let previousHeaders = new Headers()
+
+const runCheck = (mf: Miniflare, example: Example, rawCheck: string) =>
   Effect.tryPromise({
     try: async () => {
+      const check = rawCheck.replace(/\{\{prev:([\w-]+)\}\}/g, (_, name: string) =>
+        (previousHeaders.get(name) ?? "").replaceAll('"', '\\"'))
       if (check === "none") return
       if (check.startsWith("scheduled")) {
         const worker = await mf.getWorker()
@@ -245,6 +251,7 @@ const runCheck = (mf: Miniflare, example: Example, check: string) =>
         redirect: "manual",
       })
       const text = await res.text()
+      previousHeaders = res.headers
       const problems: Array<string> = []
       if (res.status !== c.status) problems.push(`status ${res.status}, expected ${c.status}`)
       for (const s of c.contains) if (!text.includes(s)) problems.push(`body lacks ${JSON.stringify(s)}`)
@@ -254,7 +261,7 @@ const runCheck = (mf: Miniflare, example: Example, check: string) =>
       }
       if (problems.length) throw new Error(`${problems.join("; ")}\n--- body ---\n${text.slice(0, 1500)}`)
     },
-    catch: (e) => new ExampleError({ example: example.slug, message: `${check}: ${e instanceof Error ? e.message : String(e)}` }),
+    catch: (e) => new ExampleError({ example: example.slug, message: `${rawCheck}: ${e instanceof Error ? e.message : String(e)}` }),
   })
 
 /** Lists the examples, sorted by group and title. */

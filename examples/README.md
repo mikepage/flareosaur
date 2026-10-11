@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-46 examples in 8 groups.
+50 examples in 8 groups.
 
 ## Basics
 
@@ -63,14 +63,18 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | --- | --- |
 | [HTTP requests](http-requests.ts) | Effect's `HttpClient` wraps `fetch` with typed errors, Schema-decoded responses, retries and timeouts. On Workers it runs on the runtime's own `fetch` through `FetchHttpClient.layer`. |
 | [HTTP server: basic authentication](http-server-basic-auth.ts) | Basic authentication sends a username and password with every request. The password is a secret, so it comes from `Config.Redacted`, and the comparison takes the same time whatever the input, so the response time leaks nothing about the password. |
+| [HTTP server: caching headers and ETags](http-server-etag.ts) | Cache headers let clients skip downloads they already have. An ETag is a fingerprint of the response: the client sends it back in `If-None-Match`, and if nothing changed the server answers `304 Not Modified` with no body. `Cache-Control` says how long a copy may be reused without asking. |
+| [HTTP server: content negotiation](http-server-negotiation.ts) | One URL can serve JSON to scripts and HTML to browsers, in the reader's language. Negotiation reads the `Accept` and `Accept-Language` headers, weighs their q-values, and picks the best of what the server offers; an `Option` says when nothing fits. |
 | [HTTP server: cookies](http-server-cookies.ts) | Cookies carry state between requests. Read them from the request with a Schema (so a tampered value is rejected), and set or expire them on the response; Effect checks names, values and options when it serializes them. |
 | [HTTP server: CORS](http-server-cors.ts) | Browsers block cross-origin requests unless the server opts in. Add `HttpRouter.cors` to the routes and the router answers preflight requests and adds the CORS headers to every response. |
+| [HTTP server: errors as problem details](http-server-problem-details.ts) | APIs should report errors in a format clients can rely on. RFC 9457 problem details are JSON with `type`, `title`, `status` and `detail`. Fail a handler with a `Problem`, a typed error like any other, and the router turns it into an `application/problem+json` response. |
 | [HTTP server: health checks](http-server-health-checks.ts) | A liveness endpoint answers as long as the Worker runs; a readiness endpoint checks the dependencies. The checks run concurrently, each with a timeout, and a failing check is reported instead of failing the endpoint. |
 | [HTTP server: paginating results](http-server-pagination.ts) | APIs that return lists need pagination. Query parameters are decoded with a Schema (with defaults and limits), and the cursor is opaque to the client: a base64url offset it hands back to get the next page. |
 | [HTTP server: rate limiting](http-server-rate-limit.ts) | A rate limiter protects a server from clients that send too many requests. A Worker runs in many isolates at once, so in-memory counters would each see only part of the traffic. Give every client its own Durable Object instead: one instance per IP address sees all of that client's requests, and runs Effect's `RateLimiter` with an in-memory store. |
 | [HTTP server: request timeouts](http-server-request-timeouts.ts) | A handler that waits on a slow upstream can hold a request open far too long. Give the handler a budget with `Effect.timeout`: when it runs out the work is interrupted, not left running, and the client gets a 504. |
 | [HTTP server: routing](http-server-routing.ts) | `HttpRouter` maps methods and paths to handlers. Path parameters are decoded with a Schema, so `/books/abc` is rejected before the handler runs. `Worker.make` serves the router as the Worker's fetch handler. |
 | [HTTP server: server-sent events](http-server-sse.ts) | Server-sent events push updates from the server over one long-lived response. The events are an Effect `Stream`, and `Sse.encode` turns it into the `text/event-stream` wire format, so the producer is ordinary stream code: here, a tick every 10ms, three times, then a final event. |
+| [HTTP server: sessions with signed cookies](http-server-signed-cookies.ts) | A session cookie must not be editable by the client, or anyone could claim to be anyone. A signed cookie carries an HMAC of its value: the server verifies it on every request and treats a tampered cookie as no cookie at all. The signing key comes from a secret, through `Config`. |
 | [HTTP server: streaming responses](http-server-streaming.ts) | A response body can be an Effect `Stream`: bytes go out as they are produced, so the Worker never holds the whole body in memory. Request bodies are streams too, which makes a streaming transform a pipeline. |
 | [HTTP server: validate JSON bodies](http-server-validate-json.ts) | Never trust a request body. `HttpServerRequest.schemaBodyJson` parses the body and decodes it with a Schema in one step; a body that does not match fails with a `SchemaError` that says exactly what is wrong. |
 | [HTTP server: WebSockets](websocket-echo.ts) | A Worker answers a WebSocket upgrade with one end of a `WebSocketPair` and keeps the other. Turning the socket's messages into an Effect `Stream` makes the handler a pipeline: here every message is echoed back. For state shared between sockets, see the chat example with Durable Objects. |
