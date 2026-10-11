@@ -40,7 +40,6 @@ import * as Toml from "../toml/mod.ts"
 import * as Yaml from "../yaml/mod.ts"
 import { EXTRACT_REGEXP_MAP, type Format, RECOGNIZE_REGEXP_MAP } from "./_std/_formats.ts"
 import { extractFrontMatter } from "./_std/_shared.ts"
-import { test as stdTest } from "./_std/test.ts"
 
 export type { Format }
 
@@ -72,7 +71,7 @@ export interface Extract<A = unknown> {
  * `formats` (all by default).
  */
 export const test = (text: string, accepted: ReadonlyArray<Format> = formats): boolean =>
-  stdTest(text, [...accepted])
+  accepted.some((format) => EXTRACT_REGEXP_MAP.get(format)!.exec(text)?.index === 0)
 
 /**
  * The format announced by a document's opening delimiter, if it is one of
