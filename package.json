@@ -11,7 +11,10 @@
     "exports": "node scripts/cli.ts exports",
     "check": "node scripts/cli.ts check",
     "test": "node scripts/cli.ts test",
-    "examples": "node scripts/cli.ts examples"
+    "examples": "node scripts/cli.ts examples",
+    "site": "node scripts/cli.ts site",
+    "site:dev": "node scripts/cli.ts site && wrangler dev -c site/wrangler.jsonc",
+    "site:deploy": "node scripts/cli.ts site && wrangler deploy -c site/wrangler.jsonc"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "5.20261010.1",
@@ -21,8 +24,10 @@
     "@effect/sql-d1": "4.0.2",
     "@effect/sql-sqlite-do": "4.0.2",
     "esbuild": "0.28.2",
+    "libphonenumber-js": "1.13.14",
     "miniflare": "4.20260730.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "wrangler": "4.149.0"
   },
   "allowScripts": {
     "esbuild@0.28.2": true,
