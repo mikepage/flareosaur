@@ -31,6 +31,17 @@ Cloudflare Workers with no `nodejs_compat`. Published to JSR as
    (`../yaml/mod.ts`), never their `_std/`. A package may import its own
    `./_std/`.
 
+## Skills for Workers code
+
+Load both before changing `workers/`, an example, or anything that forks a
+fiber or keeps state per isolate:
+
+- `effect-workers` (from mikepage/effect-workers-skill): Effect's rules on
+  Workers. Nothing outlives the request that started it, only settled
+  values per isolate, never a shared build in progress, MCP per request.
+- `workers-best-practices` (Cloudflare's, from cloudflare/skills, formatted with prettier only):
+  Workers in general.
+
 ## How to rebuild a package on Effect
 
 - Prefer Effect's own modules where they cover the feature (`effect`
