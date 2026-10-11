@@ -7,6 +7,7 @@
     "./bytes": "./bytes/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
+    "./regexp": "./regexp/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
     "./yaml": "./yaml/mod.ts"
