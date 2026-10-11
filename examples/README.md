@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-69 examples in 14 groups.
+57 examples in 10 groups.
 
 ## AI
 
@@ -54,22 +54,6 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | [Hashing and verifying passwords](password-hashing.ts) | Passwords must never be stored in plain text, or hashed with a fast hash. PBKDF2 (available in Web Crypto on Workers) stretches a password with a random salt and many iterations. Store the salt and iteration count with the hash, and compare in constant time when a user logs in. |
 | [HTTP server: verifying webhook signatures](webhook-signatures.ts) | Webhook senders sign each delivery with a shared secret so the receiver can reject forgeries. Verify the HMAC of the raw body before parsing it, with a constant-time comparison, and keep the secret in `Config.Redacted`. |
 
-## DNS & domains
-
-| Example | What it shows |
-| --- | --- |
-| [DNS discovery: scan a domain in one shot](dns-discovery.ts) | Find a domain's apex records, its email-authentication and Microsoft 365 setup, and its subdomains, with about a hundred DNS-over-HTTPS probes run twenty at a time with `Effect.forEach`. Names seen on certificates in Certificate Transparency logs (crt.sh) are probed too; that lookup has a timeout and one retry, is cached for an hour with `@mikepage/flareosaur/workers/cache`, and degrades to a note when crt.sh is down instead of failing the scan. |
-| [DNS lookup over DNS-over-HTTPS](dns-lookup.ts) | Query one DNS record type for a name over DNS-over-HTTPS, from Cloudflare's 1.1.1.1 resolvers or Google's. The query string is decoded with a Schema, the resolver's JSON answer is fetched with `HttpClient` under a timeout and decoded with a Schema too, and a failing resolver is a typed error that becomes a 502. |
-| [RDAP domain lookup](rdap-lookup.ts) | Looks up a domain's registration data over RDAP, the structured successor to WHOIS: registrar, status, key dates, nameservers and DNSSEC. The RDAP server comes from a bundled copy of the IANA bootstrap registry. The request goes through `HttpClient` with a retry for dropped connections and a timeout, and the registry's answer is decoded with a lenient Schema; every upstream problem is one typed `RdapError`, answered with a 502. |
-
-## Email
-
-| Example | What it shows |
-| --- | --- |
-| [DMARC validator](dmarc-validator.ts) | Fetches a domain's `_dmarc` TXT record over DNS-over-HTTPS and checks the policy for common mistakes, with a description of every tag. The query is a Schema that cleans what people paste (`https://_dmarc.Example.com/`) and rejects anything that is not a domain; the DoH answer is fetched with `HttpClient`, bounded by `Effect.timeout` and decoded with a Schema. |
-| [SMTP submission test](smtp-submission-test.ts) | Tests a mail server's submission port over raw TCP: reads the banner, sends EHLO, upgrades with STARTTLS when offered (implicit TLS on 465), sends EHLO again and returns the capabilities plus the full transcript. The socket from `cloudflare:sockets` is an Effect resource (`acquireRelease`), every read has a timeout, and protocol failures are typed errors; the host is checked over DNS-over-HTTPS with `HttpClient` so only public addresses are dialled. |
-| [SPF validator](spf-validator.ts) | Resolves a domain's SPF record over DNS-over-HTTPS, parses every term and walks each `include` and `redirect` into a tree, counting DNS lookups against RFC 7208's limit of 10 and flagging common mistakes. The walk is a recursive Effect: the lookup count lives in a `Ref`, each TXT query is an `HttpClient` call bounded by `Effect.timeout`, and a failed lookup becomes a note on its node instead of failing the whole request. Pass `record` to check a draft record before you publish it. |
-
 ## Encoding
 
 | Example | What it shows |
@@ -103,15 +87,6 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | [HTTP server: validate JSON bodies](http-server-validate-json.ts) | Never trust a request body. `HttpServerRequest.schemaBodyJson` parses the body and decodes it with a Schema in one step; a body that does not match fails with a `SchemaError` that says exactly what is wrong. |
 | [HTTP server: WebSockets](websocket-echo.ts) | A Worker answers a WebSocket upgrade with one end of a `WebSocketPair` and keeps the other. Turning the socket's messages into an Effect `Stream` makes the handler a pipeline: here every message is echoed back. For state shared between sockets, see the chat example with Durable Objects. |
 
-## Network
-
-| Example | What it shows |
-| --- | --- |
-| [Browser info](browserinfo.ts) | What this Worker sees of your connection: the request headers, the User-Agent Client Hints (asked for with `Accept-CH`), Cloudflare's `request.cf` (country, city, colo, ASN, TLS, HTTP protocol) and your IP with its PTR record. The PTR lookup is DNS over HTTPS through `HttpClient`, with a timeout, a Schema-decoded answer and a typed error. |
-| [Cloudflare edge](cloudflare-edge.ts) | Which Cloudflare data center is serving you, where it is, and how far it is from you. The colo code and your location come free on `request.cf` (decoded with a Schema, and optional outside the edge); the colo's city and country come from a bundled JSON list of data centers. |
-| [IP info](ip-info.ts) | Your IP address and where it is (city, country, timezone, network) as a CORS-enabled JSON endpoint that replaces ipinfo.io and ip-api. A Worker gets all of this for free on `request.cf`; the example decodes that untrusted object with a Schema into `Option`s, since `cf` and `CF-Connecting-IP` are missing outside Cloudflare's edge. |
-| [IPv6 utils](ipv6-utils.ts) | Expands and compresses IPv6 addresses, works out the network, first and last address and size for a prefix length, and checks whether an address is inside a CIDR range. The math is pure 128-bit `BigInt` code using `Option` and `Result`; the query string is decoded with a Schema, and `use=mine` reads the caller's address from `CF-Connecting-IP`. |
-
 ## Observability
 
 | Example | What it shows |
@@ -133,13 +108,6 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | Example | What it shows |
 | --- | --- |
 | [Read a stream line by line](read-lines.ts) | Command line tools read input line by line; a Worker does the same with a request body or an R2 object. `toLines` decodes bytes and splits lines across chunk boundaries, and the rest is ordinary stream code: filter, take, count, without buffering the whole input. |
-
-## Web
-
-| Example | What it shows |
-| --- | --- |
-| [External link scanner](external-link-scanner.ts) | Crawls a website (pages on the same registrable domain, up to 100) and lists every external link, script, iframe and form target, grouped by destination domain. Domains that look like injected spam are flagged: nonstandard TLDs, raw IPs, punycode hosts, spam keywords, and active content from a flagged domain. Pages are fetched with `HttpClient` and a per-request timeout, a breadth-first level at a time with `Effect.forEach({ concurrency })`, and the crawl is capped so one request stays within the Worker's subrequest budget. |
-| [Phone number validator](intl-tel-validate.ts) | Validates an international phone number: is it valid, which country and type (mobile, fixed line, ...) is it, and what are its national, international and E.164 formats. An npm library (libphonenumber-js, with its full metadata) bundles straight into the Worker without `nodejs_compat`; Schema validates the query before the library sees it. |
 
 ## Web standard APIs
 
