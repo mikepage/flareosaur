@@ -1,6 +1,6 @@
 {
   "name": "@mikepage/flareosaur",
-  "version": "20261011.0.1",
+  "version": "20261011.0.2",
   "license": "MIT",
   "exports": {
     "./assert": "./assert/mod.ts",
