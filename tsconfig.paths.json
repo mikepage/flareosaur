@@ -43,6 +43,51 @@
       "@mikepage/flareosaur/front-matter": [
         "./front_matter/mod.ts"
       ],
+      "@mikepage/flareosaur/http/cache-control": [
+        "./http/CacheControl.ts"
+      ],
+      "@mikepage/flareosaur/http/etag": [
+        "./http/Etag.ts"
+      ],
+      "@mikepage/flareosaur/http/form-data": [
+        "./http/FormData.ts"
+      ],
+      "@mikepage/flareosaur/http/header": [
+        "./http/Header.ts"
+      ],
+      "@mikepage/flareosaur/http/message-signatures": [
+        "./http/MessageSignatures.ts"
+      ],
+      "@mikepage/flareosaur/http/method": [
+        "./http/Method.ts"
+      ],
+      "@mikepage/flareosaur/http/negotiation": [
+        "./http/Negotiation.ts"
+      ],
+      "@mikepage/flareosaur/http/problem-details": [
+        "./http/ProblemDetails.ts"
+      ],
+      "@mikepage/flareosaur/http/route": [
+        "./http/Route.ts"
+      ],
+      "@mikepage/flareosaur/http/server-sent-events": [
+        "./http/ServerSentEvents.ts"
+      ],
+      "@mikepage/flareosaur/http/signed-cookie": [
+        "./http/SignedCookie.ts"
+      ],
+      "@mikepage/flareosaur/http/status": [
+        "./http/Status.ts"
+      ],
+      "@mikepage/flareosaur/http/structured-fields": [
+        "./http/StructuredFields.ts"
+      ],
+      "@mikepage/flareosaur/http/user-agent": [
+        "./http/UserAgent.ts"
+      ],
+      "@mikepage/flareosaur/http": [
+        "./http/mod.ts"
+      ],
       "@mikepage/flareosaur/internal/inspect": [
         "./internal/Inspect.ts"
       ],
@@ -54,6 +99,9 @@
       ],
       "@mikepage/flareosaur/jsonc": [
         "./jsonc/mod.ts"
+      ],
+      "@mikepage/flareosaur/media-types": [
+        "./media_types/mod.ts"
       ],
       "@mikepage/flareosaur/testing/test": [
         "./testing/Test.ts"
