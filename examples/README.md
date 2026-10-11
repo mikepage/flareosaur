@@ -6,7 +6,14 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-55 examples in 9 groups.
+57 examples in 10 groups.
+
+## AI
+
+| Example | What it shows |
+| --- | --- |
+| [Build an MCP server](mcp-server.ts) | The Model Context Protocol is how AI assistants call tools you host. A Worker is a good place for an MCP server: public, fast, cheap. Effect's `McpServer` serves tools defined with Schemas over MCP's HTTP transport, as routes on the Worker's `HttpRouter`. Parameters are decoded and results encoded by the Schemas, so a model gets typed errors instead of crashes. |
+| [Connect to Claude with Effect AI](anthropic-chat.ts) | `effect/ai` gives every provider the same interface: a `LanguageModel` service you call from your code, and a provider layer you choose once. Here the provider is Anthropic, running on the Worker's own `fetch`, with the API key read as a redacted secret. (The check runs against a stand-in for the API; deploy with a real `ANTHROPIC_API_KEY` secret to talk to Claude.) |
 
 ## Basics
 

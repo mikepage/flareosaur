@@ -10,12 +10,13 @@
 //   @group       Basics
 //   @resource    {https://...} Label
 //   @bindings    kv:CACHE, d1:DB, r2:BUCKET, queue:JOBS, do:ROOMS=ChatRoom, var:NAME=value,
-//                outbound:echo (outgoing fetches get a JSON echo of the request)
+//                outbound:echo (outgoing fetches get a JSON echo of the request),
+//                outbound:anthropic (a stand-in for the Anthropic Messages API)
 //   @check       GET /path [h:Name=Value | h:Name="quoted value"] [body] -> 200 "contains" !"absent" header:name~"value"
 //   @check       scheduled [cron]
 //   @check       queue JOBS {"json":"body"}
 //   @check       ws /path send "message" -> "reply"
-//   {{prev:<header>}} in a check is replaced by that header of the previous response
+//   {{prev:<header>}} in a check is replaced by the last value of that response header
 //   @check       none (needs a remote binding, e.g. Workers AI)
 //
 // `examples` bundles each one with esbuild, loads it into Miniflare with its
@@ -89,7 +90,7 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
   const queues: Record<string, string> = {}
   const durableObjects: Record<string, string> = {}
   const vars: Record<string, string> = {}
-  let outbound = false
+  let outbound: false | "echo" | "anthropic" = false
   for (const binding of example.bindings) {
     const [kind, rest = ""] = binding.split(/:(.*)/s)
     if (kind === "kv") kv.push(rest)
@@ -100,7 +101,7 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
       const [name, className] = rest.split("=")
       durableObjects[name!] = className!
     } else if (kind === "outbound") {
-      outbound = true
+      outbound = rest === "anthropic" ? "anthropic" : "echo"
     } else if (kind === "var") {
       const [name, ...value] = rest.split("=")
       vars[name!] = value.join("=")
@@ -120,6 +121,34 @@ const bindingOptions = (example: Example): Partial<MiniflareOptions> => {
       ? {
         outboundService: async (request: Request) => {
           const url = new URL(request.url)
+          if (outbound === "anthropic" && url.pathname === "/v1/messages") {
+            // A stand-in for the Anthropic Messages API: answers with the
+            // last user message, reversed, so a check can tell it ran.
+            const body = await request.json() as { model: string; messages: Array<{ content: unknown }> }
+            const last = body.messages.at(-1)?.content
+            const text = typeof last === "string"
+              ? last
+              : Array.isArray(last)
+              ? last.map((p: { text?: string }) => p.text ?? "").join("")
+              : ""
+            return Response.json({
+              id: "msg_stub",
+              type: "message",
+              role: "assistant",
+              model: body.model,
+              content: [{ type: "text", text: `stub reply to: ${text}` }],
+              stop_reason: "end_turn",
+              stop_sequence: null,
+              usage: {
+                input_tokens: 10,
+                output_tokens: 5,
+                cache_creation: null,
+                cache_creation_input_tokens: null,
+                cache_read_input_tokens: null,
+                service_tier: "standard",
+              },
+            })
+          }
           const body = request.body ? await request.text() : null
           if (url.pathname.startsWith("/status/")) return new Response(null, { status: Number(url.pathname.slice(8)) })
           if (url.pathname.startsWith("/slow")) await new Promise((r) => setTimeout(r, 2000))
@@ -190,14 +219,14 @@ const parseHttpCheck = (check: string): HttpCheck => {
   }
 }
 
-// Response headers of the previous HTTP check, for {{prev:<header>}}.
-let previousHeaders = new Headers()
+// The last value seen for each response header, for {{prev:<header>}}.
+let previousHeaders = new Map<string, string>()
 
 const runCheck = (mf: Miniflare, example: Example, rawCheck: string) =>
   Effect.tryPromise({
     try: async () => {
       const check = rawCheck.replace(/\{\{prev:([\w-]+)\}\}/g, (_, name: string) =>
-        (previousHeaders.get(name) ?? "").replaceAll('"', '\\"'))
+        (previousHeaders.get(name.toLowerCase()) ?? "").replaceAll('"', '\\"'))
       if (check === "none") return
       if (check.startsWith("scheduled")) {
         const worker = await mf.getWorker()
@@ -251,7 +280,7 @@ const runCheck = (mf: Miniflare, example: Example, rawCheck: string) =>
         redirect: "manual",
       })
       const text = await res.text()
-      previousHeaders = res.headers
+      res.headers.forEach((value, name) => previousHeaders.set(name.toLowerCase(), value))
       const problems: Array<string> = []
       if (res.status !== c.status) problems.push(`status ${res.status}, expected ${c.status}`)
       for (const s of c.contains) if (!text.includes(s)) problems.push(`body lacks ${JSON.stringify(s)}`)
@@ -331,6 +360,7 @@ const runExample = Effect.fnUntraced(function*(example: Example) {
       ),
       (mf) => Effect.promise(() => mf.dispose().catch(() => {})),
     )
+    previousHeaders = new Map()
     for (const check of example.checks) yield* runCheck(mf, example, check)
   }))
 })
