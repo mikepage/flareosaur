@@ -272,7 +272,8 @@ export const runTests = Effect.fnUntraced(function*(options: TestOptions) {
   if (failures.length) {
     yield* Console.log("\nFailures:")
     for (const f of failures) {
-      const err = options.verbose ? f.error : f.error?.split("\n")[0]?.slice(0, 200)
+      // Enough lines to include an assertion diff; --verbose prints everything.
+      const err = options.verbose ? f.error : f.error?.split("\n").slice(0, 20).join("\n    ")
       yield* Console.log(`  ${f.pkg}/${f.file} :: ${f.name}\n    ${err}`)
     }
   }
