@@ -26,11 +26,14 @@ jobs:
       - name: Run tests in workerd
         run: npm test
 
+      - name: Check the examples in workerd
+        run: npm run examples
+
       - name: Publish dry run
-        run: npx deno publish --dry-run
+        run: npx -y jsr@0.14.3 publish --dry-run
 
   # Publishes when deno.json has a version that is not on JSR yet. Otherwise
-  # deno publish skips it. Authenticates with OIDC through the repository
+  # the publish skips it. Authenticates with OIDC through the repository
   # linked in the JSR package settings.
   publish:
     needs: test
@@ -51,4 +54,4 @@ jobs:
       - run: npm ci
 
       - name: Publish to JSR
-        run: npx deno publish
+        run: npx -y jsr@0.14.3 publish

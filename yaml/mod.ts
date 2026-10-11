@@ -26,18 +26,28 @@
  * @module
  */
 
-import { Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
+import { type Cause, Effect, Schema, SchemaGetter, SchemaIssue, SchemaTransformation } from "effect"
 import { parse as stdParse, parseAll as stdParseAll, type ParseOptions } from "./_std/parse.ts"
 import { stringify as stdStringify, type StringifyOptions } from "./_std/stringify.ts"
 
 export type { ParseOptions, StringifyOptions }
 
-/** A YAML document could not be parsed, or a value could not be stringified. */
-export class YamlError extends Schema.TaggedError<YamlError>()("YamlError", {
+const YamlErrorBase: Schema.Class<
+  YamlError,
+  Schema.TaggedStruct<"YamlError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Stringify"]>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<YamlError>()("YamlError", {
   kind: Schema.Literals(["Parse", "Stringify"]),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A YAML document could not be parsed, or a value could not be stringified. */
+export class YamlError extends YamlErrorBase {}
 
 const parseError = (cause: unknown) =>
   new YamlError({ kind: "Parse", message: cause instanceof Error ? cause.message : String(cause), cause })
@@ -91,8 +101,8 @@ export const transformation = (options?: SchemaOptions): SchemaTransformation.Tr
  * decode("a: 1") // { a: 1 }
  * ```
  */
-export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions) =>
+export const schema = <S extends Schema.Top>(target: S, options?: SchemaOptions): Schema.decodeTo<S, Schema.String> =>
   Schema.String.pipe(Schema.decodeTo(target, transformation(options)))
 
 /** YAML text decoded to an unknown value. */
-export const UnknownFromYaml = schema(Schema.Unknown)
+export const UnknownFromYaml: Schema.decodeTo<Schema.Unknown, Schema.String> = schema(Schema.Unknown)
