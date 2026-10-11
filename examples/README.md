@@ -6,13 +6,14 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-29 examples in 3 groups.
+35 examples in 6 groups.
 
 ## Basics
 
 | Example | What it shows |
 | --- | --- |
 | [Add a timeout to any effect](timeout-any-effect.ts) | A promise has no built-in time limit. Every effect does: `Effect.timeout` fails with a `TimeoutError` when the time runs out, and interrupts the work that was too slow, so nothing keeps running in the background. |
+| [Cancel async work with interruption](cancel-with-interruption.ts) | Deno cancels work with an `AbortController` passed down by hand. In Effect, cancellation is interruption: any running effect can be interrupted, and its finalizers run, without threading a signal through every call. An `AbortSignal` from outside can still trigger it. |
 | [Check if two values are deeply equal](deep-equal.ts) | Two objects with the same contents are not equal with `===`. Effect's `Equal.equals` compares structurally: plain objects, arrays, Maps, Sets and Dates by value, and Effect data types (Data classes, Option, HashMap, ...) by their own equality. |
 | [Exponential backoff](exponential-backoff.ts) | Exponential backoff retries a failing operation with growing delays, so a struggling service gets room to recover. In Effect the policy is a `Schedule`, and `Effect.retry` applies it. Errors are typed, so the policy can decide which ones are worth retrying. |
 | [Generate seeded random numbers](seeded-random.ts) | `Math.random` cannot be seeded, so tests that depend on it are flaky. Effect reads randomness from the `Random` service: run the same code with `Random.withSeed` and it produces the same numbers every time. |
@@ -36,6 +37,12 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | [WebSocket chat with Durable Objects](websocket-chat.ts) | A chat room needs one place that knows every connected socket. Each room is a Durable Object: the Worker forwards the WebSocket upgrade to the room's object, which accepts the socket with the hibernation API and broadcasts every message to the sockets of that room. The room keeps its last messages in storage, so new visitors can read the history. |
 | [Workers KV: key/value storage](kv.ts) | Deno has Deno KV built in; a Worker gets Workers KV through a binding. `Kv.layer` provides it as Effect's `KeyValueStore`, so a Schema-validated store is one call away: values are checked when they are written and when they are read back. |
 
+## Encoding
+
+| Example | What it shows |
+| --- | --- |
+| [Compress and decompress data](compress-decompress.ts) | Workers implement `CompressionStream` and `DecompressionStream`. Wrapped as Effect `Stream` steps, compression is one more stage in a pipeline, whether the data is a string in memory or a large R2 object. |
+
 ## HTTP
 
 | Example | What it shows |
@@ -46,8 +53,22 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 | [HTTP server: CORS](http-server-cors.ts) | Browsers block cross-origin requests unless the server opts in. Add `HttpRouter.cors` to the routes and the router answers preflight requests and adds the CORS headers to every response. |
 | [HTTP server: health checks](http-server-health-checks.ts) | A liveness endpoint answers as long as the Worker runs; a readiness endpoint checks the dependencies. The checks run concurrently, each with a timeout, and a failing check is reported instead of failing the endpoint. |
 | [HTTP server: paginating results](http-server-pagination.ts) | APIs that return lists need pagination. Query parameters are decoded with a Schema (with defaults and limits), and the cursor is opaque to the client: a base64url offset it hands back to get the next page. |
+| [HTTP server: rate limiting](http-server-rate-limit.ts) | A rate limiter protects a server from clients that send too many requests. A Worker runs in many isolates at once, so in-memory counters would each see only part of the traffic. Give every client its own Durable Object instead: one instance per IP address sees all of that client's requests, and runs Effect's `RateLimiter` with an in-memory store. |
 | [HTTP server: request timeouts](http-server-request-timeouts.ts) | A handler that waits on a slow upstream can hold a request open far too long. Give the handler a budget with `Effect.timeout`: when it runs out the work is interrupted, not left running, and the client gets a 504. |
 | [HTTP server: routing](http-server-routing.ts) | `HttpRouter` maps methods and paths to handlers. Path parameters are decoded with a Schema, so `/books/abc` is rejected before the handler runs. `Worker.make` serves the router as the Worker's fetch handler. |
 | [HTTP server: server-sent events](http-server-sse.ts) | Server-sent events push updates from the server over one long-lived response. The events are an Effect `Stream`, and `Sse.encode` turns it into the `text/event-stream` wire format, so the producer is ordinary stream code: here, a tick every 10ms, three times, then a final event. |
 | [HTTP server: streaming responses](http-server-streaming.ts) | A response body can be an Effect `Stream`: bytes go out as they are produced, so the Worker never holds the whole body in memory. Request bodies are streams too, which makes a streaming transform a pipeline. |
 | [HTTP server: validate JSON bodies](http-server-validate-json.ts) | Never trust a request body. `HttpServerRequest.schemaBodyJson` parses the body and decodes it with a Schema in one step; a body that does not match fails with a `SchemaError` that says exactly what is wrong. |
+| [HTTP server: WebSockets](websocket-echo.ts) | A Worker answers a WebSocket upgrade with one end of a `WebSocketPair` and keeps the other. Turning the socket's messages into an Effect `Stream` makes the handler a pipeline: here every message is echoed back. For state shared between sockets, see the chat example with Durable Objects. |
+
+## Observability
+
+| Example | What it shows |
+| --- | --- |
+| [Structured logging](structured-logging.ts) | Workers Logs index JSON log lines, so structured logs are searchable by field. Effect's logger writes one JSON object per line when the layer swaps in `Logger.consoleJson`; annotations and spans become fields, so every line of a request carries its request id without passing it around. |
+
+## Web standard APIs
+
+| Example | What it shows |
+| --- | --- |
+| [Parse URLs and match routes with URLPattern](url-pattern.ts) | `URL` parses and edits URLs, and `URLPattern` (built into Workers) matches them against route patterns. Pattern groups are strings; decode them with a Schema to get typed values, and use `Option` for a match that may not happen. |

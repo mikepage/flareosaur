@@ -9,6 +9,7 @@
 // reported as skipped.
 
 import { build, type Plugin } from "esbuild"
+import { readFileSync } from "node:fs"
 import { Miniflare } from "miniflare"
 import { Console, Effect, FileSystem, Path, Schema } from "effect"
 import { ALL_PACKAGES, kebab } from "./Packages.ts"
@@ -152,7 +153,7 @@ const bundle = Effect.fnUntraced(function*(pkg: string, files: ReadonlyArray<str
           "Deno.readTextFileSync": "__denoReadTextFileSync",
         },
         inject: [RUNTIME],
-        plugins: [nodeStubs, importMeta((p) => sources.get(p) ?? "")],
+        plugins: [nodeStubs, importMeta((p) => sources.get(p) ?? readFileSync(p, "utf8"))],
         keepNames: true,
         logLevel: "silent",
       }),
