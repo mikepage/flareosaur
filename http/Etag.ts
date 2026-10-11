@@ -28,18 +28,27 @@
  * @module
  */
 
-import { Effect, Function, Option, Schema } from "effect"
+import { type Cause, Effect, Function, Option, Schema } from "effect"
 import { Etag, Headers, HttpServerRequest, HttpServerResponse } from "effect/http"
 import { eTag as stdETag, type ETagOptions, type FileInfo, ifMatch as stdIfMatch, ifNoneMatch as stdIfNoneMatch } from "./_std/etag.ts"
 import { header, type HeadersInput, message } from "./_internal.ts"
 
 export type { FileInfo }
 
-/** An entity tag could not be computed (for example, an unknown digest algorithm). */
-export class EtagError extends Schema.TaggedError<EtagError>()("EtagError", {
+const EtagErrorBase: Schema.Class<
+  EtagError,
+  Schema.TaggedStruct<"EtagError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<EtagError>()("EtagError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** An entity tag could not be computed (for example, an unknown digest algorithm). */
+export class EtagError extends EtagErrorBase {}
 
 /** Options for computing a tag. */
 export interface Options {

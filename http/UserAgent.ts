@@ -33,55 +33,125 @@ import { HttpServerRequest } from "effect/http"
 import { UserAgent as StdUserAgent } from "./_std/user_agent.ts"
 import { fromResults, header, type HeadersInput } from "./_internal.ts"
 
-const OptionalString = Schema.Option(Schema.String)
+const OptionalString: Schema.Option<Schema.String> = Schema.Option(Schema.String)
 
-/** The browser described by a user agent. */
-export class Browser extends Schema.Class<Browser>("flareosaur/http/UserAgent/Browser")({
+const BrowserBase: Schema.Class<
+  Browser,
+  Schema.Struct<{
+    /** The browser name, such as `Chrome`. */
+    readonly name: Schema.Option<Schema.String>
+    /** The full version. */
+    readonly version: Schema.Option<Schema.String>
+    /** The major version. */
+    readonly major: Schema.Option<Schema.String>
+  }>,
+  {}
+> = Schema.Class<Browser>("flareosaur/http/UserAgent/Browser")({
   /** The browser name, such as `Chrome`. */
   name: OptionalString,
   /** The full version. */
   version: OptionalString,
   /** The major version. */
   major: OptionalString,
-}) {}
+})
+
+/** The browser described by a user agent. */
+export class Browser extends BrowserBase {}
 
 /** The device kinds std's matchers recognise. */
-export const DeviceType = Schema.Literals(["console", "embedded", "mobile", "tablet", "smarttv", "wearable"])
+export const DeviceType: Schema.Literals<
+  readonly ["console", "embedded", "mobile", "tablet", "smarttv", "wearable"]
+> = Schema.Literals(["console", "embedded", "mobile", "tablet", "smarttv", "wearable"])
 
-/** The device described by a user agent. */
-export class Device extends Schema.Class<Device>("flareosaur/http/UserAgent/Device")({
+const DeviceBase: Schema.Class<
+  Device,
+  Schema.Struct<{
+    /** The device model. */
+    readonly model: Schema.Option<Schema.String>
+    /** The kind of device; `None` usually means a desktop. */
+    readonly type: Schema.Option<typeof DeviceType>
+    /** The device vendor. */
+    readonly vendor: Schema.Option<Schema.String>
+  }>,
+  {}
+> = Schema.Class<Device>("flareosaur/http/UserAgent/Device")({
   /** The device model. */
   model: OptionalString,
   /** The kind of device; `None` usually means a desktop. */
   type: Schema.Option(DeviceType),
   /** The device vendor. */
   vendor: OptionalString,
-}) {}
+})
 
-/** The browser engine described by a user agent. */
-export class Engine extends Schema.Class<Engine>("flareosaur/http/UserAgent/Engine")({
+/** The device described by a user agent. */
+export class Device extends DeviceBase {}
+
+const EngineBase: Schema.Class<
+  Engine,
+  Schema.Struct<{
+    /** The engine name, such as `Blink`. */
+    readonly name: Schema.Option<Schema.String>
+    /** The engine version. */
+    readonly version: Schema.Option<Schema.String>
+  }>,
+  {}
+> = Schema.Class<Engine>("flareosaur/http/UserAgent/Engine")({
   /** The engine name, such as `Blink`. */
   name: OptionalString,
   /** The engine version. */
   version: OptionalString,
-}) {}
+})
 
-/** The operating system described by a user agent. */
-export class Os extends Schema.Class<Os>("flareosaur/http/UserAgent/Os")({
+/** The browser engine described by a user agent. */
+export class Engine extends EngineBase {}
+
+const OsBase: Schema.Class<
+  Os,
+  Schema.Struct<{
+    /** The OS name. */
+    readonly name: Schema.Option<Schema.String>
+    /** The OS version. */
+    readonly version: Schema.Option<Schema.String>
+  }>,
+  {}
+> = Schema.Class<Os>("flareosaur/http/UserAgent/Os")({
   /** The OS name. */
   name: OptionalString,
   /** The OS version. */
   version: OptionalString,
-}) {}
+})
 
-/** The CPU described by a user agent. */
-export class Cpu extends Schema.Class<Cpu>("flareosaur/http/UserAgent/Cpu")({
+/** The operating system described by a user agent. */
+export class Os extends OsBase {}
+
+const CpuBase: Schema.Class<
+  Cpu,
+  Schema.Struct<{
+    /** The CPU architecture, such as `amd64`. */
+    readonly architecture: Schema.Option<Schema.String>
+  }>,
+  {}
+> = Schema.Class<Cpu>("flareosaur/http/UserAgent/Cpu")({
   /** The CPU architecture, such as `amd64`. */
   architecture: OptionalString,
-}) {}
+})
 
-/** A parsed user agent. */
-export class UserAgent extends Schema.Class<UserAgent>("flareosaur/http/UserAgent")({
+/** The CPU described by a user agent. */
+export class Cpu extends CpuBase {}
+
+const UserAgentBase: Schema.Class<
+  UserAgent,
+  Schema.Struct<{
+    /** The raw user agent string. */
+    readonly ua: Schema.String
+    readonly browser: typeof Browser
+    readonly cpu: typeof Cpu
+    readonly device: typeof Device
+    readonly engine: typeof Engine
+    readonly os: typeof Os
+  }>,
+  {}
+> = Schema.Class<UserAgent>("flareosaur/http/UserAgent")({
   /** The raw user agent string. */
   ua: Schema.String,
   browser: Browser,
@@ -89,7 +159,10 @@ export class UserAgent extends Schema.Class<UserAgent>("flareosaur/http/UserAgen
   device: Device,
   engine: Engine,
   os: Os,
-}) {}
+})
+
+/** A parsed user agent. */
+export class UserAgent extends UserAgentBase {}
 
 const opt = <A>(a: A | undefined): Option.Option<A> => Option.fromUndefinedOr(a)
 
@@ -111,7 +184,7 @@ export const parse = (ua: string | null | undefined): UserAgent => {
 }
 
 /** A Schema from a `User-Agent` header value to a parsed {@linkcode UserAgent}. */
-export const UserAgentFromString = Schema.String.pipe(
+export const UserAgentFromString: Schema.decodeTo<Schema.instanceOf<UserAgent>, Schema.String> = Schema.String.pipe(
   Schema.decodeTo(
     Schema.instanceOf(UserAgent),
     fromResults((s: string) => Result.succeed(parse(s)), (ua: UserAgent) => Result.succeed(ua.ua)),

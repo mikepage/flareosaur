@@ -29,7 +29,7 @@
  * @module
  */
 
-import { Effect, Schema, Stream } from "effect"
+import { type Cause, Effect, Schema, Stream } from "effect"
 import { Headers, HttpServerRequest, HttpServerResponse, Multipart } from "effect/http"
 import { FormDataEncoderStream, type FormDataInput } from "./_std/unstable_formdata_encoder_stream.ts"
 import { message } from "./_internal.ts"
@@ -37,11 +37,20 @@ import { message } from "./_internal.ts"
 /** An entry to encode: a field name and a string, `Blob` or byte stream value. */
 export type { FormDataInput }
 
-/** Encoding a form entry failed (for example, its value stream errored). */
-export class FormDataError extends Schema.TaggedError<FormDataError>()("FormDataError", {
+const FormDataErrorBase: Schema.Class<
+  FormDataError,
+  Schema.TaggedStruct<"FormDataError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<FormDataError>()("FormDataError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** Encoding a form entry failed (for example, its value stream errored). */
+export class FormDataError extends FormDataErrorBase {}
 
 /** An encoded `multipart/form-data` body and the `Content-Type` (with boundary) that goes with it. */
 export interface Encoded {

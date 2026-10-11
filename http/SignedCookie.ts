@@ -32,23 +32,38 @@
  * @module
  */
 
-import { Context, Effect, Function, Layer, Option, Redacted, Schema } from "effect"
+import { type Cause, Context, Effect, Function, Layer, Option, Redacted, Schema } from "effect"
 import { type Cookies, HttpServerRequest, HttpServerResponse } from "effect/http"
 import { parseSignedCookie, signCookie, verifySignedCookie } from "./_std/unstable_signed_cookie.ts"
 import { message } from "./_internal.ts"
 
-/** Signing or verifying a cookie failed in Web Crypto (for example, an unusable key). */
-export class SignedCookieError extends Schema.TaggedError<SignedCookieError>()("SignedCookieError", {
+const SignedCookieErrorBase: Schema.Class<
+  SignedCookieError,
+  Schema.TaggedStruct<"SignedCookieError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<SignedCookieError>()("SignedCookieError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** Signing or verifying a cookie failed in Web Crypto (for example, an unusable key). */
+export class SignedCookieError extends SignedCookieErrorBase {}
 
 const fail = (cause: unknown) => new SignedCookieError({ message: message(cause), cause })
 
-/** The HMAC key used to sign and verify cookies. */
-export class CookieSigner extends Context.Service<CookieSigner, { readonly key: CryptoKey }>()(
+const CookieSignerBase: Context.ServiceClass<
+  CookieSigner,
   "flareosaur/http/SignedCookie/CookieSigner",
-) {}
+  { readonly key: CryptoKey }
+> = Context.Service<CookieSigner, { readonly key: CryptoKey }>()(
+  "flareosaur/http/SignedCookie/CookieSigner",
+)
+
+/** The HMAC key used to sign and verify cookies. */
+export class CookieSigner extends CookieSignerBase {}
 
 /** The hash functions an HMAC signing key can use. */
 export type Hash = "SHA-256" | "SHA-384" | "SHA-512"

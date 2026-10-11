@@ -42,7 +42,7 @@
  * @module
  */
 
-import { Effect, Function, Option, Result, Schema } from "effect"
+import { type Cause, Effect, Function, Option, Result, Schema } from "effect"
 import { HttpClientResponse, HttpServerRespondable, HttpServerResponse } from "effect/http"
 import { parseProblemDetails } from "./_std/unstable_problem_details.ts"
 import { STATUS_TEXT } from "./_std/status.ts"
@@ -51,16 +51,36 @@ import { header, type HeadersInput, message } from "./_internal.ts"
 /** The media type of problem details. */
 export const MEDIA_TYPE = "application/problem+json"
 
-/** A problem object could not be read or written. */
-export class ProblemDetailsError extends Schema.TaggedError<ProblemDetailsError>()("ProblemDetailsError", {
+const ProblemDetailsErrorBase: Schema.Class<
+  ProblemDetailsError,
+  Schema.TaggedStruct<"ProblemDetailsError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<ProblemDetailsError>()("ProblemDetailsError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A problem object could not be read or written. */
+export class ProblemDetailsError extends ProblemDetailsErrorBase {}
 
 const fail = (cause: unknown) => new ProblemDetailsError({ message: message(cause), cause })
 
 /** The standard members of a problem object (RFC 9457 §3.1). */
-export const ProblemDetailsMembers = Schema.Struct({
+export const ProblemDetailsMembers: Schema.Struct<{
+  /** A URI reference identifying the problem type (default `about:blank`). */
+  readonly type: Schema.optionalKey<Schema.String>
+  /** The HTTP status code. */
+  readonly status: Schema.optionalKey<Schema.Int>
+  /** A short, human-readable summary of the problem type. */
+  readonly title: Schema.optionalKey<Schema.String>
+  /** A human-readable explanation of this occurrence. */
+  readonly detail: Schema.optionalKey<Schema.String>
+  /** A URI reference identifying this occurrence. */
+  readonly instance: Schema.optionalKey<Schema.String>
+}> = Schema.Struct({
   /** A URI reference identifying the problem type (default `about:blank`). */
   type: Schema.optionalKey(Schema.String),
   /** The HTTP status code. */
@@ -74,7 +94,10 @@ export const ProblemDetailsMembers = Schema.Struct({
 })
 
 /** A problem object: the standard members plus any extension members. */
-export const ProblemDetails = Schema.StructWithRest(ProblemDetailsMembers, [Schema.Record(Schema.String, Schema.Unknown)])
+export const ProblemDetails: Schema.StructWithRest<
+  typeof ProblemDetailsMembers,
+  readonly [Schema.$Record<Schema.String, Schema.Unknown>]
+> = Schema.StructWithRest(ProblemDetailsMembers, [Schema.Record(Schema.String, Schema.Unknown)])
 
 /** A problem object: the standard members plus any extension members. */
 export type ProblemDetails = typeof ProblemDetails.Type
@@ -127,16 +150,33 @@ export const response = (
   }).pipe(Effect.mapError(fail))
 }
 
+const ProblemBase: Schema.Class<
+  Problem,
+  Schema.TaggedStruct<"Problem", {
+    readonly status: Schema.Int
+    readonly extensions: Schema.optionalKey<Schema.$Record<Schema.String, Schema.Unknown>>
+    /** A URI reference identifying the problem type (default `about:blank`). */
+    readonly type: Schema.optionalKey<Schema.String>
+    /** A short, human-readable summary of the problem type. */
+    readonly title: Schema.optionalKey<Schema.String>
+    /** A human-readable explanation of this occurrence. */
+    readonly detail: Schema.optionalKey<Schema.String>
+    /** A URI reference identifying this occurrence. */
+    readonly instance: Schema.optionalKey<Schema.String>
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<Problem>()("Problem", {
+  ...ProblemDetailsMembers.fields,
+  status: Schema.Int,
+  extensions: Schema.optionalKey(Schema.Record(Schema.String, Schema.Unknown)),
+})
+
 /**
  * A failure that is an HTTP problem. Fail a route handler with it and
  * `HttpRouter` answers with its problem response. Extension members go in
  * `extensions`.
  */
-export class Problem extends Schema.TaggedError<Problem>()("Problem", {
-  ...ProblemDetailsMembers.fields,
-  status: Schema.Int,
-  extensions: Schema.optionalKey(Schema.Record(Schema.String, Schema.Unknown)),
-}) implements HttpServerRespondable.Respondable {
+export class Problem extends ProblemBase implements HttpServerRespondable.Respondable {
   /** The problem object this error stands for. */
   get problem(): ProblemDetails {
     const out: Record<string, unknown> = { ...this.extensions }

@@ -31,7 +31,7 @@
  * @module
  */
 
-import { Duration, Effect, Function, Option, Result, Schema } from "effect"
+import { type Cause, Duration, Effect, Function, Option, Result, Schema } from "effect"
 import { Headers, HttpServerRequest, HttpServerResponse } from "effect/http"
 import {
   type CacheControl as StdCacheControl,
@@ -40,19 +40,62 @@ import {
 } from "./_std/unstable_cache_control.ts"
 import { fromResults, header, type HeadersInput, message } from "./_internal.ts"
 
-/** A `Cache-Control` value could not be formatted. */
-export class CacheControlError extends Schema.TaggedError<CacheControlError>()("CacheControlError", {
+const CacheControlErrorBase: Schema.Class<
+  CacheControlError,
+  Schema.TaggedStruct<"CacheControlError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<CacheControlError>()("CacheControlError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
 
-const FieldNames = Schema.Union([Schema.Literal(true), Schema.Array(Schema.String)])
+/** A `Cache-Control` value could not be formatted. */
+export class CacheControlError extends CacheControlErrorBase {}
+
+const FieldNames: Schema.Union<readonly [Schema.Literal<true>, Schema.$Array<Schema.String>]> =
+  Schema.Union([Schema.Literal(true), Schema.Array(Schema.String)])
 
 /**
  * The directives of a `Cache-Control` header, request and response
  * directives together. Absent directives are absent keys.
  */
-export const CacheControl = Schema.Struct({
+export const CacheControl: Schema.Struct<{
+  /** `max-age`: how long a response stays fresh. */
+  readonly maxAge: Schema.optionalKey<Schema.Duration>
+  /** `no-cache`; on responses, optionally limited to some header fields. */
+  readonly noCache: Schema.optionalKey<typeof FieldNames>
+  /** `no-store`. */
+  readonly noStore: Schema.optionalKey<Schema.Literal<true>>
+  /** `no-transform`. */
+  readonly noTransform: Schema.optionalKey<Schema.Literal<true>>
+  /** `max-stale` (request): accept stale responses, optionally up to a limit. */
+  readonly maxStale: Schema.optionalKey<Schema.Union<readonly [Schema.Literal<true>, Schema.Duration]>>
+  /** `min-fresh` (request). */
+  readonly minFresh: Schema.optionalKey<Schema.Duration>
+  /** `only-if-cached` (request). */
+  readonly onlyIfCached: Schema.optionalKey<Schema.Literal<true>>
+  /** `s-maxage` (response): `max-age` for shared caches. */
+  readonly sMaxage: Schema.optionalKey<Schema.Duration>
+  /** `private` (response); optionally limited to some header fields. */
+  readonly private: Schema.optionalKey<typeof FieldNames>
+  /** `public` (response). */
+  readonly public: Schema.optionalKey<Schema.Literal<true>>
+  /** `must-revalidate` (response). */
+  readonly mustRevalidate: Schema.optionalKey<Schema.Literal<true>>
+  /** `proxy-revalidate` (response). */
+  readonly proxyRevalidate: Schema.optionalKey<Schema.Literal<true>>
+  /** `must-understand` (response). */
+  readonly mustUnderstand: Schema.optionalKey<Schema.Literal<true>>
+  /** `immutable` (response, RFC 8246). */
+  readonly immutable: Schema.optionalKey<Schema.Literal<true>>
+  /** `stale-while-revalidate` (response, RFC 5861). */
+  readonly staleWhileRevalidate: Schema.optionalKey<Schema.Duration>
+  /** `stale-if-error` (RFC 5861). */
+  readonly staleIfError: Schema.optionalKey<Schema.Duration>
+}> = Schema.Struct({
   /** `max-age`: how long a response stays fresh. */
   maxAge: Schema.optionalKey(Schema.Duration),
   /** `no-cache`; on responses, optionally limited to some header fields. */
@@ -140,7 +183,7 @@ export const format = (cc: CacheControl): Result.Result<string, CacheControlErro
 }
 
 /** A Schema between a `Cache-Control` header value and its directives. */
-export const CacheControlFromString = Schema.String.pipe(
+export const CacheControlFromString: Schema.decodeTo<typeof CacheControl, Schema.String> = Schema.String.pipe(
   Schema.decodeTo(CacheControl, fromResults((s: string) => Result.succeed(parse(s)), format)),
 )
 

@@ -39,7 +39,7 @@
  * @module
  */
 
-import { Duration, Effect, Option, Result, Schema } from "effect"
+import { type Cause, Duration, Effect, Option, Result, Schema } from "effect"
 import { HttpClientRequest, HttpServerRequest } from "effect/http"
 import {
   type ComponentIdentifier,
@@ -68,11 +68,20 @@ export type {
   VerifyResult,
 }
 
-/** Signing or verifying failed: bad parameters, missing or malformed headers, an unknown key, an expired or invalid signature. */
-export class MessageSignatureError extends Schema.TaggedError<MessageSignatureError>()("MessageSignatureError", {
+const MessageSignatureErrorBase: Schema.Class<
+  MessageSignatureError,
+  Schema.TaggedStruct<"MessageSignatureError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<MessageSignatureError>()("MessageSignatureError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** Signing or verifying failed: bad parameters, missing or malformed headers, an unknown key, an expired or invalid signature. */
+export class MessageSignatureError extends MessageSignatureErrorBase {}
 
 const fail = (cause: unknown) => new MessageSignatureError({ message: message(cause), cause })
 
@@ -169,7 +178,11 @@ const keyRefs = (message: Request | Response, labels: ReadonlyArray<string> | un
  * verified labels and their parameters; any failure fails the whole
  * verification.
  */
-export const verify = Effect.fnUntraced(function*<E, R>(
+export const verify: <E, R>(
+  message: Response | Request,
+  keyLookup: KeyLookup<E, R>,
+  options?: VerifyOptions,
+) => Effect.Effect<ReadonlyArray<VerifyResult>, MessageSignatureError | E, R> = Effect.fnUntraced(function*<E, R>(
   message: Request | Response,
   keyLookup: KeyLookup<E, R>,
   options?: VerifyOptions,
@@ -198,7 +211,10 @@ export const verify = Effect.fnUntraced(function*<E, R>(
  * The body is not part of the signature; cover a `Content-Digest` header to
  * protect it.
  */
-export const signClientRequest = Effect.fnUntraced(function*(
+export const signClientRequest: (
+  request: HttpClientRequest.HttpClientRequest,
+  options: SignOptions,
+) => Effect.Effect<HttpClientRequest.HttpClientRequest, MessageSignatureError> = Effect.fnUntraced(function*(
   request: HttpClientRequest.HttpClientRequest,
   options: SignOptions,
 ) {

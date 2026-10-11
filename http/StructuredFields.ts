@@ -29,7 +29,7 @@
  * @module
  */
 
-import { Result, Schema } from "effect"
+import { type Cause, Result, Schema } from "effect"
 import * as std from "./_std/unstable_structured_fields.ts"
 import { fromResults, message } from "./_internal.ts"
 
@@ -60,18 +60,43 @@ export {
   token,
 } from "./_std/unstable_structured_fields.ts"
 
-/** A structured field could not be parsed or serialized. */
-export class StructuredFieldError extends Schema.TaggedError<StructuredFieldError>()("StructuredFieldError", {
+const StructuredFieldErrorBase: Schema.Class<
+  StructuredFieldError,
+  Schema.TaggedStruct<"StructuredFieldError", {
+    readonly kind: Schema.Literals<readonly ["Parse", "Serialize"]>
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<StructuredFieldError>()("StructuredFieldError", {
   kind: Schema.Literals(["Parse", "Serialize"]),
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
 
-const bare = <T extends string, S extends Schema.Top>(type: T, value: S) =>
+/** A structured field could not be parsed or serialized. */
+export class StructuredFieldError extends StructuredFieldErrorBase {}
+
+/** The Schema of one bare item kind: its `type` tag and its value. */
+type Bare<T extends string, S extends Schema.Top> = Schema.Struct<{
+  readonly type: Schema.Literal<T>
+  readonly value: S
+}>
+
+const bare = <T extends string, S extends Schema.Top>(type: T, value: S): Bare<T, S> =>
   Schema.Struct({ type: Schema.Literal(type), value })
 
 /** A Schema for bare items: the values an item or parameter can hold. */
-export const BareItem = Schema.Union([
+export const BareItem: Schema.Union<readonly [
+  Bare<"integer", Schema.Number>,
+  Bare<"decimal", Schema.Number>,
+  Bare<"string", Schema.String>,
+  Bare<"token", Schema.String>,
+  Bare<"binary", Schema.Uint8Array>,
+  Bare<"boolean", Schema.Boolean>,
+  Bare<"date", Schema.Date>,
+  Bare<"displaystring", Schema.String>,
+]> = Schema.Union([
   bare("integer", Schema.Number),
   bare("decimal", Schema.Number),
   bare("string", Schema.String),
@@ -86,37 +111,46 @@ export const BareItem = Schema.Union([
 export type BareItem = std.BareItem
 
 /** A Schema for the parameters attached to an item or inner list. */
-export const Parameters = Schema.ReadonlyMap(Schema.String, BareItem)
+export const Parameters: Schema.$ReadonlyMap<Schema.String, typeof BareItem> = Schema.ReadonlyMap(
+  Schema.String,
+  BareItem,
+)
 
 /** Parameters attached to an item or inner list. */
 export type Parameters = std.Parameters
 
 /** A Schema for an item: a bare item with parameters. */
-export const Item = Schema.Struct({ value: BareItem, parameters: Parameters })
+export const Item: Schema.Struct<{
+  readonly value: typeof BareItem
+  readonly parameters: typeof Parameters
+}> = Schema.Struct({ value: BareItem, parameters: Parameters })
 
 /** An item: a bare item with parameters. */
 export type Item = std.Item
 
 /** A Schema for an inner list: items with parameters of their own. */
-export const InnerList = Schema.Struct({ items: Schema.Array(Item), parameters: Parameters })
+export const InnerList: Schema.Struct<{
+  readonly items: Schema.$Array<typeof Item>
+  readonly parameters: typeof Parameters
+}> = Schema.Struct({ items: Schema.Array(Item), parameters: Parameters })
 
 /** An inner list: items with parameters of their own. */
 export type InnerList = std.InnerList
 
 /** A Schema for a member of a list or dictionary. */
-export const Member = Schema.Union([Item, InnerList])
+export const Member: Schema.Union<readonly [typeof Item, typeof InnerList]> = Schema.Union([Item, InnerList])
 
 /** A member of a list or dictionary. */
 export type Member = Item | InnerList
 
 /** A Schema for a top-level list. */
-export const List = Schema.Array(Member)
+export const List: Schema.$Array<typeof Member> = Schema.Array(Member)
 
 /** A top-level list. */
 export type List = std.List
 
 /** A Schema for a top-level dictionary. */
-export const Dictionary = Schema.ReadonlyMap(Schema.String, Member)
+export const Dictionary: Schema.$ReadonlyMap<Schema.String, typeof Member> = Schema.ReadonlyMap(Schema.String, Member)
 
 /** A top-level dictionary, in field order. */
 export type Dictionary = std.Dictionary

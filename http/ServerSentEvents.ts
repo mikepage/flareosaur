@@ -29,7 +29,7 @@
  * @module
  */
 
-import { Duration, Effect, Result, Schema, Stream } from "effect"
+import { type Cause, Duration, Effect, Result, Schema, Stream } from "effect"
 import { Sse } from "effect/encoding"
 import { type HttpClientError, type HttpClientResponse, HttpServerResponse } from "effect/http"
 import { message as errorMessage } from "./_internal.ts"
@@ -43,11 +43,20 @@ export interface Comment {
 /** Anything {@linkcode encode} can write: an event, a retry directive or a comment. */
 export type Message = Sse.Event | Sse.Retry | Comment
 
-/** A message cannot be written as a server-sent event (a newline in `event` or `id`). */
-export class ServerSentEventError extends Schema.TaggedError<ServerSentEventError>()("ServerSentEventError", {
+const ServerSentEventErrorBase: Schema.Class<
+  ServerSentEventError,
+  Schema.TaggedStruct<"ServerSentEventError", {
+    readonly message: Schema.String
+    readonly cause: Schema.Defect
+  }>,
+  Cause.YieldableError
+> = Schema.TaggedError<ServerSentEventError>()("ServerSentEventError", {
   message: Schema.String,
   cause: Schema.Defect(),
-}) {}
+})
+
+/** A message cannot be written as a server-sent event (a newline in `event` or `id`). */
+export class ServerSentEventError extends ServerSentEventErrorBase {}
 
 /** Builds an `Sse.Event`. The event name defaults to `message`. */
 export const event = (options: {
