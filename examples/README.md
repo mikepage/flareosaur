@@ -6,7 +6,7 @@ and `npm run examples` checks every one of them in Miniflare.
 
 Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings listed in its header).
 
-16 examples in 3 groups.
+23 examples in 3 groups.
 
 ## Basics
 
@@ -26,7 +26,14 @@ Run one locally with `npx wrangler dev examples/<name>.ts` (add the bindings lis
 
 | Example | What it shows |
 | --- | --- |
+| [Cache responses with the Cache API](cache-api.ts) | Deno implements the Web Cache API; Workers have it too, as `caches.default`, in front of every data center. `Cache.cached` serves a request from the cache or runs the effect, returns its response and stores a copy in the background with `ctx.waitUntil`, so the user never waits for the write. |
+| [Cron Triggers](cron.ts) | `Deno.cron` registers a function to run on a schedule. On Workers the schedules live in the Worker's configuration (`triggers.crons`) and every trigger calls the `scheduled` handler. `Scheduled.dispatch` routes each trigger to the effect registered for its expression, and checks the expressions with Effect's `Cron` parser when the Worker loads. |
+| [D1: SQL with Effect](d1-sql.ts) | The Deno examples use SQLite through `node:sqlite`; a Worker has D1, a SQLite database as a binding. `@effect/sql-d1` makes it an Effect `SqlClient`: queries are tagged templates with parameters bound safely, and rows are decoded with a Schema. |
+| [Durable Objects: a consistent counter](durable-object-counter.ts) | A Durable Object is a single instance with its own storage: every request for the same name reaches the same object, one at a time, so a counter never loses an update. `DurableObject.makeRunner` runs Effects inside the object with its storage as Effect's `KeyValueStore`. |
+| [Environment variables and secrets](environment-variables.ts) | Deno reads configuration with `Deno.env.get`. A Worker gets vars and secrets as bindings, and `Worker.make` exposes the string ones to Effect's `Config`: typed (numbers, booleans, durations), with defaults, and with `Config.Redacted` for secrets so they never end up in a log line. |
+| [Queues: offload work to a consumer](queues.ts) | Deno Queues let an app hand work to a background listener. On Workers the same thing is a Queue with a producer binding and a `queue` handler. With `Queue.Producer` and `Queue.consume`, messages are Schema-typed on both ends: a message that does not decode is logged and dropped instead of crashing the consumer or retrying forever. |
 | [R2: reading and writing files](r2-files.ts) | A Worker has no disk; files go to an R2 bucket. The `R2.Bucket` service covers what the Deno examples do with `Deno.readFile`, `Deno.writeFile`, `Deno.remove` and walking a directory, with typed errors and `Option` for missing files. Object bodies are Effect `Stream`s, so large files never have to fit in memory. |
+| [WebSocket chat with Durable Objects](websocket-chat.ts) | A chat room needs one place that knows every connected socket. Each room is a Durable Object: the Worker forwards the WebSocket upgrade to the room's object, which accepts the socket with the hibernation API and broadcasts every message to the sockets of that room. The room keeps its last messages in storage, so new visitors can read the history. |
 | [Workers KV: key/value storage](kv.ts) | Deno has Deno KV built in; a Worker gets Workers KV through a binding. `Kv.layer` provides it as Effect's `KeyValueStore`, so a Schema-validated store is one call away: values are checked when they are written and when they are read back. |
 
 ## HTTP

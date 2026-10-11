@@ -119,7 +119,7 @@ export const consume = <S extends Schema.Codec<any, any, never, never>, E, R>(
       Schema.decodeUnknownEffect(schema)(message.body).pipe(
         Effect.matchEffect({
           onFailure: (error) =>
-            Effect.logWarning(`Dropping message ${message.id} from ${batch.queue}: it does not decode`, error).pipe(
+            Effect.logWarning(`Dropping message ${message.id} from ${batch.queue}: ${error.message}`).pipe(
               Effect.tap(() => Effect.sync(() => message.ack())),
             ),
           onSuccess: (value) =>

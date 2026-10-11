@@ -33,9 +33,9 @@
  * @module
  */
 
-import { Cause, Context, Effect, Layer, ManagedRuntime } from "effect"
+import { Cause, Context, Effect, Layer, ManagedRuntime, Predicate } from "effect"
 import * as KeyValueStore from "effect/persistence/KeyValueStore"
-import { configProvider, Env } from "./Worker.ts"
+import { binding, configProvider, Env, type MissingBindingError } from "./Worker.ts"
 import { ConfigProvider } from "effect"
 
 /** The parts of Durable Object storage this module uses. */
@@ -55,6 +55,31 @@ export interface DurableObjectStateLike {
   acceptWebSocket?(ws: WebSocket, tags?: Array<string>): void
   getWebSockets?(tag?: string): Array<WebSocket>
 }
+
+/** A Durable Object stub: what a namespace returns for an id. */
+export interface DurableObjectStubLike {
+  fetch(input: Request | string, init?: RequestInit): Promise<Response>
+}
+
+/** The parts of a Durable Object namespace binding this module uses. */
+export interface DurableObjectNamespaceLike {
+  idFromName(name: string): unknown
+  get(id: unknown): DurableObjectStubLike
+}
+
+/** Checks that a binding looks like a Durable Object namespace. */
+export const isDurableObjectNamespace = (u: unknown): u is DurableObjectNamespaceLike =>
+  Predicate.hasProperty(u, "idFromName") && Predicate.hasProperty(u, "get")
+
+/**
+ * The stub of the object named `name` in the namespace bound as `binding`:
+ * every Worker that asks for the same name reaches the same object.
+ */
+export const stub = (
+  bindingName: string,
+  name: string,
+): Effect.Effect<DurableObjectStubLike, MissingBindingError, Env> =>
+  Effect.map(binding(bindingName, isDurableObjectNamespace), (ns) => ns.get(ns.idFromName(name)))
 
 /** The state of the current Durable Object. */
 export class State extends Context.Service<State, DurableObjectStateLike>()(
