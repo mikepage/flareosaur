@@ -7,6 +7,9 @@
     "./html": "./html/mod.ts",
     "./internal/inspect": "./internal/Inspect.ts",
     "./internal": "./internal/mod.ts",
+    "./path/posix": "./path/Posix.ts",
+    "./path/windows": "./path/Windows.ts",
+    "./path": "./path/mod.ts",
     "./testing/test": "./testing/Test.ts",
     "./testing": "./testing/mod.ts",
     "./yaml": "./yaml/mod.ts"
