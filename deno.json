@@ -430,6 +430,7 @@
       "patches/",
       "examples/",
       "CLAUDE.md",
+      "CONTRIBUTING.md",
       "tsconfig*.json",
       ".github/"
     ]

@@ -69,7 +69,7 @@ example.
   the patch.
 - `npx jsr publish --dry-run`: what CI runs before publishing.
 
-Releases: CalVer `YYYYMMDD.0.N` in `deno.json`, see the README. Bump only when
-the published package changes.
+Releases: CalVer `YYYYMMDD.0.N` in `deno.json`, see CONTRIBUTING.md. Bump only
+when the published package changes.
 
 Commit messages: Conventional Commits, ending with the Co-Authored-By line.
