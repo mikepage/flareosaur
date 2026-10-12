@@ -45,6 +45,10 @@ regenerate `patches/edge.patch` from a fresh unpatched port. If the patch stops
 applying after an upstream bump, port with `--no-patches`, redo the edits and
 regenerate.
 
+Files flareosaur writes itself, such as `internal/inspect.ts` and
+`dotenv/mod.ts`, are listed as `own` in `scripts/port.mjs`. The port keeps them
+as they are, so they stay out of the patch. Edit them directly.
+
 ## Releasing
 
 Versions are CalVer, `YYYYMMDD.0.N`, with N counting releases that day from 1

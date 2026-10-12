@@ -40,8 +40,10 @@ const STD = resolve(positional[0] ?? join(ROOT, "../std"));
 const NAME = "@mikepage/flareosaur";
 
 // Directory -> files to leave out (paths relative to the package, a trailing
-// slash means a directory) or `only` to copy just those files. `dropExports`
-// and `addExports` adjust the exports taken from the package's deno.json.
+// slash means a directory) or `only` to copy just those files. `own` lists
+// flareosaur's own files: they are kept from this repo and replace std's file
+// of the same name, so they never show up in the patch. `dropExports` and
+// `addExports` adjust the exports taken from the package's deno.json.
 const PACKAGES = {
   assert: {},
   async: {},
@@ -65,6 +67,9 @@ const PACKAGES = {
   datetime: {},
   // load.ts and the load*() functions read .env files from disk.
   dotenv: {
+    // std's mod.ts defines load() and loadSync(), which read files through
+    // Deno.*. Ours only re-exports parse and stringify.
+    own: ["mod.ts"],
     exclude: [
       "load.ts",
       "load_test.ts",
@@ -100,7 +105,11 @@ const PACKAGES = {
     dropExports: ["./file-server", "./unstable-file-server"],
   },
   // inspect.ts is added by patches/edge.patch.
-  internal: { addExports: { "./inspect": "./inspect.ts" } },
+  internal: {
+    // Deno's inspect() for any runtime; the fallback for Deno.inspect.
+    own: ["inspect.ts"],
+    addExports: { "./inspect": "./inspect.ts" },
+  },
   json: {},
   // The conformance suites read their fixtures from disk and eval them.
   jsonc: { exclude: ["testdata/"] },
@@ -215,6 +224,10 @@ function rewrite(src, dest, specifiers, isCode) {
 function portPackage(dir, opts, specifiers) {
   const from = join(STD, dir);
   const to = join(OUT, dir);
+  const own = (opts.own ?? []).map((rel) => [
+    rel,
+    readFileSync(join(ROOT, dir, rel)),
+  ]);
   rmSync(to, { recursive: true, force: true });
   for (const file of walk(from)) {
     const rel = relative(from, file);
@@ -230,6 +243,10 @@ function portPackage(dir, opts, specifiers) {
     } else {
       cpSync(file, dest);
     }
+  }
+  for (const [rel, contents] of own) {
+    mkdirSync(dirname(join(to, rel)), { recursive: true });
+    writeFileSync(join(to, rel), contents);
   }
 }
 
