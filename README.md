@@ -38,14 +38,6 @@ in places and is only tested on Deno, Node and Bun. This repo collects the
 packages that make sense on the edge into one JSR package, fixes what breaks on
 workerd, and runs std's own tests inside workerd with no compatibility flags.
 
-An earlier version rebuilt all of this on [Effect](https://effect.website) v4.
-It is kept on the
-[`effect-v4`](https://github.com/mikepage/flareosaur/tree/effect-v4) branch.
-Effect is not built or tested for workerd: its scheduler yields with
-`setTimeout(0)`, a fiber that outlives its request hangs the isolate
-([Effect-TS/effect#9025](https://github.com/Effect-TS/effect/issues/9025)), and
-it needed patches and rules to run well.
-
 Ported from the std commit in [`UPSTREAM`](UPSTREAM).
 
 ## Packages
